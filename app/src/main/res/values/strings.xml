@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Github Users</string>
+    <string name="error_loading_users">Error loading users</string>
+    <string name="retry">Retry</string>
+    <string name="loading">Loading...</string>
+    <string name="username">Username:</string>
+    <string name="profile">Profile:</string>
+</resources>
