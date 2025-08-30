@@ -1,0 +1,4 @@
+# Module-local detekt config (mirrors root detekt.yml)
+# Prefer using the root configuration; this file exists to satisfy module-local default lookup.
+
+

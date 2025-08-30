@@ -1,0 +1,56 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    id("maven-publish")
+}
+
+android {
+    namespace = "com.example.githubusers.features.prod"
+}
+
+android {
+    defaultConfig {
+        // Map missing flavor dimensions on dependencies (e.g., feature modules without 'environment')
+        missingDimensionStrategy("environment", "prod")
+    }
+    
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+dependencies {
+    // Hilt dependencies
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    
+    // Export production feature modules
+    api("com.example.githubusers:feature-users-list")
+    api("com.example.githubusers:feature-users-detail")
+    api("com.example.githubusers:feature-search")
+    
+    // Shared modules
+    api("com.example.githubusers:core-domain")
+    api("com.example.githubusers:navigation-api")
+}
+
+// Publishing configuration
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.example.githubusers"
+            artifactId = "features-prod"
+            version = "1.0.0"
+            
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+}

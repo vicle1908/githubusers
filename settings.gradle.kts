@@ -1,5 +1,8 @@
 rootProject.name = "githubusers"
 
+// Include catalog module in root project for version catalog access
+include(":catalog")
+
 // Configuration properties for build modes
 val useCompositeBuilds = providers.gradleProperty("useCompositeBuilds").orNull?.toBoolean() ?: true
 val devCatalogEnabled = providers.gradleProperty("devCatalog").map { it.toBoolean() }.getOrElse(true)
@@ -18,11 +21,8 @@ if (useCompositeBuilds) {
 
     // devCatalog toggle: include catalog from source only when enabled
     if (devCatalogEnabled) {
-        includeBuild("catalog") {
-            dependencySubstitution {
-                substitute(module("com.example.githubusers:catalog")).using(project(":"))
-            }
-        }
+        // Catalog is included as a regular project above
+        println("Catalog included as regular project for version catalog access")
     } else {
         println("Using published catalog artifact; enable -PdevCatalog=true to develop catalog from source")
     }

@@ -1,0 +1,16 @@
+{
+  "mappings": [
+    { "from": "formatting.android", "to": "(removed) -> use .editorconfig: ktlint_code_style = ktlint_official" },
+    { "from": "formatting.Indentation.continuationIndentSize", "to": "(removed) -> ignored by ktlint 1.x" },
+    { "from": "formatting.NoUnitReturn", "to": "(removed)" },
+    { "from": "formatting.SpacingAroundDot", "to": "(removed)" },
+    { "from": "formatting.SpacingAroundDoubleColon", "to": "(removed)" },
+
+    { "from": "formatting.FunctionParameterNaming", "to": "naming.FunctionParameterNaming" },
+    { "from": "formatting.PackageNaming", "to": "naming.PackageNaming" },
+    { "from": "formatting.TopLevelPropertyNaming", "to": "naming.TopLevelPropertyNaming" },
+    { "from": "formatting.VariableNaming", "to": "naming.VariableNaming" }
+  ],
+  "notes": "This file documents the specific key moves/removals applied during migration to Detekt 1.23.8 + detekt-formatting 1.23.8 with ktlint_official."
+}
+
