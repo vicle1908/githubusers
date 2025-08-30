@@ -1,9 +1,7 @@
 package com.example.githubusers.presentation.ui.screens
 
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,10 +25,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -45,15 +48,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import coil.compose.rememberAsyncImagePainter
+import coil3.compose.AsyncImage
 import com.example.githubusers.domain.entity.User
 import com.example.githubusers.presentation.viewmodel.UserListViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,23 +69,32 @@ fun UserListScreen(
 ) {
     val pagingUsers: LazyPagingItems<User> = viewModel.pagedUsers.collectAsLazyPagingItems()
     val listState = rememberLazyListState()
+    var isRefreshing by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                isRefreshing = true
+                try {
+                    pagingUsers.refresh()
+                } catch (e: Exception) {
+                    Log.e("UserListScreen", "Error refreshing users: ${e.localizedMessage}")
+                } finally {
+                    isRefreshing = false
+                }
+            }
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) {
-        // Show error banner if there's a network or API error during refresh
-        if (pagingUsers.loadState.refresh is LoadState.Error) {
-            val error = (pagingUsers.loadState.refresh as LoadState.Error).error
-            ErrorBanner(errorMessage = "Failed to refresh users: ${error.localizedMessage}")
-        }
-
-        // LazyColumn displaying users
         LazyColumn(
             state = listState,
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection), // Apply scroll behavior
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             items(
                 count = pagingUsers.itemCount,
@@ -93,15 +107,13 @@ fun UserListScreen(
                 }
             }
 
-            // Handle loading more items (append)
             when (pagingUsers.loadState.append) {
                 is LoadState.Loading -> {
                     item {
                         Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator()
@@ -112,10 +124,9 @@ fun UserListScreen(
                     val error = (pagingUsers.loadState.append as LoadState.Error).error
                     item {
                         Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Text(
@@ -132,10 +143,9 @@ fun UserListScreen(
                         item {
                             Text(
                                 text = "No more users to load",
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color.Gray,
                                 textAlign = TextAlign.Center,
@@ -144,53 +154,6 @@ fun UserListScreen(
                     }
                 }
             }
-        }
-
-        // Handle initial load or refresh state
-        when (pagingUsers.loadState.refresh) {
-            is LoadState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            is LoadState.Error -> {
-                val error = (pagingUsers.loadState.refresh as LoadState.Error).error
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "Failed to load users: ${error.localizedMessage}",
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    RetryButton(onRetry = { pagingUsers.retry() })
-                }
-            }
-            is LoadState.NotLoading -> {
-                if (pagingUsers.itemCount == 0) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "No users found. Please try refreshing.",
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
-                }
-            }
-        }
-
-        // Update scroll behavior
-        LaunchedEffect(remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }) {
-            scrollBehavior.state.contentOffset = listState.firstVisibleItemScrollOffset.toFloat()
         }
 
         LaunchedEffect(pagingUsers) {
@@ -203,10 +166,10 @@ fun UserListScreen(
 fun ErrorBanner(errorMessage: String) {
     Box(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(Color.Red)
-                .padding(8.dp),
+        Modifier
+            .fillMaxWidth()
+            .background(Color.Red)
+            .padding(8.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -234,10 +197,10 @@ fun UserRow(
 
     Card(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { onClick() },
+        Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick() },
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             UserAvatar(avatarUrl = user.avatarUrl)
@@ -253,29 +216,31 @@ fun UserRow(
                         append(user.htmlUrl)
                         addStyle(
                             style =
-                                SpanStyle(
-                                    color = Color.Blue,
-                                    textDecoration = TextDecoration.Underline,
-                                ),
+                            SpanStyle(
+                                color = Color.Blue,
+                                textDecoration = TextDecoration.Underline,
+                            ),
                             start = startIndex,
                             end = length,
                         )
-                        addStringAnnotation(
-                            tag = "URL",
-                            annotation = user.htmlUrl,
-                            start = startIndex,
-                            end = length,
-                        )
+                        user.htmlUrl?.let {
+                            addStringAnnotation(
+                                tag = "URL",
+                                annotation = it,
+                                start = startIndex,
+                                end = length,
+                            )
+                        }
                     }
 
                 Text(
                     text = annotatedString,
                     style = MaterialTheme.typography.bodySmall,
                     modifier =
-                        Modifier.clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.htmlUrl))
-                            context.startActivity(intent)
-                        },
+                    Modifier.clickable {
+                        val intent = Intent(Intent.ACTION_VIEW, user.htmlUrl?.toUri())
+                        context.startActivity(intent)
+                    },
                 )
             }
         }
@@ -284,14 +249,15 @@ fun UserRow(
 
 @Composable
 fun UserAvatar(avatarUrl: String) {
-    Image(
-        painter = rememberAsyncImagePainter(avatarUrl),
+    AsyncImage(
+        model = avatarUrl,
         contentDescription = null,
-        modifier =
-            Modifier
-                .size(48.dp)
-                .clip(CircleShape),
+        placeholder = painterResource(id = android.R.drawable.ic_menu_gallery),
+        error = painterResource(id = android.R.drawable.ic_menu_report_image),
         contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(48.dp)
+            .clip(CircleShape)
     )
 }
 

@@ -3,9 +3,14 @@ package com.example.githubusers.presentation.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,12 +44,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             GithubUsersTheme {
                 val navController = rememberNavController()
-                Scaffold { paddingValues ->
-                    MainNavGraph(navController = navController, modifier = Modifier.padding(paddingValues))
-                }
+                MainNavGraph(
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
             }
         }
     }
@@ -53,11 +62,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.route
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         topBar = {
@@ -79,15 +88,15 @@ fun MainNavGraph(
                     }
                 },
                 scrollBehavior = scrollBehavior,
-                modifier = Modifier.fillMaxWidth(), // Removed explicit height
+                modifier = Modifier.fillMaxWidth()
             )
         },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    ) { paddingValues ->
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { padding ->
         NavHost(
             navController = navController,
             startDestination = "userList",
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier.fillMaxSize().padding(padding)
         ) {
             composable("userList") {
                 val viewModel: UserListViewModel = hiltViewModel()
@@ -96,7 +105,7 @@ fun MainNavGraph(
                         navController.navigate("userDetail/${user.login}")
                     },
                     viewModel = viewModel,
-                    scrollBehavior = scrollBehavior,
+                    scrollBehavior = scrollBehavior
                 )
             }
             composable("userDetail/{username}") { backStackEntry ->

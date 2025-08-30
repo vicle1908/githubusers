@@ -1,141 +1,138 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.room.gradle.plugin)
+    id("githubusers.android.application")
+    id("githubusers.android.application.compose")
+    id("githubusers.android.hilt")
+    id("githubusers.android.room")
+    alias(libs.plugins.version.update)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
+    id("githubusers.quality.ktlint")
 }
 
+// Configure application-specific settings via convention plugin extensions
+extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+    testInstrumentationRunner = "com.example.githubusers.HiltTestRunner"
+    enableNav3Persistence = true
+    enableNav3PersistenceWrite = true
+    missingDimensionStrategy = mapOf("environment" to "prod")
+}
+
+// Configure NDK settings via convention plugin extensions
+extensions.configure<com.example.githubusers.plugins.NdkExtension>("ndkConfig") {
+    ndkVersion = libs.versions.ndk.get()
+    cmakeVersion = libs.versions.cmake.get()
+    cmakePath = "src/main/cpp/CMakeLists.txt"
+}
+
+// Temporary android block for namespace until convention plugin is fully working
 android {
-    namespace =
-        libs.versions.application.id
-            .get()
-    compileSdk =
-        libs.versions.sdk.compile
-            .get()
-            .toInt()
-
-    defaultConfig {
-        applicationId =
-            libs.versions.application.id
-                .get()
-        minSdk =
-            libs.versions.sdk.min
-                .get()
-                .toInt()
-        targetSdk =
-            libs.versions.sdk.target
-                .get()
-                .toInt()
-        versionCode =
-            libs.versions.app.version.code
-                .get()
-                .toInt()
-        versionName =
-            libs.versions.app.version.name
-                .get()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        proguardFiles(
-            getDefaultProguardFile("proguard-android-optimize.txt"),
-            "proguard-rules.pro"
-        )
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true // Enables code shrinking for release
-            isShrinkResources = true // Removes unused resources
-            enableUnitTestCoverage = false
-            enableAndroidTestCoverage = false
-        }
-
-        getByName("debug") {
-            isDebuggable = true // Enable debugging in debug builds
-            applicationIdSuffix = ".debug" // Differentiate between release and debug builds
-            versionNameSuffix = "-debug" // Adds '-debug' suffix to the version name
-            isMinifyEnabled = false // Disable code shrinking in debug build
-            enableUnitTestCoverage = true
-            enableAndroidTestCoverage = true
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    kotlinOptions {
-        jvmTarget =
-            libs.versions.jvm.target
-                .get()
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    lint {
-        abortOnError = true
-    }
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
+    namespace = libs.versions.application.id.get()
 }
 
 dependencies {
-    // Ktor dependencies
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.serialization.kotlinx)
-    implementation(libs.ktor.client.content)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.logging)
+    // Feature modules
+    implementation(libs.local.feature.users.list)
+    implementation(libs.local.feature.users.detail)
+    implementation(libs.local.feature.search)
 
-    // Coroutines dependencies
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
+    // Navigation modules (composite builds)
+    implementation(libs.local.navigation.api)
+    implementation(libs.local.navigation.impl)
 
-    // Compose dependencies
-    implementation(platform(libs.compose.bom))
-    implementation(libs.material3)
-    implementation(libs.navigation.compose)
-    implementation(libs.compose.ui)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.activity.compose)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.appcompat)
-    debugImplementation(libs.ui.tooling)
-
-    // Hilt dependencies
+    // Hilt for dependency injection
     implementation(libs.hilt.android)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
-    // Room dependencies
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-    implementation(libs.room.paging)
+    // Core Android
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.activity.compose)
 
-    // Coil for image loading
+    // Compose BOM
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Navigation 3
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
+    // Networking
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.serialization.kotlinx)
+    implementation(libs.ktor.client.resources)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.mock)
+
+    // Image Loading
+    implementation(platform(libs.coil.bom))
     implementation(libs.coil.compose)
 
     // Paging
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
-    // Room Testing
+    // Room Paging support
+    implementation(libs.androidx.room.paging)
+
+    // Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Testing
     testImplementation(libs.junit)
-    testImplementation(libs.truth)
-    testImplementation(libs.room.testing)
     testImplementation(libs.mockk)
-    testImplementation(libs.mockk.agent)
-    testImplementation(libs.mockk.android)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.paging.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.androidx.paging.testing)
+
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+}
+
+// Version updates configuration
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    gradleReleaseChannel = "current"
+
+    rejectVersionIf {
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
 }

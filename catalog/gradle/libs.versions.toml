@@ -1,0 +1,374 @@
+[versions]
+guava = "33.4.8-android"
+kotlin = "2.2.10"
+ktor = "3.2.3"
+coroutines = "1.10.2"
+compose-bom = "2025.08.01"
+lifecycle-viewmodel-compose = "2.9.3"
+lifecycle-runtime-compose = "2.9.3"
+activity-compose = "1.10.1"
+appcompat = "1.7.1"
+hilt = "2.57.1"
+room = "2.7.2"
+datastore = "1.1.7"
+crypto = "1.1.0"
+paging = "3.3.6"
+ksp = "2.2.10-2.0.2"
+sdk-compile = "36"
+buildTools = "36.0.0"
+sdk-min = "23"
+sdk-target = "36"
+ndk = "28.2.13676358"
+app-version-code = "1"
+app-version-name = "1.0"
+jvm-target = "21"
+application-id = "com.example.githubusers"
+
+# Additional libraries versions
+okhttp = "5.1.0"  # Keep for Ktor client backend
+kotlinx-datetime = "0.7.1"
+kotlinx-collections-immutable = "0.4.0"
+javax-inject = "1"
+
+
+coreMviModule = "1.0.0"
+coreDomainModule = "1.0.0"
+navigationApiModule = "1.2.0"
+navigationImplModule = "1.0.0"
+featureUsersModule = "1.0.0"
+featureUsersListModule = "1.0.0"
+featureUsersDetailModule = "1.0.0"
+featureSearchModule = "1.0.0"
+featuresDevAggregatorModule = "1.0.0"
+featuresProdAggregatorModule = "1.0.0"
+appModule = "1.0.0"
+catalogModule = "1.0.0"
+internalPlatformModule = "1.0.0"
+githubusersPlugins = "1.0.0"
+coreCommonModule = "1.0.0"
+coreDataModule = "1.0.0"
+navigationAnnotationsModule = "1.0.0"
+navigationKspModule = "1.0.0"
+coil3 = "3.3.0"
+androidx-core = "1.17.0"
+android-gradle-plugin = "8.12.2"
+android-tools-common = "31.12.2"
+compose-compiler = "1.6.0"
+android-desugar-jdk-libs = "2.1.5"
+version-update = "0.52.0"
+detekt = "1.23.8"
+detekt-formatting = "1.23.8"
+mockk = "1.14.5"
+junit = "4.13.2"
+truth = "1.4.4"
+navigation3 = "3.0.0-alpha01"
+nav3Core = "1.0.0-alpha08"
+lifecycleViewmodelNav3 = "1.0.0-alpha04"
+kotlinxSerializationCore = "1.9.0"
+material3AdaptiveNav3 = "1.0.0-SNAPSHO"
+paging-compose = "3.3.6"
+
+#material3-adaptive = "1.1.0"
+androidx-hilt-navigation-compose = "1.2.0"
+navigation-compose = "2.9.3"
+timber = "5.0.1"
+leakcanary = "2.14"
+cmake = "3.22.1"
+
+[plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room-gradle-plugin = { id = "androidx.room", version.ref = "room" }
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+version-update = { id = "com.github.ben-manes.versions", version.ref = "version-update" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "13.1.0" }
+
+# Custom plugins from our plugins module
+githubusers-android-library = { id = "githubusers.android.library", version.ref = "githubusersPlugins" }
+githubusers-android-library-compose = { id = "githubusers.android.library.compose", version.ref = "githubusersPlugins" }
+githubusers-android-hilt = { id = "githubusers.android.hilt", version.ref = "githubusersPlugins" }
+githubusers-android-publishing = { id = "githubusers.android.publishing", version.ref = "githubusersPlugins" }
+githubusers-android-library-publishing = { id = "githubusers.android.library.publishing", version.ref = "githubusersPlugins" }
+
+# ✅ NEW: Specialized convention plugins for auto-detection
+githubusers-base-module = { id = "githubusers.base.module", version.ref = "githubusersPlugins" }
+githubusers-feature-module = { id = "githubusers.feature.module", version.ref = "githubusersPlugins" }
+githubusers-core-module = { id = "githubusers.core.module", version.ref = "githubusersPlugins" }
+githubusers-navigation-module = { id = "githubusers.navigation.module", version.ref = "githubusersPlugins" }
+githubusers-common-version = { id = "githubusers.common.version", version.ref = "githubusersPlugins" }
+
+[libraries]
+# KSP symbol processing API
+ksp-symbol-processing-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+
+# Ktor networking
+ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core" }
+ktor-client-android = { module = "io.ktor:ktor-client-android" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging" }
+ktor-client-serialization-kotlinx = { module = "io.ktor:ktor-serialization-kotlinx-json" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth" }
+
+# Coroutines
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# Compose
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# Lifecycle & Navigation
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle-viewmodel-compose" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-compose" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle-runtime-compose" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+
+# Paging
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+
+# Data Storage
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging-compose" }
+
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "crypto" }
+
+# Hilt
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+
+# Room
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+
+# Coil
+coil-compose = { module = "io.coil-kt.coil3:coil-compose" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3" }
+coil-bom = { module = "io.coil-kt.coil3:coil-bom", version.ref = "coil3" }
+
+# Testing - MockK
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-agent = { module = "io.mockk:mockk-agent", version.ref = "mockk" }
+mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+
+androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
+androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
+#material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+#material3-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
+#material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
+#androidx-material3-adaptive-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "material3AdaptiveNav3" }
+
+# Detekt formatting plugin
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+
+# Test Libraries
+junit = { module = "junit:junit", version.ref = "junit" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+androidx-test-runner = { module = "androidx.test:runner", version = "1.7.0" }
+androidx-test-rules = { module = "androidx.test:rules", version = "1.7.0" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.3.0" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.7.0" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.16" }
+
+# KtLint Gradle plugin (for convention plugin classpath)
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "13.1.0" }
+
+# Detekt Ktlint Ruleset (for integration)
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# Internal project modules
+internal-platform = { group = "com.example.githubusers", name = "internal-platform", version.ref = "internalPlatformModule" }
+local-core-mvi = { group = "com.example.githubusers", name = "core-mvi", version.ref = "coreMviModule" }
+local-core-domain = { group = "com.example.githubusers", name = "core-domain", version.ref = "coreDomainModule" }
+local-core-common = { group = "com.example.githubusers", name = "core-common", version.ref = "coreCommonModule" }
+local-core-data = { group = "com.example.githubusers", name = "core-data", version.ref = "coreDataModule" }
+local-navigation-api = { group = "com.example.githubusers", name = "navigation-api", version.ref = "navigationApiModule" }
+local-navigation-impl = { group = "com.example.githubusers", name = "navigation-impl", version.ref = "navigationImplModule" }
+local-navigation-annotations = { group = "com.example.githubusers", name = "navigation-annotations", version.ref = "navigationAnnotationsModule" }
+local-navigation-ksp = { group = "com.example.githubusers", name = "navigation-ksp", version.ref = "navigationKspModule" }
+local-feature-users = { group = "com.example.githubusers", name = "feature-users", version.ref = "featureUsersModule" }
+local-feature-users-list = { group = "com.example.githubusers", name = "feature-users-list", version.ref = "featureUsersListModule" }
+local-feature-users-detail = { group = "com.example.githubusers", name = "feature-users-detail", version.ref = "featureUsersDetailModule" }
+local-feature-search = { group = "com.example.githubusers", name = "feature-search", version.ref = "featureSearchModule" }
+local-features-dev = { group = "com.example.githubusers", name = "features-dev", version.ref = "featuresDevAggregatorModule" }
+local-features-prod = { group = "com.example.githubusers", name = "features-prod", version.ref = "featuresProdAggregatorModule" }
+
+# Gradle plugins for plugins module
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "android-tools-common" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+detektGradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+
+# Android dependencies
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+
+# Additional missing libraries for complete version catalog
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-compose" }
+# Duplicates removed - see androidx-test-ext-junit and espresso-core above
+androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-resources = { group = "io.ktor", name = "ktor-client-resources", version.ref = "ktor" }
+ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+
+# Debug tools
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+
+# OkHttp (used by Ktor client)
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+# Additional Kotlin extensions
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+
+# Dependency injection
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
+
+[bundles]
+# Compose UI dependencies
+compose = [
+    "androidx-compose-ui",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-material3",
+    "androidx-activity-compose",
+    "androidx-lifecycle-viewmodel-compose",
+    "androidx-lifecycle-runtime-compose"
+]
+
+# Compose UI testing
+compose-testing = [
+    "androidx-compose-ui-test-junit4",
+    "androidx-compose-ui-test-manifest"
+]
+
+# Ktor client dependencies
+ktor = [
+    "ktor-client-core",
+    "ktor-client-android",
+    "ktor-client-okhttp",
+    "ktor-client-content-negotiation",
+    "ktor-client-serialization-kotlinx",
+    "ktor-client-logging",
+    "ktor-client-auth",
+    "okhttp-logging"  # For debugging Ktor requests
+]
+
+# Room database
+room = [
+    "androidx-room-runtime",
+    "androidx-room-ktx",
+    "androidx-room-paging"
+]
+
+# Paging library
+paging = [
+    "androidx-paging-runtime",
+    "androidx-paging-compose"
+]
+
+# Coroutines
+coroutines = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-android"
+]
+
+# Coil image loading
+coil = [
+    "coil-compose",
+    "coil-network-ktor3"
+]
+
+# Unit testing for JVM modules
+testing-jvm = [
+    "junit",
+    "truth",
+    "mockk",
+    "mockk-agent",
+    "kotlinx-coroutines-test"
+]
+
+# Unit testing for Android modules
+testing-unit = [
+    "junit",
+    "truth",
+    "mockk",
+    "mockk-agent",
+    "kotlinx-coroutines-test",
+    "androidx-arch-core-testing"
+]
+
+# Android testing with Compose
+testing-android = [
+    "androidx-test-runner",
+    "androidx-test-rules",
+    "androidx-test-ext-junit",
+    "espresso-core",
+    "hilt-android-testing",
+    "mockk-android",
+    "androidx-compose-ui-test-junit4"
+]
+
+# Android testing without Compose (for non-UI modules)
+testing-android-base = [
+    "androidx-test-runner",
+    "androidx-test-rules",
+    "androidx-test-ext-junit",
+    "hilt-android-testing",
+    "mockk-android"
+]
+
+# Navigation3
+navigation3 = [
+    "androidx-navigation3-runtime",
+    "androidx-navigation3-ui",
+    "androidx-lifecycle-viewmodel-navigation3"
+]
+
+# Hilt dependencies
+hilt = [
+    "hilt-android"
+]
+
+# Serialization
+serialization = [
+    "kotlinx-serialization-core",
+    "kotlinx-serialization-json"
+]

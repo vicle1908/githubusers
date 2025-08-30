@@ -2,7 +2,6 @@ package com.example.githubusers.presentation.ui.screens
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,7 +39,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.githubusers.data.remote.dto.UserDetailDto
 import com.example.githubusers.data.remote.dto.toEntity
 import com.example.githubusers.domain.entity.UserDetail
@@ -91,37 +93,41 @@ fun DetailContent(user: UserDetail) {
 
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Profile Card
         Card(
             shape = MaterialTheme.shapes.medium,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             elevation = CardDefaults.elevatedCardElevation(),
             colors = CardDefaults.cardColors(),
         ) {
             Row(
                 modifier =
-                    Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
+                Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Circular avatar
-                Image(
-                    painter = rememberAsyncImagePainter(user.avatarUrl),
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(user.avatarUrl)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = null,
-                    modifier =
-                        Modifier
-                            .size(72.dp)
-                            .clip(CircleShape),
+                    placeholder = painterResource(id = android.R.drawable.ic_menu_gallery),
+                    error = painterResource(id = android.R.drawable.ic_menu_report_image),
                     contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(72.dp)
+                        .clip(CircleShape)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -178,9 +184,9 @@ fun DetailContent(user: UserDetail) {
         // Blog URL section
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         ) {
             Text(text = "Blog", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
 
@@ -193,10 +199,10 @@ fun DetailContent(user: UserDetail) {
                     if (user.blog != null) {
                         addStyle(
                             style =
-                                SpanStyle(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    textDecoration = TextDecoration.Underline,
-                                ),
+                            SpanStyle(
+                                color = MaterialTheme.colorScheme.primary,
+                                textDecoration = TextDecoration.Underline,
+                            ),
                             start = startIndex,
                             end = length,
                         )
@@ -213,12 +219,12 @@ fun DetailContent(user: UserDetail) {
                 text = annotatedBlogString,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier =
-                    Modifier.clickable {
-                        user.blog?.let {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                            context.startActivity(intent)
-                        }
-                    },
+                Modifier.clickable {
+                    user.blog?.let {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                        context.startActivity(intent)
+                    }
+                },
             )
         }
     }
