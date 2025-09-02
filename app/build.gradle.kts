@@ -57,6 +57,7 @@ dependencies {
     // Core modules
     implementation(libs.local.core.data)
     implementation(libs.local.core.domain)
+    implementation(libs.local.core.ui)
 
     // Feature modules
     implementation(libs.local.feature.users.list)
@@ -98,7 +99,7 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.mock)
 
-    // Image Loading
+    // Image Loading (provided by core-ui module)
     implementation(platform(libs.coil.bom))
     implementation(libs.coil.compose)
 
