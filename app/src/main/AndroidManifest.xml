@@ -10,7 +10,7 @@
         android:label="@string/app_name">
 
         <!-- MainActivity declaration -->
-        <activity android:name=".presentation.ui.MainActivity"
+        <activity android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
