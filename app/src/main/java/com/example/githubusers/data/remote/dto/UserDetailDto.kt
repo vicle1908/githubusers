@@ -16,7 +16,7 @@ data class UserDetailDto(
     @SerialName("location") val location: String?,
     @SerialName("followers") val followers: Int,
     @SerialName("following") val following: Int,
-    @SerialName("blog") val blog: String?
+    @SerialName("blog") val blog: String?,
 )
 
 fun UserDetailDto.toEntity(): UserDetail =

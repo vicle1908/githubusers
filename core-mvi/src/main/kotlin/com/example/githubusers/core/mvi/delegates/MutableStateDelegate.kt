@@ -12,12 +12,11 @@ import kotlinx.coroutines.flow.update
  * Provides thread-safe state management with Kotlin Flow.
  */
 class MutableStateDelegate<S : ViewState>(
-    initialState: S
+    initialState: S,
 ) : StateDelegate<S> {
-    
     private val _state = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
-    
+
     override fun updateState(reducer: S.() -> S) {
         _state.update(reducer)
     }

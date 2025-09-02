@@ -85,7 +85,7 @@ class UserRepositoryTest {
             coEvery { userDao.getUsersPaged() } returns emptyList<User>().asPagingSourceFactory().invoke()
 
             // Collect the PagingData from the repository's getUsersPaged() function
-            val pager: Flow<PagingData<User>> = userRepository.getUsersPaged()
+            userRepository.getUsersPaged()
 
 //        // Convert the PagingData to a snapshot
 //        val snapshotBeforeApiCall: List<User> = pager.asSnapshot()

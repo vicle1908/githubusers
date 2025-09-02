@@ -12,7 +12,7 @@ interface EffectDelegate<E : ViewEffect> {
      * Flow of effects to be observed by the UI
      */
     val effects: Flow<E>
-    
+
     /**
      * Send a new effect to be consumed by the UI
      */

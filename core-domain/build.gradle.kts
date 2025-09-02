@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
     id("githubusers.jvm.library")
     id("githubusers.common.version")
     alias(libs.plugins.kotlin.serialization)

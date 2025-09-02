@@ -19,18 +19,19 @@ import com.example.githubusers.core.data.local.entity.UserEntity
         UserEntity::class,
         UserDetailEntity::class,
         RepositoryEntity::class,
-        SearchResultEntity::class
+        SearchResultEntity::class,
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = true,
 )
 @TypeConverters(Converters::class)
 abstract class GitHubUsersDatabase : RoomDatabase() {
-    
     abstract fun userDao(): UserDao
+
     abstract fun userDetailDao(): UserDetailDao
+
     abstract fun repositoryDao(): RepositoryDao
-    
+
     companion object {
         const val DATABASE_NAME = "github_users_database"
     }

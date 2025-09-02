@@ -153,11 +153,11 @@ System: [Triggers multi-AI consultation]
 {
   "multiAiConsultation": {
     "enabled": true,
-    "minModels": 2,
+    "minModels": 3,
     "timeoutSeconds": 60,
     "consensusThreshold": 0.7,
     "preferredModels": ["gemini-2.5-pro", "gpt-5", "grok-4"],
-    "fallbackModels": ["gemini-pro", "o3", "gpt5"]
+    "fallbackModels": ["gemini-pro", "grok-4", "gpt5"]
   }
 }
 ```

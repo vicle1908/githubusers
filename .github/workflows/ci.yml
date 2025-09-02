@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Cache Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build plugins (composite build)
+        working-directory: plugins
+        run: ./gradlew build
+
+      # Note: The repository uses composite builds. Quality tasks should be run per included build.
+      # If your environment forbids Android AGP configuration due to legacy gradle.properties, fix or remove deprecated properties first.
+      - name: Quality - app
+        if: ${{ always() }}
+        working-directory: app
+        run: |
+          ./gradlew detekt ktlintCheck -Dorg.gradle.jvmargs="-Xmx2g"
+
+      - name: Assemble (app)
+        if: ${{ always() }}
+        working-directory: app
+        run: |
+          ./gradlew assembleDebug -Dorg.gradle.jvmargs="-Xmx2g"
+
+      - name: Upload Detekt report (app)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-report-app
+          path: app/build/reports/detekt/**
+
+      - name: Upload KtLint report (app)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ktlint-report-app
+          path: app/build/reports/ktlint/**
+

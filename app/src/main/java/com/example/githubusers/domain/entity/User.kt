@@ -11,5 +11,5 @@ data class User(
     @PrimaryKey val id: Int,
     val login: String,
     val avatarUrl: String,
-    val htmlUrl: String
+    val htmlUrl: String,
 )

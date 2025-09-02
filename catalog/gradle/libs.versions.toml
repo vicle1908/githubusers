@@ -39,8 +39,7 @@ featureUsersModule = "1.0.0"
 featureUsersListModule = "1.0.0"
 featureUsersDetailModule = "1.0.0"
 featureSearchModule = "1.0.0"
-featuresDevAggregatorModule = "1.0.0"
-featuresProdAggregatorModule = "1.0.0"
+# Flavor aggregators removed - direct feature module dependencies used instead
 appModule = "1.0.0"
 catalogModule = "1.0.0"
 internalPlatformModule = "1.0.0"
@@ -58,9 +57,15 @@ android-desugar-jdk-libs = "2.1.5"
 version-update = "0.52.0"
 detekt = "1.23.8"
 detekt-formatting = "1.23.8"
+ktlint = "13.1.0"
 mockk = "1.14.5"
 junit = "4.13.2"
 truth = "1.4.4"
+androidx-test = "1.7.0"
+androidx-test-ext-junit = "1.3.0"
+espresso = "3.7.0"
+robolectric = "4.16"
+androidx-arch-core-testing = "2.2.0"
 navigation3 = "3.0.0-alpha01"
 nav3Core = "1.0.0-alpha08"
 lifecycleViewmodelNav3 = "1.0.0-alpha04"
@@ -87,7 +92,7 @@ android-library = { id = "com.android.library", version.ref = "android-gradle-pl
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 version-update = { id = "com.github.ben-manes.versions", version.ref = "version-update" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "13.1.0" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 # Custom plugins from our plugins module
 githubusers-android-library = { id = "githubusers.android.library", version.ref = "githubusersPlugins" }
@@ -102,6 +107,7 @@ githubusers-feature-module = { id = "githubusers.feature.module", version.ref = 
 githubusers-core-module = { id = "githubusers.core.module", version.ref = "githubusersPlugins" }
 githubusers-navigation-module = { id = "githubusers.navigation.module", version.ref = "githubusersPlugins" }
 githubusers-common-version = { id = "githubusers.common.version", version.ref = "githubusersPlugins" }
+githubusers-platform-module = { id = "githubusers.platform.module", version.ref = "githubusersPlugins" }
 
 [libraries]
 # KSP symbol processing API
@@ -192,20 +198,21 @@ material-icons-extended = { module = "androidx.compose.material:material-icons-e
 # Test Libraries
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
-androidx-test-runner = { module = "androidx.test:runner", version = "1.7.0" }
-androidx-test-rules = { module = "androidx.test:rules", version = "1.7.0" }
-androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.3.0" }
-espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.7.0" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidx-test" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
-robolectric = { module = "org.robolectric:robolectric", version = "4.16" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 
 # KtLint Gradle plugin (for convention plugin classpath)
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version = "13.1.0" }
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 
 # Detekt Ktlint Ruleset (for integration)
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
 # Internal project modules
+# Internal platform BOM - consumed using platform() dependency
 internal-platform = { group = "com.example.githubusers", name = "internal-platform", version.ref = "internalPlatformModule" }
 local-core-mvi = { group = "com.example.githubusers", name = "core-mvi", version.ref = "coreMviModule" }
 local-core-domain = { group = "com.example.githubusers", name = "core-domain", version.ref = "coreDomainModule" }
@@ -219,8 +226,7 @@ local-feature-users = { group = "com.example.githubusers", name = "feature-users
 local-feature-users-list = { group = "com.example.githubusers", name = "feature-users-list", version.ref = "featureUsersListModule" }
 local-feature-users-detail = { group = "com.example.githubusers", name = "feature-users-detail", version.ref = "featureUsersDetailModule" }
 local-feature-search = { group = "com.example.githubusers", name = "feature-search", version.ref = "featureSearchModule" }
-local-features-dev = { group = "com.example.githubusers", name = "features-dev", version.ref = "featuresDevAggregatorModule" }
-local-features-prod = { group = "com.example.githubusers", name = "features-prod", version.ref = "featuresProdAggregatorModule" }
+# Flavor aggregator dependencies removed - direct feature module dependencies used instead
 
 # Gradle plugins for plugins module
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
@@ -240,19 +246,20 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-compose" }
 # Duplicates removed - see androidx-test-ext-junit and espresso-core above
-androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version = "2.2.0" }
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-client-resources = { group = "io.ktor", name = "ktor-client-resources", version.ref = "ktor" }
-ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
-ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+androidx-arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidx-arch-core-testing" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json" }
+ktor-client-resources = { group = "io.ktor", name = "ktor-client-resources" }
+ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock" }
 
 # Debug tools
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 # OkHttp (used by Ktor client)
-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
+okhttp = { module = "com.squareup.okhttp3:okhttp" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
 
 # Additional Kotlin extensions
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -314,6 +321,12 @@ coroutines = [
 coil = [
     "coil-compose",
     "coil-network-ktor3"
+]
+
+# OkHttp bundle (members only; remember to import the BOM in modules)
+okhttp = [
+    "okhttp",
+    "okhttp-logging"
 ]
 
 # Unit testing for JVM modules

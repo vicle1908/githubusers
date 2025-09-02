@@ -5,7 +5,10 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.detekt)
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
+    id("githubusers.quality.ktlint")
     id("githubusers.android.library")
     id("githubusers.android.library.compose")
     id("githubusers.android.hilt")
@@ -18,16 +21,16 @@ dependencies {
     // Navigation deep link ownership via KSP
     implementation(libs.local.navigation.annotations)
     ksp(libs.local.navigation.ksp)
-    
+
     // Import internal platform BOM for version management (implementation since we don't expose it)
     implementation(platform(libs.internal.platform))
-    
+
     // Domain modules - versions managed by internal platform BOM (implementation since we don't expose it)
     implementation(libs.local.core.domain)
-    
+
     // Navigation API for deep links
     implementation(libs.local.navigation.api)
-    
+
     // Core MVI base
     implementation(libs.local.core.mvi)
 
@@ -58,7 +61,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    
+
     // Hilt navigation-compose for hiltViewModel()
     implementation(libs.androidx.hilt.navigation.compose)
 

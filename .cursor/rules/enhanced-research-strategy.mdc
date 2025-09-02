@@ -1,0 +1,559 @@
+---
+description: Enhanced MCP Research Strategy
+alwaysApply: true
+---
+
+# Overview
+
+This enhanced research strategy leverages our comprehensive MCP server ecosystem
+(24 servers) to create intelligent, multi-layered research workflows. It
+combines semantic search, multi-AI consensus, step-by-step reasoning, and
+specialized domain knowledge for comprehensive research outcomes.
+
+## 🚨 **MANDATORY RESEARCH ENFORCEMENT**
+
+### **RULE: ALWAYS Research Before Implementation**
+
+**BEFORE making any code changes, architectural decisions, or implementation choices:**
+
+1. **MANDATORY**: Use Context7, DocFork, and DeepWiki to search for latest documentation and code snippets
+2. **MANDATORY**: Research best practices and current patterns for the specific technology/library
+3. **MANDATORY**: Feed research results to Zen MCP for evaluation and consensus
+4. **MANDATORY**: Use Zen Planner to create comprehensive action plans
+5. **ONLY THEN**: Proceed with implementation
+
+**This rule applies to:**
+
+- New feature development
+- Library updates and migrations
+- Architecture refactoring
+- Plugin development
+- Configuration changes
+- Any technical decision requiring current knowledge
+
+**Research Tools Priority Order:**
+
+1. **Context7**: Official library documentation and API information
+2. **DocFork**: Latest library documentation and code examples
+3. **DeepWiki**: GitHub repository documentation and best practices
+4. **Exa**: Semantic search for complex technical queries
+5. **Tavily**: Web search for current trends and information
+
+**Failure to follow this rule will result in:**
+
+- Outdated implementation patterns
+- Technical debt accumulation
+- Inconsistent code quality
+- Missed best practices
+- Potential security vulnerabilities
+
+---
+
+## 🚀 **Available MCP Research Arsenal**
+
+### **Core Research Servers** (24 Total)
+
+#### **🔍 Advanced Search & Discovery**
+
+- **Exa MCP**: Neural/semantic search, deep research (15s-2min), company
+  research, LinkedIn search
+- **Tavily MCP**: Web search, content extraction, crawling, mapping
+- **Brave Search MCP**: Web search, local business search
+- **DeepWiki MCP**: GitHub repository documentation and best practices
+- **Context7 MCP**: Library documentation and API information
+- **DocFork MCP**: Latest library documentation and code examples
+
+#### **🧠 AI Orchestration & Consensus**
+
+- **Zen MCP**: Multi-AI orchestration (Claude, Gemini, O3), consensus
+  building, deep analysis
+- **Sequential Thinking MCP**: Step-by-step reasoning, complex problem
+  decomposition
+- **Claude Context MCP**: Codebase indexing and semantic search
+
+#### **🛠️ Specialized Tools**
+
+- **Gradle MCP**: Build system analysis and project management
+- **Android MCP**: Device operations and testing
+- **Mobile-MCP**: UI automation and testing
+- **Filesystem MCP**: Local file operations and analysis
+- **OpenMemory MCP**: Persistent knowledge storage and retrieval
+
+## 🎯 **Enhanced Research Workflows**
+
+### **Workflow 1: Comprehensive Technology Research**
+
+#### **Phase 1: Discovery & Initial Research**
+
+```mermaid
+graph TD
+    A[Research Query] --> B[Exa Neural Search]
+    B --> C[Semantic Understanding]
+    C --> D[Tavily Web Search]
+    D --> E[DeepWiki GitHub Docs]
+    E --> F[Context7 Library Docs]
+    F --> G[DocFork Latest Examples]
+```
+
+**Implementation**:
+
+1. **Start with Exa**: Use neural/semantic search for understanding context
+2. **Expand with Tavily**: Web search for current information and trends
+3. **Deep dive with DeepWiki**: Repository-specific documentation
+4. **Validate with Context7/DocFork**: Official library documentation
+
+#### **Phase 2: Multi-AI Analysis & Consensus**
+
+```mermaid
+graph TD
+    A[Research Findings] --> B[Zen MCP Orchestration]
+    B --> C[Claude Analysis]
+    B --> D[Gemini Perspective]
+    B --> E[O3 Reasoning]
+    C --> F[Consensus Building]
+    D --> F
+    E --> F
+    F --> G[Final Recommendations]
+```
+
+**Implementation**:
+
+1. **Zen Consensus**: Use `mcp_zen_consensus` for multi-model analysis
+2. **Deep Analysis**: Use `mcp_zen_thinkdeep` for complex problem
+   investigation
+3. **Planning**: Use `mcp_zen_planner` for implementation strategies
+
+#### **Phase 3: Implementation Planning**
+
+```mermaid
+graph TD
+    A[Consensus Results] --> B[Sequential Thinking]
+    B --> C[Step-by-step Decomposition]
+    C --> D[Implementation Plan]
+    D --> E[Risk Assessment]
+    E --> F[Success Metrics]
+```
+
+**Implementation**:
+
+1. **Sequential Thinking**: Use `mcp_sequentialthinking` for structured
+   planning
+2. **Code Review**: Use `mcp_zen_codereview` for implementation quality
+3. **Pre-commit Validation**: Use `mcp_zen_precommit` for change validation
+
+### **Workflow 2: Android Development Research**
+
+#### **Phase 1: Platform-Specific Research**
+
+```mermaid
+graph TD
+    A[Android Query] --> B[DeepWiki Android Best Practices]
+    B --> C[Context7 Material Design]
+    C --> D[DocFork Navigation 3]
+    D --> E[Tavily Current Android Trends]
+    E --> F[Exa Android Architecture Patterns]
+```
+
+**Implementation**:
+
+1. **DeepWiki**: Repository-specific Android patterns
+2. **Context7**: Official Android library documentation
+3. **DocFork**: Latest Android implementation examples
+4. **Tavily**: Current Android development trends
+5. **Exa**: Semantic search for Android architecture
+
+#### **Phase 2: Multi-AI Android Analysis**
+
+```mermaid
+graph TD
+    A[Android Research] --> B[Zen Android Consensus]
+    B --> C[Claude Android Expertise]
+    B --> D[Gemini Android Patterns]
+    B --> E[O3 Android Architecture]
+    C --> F[Android Best Practices]
+    D --> F
+    E --> F
+    F --> G[Implementation Strategy]
+```
+
+**Implementation**:
+
+1. **Zen Consensus**: Multi-model Android analysis
+2. **Deep Analysis**: Complex Android problem investigation
+3. **Code Review**: Android-specific implementation review
+
+#### **Phase 3: Android Implementation**
+
+```mermaid
+graph TD
+    A[Android Strategy] --> B[Gradle Build Analysis]
+    B --> C[Android Device Testing]
+    C --> D[Mobile-MCP Automation]
+    D --> E[Implementation Validation]
+```
+
+**Implementation**:
+
+1. **Gradle MCP**: Build system optimization
+2. **Android MCP**: Device operations and testing
+3. **Mobile-MCP**: UI automation and validation
+
+### **Workflow 3: Complex Problem Solving**
+
+#### **Phase 1: Problem Decomposition**
+
+```mermaid
+graph TD
+    A[Complex Problem] --> B[Sequential Thinking]
+    B --> C[Step-by-step Analysis]
+    C --> D[Problem Breakdown]
+    D --> E[Research Requirements]
+```
+
+**Implementation**:
+
+1. **Sequential Thinking**: Structured problem analysis
+2. **Zen Planning**: Strategic planning and execution
+3. **Research Coordination**: Multi-tool research orchestration
+
+#### **Phase 2: Multi-Dimensional Research**
+
+```mermaid
+graph TD
+    A[Research Requirements] --> B[Exa Deep Research]
+    B --> C[Semantic Understanding]
+    C --> D[Multi-Source Validation]
+    D --> E[Expert Consensus]
+```
+
+**Implementation**:
+
+1. **Exa Deep Research**: Complex query analysis (15s-2min)
+2. **Multi-Source Validation**: Cross-reference findings
+3. **Zen Consensus**: Expert model validation
+
+#### **Phase 3: Solution Synthesis**
+
+```mermaid
+graph TD
+    A[Research Findings] --> B[Zen Analysis]
+    B --> C[Solution Design]
+    C --> D[Implementation Plan]
+    D --> E[Success Metrics]
+```
+
+**Implementation**:
+
+1. **Zen Analysis**: Comprehensive solution analysis
+2. **Planning**: Structured implementation planning
+3. **Validation**: Pre-implementation validation
+
+## 🎯 **Research Tool Selection Matrix**
+
+### **By Research Type**
+
+| Research Type | Primary Tools | Secondary Tools | Fallback Tools |
+|---------------|---------------|-----------------|----------------|
+| **Technology Discovery** | Exa, Tavily | DeepWiki, Context7 | Brave Search |
+| **Implementation Research** | Context7, DocFork | DeepWiki, Exa | Tavily |
+| **Best Practices** | DeepWiki, Exa | Context7, Tavily | Brave Search |
+| **Current Trends** | Tavily, Exa | Brave Search, DeepWiki | Context7 |
+| **Complex Analysis** | Zen, Sequential Thinking | Exa Deep Research | Multi-tool consensus |
+| **Code Review** | Zen, Claude Context | Sequential Thinking | Manual analysis |
+
+### **By Complexity Level**
+
+| Complexity | Tools | Workflow |
+|------------|-------|----------|
+| **Simple Query** | Tavily/Brave Search | Direct search → Result |
+| **Medium Research** | Exa + Context7/DeepWiki | Semantic search → Documentation → Validation |
+| **Complex Analysis** | Exa Deep Research + Zen | Deep research → Multi-AI consensus → Planning |
+| **Multi-Domain** | Sequential Thinking + Zen | Problem decomposition → Multi-tool research → Synthesis |
+
+## 🚀 **Advanced Research Techniques**
+
+### **1. Semantic Research Chaining**
+
+```kotlin
+// Research chain: Exa → DeepWiki → Context7 → Zen Consensus
+val researchChain = ResearchChain()
+    .startWith(Exa.neuralSearch(query))
+    .expandWith(DeepWiki.repositoryDocs())
+    .validateWith(Context7.libraryDocs())
+    .synthesizeWith(Zen.consensus())
+    .planWith(SequentialThinking.stepByStep())
+```
+
+### **2. Multi-AI Consensus Building**
+
+```kotlin
+// Zen MCP consensus with multiple models
+val consensus = Zen.consensus(
+    models = listOf(
+        ModelConfig("gpt-5", stance = "for"),
+        ModelConfig("gemini-2.5-pro", stance = "against"),
+        ModelConfig("o3", stance = "neutral")
+    ),
+    topic = researchTopic,
+    context = researchFindings
+)
+```
+
+### **3. Sequential Problem Decomposition**
+
+```kotlin
+// Sequential thinking for complex problems
+val problemAnalysis = SequentialThinking.analyze(
+    problem = complexProblem,
+    steps = listOf(
+        "Problem decomposition",
+        "Research requirements",
+        "Solution design",
+        "Implementation planning"
+    )
+)
+```
+
+### **4. Deep Research Orchestration**
+
+```kotlin
+// Exa deep research with Zen analysis
+val deepResearch = Exa.deepResearch(
+    instructions = researchInstructions,
+    model = "exa-research-pro" // 45s-2min processing
+).then { results ->
+    Zen.thinkdeep(
+        step = "Deep research analysis",
+        findings = results,
+        confidence = "high"
+    )
+}
+```
+
+## 📊 **Research Quality Metrics**
+
+### **Completeness Score**
+
+- **Single Source**: 60% (basic coverage)
+- **Multi-Source**: 80% (comprehensive coverage)
+- **Multi-AI Consensus**: 95% (expert validation)
+- **Sequential Analysis**: 98% (systematic coverage)
+
+### **Accuracy Score**
+
+- **Web Search**: 70% (current but unverified)
+- **Documentation**: 85% (official but may be outdated)
+- **Multi-AI Consensus**: 90% (expert cross-validation)
+- **Deep Research**: 95% (comprehensive analysis)
+
+### **Efficiency Score**
+
+- **Manual Research**: 40% (time-consuming)
+- **Single Tool**: 70% (focused but limited)
+- **Multi-Tool Chain**: 85% (comprehensive and efficient)
+- **AI-Orchestrated**: 95% (intelligent automation)
+
+## 🔄 **Research Workflow Automation**
+
+### **Automated Research Chains**
+
+#### **Chain 1: Technology Migration Research**
+
+```yaml
+automation:
+  trigger: "migration research needed"
+  workflow:
+    - step: "Exa semantic search for migration patterns"
+    - step: "DeepWiki repository migration examples"
+    - step: "Context7 migration library documentation"
+    - step: "Zen consensus on migration strategy"
+    - step: "Sequential thinking for implementation plan"
+    - step: "Store results in OpenMemory"
+```
+
+#### **Chain 2: Performance Optimization Research**
+
+```yaml
+automation:
+  trigger: "performance issue identified"
+  workflow:
+    - step: "Exa deep research for performance patterns"
+    - step: "DeepWiki performance best practices"
+    - step: "Zen performance analysis consensus"
+    - step: "Sequential thinking for optimization plan"
+    - step: "Implementation validation with Gradle/Android MCP"
+```
+
+#### **Chain 3: Security Implementation Research**
+
+```yaml
+automation:
+  trigger: "security requirement identified"
+  workflow:
+    - step: "Exa security pattern research"
+    - step: "DeepWiki security implementation examples"
+    - step: "Zen security analysis consensus"
+    - step: "Sequential thinking for security plan"
+    - step: "Pre-commit security validation"
+```
+
+## 🎯 **Implementation Guidelines**
+
+### **Research Request Format**
+
+```markdown
+## Research Request Template
+
+**Topic**: [Specific research topic]
+**Complexity**: [Simple/Medium/Complex]
+**Domain**: [Technology/Implementation/Best Practices/Current Trends]
+**Expected Outcome**: [Discovery/Implementation Plan/Validation/Consensus]
+**Time Constraint**: [Immediate/Short-term/Long-term]
+**Special Requirements**: [Multi-AI consensus, Sequential analysis, etc.]
+```
+
+### **Research Response Format**
+
+```markdown
+## Research Response Template
+
+**Executive Summary**: [Key findings and recommendations]
+**Research Methodology**: [Tools and workflows used]
+**Detailed Findings**: [Comprehensive research results]
+**Multi-AI Consensus**: [Expert model agreement/disagreement]
+**Implementation Plan**: [Step-by-step execution strategy]
+**Risk Assessment**: [Identified risks and mitigation]
+**Success Metrics**: [How to measure success]
+**Next Steps**: [Immediate actions and follow-up]
+```
+
+## 🔧 **Configuration Requirements**
+
+### **Environment Variables**
+
+```bash
+# Exa MCP
+EXA_API_KEY=your_exa_api_key
+
+# Zen MCP
+XAI_API_KEY=your_xai_api_key
+GOOGLE_ALLOWED_MODELS=pro
+GEMINI_API_KEY=your_gemini_api_key
+OPENAI_ALLOWED_MODELS=gpt-5,o3
+
+# Sequential Thinking
+SMITHERY_API_KEY=your_smithery_api_key
+
+# Other MCP servers (already configured)
+TAVILY_API_KEY=your_tavily_api_key
+BRAVE_API_KEY=your_brave_api_key
+CONTEXT7_API_KEY=your_context7_api_key
+```
+
+### **MCP Configuration Updates**
+
+```jsonc
+// Enhanced MCP configuration
+{
+  "mcpServers": {
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.exa.ai/mcp?exaApiKey=${EXA_API_KEY}"],
+      "env": {}
+    },
+    "zen": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/BeehiveInnovations/zen-mcp-server.git", "zen-mcp-server"],
+      "env": {
+        "XAI_API_KEY": "${XAI_API_KEY}",
+        "GOOGLE_ALLOWED_MODELS": "gemini-2.5-pro",
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+        "OPENAI_ALLOWED_MODELS": "gpt-5"
+      }
+    },
+    "sequentialthinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {}
+    }
+  }
+}
+```
+
+## 📈 **Performance Monitoring**
+
+### **Research Metrics**
+
+- **Response Time**: Track research completion time
+- **Quality Score**: Measure research completeness and accuracy
+- **Tool Utilization**: Monitor MCP server usage patterns
+- **User Satisfaction**: Collect feedback on research quality
+- **Success Rate**: Track implementation success from research
+
+### **Optimization Opportunities**
+
+- **Tool Selection**: Optimize tool selection for research types
+- **Workflow Automation**: Automate common research patterns
+- **Caching Strategy**: Cache frequently accessed research results
+- **Parallel Processing**: Execute research steps concurrently when possible
+
+## 🎯 **Success Criteria**
+
+### **Immediate Goals**
+
+- [ ] Implement enhanced research workflows
+- [ ] Configure all MCP servers for optimal performance
+- [ ] Establish research quality metrics
+- [ ] Create automated research chains
+
+### **Short-term Goals**
+
+- [ ] Achieve 90%+ research completeness score
+- [ ] Reduce research time by 50%
+- [ ] Implement multi-AI consensus for complex research
+- [ ] Establish research automation for common patterns
+
+### **Long-term Goals**
+
+- [ ] Achieve 95%+ research accuracy score
+- [ ] Implement intelligent research orchestration
+- [ ] Establish predictive research recommendations
+- [ ] Create research knowledge base with OpenMemory
+
+## 🔄 **Continuous Improvement**
+
+### **Regular Reviews**
+
+- **Weekly**: Review research quality metrics
+- **Monthly**: Analyze MCP server performance
+- **Quarterly**: Update research workflows and strategies
+- **Annually**: Comprehensive strategy review and optimization
+
+### **Feedback Integration**
+
+- **User Feedback**: Incorporate user research experience feedback
+- **Tool Performance**: Monitor and optimize MCP server usage
+- **Workflow Efficiency**: Continuously improve research automation
+- **Quality Assurance**: Regular validation of research outcomes
+
+## Conclusion
+
+This enhanced research strategy transforms our MCP ecosystem from individual
+tools into an intelligent, orchestrated research platform. By combining
+semantic search, multi-AI consensus, step-by-step reasoning, and specialized
+domain knowledge, we achieve:
+
+- **Higher Research Quality**: Multi-source validation and expert consensus
+- **Faster Research**: Intelligent automation and parallel processing
+- **Better Outcomes**: Comprehensive analysis and implementation planning
+- **Continuous Learning**: Persistent knowledge storage and pattern recognition
+
+**Remember**: Always start with the right tool for the research type,
+leverage multi-AI consensus for complex problems, and use sequential thinking
+for systematic analysis. Our 24 MCP servers provide unprecedented research
+capabilities - use them strategically and efficiently.
+description: Enhanced MCP Research Strategy combining all available MCP servers for comprehensive research workflows
+globs: ["**/*.md", "**/*.mdc"]
+
+description: Enhanced MCP Research Strategy combining all available MCP servers for comprehensive research workflows
+globs: ["**/*.md", "**/*.mdc"]

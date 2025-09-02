@@ -46,7 +46,11 @@ class UserRemoteMediator(
                 }
 
             // Fetch data from the API
-            val response: Result<List<User>> = apiService.getUsers(perPage = state.config.pageSize, since = loadKey ?: 0)
+            val response: Result<List<User>> =
+                apiService.getUsers(
+                    perPage = state.config.pageSize,
+                    since = loadKey ?: 0,
+                )
 
             // Check API response
             response.fold(

@@ -17,7 +17,6 @@ import io.ktor.client.request.parameter
 class UserApiService(
     private val client: HttpClient,
 ) {
-
     /**
      * Fetches a list of users from the GitHub API and maps them to domain entities.
      * It returns a [Result] that contains either a list of users or an exception.
@@ -26,12 +25,18 @@ class UserApiService(
      * @param since The starting user ID for pagination.
      * @return [Result] of a list of GitHub users or an error.
      */
-    suspend fun getUsers(since: Int, perPage: Int): Result<List<User>> {
-        return try {
-            val listUser = client.get("https://api.github.com/users") {
-                parameter("since", since)
-                parameter("per_page", perPage)
-            }.body<List<UserDto>>().map { it.toEntity() }
+    suspend fun getUsers(
+        since: Int,
+        perPage: Int,
+    ): Result<List<User>> =
+        try {
+            val listUser =
+                client
+                    .get("https://api.github.com/users") {
+                        parameter("since", since)
+                        parameter("per_page", perPage)
+                    }.body<List<UserDto>>()
+                    .map { it.toEntity() }
 
             Log.d("UserApiService", "Fetched users: $listUser")
 
@@ -40,7 +45,6 @@ class UserApiService(
             Log.e("UserApiService", "Error fetching users: ${e.localizedMessage}")
             Result.failure(e)
         }
-    }
 
     /**
      * Fetches the details of a specific user from the GitHub API and maps it to a domain entity.
@@ -49,11 +53,13 @@ class UserApiService(
      * @param username The login username of the user.
      * @return [Result] of the detailed information of the user or an error.
      */
-    suspend fun getUserDetail(username: String): Result<UserDetail> {
-        return try {
-            val userDetail = client.get("https://api.github.com/users/$username")
-                .body<UserDetailDto>()
-                .toEntity()
+    suspend fun getUserDetail(username: String): Result<UserDetail> =
+        try {
+            val userDetail =
+                client
+                    .get("https://api.github.com/users/$username")
+                    .body<UserDetailDto>()
+                    .toEntity()
 
             Log.d("UserApiService", "Fetched user detail: $userDetail")
             Result.success(userDetail)
@@ -61,5 +67,4 @@ class UserApiService(
             Log.e("UserApiService", "Error fetching user details: ${e.localizedMessage}")
             Result.failure(e)
         }
-    }
 }

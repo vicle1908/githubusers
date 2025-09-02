@@ -1,28 +1,27 @@
 rootProject.name = "githubusers"
-
-// Include catalog module in root project for version catalog access
-include(":catalog")
-
 // Configuration properties for build modes
 val useCompositeBuilds = providers.gradleProperty("useCompositeBuilds").orNull?.toBoolean() ?: true
-val devCatalogEnabled = providers.gradleProperty("devCatalog").map { it.toBoolean() }.getOrElse(true)
+val devCatalogEnabled = providers.gradleProperty("devCatalogEnabled").orNull?.toBoolean() ?: true
 
 println(
     """========================================
 Build Configuration:
   - Composite Builds: ${if (useCompositeBuilds) "ENABLED (local development)" else "DISABLED (using artifacts)"}
-  - To change: add -PuseCompositeBuilds=false or -PincludeApp=false
 ========================================"""
 )
 
 if (useCompositeBuilds) {
     println("Using local composite builds for development")
-    println("Note: Catalog default is to include from source; toggle with -PdevCatalog=<true|false>")
 
     // devCatalog toggle: include catalog from source only when enabled
     if (devCatalogEnabled) {
         // Catalog is included as a regular project above
         println("Catalog included as regular project for version catalog access")
+        includeBuild("catalog") {
+            dependencySubstitution {
+                substitute(module("com.example.githubusers:catalog")).using(project(":"))
+            }
+        }
     } else {
         println("Using published catalog artifact; enable -PdevCatalog=true to develop catalog from source")
     }
@@ -112,28 +111,7 @@ if (useCompositeBuilds) {
         }
     }
 
-    // Feature aggregators
-    includeBuild("features-dev") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:features-dev")).using(project(":"))
-        }
-    }
-    includeBuild("features-prod") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:features-prod")).using(project(":"))
-        }
-    }
-
-    // Test module for convention plugin system
-    includeBuild("test-module") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:test-module")).using(project(":"))
-        }
-    }
-    
-    // ✅ NEW: Apply base convention plugin to all modules automatically
-    // Note: Automatic plugin application will be handled in individual module build files
-    // for now, until we can implement a proper solution
+    // Feature aggregators removed - direct feature module dependencies used instead
 } else {
     println("Using published artifacts from repositories")
     println("Make sure all modules are published to Maven Local or remote repository")
@@ -142,30 +120,3 @@ if (useCompositeBuilds) {
 
 // App module is always included as composite
 includeBuild("app")
-
-// Build cache configuration (local always on; optional remote via properties)
-// Temporarily disabled due to configuration issues
-/*
-buildCache {
-    local {
-        isEnabled = true
-        // Periodically clean old cache entries to keep disk usage in check
-        removeUnusedEntriesAfterDays = 7
-    }
-    // To enable remote build cache, define these in gradle.properties or via -P
-    // remoteBuildCacheUrl=https://your-cache-server/cache/
-    // remoteBuildCachePush=true
-    val remoteUrl = providers.gradleProperty("remoteBuildCacheUrl").orNull
-    if (!remoteUrl.isNullOrBlank()) {
-        remote(HttpBuildCache::class) {
-            url = uri(remoteUrl)
-            isPush = providers.gradleProperty("remoteBuildCachePush").map { it.toBoolean() }.getOrElse(false)
-            isEnabled = true
-            credentials {
-                username = providers.environmentVariable("GRADLE_CACHE_USER").orNull
-                password = providers.environmentVariable("GRADLE_CACHE_PASS").orNull
-            }
-        }
-    }
-}
-*/

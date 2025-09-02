@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     fun getUsersPaged(query: String = ""): Flow<PagingData<User>>
+
     fun getUserDetail(username: String): Flow<Result<UserDetail?>>
 }
-

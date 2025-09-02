@@ -12,13 +12,13 @@ interface StateDelegate<S : ViewState> {
      * Current state as a StateFlow for observation
      */
     val state: StateFlow<S>
-    
+
     /**
      * Update the state using a reducer function.
      * The reducer receives the current state and returns the new state.
      */
     fun updateState(reducer: S.() -> S)
-    
+
     /**
      * Get the current state value synchronously
      */

@@ -11,10 +11,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * Ensures effects are delivered exactly once and not lost during configuration changes.
  */
 class ChannelEffectDelegate<E : ViewEffect> : EffectDelegate<E> {
-    
     private val _effects = Channel<E>(Channel.UNLIMITED)
     override val effects: Flow<E> = _effects.receiveAsFlow()
-    
+
     override suspend fun sendEffect(effect: E) {
         _effects.send(effect)
     }

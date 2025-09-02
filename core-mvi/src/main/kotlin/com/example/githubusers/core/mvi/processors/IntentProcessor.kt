@@ -10,10 +10,9 @@ import com.example.githubusers.core.mvi.navigation.NavigationDestination
  * Allows composition of intent handling logic.
  */
 interface IntentProcessor<I : ViewIntent, S : ViewState, E : ViewEffect> {
-    
     /**
      * Process the given intent.
-     * 
+     *
      * @param intent The intent to process
      * @param currentState Current state
      * @param updateState Function to update state
@@ -26,6 +25,6 @@ interface IntentProcessor<I : ViewIntent, S : ViewState, E : ViewEffect> {
         currentState: S,
         updateState: (S.() -> S) -> Unit,
         sendEffect: suspend (E) -> Unit,
-        navigate: suspend (NavigationDestination) -> Unit
+        navigate: suspend (NavigationDestination) -> Unit,
     ): Boolean
 }

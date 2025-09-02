@@ -11,7 +11,7 @@ data class User(
     val login: String,
     val avatarUrl: String,
     val htmlUrl: String,
-    val type: String
+    val type: String,
 )
 
 /**
@@ -35,7 +35,7 @@ data class UserDetail(
     val following: Int,
     val createdAt: String,
     val updatedAt: String,
-    val cachedAt: Long? = null
+    val cachedAt: Long? = null,
 )
 
 /**
@@ -53,5 +53,5 @@ data class Repo(
     val forksCount: Int,
     val language: String?,
     val htmlUrl: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

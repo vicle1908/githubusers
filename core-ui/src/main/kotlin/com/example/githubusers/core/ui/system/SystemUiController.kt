@@ -18,43 +18,44 @@ import androidx.core.view.WindowInsetsControllerCompat
  * Handles status bar and navigation bar appearance.
  */
 @Composable
+@Suppress("FunctionNaming")
 fun SystemUiController(
     statusBarColor: Color = Color.Transparent,
     navigationBarColor: Color = Color.Transparent,
     darkIcons: Boolean = false,
     darkNavigationIcons: Boolean = false,
-    isNavigationBarContrastEnforced: Boolean = true
+    isNavigationBarContrastEnforced: Boolean = true,
 ) {
     val view = LocalView.current
-    
+
     DisposableEffect(
         statusBarColor,
         navigationBarColor,
         darkIcons,
         darkNavigationIcons,
-        isNavigationBarContrastEnforced
+        isNavigationBarContrastEnforced,
     ) {
         val window = (view.context as? Activity)?.window ?: return@DisposableEffect onDispose {}
-        
+
         val previousStatusBarColor = window.statusBarColor
         val previousNavigationBarColor = window.navigationBarColor
         val insetsController = WindowCompat.getInsetsController(window, view)
         val previousStatusBarDarkIcons = insetsController.isAppearanceLightStatusBars
         val previousNavigationBarDarkIcons = insetsController.isAppearanceLightNavigationBars
-        
+
         // Set colors
         window.statusBarColor = statusBarColor.toArgb()
         window.navigationBarColor = navigationBarColor.toArgb()
-        
+
         // Set icon colors
         insetsController.isAppearanceLightStatusBars = darkIcons
         insetsController.isAppearanceLightNavigationBars = darkNavigationIcons
-        
+
         // Set navigation bar contrast (API 29+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = isNavigationBarContrastEnforced
         }
-        
+
         onDispose {
             // Restore previous values
             window.statusBarColor = previousStatusBarColor
@@ -69,20 +70,21 @@ fun SystemUiController(
  * Hide system bars (status bar and navigation bar)
  */
 @Composable
+@Suppress("FunctionNaming")
 fun HideSystemBars() {
     val view = LocalView.current
-    
+
     DisposableEffect(Unit) {
         val window = (view.context as? Activity)?.window ?: return@DisposableEffect onDispose {}
         val insetsController = WindowCompat.getInsetsController(window, view)
-        
+
         // Configure the behavior of hidden system bars
-        insetsController.systemBarsBehavior = 
+        insetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        
+
         // Hide system bars
         insetsController.hide(WindowInsetsCompat.Type.systemBars())
-        
+
         onDispose {
             // Show system bars when leaving
             insetsController.show(WindowInsetsCompat.Type.systemBars())
@@ -94,23 +96,24 @@ fun HideSystemBars() {
  * Make the app edge-to-edge (draw behind system bars)
  */
 @Composable
+@Suppress("FunctionNaming")
 fun EdgeToEdgeSystemUi() {
     val view = LocalView.current
-    
+
     DisposableEffect(Unit) {
         val window = (view.context as? Activity)?.window ?: return@DisposableEffect onDispose {}
-        
+
         // Enable edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         // Make system bars transparent
         window.statusBarColor = Color.Transparent.toArgb()
         window.navigationBarColor = Color.Transparent.toArgb()
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
         }
-        
+
         onDispose {
             // Note: We don't restore this as it's typically a one-time setup
         }
@@ -124,12 +127,12 @@ fun EdgeToEdgeSystemUi() {
 fun Window.setSystemUiVisibility(
     fullscreen: Boolean = false,
     hideNavigation: Boolean = false,
-    immersive: Boolean = false
+    immersive: Boolean = false,
 ) {
     decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-            (if (fullscreen) View.SYSTEM_UI_FLAG_FULLSCREEN else 0) or
-            (if (hideNavigation) View.SYSTEM_UI_FLAG_HIDE_NAVIGATION else 0) or
-            (if (immersive) View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY else 0)
+        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+        (if (fullscreen) View.SYSTEM_UI_FLAG_FULLSCREEN else 0) or
+        (if (hideNavigation) View.SYSTEM_UI_FLAG_HIDE_NAVIGATION else 0) or
+        (if (immersive) View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY else 0)
 }

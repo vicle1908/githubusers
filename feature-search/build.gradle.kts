@@ -4,11 +4,16 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.detekt)
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
+    id("githubusers.quality.ktlint")
+    id("githubusers.common.version")
+    id("githubusers.base.module")
     id("githubusers.android.library")
     id("githubusers.android.library.compose")
     id("githubusers.android.hilt")
-    id("githubusers.android.variants")
+    id("githubusers.android.room")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
 }
@@ -33,16 +38,12 @@ dependencies {
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
+    implementation(libs.bundles.compose)
     implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Paging
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+    implementation(libs.bundles.paging)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
@@ -53,11 +54,8 @@ dependencies {
 
     // Ktor
     implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.logging)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.bundles.ktor)
 
     // DataStore
     implementation(libs.androidx.datastore.preferences)

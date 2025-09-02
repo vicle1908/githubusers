@@ -17,8 +17,11 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): GitHubUsersDatabase =
-        Room.databaseBuilder(context, GitHubUsersDatabase::class.java, GitHubUsersDatabase.DATABASE_NAME)
+    fun provideDatabase(
+        @ApplicationContext context: Context,
+    ): GitHubUsersDatabase =
+        Room
+            .databaseBuilder(context, GitHubUsersDatabase::class.java, GitHubUsersDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
 
@@ -30,4 +33,3 @@ object DatabaseModule {
     @Singleton
     fun provideUserDetailDao(db: GitHubUsersDatabase): UserDetailDao = db.userDetailDao()
 }
-

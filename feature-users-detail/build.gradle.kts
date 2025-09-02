@@ -6,12 +6,14 @@ plugins {
     id("githubusers.android.library.compose")
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.detekt)
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
+    id("githubusers.quality.ktlint")
     id("githubusers.android.hilt")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
     alias(libs.plugins.kotlin.serialization)
-    id("githubusers.android.variants")
     alias(libs.plugins.room.gradle.plugin)
     id("githubusers.android.room")
 }
@@ -22,7 +24,7 @@ dependencies {
     ksp(libs.local.navigation.ksp)
     // Platform for version alignment
     implementation(platform(libs.internal.platform))
-    
+
     // Core modules
     implementation(libs.local.core.domain)
     implementation(libs.local.navigation.api)
@@ -30,21 +32,15 @@ dependencies {
 
     // UI Dependencies
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
+    implementation(libs.bundles.compose)
     implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Paging
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+    implementation(libs.bundles.paging)
 
     // Image loading
     implementation(platform(libs.coil.bom))
@@ -65,12 +61,8 @@ dependencies {
 
     // Networking (for data layer)
     implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.client.auth)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.bundles.ktor)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)

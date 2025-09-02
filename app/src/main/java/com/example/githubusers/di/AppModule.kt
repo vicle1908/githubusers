@@ -2,6 +2,7 @@ package com.example.githubusers.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.githubusers.core.data.api.GitHubApiService
 import com.example.githubusers.data.local.RemoteKeyDao
 import com.example.githubusers.data.local.UserDao
 import com.example.githubusers.data.local.UserDatabase
@@ -81,6 +82,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideUserApiService(client: HttpClient): UserApiService = UserApiService(client)
+
+    @Provides
+    @Singleton
+    fun provideGitHubApiService(client: HttpClient): GitHubApiService = GitHubApiService(client)
 
     @Provides
     @Singleton

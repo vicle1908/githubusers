@@ -8,6 +8,45 @@ alwaysApply: true
 
 This rule enforces the proper use of Model Context Protocol (MCP) servers for different development tasks. It ensures consistent, efficient, and secure usage of MCP servers for codebase operations, build management, Android development, and external service integration.
 
+## 🚨 **MANDATORY RESEARCH ENFORCEMENT**
+
+### **RULE: ALWAYS Research Before Implementation**
+
+**BEFORE making any code changes, architectural decisions, or implementation choices:**
+
+1. **MANDATORY**: Use Context7, DocFork, and DeepWiki to search for latest documentation and code snippets
+2. **MANDATORY**: Research best practices and current patterns for the specific technology/library
+3. **MANDATORY**: Feed research results to Zen MCP for evaluation and consensus
+4. **MANDATORY**: Use Zen Planner to create comprehensive action plans
+5. **ONLY THEN**: Proceed with implementation
+
+**This rule applies to:**
+
+- New feature development
+- Library updates and migrations
+- Architecture refactoring
+- Plugin development
+- Configuration changes
+- Any technical decision requiring current knowledge
+
+**Research Tools Priority Order:**
+
+1. **Context7**: Official library documentation and API information
+2. **DocFork**: Latest library documentation and code examples
+3. **DeepWiki**: GitHub repository documentation and best practices
+4. **Exa**: Semantic search for complex technical queries
+5. **Tavily**: Web search for current trends and information
+
+**Failure to follow this rule will result in:**
+
+- Outdated implementation patterns
+- Technical debt accumulation
+- Inconsistent code quality
+- Missed best practices
+- Potential security vulnerabilities
+
+---
+
 ## 🚀 **Current MCP Server Status Summary**
 
 ### ✅ **FULLY OPERATIONAL** (10/10)
@@ -26,6 +65,14 @@ This rule enforces the proper use of Model Context Protocol (MCP) servers for di
 ### 📊 **Total MCP Servers**: 10/10 **FULLY OPERATIONAL**
 
 ## MCP Server Usage Enforcement
+
+### 🧠 **KNOWLEDGE MANAGEMENT INTEGRATION**
+
+**MANDATORY**: Before using any MCP server, integrate knowledge from both systems:
+
+1. **ByteOver**: Retrieve relevant programming patterns and techniques
+2. **OpenMemory**: Search for project-specific context and decisions
+3. **Combined Context**: Use both knowledge sources for optimal MCP server usage
 
 ### 📋 **Consolidated Usage Rules Table**
 
@@ -197,6 +244,15 @@ mobile_use_default_device
 - **GitHub Documentation**: Use `mcp_deepwiki_ask_question` for repository docs and best practices
 - **Web Search**: Use `mcp_tavily_tavily_search` and `mcp_brave-search_brave_web_search` for current information
 - **Content Extraction**: Use `mcp_tavily_tavily_extract` for web page content
+
+#### **🚀 ENHANCED RESEARCH STRATEGY**
+
+For comprehensive research workflows, see `.cursor/rules/enhanced-research-strategy.mdc` which includes:
+
+- **Advanced Search**: Exa neural/semantic search and deep research capabilities
+- **Multi-AI Consensus**: Zen MCP orchestration for expert validation
+- **Sequential Analysis**: Step-by-step problem decomposition and planning
+- **Research Automation**: Intelligent workflow orchestration across all MCP servers
 
 **Status**: See [Current MCP Server Status Summary](#-current-mcp-server-status-summary) above for operational details.
 
@@ -495,5 +551,8 @@ This MCP guide ensures consistent, efficient, and secure usage of MCP servers ac
 - **Maintain Security**: Follow proper access control practices
 - **Ensure Consistency**: Standardize server usage patterns
 - **Optimize Performance**: Use servers effectively and efficiently
+
+**Remember**: Always use the appropriate MCP server for each task type, and never fall back to manual operations unless absolutely necessary. All 10 MCP servers are now fully operational and ready for production use.
+
 
 **Remember**: Always use the appropriate MCP server for each task type, and never fall back to manual operations unless absolutely necessary. All 10 MCP servers are now fully operational and ready for production use.

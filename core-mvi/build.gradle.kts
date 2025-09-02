@@ -6,13 +6,16 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.detekt)
     id("githubusers.android.library")
     id("githubusers.android.library.compose")
     id("githubusers.android.hilt")
     id("githubusers.common.version")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
+    id("githubusers.quality.ktlint")
 }
 
 dependencies {

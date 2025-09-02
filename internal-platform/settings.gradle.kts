@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from("com.example.githubusers:catalog:1.0.0")
+            from(files("../catalog/gradle/libs.versions.toml"))
         }
     }
 }

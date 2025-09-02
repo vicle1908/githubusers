@@ -11,40 +11,35 @@ import kotlinx.coroutines.flow.asSharedFlow
  * Useful for verifying effects in tests.
  */
 class TestEffectDelegate<E : ViewEffect> : EffectDelegate<E> {
-    
     private val _effects = MutableSharedFlow<E>(replay = 100)
     override val effects: Flow<E> = _effects.asSharedFlow()
-    
-    @PublishedApi
-    internal val _effectHistory = mutableListOf<E>()
-    val effectHistory: List<E> get() = _effectHistory.toList()
-    
+
+    val effectHistory = mutableListOf<E>()
+
     override suspend fun sendEffect(effect: E) {
-        _effectHistory.add(effect)
+        effectHistory.add(effect)
         _effects.emit(effect)
     }
-    
+
     /**
      * Get the last emitted effect
      */
-    val lastEffect: E? get() = _effectHistory.lastOrNull()
-    
+    val lastEffect: E? get() = effectHistory.lastOrNull()
+
     /**
      * Check if a specific effect was emitted
      */
-    fun hasEffect(effect: E): Boolean = effect in _effectHistory
-    
+    fun hasEffect(effect: E): Boolean = effect in effectHistory
+
     /**
      * Clear effect history
      */
     fun clearHistory() {
-        _effectHistory.clear()
+        effectHistory.clear()
     }
-    
+
     /**
      * Get effects of a specific type
      */
-    inline fun <reified T : E> getEffectsOfType(): List<T> {
-        return _effectHistory.filterIsInstance<T>()
-    }
+    inline fun <reified T : E> getEffectsOfType(): List<T> = effectHistory.filterIsInstance<T>()
 }

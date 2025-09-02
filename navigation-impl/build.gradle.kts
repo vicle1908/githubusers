@@ -5,7 +5,10 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.detekt)
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
+    id("githubusers.quality.ktlint")
     id("githubusers.android.library")
     id("githubusers.android.library.compose")
     id("githubusers.android.hilt")
@@ -17,7 +20,7 @@ plugins {
 dependencies {
     // Import internal platform BOM for version management
     // Platform version comes from catalog: internal-platform-module = "1.0.0"
-    api(platform(libs.internal.platform))
+    implementation(platform(libs.internal.platform))
 
     // Navigation API - version managed by internal platform BOM
     // No version needed - comes from platform constraints

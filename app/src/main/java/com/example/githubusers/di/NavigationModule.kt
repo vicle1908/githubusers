@@ -19,10 +19,7 @@ import javax.inject.Singleton
 object NavigationModule {
     @Provides
     @Singleton
-    fun provideModuleNavigator(
-        navigation3Controller: Navigation3Controller,
-    ): ModuleNavigator =
-        ModuleNavigator(navigation3Controller)
+    fun provideModuleNavigator(navigation3Controller: Navigation3Controller): ModuleNavigator = ModuleNavigator(navigation3Controller)
 
     // Contribute Settings deep link handler to the Navigation API set
     @Provides

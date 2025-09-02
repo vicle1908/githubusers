@@ -1,16 +1,13 @@
-package com.example.githubusers.presentation.ui
+package com.example.githubusers.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +20,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,11 +32,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.githubusers.presentation.ui.screens.UserDetailScreen
-import com.example.githubusers.presentation.ui.screens.UserListScreen
-import com.example.githubusers.presentation.ui.theme.GithubUsersTheme
-import com.example.githubusers.presentation.viewmodel.UserDetailViewModel
-import com.example.githubusers.presentation.viewmodel.UserListViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.githubusers.feature.users.detail.presentation.ui.UserDetailScreen
+import com.example.githubusers.feature.users.detail.presentation.viewmodel.UserDetailViewModel
+import com.example.githubusers.feature.users.list.presentation.ui.UserListScreen
+import com.example.githubusers.feature.users.list.presentation.viewmodel.UserListViewModel
+import com.example.githubusers.presentation.theme.GithubUsersTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,8 +50,9 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 MainNavGraph(
                     navController = navController,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier =
+                        Modifier
+                            .fillMaxSize(),
                 )
             }
         }
@@ -62,7 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.route
@@ -88,24 +89,29 @@ fun MainNavGraph(
                     }
                 },
                 scrollBehavior = scrollBehavior,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { padding ->
         NavHost(
             navController = navController,
             startDestination = "userList",
-            modifier = Modifier.fillMaxSize().padding(padding)
+            modifier = Modifier.fillMaxSize().padding(padding),
         ) {
             composable("userList") {
                 val viewModel: UserListViewModel = hiltViewModel()
-                UserListScreen(
-                    onUserClick = { user ->
+                val state by viewModel.state.collectAsState()
+
+                // Navigate when a user is selected
+                LaunchedEffect(state.selectedUser) {
+                    state.selectedUser?.let { user ->
                         navController.navigate("userDetail/${user.login}")
-                    },
+                    }
+                }
+
+                UserListScreen(
                     viewModel = viewModel,
-                    scrollBehavior = scrollBehavior
                 )
             }
             composable("userDetail/{username}") { backStackEntry ->
@@ -115,7 +121,19 @@ fun MainNavGraph(
                     navController.navigateUp()
                     return@composable
                 }
-                UserDetailScreen(username = username, viewModel = viewModel)
+                val uiState by viewModel.uiState.collectAsState()
+                val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
+
+                UserDetailScreen(
+                    uiState = uiState,
+                    repositoriesFlow = repositoriesFlow,
+                    onIntent = { intent ->
+                        viewModel.onIntent(intent)
+                    },
+                    onBackClick = {
+                        navController.navigateUp()
+                    },
+                )
             }
         }
     }

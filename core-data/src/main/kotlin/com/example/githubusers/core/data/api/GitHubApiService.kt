@@ -1,9 +1,9 @@
 package com.example.githubusers.core.data.api
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import kotlinx.serialization.Serializable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,72 +13,91 @@ import javax.inject.Singleton
  * No Retrofit needed - everything is done with Ktor and Kotlin.
  */
 @Singleton
-class GitHubApiService @Inject constructor(
-    private val client: HttpClient
-) {
-    companion object {
-        private const val BASE_URL = "https://api.github.com"
+class GitHubApiService
+    @Inject
+    constructor(
+        private val client: HttpClient,
+    ) {
+        companion object {
+            private const val BASE_URL = "https://api.github.com"
+        }
+
+        /**
+         * Get list of GitHub users
+         */
+        suspend fun getUsers(
+            since: Int = 0,
+            perPage: Int = 30,
+        ): List<GitHubUser> =
+            client
+                .get("$BASE_URL/users") {
+                    parameter("since", since)
+                    parameter("per_page", perPage)
+                }.body()
+
+        /**
+         * Get user details by username
+         */
+        suspend fun getUserDetails(username: String): GitHubUserDetail = client.get("$BASE_URL/users/$username").body()
+
+        /**
+         * Search users by query
+         */
+        suspend fun searchUsers(
+            query: String,
+            page: Int = 1,
+            perPage: Int = 30,
+        ): SearchResult =
+            client
+                .get("$BASE_URL/search/users") {
+                    parameter("q", query)
+                    parameter("page", page)
+                    parameter("per_page", perPage)
+                }.body()
+
+        /**
+         * Get user's repositories
+         */
+        suspend fun getUserRepos(
+            username: String,
+            page: Int = 1,
+            perPage: Int = 30,
+        ): List<Repository> =
+            client
+                .get("$BASE_URL/users/$username/repos") {
+                    parameter("page", page)
+                    parameter("per_page", perPage)
+                    parameter("sort", "updated")
+                }.body()
+
+        /**
+         * Get user's followers
+         */
+        suspend fun getUserFollowers(
+            username: String,
+            page: Int = 1,
+            perPage: Int = 30,
+        ): List<GitHubUser> =
+            client
+                .get("$BASE_URL/users/$username/followers") {
+                    parameter("page", page)
+                    parameter("per_page", perPage)
+                }.body()
+
+        /**
+         * Get user's following
+         */
+        suspend fun getUserFollowing(
+            username: String,
+            page: Int = 1,
+            perPage: Int = 30,
+        ): List<GitHubUser> =
+            client
+                .get("$BASE_URL/users/$username/following") {
+                    parameter("page", page)
+                    parameter("per_page", perPage)
+                }.body()
     }
-    
-    /**
-     * Get list of GitHub users
-     */
-    suspend fun getUsers(since: Int = 0, perPage: Int = 30): List<GitHubUser> {
-        return client.get("$BASE_URL/users") {
-            parameter("since", since)
-            parameter("per_page", perPage)
-        }.body()
-    }
-    
-    /**
-     * Get user details by username
-     */
-    suspend fun getUserDetails(username: String): GitHubUserDetail {
-        return client.get("$BASE_URL/users/$username").body()
-    }
-    
-    /**
-     * Search users by query
-     */
-    suspend fun searchUsers(query: String, page: Int = 1, perPage: Int = 30): SearchResult {
-        return client.get("$BASE_URL/search/users") {
-            parameter("q", query)
-            parameter("page", page)
-            parameter("per_page", perPage)
-        }.body()
-    }
-    
-    /**
-     * Get user's repositories
-     */
-    suspend fun getUserRepos(username: String, page: Int = 1, perPage: Int = 30): List<Repository> {
-        return client.get("$BASE_URL/users/$username/repos") {
-            parameter("page", page)
-            parameter("per_page", perPage)
-            parameter("sort", "updated")
-        }.body()
-    }
-    
-    /**
-     * Get user's followers
-     */
-    suspend fun getUserFollowers(username: String, page: Int = 1, perPage: Int = 30): List<GitHubUser> {
-        return client.get("$BASE_URL/users/$username/followers") {
-            parameter("page", page)
-            parameter("per_page", perPage)
-        }.body()
-    }
-    
-    /**
-     * Get user's following
-     */
-    suspend fun getUserFollowing(username: String, page: Int = 1, perPage: Int = 30): List<GitHubUser> {
-        return client.get("$BASE_URL/users/$username/following") {
-            parameter("page", page)
-            parameter("per_page", perPage)
-        }.body()
-    }
-}
 
 // Data models using Kotlin Serialization
 @Serializable
@@ -87,7 +106,7 @@ data class GitHubUser(
     val login: String,
     val avatar_url: String,
     val html_url: String,
-    val type: String
+    val type: String,
 )
 
 @Serializable
@@ -107,14 +126,14 @@ data class GitHubUserDetail(
     val followers: Int = 0,
     val following: Int = 0,
     val created_at: String,
-    val updated_at: String
+    val updated_at: String,
 )
 
 @Serializable
 data class SearchResult(
     val total_count: Int,
     val incomplete_results: Boolean,
-    val items: List<GitHubUser>
+    val items: List<GitHubUser>,
 )
 
 @Serializable
@@ -137,5 +156,5 @@ data class Repository(
     val language: String? = null,
     val forks_count: Int,
     val open_issues_count: Int,
-    val default_branch: String
+    val default_branch: String,
 )

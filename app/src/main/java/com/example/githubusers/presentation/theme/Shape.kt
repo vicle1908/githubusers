@@ -1,4 +1,4 @@
-package com.example.githubusers.presentation.ui.theme
+package com.example.githubusers.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes

@@ -3,7 +3,34 @@
 ## Overview
 This project uses Cursor with custom rules to enforce Android development best practices, MCP server usage, and multi-AI consultation for critical decisions.
 
-## Current Rules Structure (3 Core Files)
+## Current Rules Structure (5 Core Files)
+
+### 1. **android.mdc** - Android Development Standards
+- Clean Architecture with MVI pattern
+- Navigation 3 with deep link support
+- Material 3 design guidelines
+- Kotlin best practices and testing strategies
+- **Status**: ✅ **ACTIVE** - Core Android development guidelines
+
+### 2. **multi-ai-consultation.mdc** - AI Consultation Framework
+- Multi-AI analysis for critical decisions
+- Architecture reviews and complex problem-solving
+- **Status**: ✅ **ACTIVE** - AI consultation framework
+
+### 3. **mcp-guide.mdc** - MCP Server Usage & Enforcement
+- MCP server configuration and usage guidelines
+- Tool accessibility and best practices
+- **Status**: ✅ **ACTIVE** - MCP server management
+
+### 4. **byterover-rules.mdc** - Knowledge Management Integration
+- ByteOver + OpenMemory integration for maximum knowledge retention
+- Programming patterns and project context storage
+- **Status**: ✅ **ACTIVE** - Knowledge management system
+
+### 5. **enhanced-research-strategy.mdc** - Advanced Research Workflows
+- Multi-MCP server research orchestration
+- Semantic search and AI consensus building
+- **Status**: ✅ **ACTIVE** - Research optimization
 
 ### 1. **android.mdc** - Android Development Standards
 - Clean Architecture with MVI pattern
@@ -56,6 +83,11 @@ This project uses Cursor with custom rules to enforce Android development best p
 - **Documentation**: DeepWiki, Context7, DocFork for latest practices
 - **Web Search**: Tavily and Brave Search for current information
 
+### **Knowledge Management Integration**
+- **ByteOver**: Programming patterns, implementations, and techniques
+- **OpenMemory**: Project context, user preferences, and decisions
+- **Combined Context**: Maximum knowledge retention and project success
+
 ### **Multi-AI Consultation**
 - Automatic triggers for architecture decisions
 - Performance optimization analysis
@@ -68,8 +100,9 @@ This project uses Cursor with custom rules to enforce Android development best p
 1. **Always use MCP servers** for their designated tasks
 2. **Follow Android development standards** from `android.mdc`
 3. **Request multi-AI consultation** for critical decisions
-4. **Store important knowledge** in OpenMemory
-5. **Use external services** for latest documentation and practices
+4. **Integrate knowledge management** using ByteOver + OpenMemory
+5. **Store important knowledge** in both systems appropriately
+6. **Use external services** for latest documentation and practices
 
 ### **For Code Review**
 1. **Check rule compliance** using the defined standards
@@ -97,7 +130,9 @@ This project uses Cursor with custom rules to enforce Android development best p
 ├── README.md                    # This file - Overview and status
 ├── android.mdc                  # Android development standards
 ├── multi-ai-consultation.mdc   # Multi-AI consultation framework
-└── mcp-guide.mdc               # MCP server usage and enforcement
+├── mcp-guide.mdc               # MCP server usage and enforcement
+├── byterover-rules.mdc         # Knowledge management integration
+└── enhanced-research-strategy.mdc # Advanced research workflows
 ```
 
 ## Support

@@ -12,35 +12,52 @@ plugins {
     id("githubusers.android.hilt")
     id("githubusers.android.room")
     alias(libs.plugins.version.update)
-    alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.test.convention")
     id("githubusers.quality.ktlint")
 }
 
 // Configure application-specific settings via convention plugin extensions
-extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>("appConfig") {
-    applicationId = libs.versions.application.id.get()
-    versionCode = libs.versions.app.version.code.get().toInt()
-    versionName = libs.versions.app.version.name.get()
+extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>(
+    "appConfig",
+) {
+    applicationId =
+        libs.versions.application.id
+            .get()
+    versionCode =
+        libs.versions.app.version.code
+            .get()
+            .toInt()
+    versionName =
+        libs.versions.app.version.name
+            .get()
     testInstrumentationRunner = "com.example.githubusers.HiltTestRunner"
     enableNav3Persistence = true
     enableNav3PersistenceWrite = true
-    missingDimensionStrategy = mapOf("environment" to "prod")
 }
 
 // Configure NDK settings via convention plugin extensions
-extensions.configure<com.example.githubusers.plugins.NdkExtension>("ndkConfig") {
+extensions.configure<com.example.githubusers.plugins.NdkExtension>(
+    "ndkConfig",
+) {
     ndkVersion = libs.versions.ndk.get()
-    cmakeVersion = libs.versions.cmake.get()
+    cmakeVersion = libs.versions.ndk.get()
     cmakePath = "src/main/cpp/CMakeLists.txt"
 }
 
 // Temporary android block for namespace until convention plugin is fully working
 android {
-    namespace = libs.versions.application.id.get()
+    namespace =
+        libs.versions.application.id
+            .get()
 }
 
 dependencies {
+    // Core modules
+    implementation(libs.local.core.data)
+    implementation(libs.local.core.domain)
+
     // Feature modules
     implementation(libs.local.feature.users.list)
     implementation(libs.local.feature.users.detail)
@@ -62,10 +79,8 @@ dependencies {
 
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
+    implementation(libs.bundles.compose)
     implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.extended)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
@@ -77,12 +92,8 @@ dependencies {
 
     // Networking
     implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.client.auth)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.serialization.kotlinx)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.bundles.ktor)
     implementation(libs.ktor.client.resources)
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.mock)
@@ -92,8 +103,7 @@ dependencies {
     implementation(libs.coil.compose)
 
     // Paging
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.compose)
+    implementation(libs.bundles.paging)
 
     // Room Paging support
     implementation(libs.androidx.room.paging)

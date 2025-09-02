@@ -1,4 +1,3 @@
 package com.example.githubusers.data.local
 
-class SecureTokenManager {
-}
+class SecureTokenManager

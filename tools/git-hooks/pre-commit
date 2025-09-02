@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Pre-commit hook to run ktlintFormat and detekt on staged changes
+# Install: ln -sf ../../tools/git-hooks/pre-commit .git/hooks/pre-commit
+
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+# Collect staged Kotlin files
+changed_kotlin=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(kt|kts)$' || true)
+
+if [[ -n "$changed_kotlin" ]]; then
+  echo "Running ktlintFormat on staged Kotlin files..."
+  # Best-effort fast path: attempt to format in the module of the first file
+  # Fallback: run ktlintFormat on top-level affected included builds if needed
+  # This path assumes ktlint plugin is applied via conventions
+  ./gradlew --quiet -p plugins :ktlintFormat || true
+fi
+
+# Always run detekt at module or repo-level as fallback (non-blocking formatting already done)
+# If your environment has legacy gradle.properties that break AGP config, fix those first.
+./gradlew detekt || {
+  echo "Detekt failed. You may have legacy gradle.properties (e.g., android.enableBuildCache) blocking configuration. Fix and try again." >&2
+  exit 1
+}
+
+# Re-add any formatted files to the index
+if [[ -n "$changed_kotlin" ]]; then
+  echo "$changed_kotlin" | xargs -r git add
+fi
+
+exit 0
+

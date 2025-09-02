@@ -11,21 +11,20 @@ import kotlinx.coroutines.flow.asStateFlow
  * Useful for verifying state transitions in tests.
  */
 class TestStateDelegate<S : ViewState>(
-    initialState: S
+    initialState: S,
 ) : StateDelegate<S> {
-    
     private val _state = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
-    
+
     private val _stateHistory = mutableListOf(initialState)
     val stateHistory: List<S> get() = _stateHistory.toList()
-    
+
     override fun updateState(reducer: S.() -> S) {
         val newState = _state.value.reducer()
         _state.value = newState
         _stateHistory.add(newState)
     }
-    
+
     /**
      * Reset the state history for clean test runs
      */
@@ -33,7 +32,7 @@ class TestStateDelegate<S : ViewState>(
         _stateHistory.clear()
         _stateHistory.add(_state.value)
     }
-    
+
     /**
      * Get the number of state updates
      */

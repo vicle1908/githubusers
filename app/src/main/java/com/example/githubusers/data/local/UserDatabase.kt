@@ -9,5 +9,6 @@ import com.example.githubusers.domain.entity.UserDetail
 @Database(entities = [User::class, UserDetail::class, RemoteKey::class], version = 1, exportSchema = false)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+
     abstract fun remoteKeyDao(): RemoteKeyDao
 }

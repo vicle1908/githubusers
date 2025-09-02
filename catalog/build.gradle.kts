@@ -1,4 +1,5 @@
 plugins {
+    java
     `version-catalog`
     `maven-publish`
 }

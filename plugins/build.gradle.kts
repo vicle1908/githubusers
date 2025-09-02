@@ -36,7 +36,7 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
 
     // Detekt Gradle plugin for typed access in convention plugins
-    compileOnly("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.8")
+    implementation(libs.detektGradlePlugin)
 
     // Bring ktlint-gradle onto the classpath via version catalog
     implementation(libs.ktlint.gradle)
@@ -99,10 +99,6 @@ gradlePlugin {
             id = "githubusers.android.library.publishing"
             implementationClass = "com.example.githubusers.plugins.AndroidLibraryPublishingConventionPlugin"
         }
-        register("androidVariants") {
-            id = "githubusers.android.variants"
-            implementationClass = "com.example.githubusers.plugins.AndroidVariantsConventionPlugin"
-        }
         register("qualityKtlint") {
             id = "githubusers.quality.ktlint"
             implementationClass = "com.example.githubusers.plugins.KtlintConventionPlugin"
@@ -110,6 +106,16 @@ gradlePlugin {
         register("qualityDetekt") {
             id = "githubusers.quality.detekt"
             implementationClass = "com.example.githubusers.plugins.DetektConventionPlugin"
+        }
+        register("testConvention") {
+            id = "githubusers.test.convention"
+            implementationClass = "com.example.githubusers.plugins.TestConventionPlugin"
+        }
+
+        // Build guard to enforce no local build logic blocks
+        register("buildGuard") {
+            id = "githubusers.build.guard"
+            implementationClass = "com.example.githubusers.plugins.BuildGuardConventionPlugin"
         }
         // ✅ NEW: Specialized convention plugins for auto-detection
         register("featureModule") {
@@ -127,6 +133,10 @@ gradlePlugin {
         register("commonVersion") {
             id = "githubusers.common.version"
             implementationClass = "com.example.githubusers.plugins.CommonVersionConventionPlugin"
+        }
+        register("platformModule") {
+            id = "githubusers.platform.module"
+            implementationClass = "com.example.githubusers.plugins.PlatformModuleConventionPlugin"
         }
     }
 }

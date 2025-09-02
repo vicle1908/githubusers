@@ -15,5 +15,5 @@ data class UserDetail(
     val location: String?,
     val followers: Int,
     val following: Int,
-    val blog: String?
+    val blog: String?,
 )

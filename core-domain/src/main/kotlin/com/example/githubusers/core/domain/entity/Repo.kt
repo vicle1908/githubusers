@@ -17,5 +17,5 @@ data class Repo(
     val forksCount: Int,
     val language: String?,
     val htmlUrl: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

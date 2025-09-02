@@ -11,22 +11,25 @@ interface NavigationDelegate {
      * Navigate to a specific destination
      */
     suspend fun navigate(destination: NavigationDestination)
-    
+
     /**
      * Navigate back in the navigation stack
      */
     suspend fun navigateBack()
-    
+
     /**
      * Navigate using a deep link URI
      */
     suspend fun navigateDeepLink(uri: String)
-    
+
     /**
      * Pop back stack to a specific destination
      */
-    suspend fun popBackStackTo(destination: NavigationDestination, inclusive: Boolean = false)
-    
+    suspend fun popBackStackTo(
+        destination: NavigationDestination,
+        inclusive: Boolean = false,
+    )
+
     /**
      * Clear the entire back stack and navigate to destination
      */

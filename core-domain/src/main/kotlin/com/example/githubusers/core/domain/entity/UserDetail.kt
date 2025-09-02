@@ -10,4 +10,3 @@ data class UserDetail(
     val following: Int,
     val blog: String?,
 )
-

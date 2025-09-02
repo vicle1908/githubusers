@@ -4,6 +4,9 @@ plugins {
     id("githubusers.common.version")
     alias(libs.plugins.kotlin.serialization)
     id("githubusers.android.publishing")
+    // Quality plugins: our conventions now apply the underlying plugins internally
+    id("githubusers.quality.detekt")
+    id("githubusers.quality.ktlint")
 }
 
 dependencies {

@@ -27,6 +27,14 @@ This rule enforces the proper use of Model Context Protocol (MCP) servers for di
 
 ## MCP Server Usage Enforcement
 
+### 🧠 **KNOWLEDGE MANAGEMENT INTEGRATION**
+
+**MANDATORY**: Before using any MCP server, integrate knowledge from both systems:
+
+1. **ByteOver**: Retrieve relevant programming patterns and techniques
+2. **OpenMemory**: Search for project-specific context and decisions
+3. **Combined Context**: Use both knowledge sources for optimal MCP server usage
+
 ### 📋 **Consolidated Usage Rules Table**
 
 | Task Type | MCP Server | Primary Tools | When to Use |
@@ -197,6 +205,15 @@ mobile_use_default_device
 - **GitHub Documentation**: Use `mcp_deepwiki_ask_question` for repository docs and best practices
 - **Web Search**: Use `mcp_tavily_tavily_search` and `mcp_brave-search_brave_web_search` for current information
 - **Content Extraction**: Use `mcp_tavily_tavily_extract` for web page content
+
+#### **🚀 ENHANCED RESEARCH STRATEGY**
+
+For comprehensive research workflows, see `.cursor/rules/enhanced-research-strategy.mdc` which includes:
+
+- **Advanced Search**: Exa neural/semantic search and deep research capabilities
+- **Multi-AI Consensus**: Zen MCP orchestration for expert validation
+- **Sequential Analysis**: Step-by-step problem decomposition and planning
+- **Research Automation**: Intelligent workflow orchestration across all MCP servers
 
 **Status**: See [Current MCP Server Status Summary](#-current-mcp-server-status-summary) above for operational details.
 
