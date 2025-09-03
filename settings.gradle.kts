@@ -100,6 +100,7 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:feature-users-list")).using(project(":"))
         }
     }
+
     includeBuild("feature-users-detail") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:feature-users-detail")).using(project(":"))

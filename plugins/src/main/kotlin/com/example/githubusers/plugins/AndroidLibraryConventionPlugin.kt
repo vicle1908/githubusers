@@ -76,6 +76,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                                 isIncludeAndroidResources = true
                             }
                         }
+
+                        // Configure publishing variant to avoid warnings
+                        publishing {
+                            singleVariant("release")
+                        }
                     }
 
                     disableUnnecessaryAndroidTests(target)

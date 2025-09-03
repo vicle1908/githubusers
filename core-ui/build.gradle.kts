@@ -37,8 +37,6 @@ dependencies {
     api(platform(libs.coil.bom))
     api(libs.coil.compose)
     implementation(libs.coil.network.ktor3)
-    // Add base coil dependency for ImageLoader
-    implementation("io.coil-kt.coil3:coil")
 
     // UI utilities
     api(libs.androidx.core.ktx)

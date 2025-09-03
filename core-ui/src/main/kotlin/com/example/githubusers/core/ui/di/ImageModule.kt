@@ -1,9 +1,7 @@
 package com.example.githubusers.core.ui.di
 
 import android.content.Context
-import coil.ImageLoader
-import coil.network.ktor3.Ktor3NetworkFetcher
-import com.example.githubusers.core.data.network.KtorClient
+import coil3.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,16 +12,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ImageModule {
-
     @Provides
     @Singleton
     fun provideImageLoader(
         @ApplicationContext context: Context,
-        ktorClient: KtorClient
     ): ImageLoader =
-        ImageLoader.Builder(context)
-            .components {
-                add(Ktor3NetworkFetcher.Factory(ktorClient.client))
-            }
+        ImageLoader
+            .Builder(context)
             .build()
 }

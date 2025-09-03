@@ -11,6 +11,9 @@ import com.example.githubusers.navigation.impl.NoOpNavigationTelemetry
 import com.example.githubusers.navigation.impl.PersistenceConfig
 import com.example.githubusers.navigation.impl.SharedPrefsBackStackStore
 import com.example.githubusers.navigation.impl.guard.ReadOnlyNavGate
+import com.example.githubusers.navigation.api.Navigation3Controller
+import com.example.githubusers.navigation.impl.Navigation3ControllerImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,52 +28,59 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object NavigationImplModule {
-    @Provides
-    @Singleton
-    fun providePersistenceConfig(): PersistenceConfig = PersistenceConfig()
+abstract class NavigationImplModule {
+    // Removed duplicate binding - Navigation3Controller is provided by AppNavigationRetainedModule
+    // @Binds
+    // @Singleton
+    // abstract fun bindNavigation3Controller(impl: Navigation3ControllerImpl): Navigation3Controller
 
-    @Provides
-    @Singleton
-    fun provideNavigationMetrics(): NavigationMetrics = NoOpNavigationMetrics
+    companion object {
+        @Provides
+        @Singleton
+        fun providePersistenceConfig(): PersistenceConfig = PersistenceConfig()
 
-    @Provides
-    @Singleton
-    fun provideNavigationTelemetry(): NavigationTelemetry = NoOpNavigationTelemetry
-    // To enable logging by default, switch to: LoggingNavigationTelemetry()
+        @Provides
+        @Singleton
+        fun provideNavigationMetrics(): NavigationMetrics = NoOpNavigationMetrics
 
-    @Provides
-    @Singleton
-    fun provideReadOnlyNavGate(): ReadOnlyNavGate = ReadOnlyNavGate(enabled = false)
+        @Provides
+        @Singleton
+        fun provideNavigationTelemetry(): NavigationTelemetry = NoOpNavigationTelemetry
+        // To enable logging by default, switch to: LoggingNavigationTelemetry()
 
-    // Qualified default BackStackStore to avoid collisions with app-level bindings.
-    @Provides
-    @Singleton
-    @DefaultNavBackStackStore
-    fun provideDefaultBackStackStore(
-        @ApplicationContext context: Context,
-    ): BackStackStore = SharedPrefsBackStackStore(context)
+        @Provides
+        @Singleton
+        fun provideReadOnlyNavGate(): ReadOnlyNavGate = ReadOnlyNavGate(enabled = false)
 
-    @Provides
-    @Singleton
-    fun provideDeepLinkOwnershipSource(): DeepLinkOwnershipSource =
-        try {
-            val loader =
-                java.util.ServiceLoader.load(
-                    com.example.githubusers.navigation.generated.DeepLinkOwnersProvider::class.java,
-                )
-            val aggregated = mutableMapOf<String, String>()
-            loader.forEach { provider -> aggregated.putAll(provider.owners()) }
-            if (aggregated.isEmpty()) {
-                NoOpDeepLinkOwnershipSource
-            } else {
-                object : DeepLinkOwnershipSource {
-                    override val owners: Map<String, String> = aggregated
+        // Qualified default BackStackStore to avoid collisions with app-level bindings.
+        @Provides
+        @Singleton
+        @DefaultNavBackStackStore
+        fun provideDefaultBackStackStore(
+            @ApplicationContext context: Context,
+        ): BackStackStore = SharedPrefsBackStackStore(context)
+
+        @Provides
+        @Singleton
+        fun provideDeepLinkOwnershipSource(): DeepLinkOwnershipSource =
+            try {
+                val loader =
+                    java.util.ServiceLoader.load(
+                        com.example.githubusers.navigation.generated.DeepLinkOwnersProvider::class.java,
+                    )
+                val aggregated = mutableMapOf<String, String>()
+                loader.forEach { provider -> aggregated.putAll(provider.owners()) }
+                if (aggregated.isEmpty()) {
+                    NoOpDeepLinkOwnershipSource
+                } else {
+                    object : DeepLinkOwnershipSource {
+                        override val owners: Map<String, String> = aggregated
+                    }
                 }
+            } catch (t: Throwable) {
+                NoOpDeepLinkOwnershipSource
             }
-        } catch (t: Throwable) {
-            NoOpDeepLinkOwnershipSource
-        }
+    }
 }
 
 @Qualifier

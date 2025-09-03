@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.local.core.ui)
 
     // Feature modules
+    implementation(libs.local.feature.users)
     implementation(libs.local.feature.users.list)
     implementation(libs.local.feature.users.detail)
     implementation(libs.local.feature.search)

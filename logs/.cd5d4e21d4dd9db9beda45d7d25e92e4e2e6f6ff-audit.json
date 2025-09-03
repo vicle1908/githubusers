@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/vinhlekhanh/Downloads/project/company/times/githubusers/logs/.cd5d4e21d4dd9db9beda45d7d25e92e4e2e6f6ff-audit.json",
+    "files": [
+        {
+            "date": 1756824827258,
+            "name": "/Users/vinhlekhanh/Downloads/project/company/times/githubusers/logs/error-2025-09-02.log",
+            "hash": "d3202da8d80724c3780c3f3467cf348bf1878ee6cfe24fb49d05f8992f818544"
+        },
+        {
+            "date": 1756892432548,
+            "name": "/Users/vinhlekhanh/Downloads/project/company/times/githubusers/logs/error-2025-09-03.log",
+            "hash": "a1f7b7c311fc09b9ea27b10d00ef0fcdbce86309142cea9ca10f4c7ca39eeef3"
+        }
+    ],
+    "hashType": "sha256"
+}

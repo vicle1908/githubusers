@@ -285,11 +285,25 @@ class Navigation3ControllerImpl
         }
 
         private fun extractArguments(deepLink: String): Map<String, Any> {
-            // Simple argument extraction from deep link query parameters
+            // Extract arguments from deep link query parameters and path parameters
             val uri = android.net.Uri.parse(deepLink)
-            return uri.queryParameterNames.associateWith { name ->
-                uri.getQueryParameter(name) ?: ""
+            val arguments = mutableMapOf<String, Any>()
+            
+            // Add query parameters
+            uri.queryParameterNames.forEach { name ->
+                arguments[name] = uri.getQueryParameter(name) ?: ""
             }
+            
+            // Add path parameters for specific routes
+            if (uri.scheme == "githubusers" && uri.host == "user" && uri.pathSegments.isNotEmpty()) {
+                // Extract username from path for UserDetail destination
+                val username = uri.pathSegments.firstOrNull()?.let { android.net.Uri.decode(it) }
+                if (!username.isNullOrEmpty()) {
+                    arguments["username"] = username
+                }
+            }
+            
+            return arguments
         }
     }
 

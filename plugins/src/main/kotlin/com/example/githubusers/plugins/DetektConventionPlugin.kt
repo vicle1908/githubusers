@@ -75,13 +75,6 @@ class DetektConventionPlugin : Plugin<Project> {
 
             // Log configuration for debugging
             logger.info("Detekt configured for ${project.name} using centralized config from plugin resources")
-
-            // Configure test tasks to not fail on no discovered tests
-            // This is needed for modules that have test sources but no actual tests yet
-            // Only apply to regular test tasks, not Android test tasks
-            tasks.withType(org.gradle.api.tasks.testing.Test::class.java).configureEach {
-                setProperty("failOnNoDiscoveredTests", false)
-            }
         }
     }
 }

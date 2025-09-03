@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
  * Project-wide typed destinations for Navigation 3.
  * Keep this in navigation-api so features can reference types without app dependency.
  */
+@Serializable
 sealed interface AppDestination {
+
     @Serializable
     data object UserList : AppDestination
 

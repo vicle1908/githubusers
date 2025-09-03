@@ -51,8 +51,8 @@ navigationAnnotationsModule = "1.0.0"
 navigationKspModule = "1.0.0"
 coil3 = "3.3.0"
 androidx-core = "1.17.0"
-android-gradle-plugin = "8.12.2"
-android-tools-common = "31.12.2"
+android-gradle-plugin = "8.13.0"
+android-tools-common = "31.13.0"
 compose-compiler = "1.6.0"
 android-desugar-jdk-libs = "2.1.5"
 version-update = "0.52.0"
@@ -76,7 +76,6 @@ paging-compose = "3.3.6"
 
 #material3-adaptive = "1.1.0"
 androidx-hilt-navigation-compose = "1.2.0"
-navigation-compose = "2.9.3"
 timber = "5.0.1"
 leakcanary = "2.14"
 cmake = "3.22.1"
@@ -184,7 +183,6 @@ androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", vers
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
 #material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
