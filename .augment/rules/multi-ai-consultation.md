@@ -1,13 +1,22 @@
 ---
-type: "manual"
 ---
 
-# Multi-AI Consultation Rule for Augment
+# Multi-AI Consultation Rules
 
-## Overview
-This rule ensures comprehensive multi-AI analysis for critical development decisions, architectural reviews, complex problem-solving, and feedback gathering. When triggered, it systematically consults all available AI models to provide diverse perspectives and reduce bias.
+## Core Consultation Enforcement
+
+**MANDATORY**: Use multi-AI consultation for critical development decisions, architectural reviews, and complex problem-solving.
+
+## Integration with Research Workflow
+
+Multi-AI consultation integrates with the 10-step research workflow:
+
+1. **Steps 1-8**: Complete research using MCP servers (Claude Context, Context7/DocFork, DeepWiki, Grep-Remote, Exa, Tavily, Brave, Medium Search)
+2. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
+3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
 
 ## Trigger Conditions
+
 Automatically activate multi-AI consultation when:
 
 - **Architecture Reviews**: Evaluating system architecture, design patterns, or major refactoring
@@ -18,70 +27,65 @@ Automatically activate multi-AI consultation when:
 - **Performance Issues**: App startup, memory usage, battery consumption optimization
 - **Security Implementation**: Authentication, data protection, API security decisions
 
-## Available AI Models (Auto-Discovered)
-The system automatically detects and utilizes all configured AI models:
+## MCP Tool Integration
 
-- **Google Models**: Gemini variants (gemini-2.5-pro, gemini-pro, etc.)
-- **OpenAI Models**: GPT variants (gpt-5, o3, gpt5, etc.)
-- **xAI Models**: Grok variants (grok-4, grok-3, grok, etc.)
-- **Other Models**: Any additional configured models
+### Primary Consultation Tools
 
-## Consultation Process
+| Tool | Purpose | When to Use |
+|------|---------|-------------|
+| `mcp_zen_consensus` | Multi-model validation | After research completion |
+| `mcp_zen_thinkdeep` | Complex problem analysis | Multi-stage investigation |
+| `mcp_zen_planner` | Action plan creation | Implementation planning |
 
-### Phase 1: Model Discovery & Health Check
-1. **Auto-Discovery**: Scan all configured MCP servers for available models
-2. **Health Check**: Verify model connectivity and response capability
-3. **Fallback Strategy**: Ensure at least 2 models are available before proceeding
+### Integration with MCP Servers
 
-### Phase 2: Parallel Consultation
-1. **Query Distribution**: Send the same query to all available models simultaneously
-2. **Context Provision**: Include relevant code, architecture docs, and project context
-3. **Timeout Management**: 60-second timeout per model with automatic retry
+- **Before Consultation**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
+- **During Consultation**: Include context from `mcp_openmemory_search-memories`
+- **After Consultation**: Store insights in `mcp_byterover-mcp_byterover-store-knowledge`
 
-### Phase 3: Response Synthesis
-1. **Consensus Analysis**: Identify common recommendations and concerns
-2. **Divergence Highlighting**: Flag conflicting opinions for deeper analysis
-3. **Risk Assessment**: Aggregate risk evaluations across all models
-4. **Recommendation Prioritization**: Rank suggestions by consensus level
+## Consultation Process Rules
 
-## Response Format
+### Phase 1: Pre-Consultation Setup
 
-### Multi-AI Analysis Report Structure
-```text
-🎯 Multi-AI Analysis Report
-├── 📊 Model Access Status
-│   ├── ✅ Successfully Accessed Models
-│   └── ❌ Connection Issues
-├── 🎖️ Consensus Analysis
-│   ├── Architectural Soundness
-│   ├── Implementation Risks
-│   └── Critical Enhancements
-├── 💡 Key Insights by Model
-│   ├── [Model Name] Contributions
-│   └── [Model Name] Unique Perspectives
-└── 🚀 Final Recommendations
-    ├── Immediate Actions
-    ├── Implementation Timeline
-    └── Success Metrics
-```
+1. **Knowledge Retrieval**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
+2. **Context Gathering**: Use `mcp_openmemory_search-memories` for project context
+3. **Research Completion**: Ensure 10-step research workflow is completed
 
-## Quality Assurance
+### Phase 2: Multi-AI Analysis
 
-### Minimum Requirements
-- **At least 2 models** must successfully respond
-- **Consensus threshold** of 70% agreement on major recommendations
-- **Structured reporting** with all perspectives included
-- **Fallback mechanism** if primary models fail
+1. **Consensus Building**: Use `mcp_zen_consensus` for multi-model validation
+2. **Deep Analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
+3. **Planning**: Use `mcp_zen_planner` for implementation planning
 
-### Error Handling
-- **Connection Failures**: Automatic retry with exponential backoff
-- **Timeout Issues**: Partial analysis with available responses
-- **Model Unavailability**: Graceful degradation with available models
-- **Response Quality**: Filter out low-quality or irrelevant responses
+### Phase 3: Knowledge Integration
 
-## Integration with Android Development
-### Automatic Triggers for Android
-The system automatically activates multi-AI consultation for:
+1. **Store Insights**: Use `mcp_byterover-mcp_byterover-store-knowledge` for patterns
+2. **Update Memory**: Use `mcp_openmemory_add-memory` for project decisions
+3. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans
+
+## Usage Enforcement Rules
+
+### Rule 1: Research Integration
+
+- **ALWAYS** complete research workflow before multi-AI consultation
+- **NEVER** skip research steps when using multi-AI tools
+- **ENSURE** knowledge retrieval and context gathering are completed
+
+### Rule 2: Tool Selection
+
+- **ALWAYS** use `mcp_zen_consensus` for multi-model validation
+- **ALWAYS** use `mcp_zen_thinkdeep` for complex analysis
+- **ALWAYS** use `mcp_zen_planner` for implementation planning
+
+### Rule 3: Knowledge Management
+
+- **ALWAYS** store consultation insights in Byterover
+- **ALWAYS** update OpenMemory with project decisions
+- **ALWAYS** create implementation plans for complex decisions
+
+## Android-Specific Triggers
+
+Multi-AI consultation automatically activates for:
 
 - **Architecture Decisions**: Choosing between patterns, libraries, or frameworks
 - **Navigation Implementation**: Complex navigation flows or deep linking
@@ -90,127 +94,25 @@ The system automatically activates multi-AI consultation for:
 - **Material Design**: Complex UI patterns or accessibility requirements
 - **Testing Strategy**: Comprehensive test coverage and automation
 
-### Android-Specific Consultation Focus
-When consulting on Android topics, models are specifically asked to consider:
+## Quality Assurance
 
-- Platform-specific best practices and limitations
-- Material Design guidelines and accessibility requirements
-- Navigation Component and deep link implementation
-- Performance optimization for mobile devices
-- Security considerations for Android apps
+- **Completeness**: 100% research workflow completion before consultation
+- **Accuracy**: 90%+ consensus on major recommendations
+- **Integration**: Proper knowledge storage and memory updates
+- **Planning**: Implementation plans created for complex decisions
 
-## Usage Examples
+## Failure Prevention
 
-### Architecture Review
-```text
-User: "Review this navigation architecture refactoring plan"
-System: [Activates multi-AI consultation]
-├── Consults Gemini, GPT-5, Grok-4
-├── Synthesizes responses
-└── Provides comprehensive analysis report
-```
+**Never proceed with consultation when:**
 
-### Android Performance Optimization
-```text
-User: "App startup is slow, how can I optimize it?"
-System: [Triggers multi-AI consultation]
-├── Performance analysis from different angles
-├── Android-specific optimization strategies
-├── Consensus recommendations
-└── Implementation priority matrix
-```
+- Research workflow is incomplete
+- Knowledge retrieval fails
+- Context gathering is insufficient
+- MCP tools are unavailable
 
-### Security Implementation
-```text
-User: "Review this authentication module for security issues"
-System: [Triggers multi-AI consultation]
-├── Security analysis from multiple perspectives
-├── Platform-specific security considerations
-├── Risk assessment and mitigation strategies
-└── Implementation recommendations
-```
+**Consultation must include:**
 
-## Configuration
-
-### Model Preferences
-```json
-{
-  "multiAiConsultation": {
-    "enabled": true,
-    "minModels": 2,
-    "timeoutSeconds": 60,
-    "consensusThreshold": 0.7,
-    "preferredModels": ["gemini-2.5-pro", "gpt-5", "grok-4"],
-    "fallbackModels": ["gemini-pro", "o3", "gpt5"]
-  }
-}
-```
-
-### Trigger Keywords
-Automatically triggered by keywords:
-
-- "review", "analyze", "evaluate"
-- "architecture", "design", "pattern"
-- "refactor", "migrate", "modernize"
-- "security", "performance", "optimization"
-- "plan", "strategy", "roadmap"
-
-## Benefits
-
-### Quality Improvement
-- **Bias Reduction**: Multiple perspectives reduce individual model bias
-- **Comprehensive Analysis**: Broader coverage of concerns and edge cases
-- **Risk Mitigation**: Consensus validation of critical decisions
-- **Innovation**: Diverse approaches lead to better solutions
-
-### Development Efficiency
-- **Faster Decision Making**: Parallel analysis reduces review time
-- **Higher Confidence**: Consensus recommendations increase trust
-- **Better Documentation**: Structured analysis reports serve as documentation
-- **Team Alignment**: Clear, multi-validated recommendations reduce debate
-
-### Risk Management
-- **Failure Resilience**: Multiple models provide analysis redundancy
-- **Quality Assurance**: Consensus thresholds ensure recommendation quality
-- **Audit Trail**: Comprehensive analysis history for compliance
-- **Continuous Improvement**: Analysis of past recommendations improves future ones
-
-## Monitoring & Analytics
-
-### Usage Metrics
-- **Consultation Frequency**: Track usage patterns
-- **Model Performance**: Response time, quality, and availability
-- **Consensus Rates**: Agreement levels across different topics
-- **User Satisfaction**: Feedback on analysis quality and usefulness
-
-### Quality Metrics
-- **Response Completeness**: Coverage of requested analysis areas
-- **Recommendation Quality**: Implementation success rates
-- **Time Savings**: Reduction in decision-making time
-- **Error Prevention**: Issues caught by multi-AI analysis
-
-## Future Enhancements
-
-### Advanced Features
-- **Model Specialization**: Route specific topics to best-suited models
-- **Historical Analysis**: Learn from past consultations
-- **Custom Workflows**: Domain-specific consultation patterns
-- **Integration APIs**: External system integration capabilities
-
-### Performance Optimizations
-- **Caching**: Cache similar queries and responses
-- **Parallel Processing**: Optimize concurrent model queries
-- **Smart Routing**: Intelligent model selection based on query type
-- **Response Streaming**: Real-time response aggregation
-
-## Implementation Checklist
-- [x] Rule file created in `.augment/rules/multi-ai-consultation.md`
-- [x] Integration with Android development rule
-- [x] Model discovery and health check implementation
-- [x] Parallel consultation framework
-- [x] Response synthesis and consensus analysis
-- [x] Error handling and fallback mechanisms
-- [x] Quality assurance and monitoring
-- [x] Documentation and user training
-
-This rule ensures Augment provides the highest quality analysis by leveraging multiple AI perspectives for critical development decisions, with special focus on Android development challenges.
+- Complete research workflow (steps 1-8)
+- Multi-AI validation (steps 9-10)
+- Knowledge storage and memory updates
+- Implementation planning for complex decisions

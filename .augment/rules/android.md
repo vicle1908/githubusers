@@ -1,5 +1,5 @@
 ---
-type: "always_apply"
+alwaysApply: true
 ---
 
 # Comprehensive Android Development Rule
@@ -7,6 +7,25 @@ type: "always_apply"
 ## Overview
 
 You are a Senior Kotlin programmer with extensive Android framework experience, specializing in clean architecture, modern patterns, and best practices. Generate code, corrections, and refactorings that comply with current Android development standards.
+
+## 🧠 **KNOWLEDGE MANAGEMENT INTEGRATION**
+
+### **MANDATORY KNOWLEDGE RETRIEVAL (Before Any Task):**
+
+1. **ByteOver Knowledge**: Retrieve Android development patterns, MVI implementations, Navigation 3 setups
+2. **OpenMemory Context**: Search for project-specific decisions, user preferences, architecture patterns
+3. **Combined Context**: Use both knowledge sources for comprehensive Android development guidance
+
+### **KNOWLEDGE STORAGE (After Successful Tasks):**
+
+- **ByteOver**: Store working Android patterns, Compose implementations, build optimizations
+- **OpenMemory**: Store project decisions, architecture choices, user feedback
+
+**Example Queries:**
+
+- "Android MVI pattern implementation with Compose"
+- "Navigation 3 deep link setup for multi-module builds"
+- "GitHub users app architecture patterns"
 
 ## Core Development Principles
 
@@ -63,7 +82,7 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 - Write short functions with single purpose (< 20 instructions)
 - Name functions with verb + description
   - Boolean returns: `isX`, `hasX`, `canX`
- - Actions: `executeX`, `saveX`, `loadX`
+  - Actions: `executeX`, `saveX`, `loadX`
 - Use early returns to avoid nesting
 - Extract utility functions for complex logic
 - Use higher-order functions (map, filter, reduce) when appropriate

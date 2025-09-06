@@ -1,4 +1,7 @@
 ---
+---
+
+---
 description: Research strategy rules for comprehensive information gathering before implementation
 alwaysApply: true
 ---

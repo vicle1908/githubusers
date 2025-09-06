@@ -1,5 +1,7 @@
-[byterover-mcp]
+# Claude Assistant Guide
 
-# important 
-always use byterover-retrieve-knowledge tool to get the related context before any tasks 
-always use byterover-store-knowledge to store all the critical informations after sucessful tasks
+This file has been moved to maintain consistency.
+
+Please see: [docs/assistants/claude-guide.md](docs/assistants/claude-guide.md)
+
+All assistant rules are now centralized in `docs/assistants/`

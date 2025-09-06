@@ -1,3 +1,7 @@
+---
+type: "manual"
+---
+
 # Cursor Rules for GitHub Users Android App
 
 ## Overview
