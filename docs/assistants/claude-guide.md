@@ -2,18 +2,18 @@
 
 ## Overview
 
-This guide provides Claude-specific configuration for the GitHub Users Android project.
+This guide provides Claude-specific configuration while referencing canonical documentation for shared policies.
 
 ## Core Policies
 
 All core policies are defined in canonical documentation:
 
-- **MCP-First Workflow**: See [docs/assistants/warp-mcp-policy.md](docs/assistants/warp-mcp-policy.md)
-- **MCP Server Usage**: See [docs/assistants/mcp-guide.md](docs/assistants/mcp-guide.md)
-- **Research Strategy**: See [docs/assistants/enhanced-research-strategy.md](docs/assistants/enhanced-research-strategy.md)
-- **Android Standards**: See [docs/assistants/android-standards.md](docs/assistants/android-standards.md)
-- **Kotlin Style**: See [docs/assistants/kotlin-style.md](docs/assistants/kotlin-style.md)
-- **ByteRover Rules**: See [docs/assistants/byterover-rules.md](docs/assistants/byterover-rules.md)
+- **MCP-First Workflow**: See [warp-mcp-policy.md](./warp-mcp-policy.md)
+- **MCP Server Usage**: See [mcp-guide.md](./mcp-guide.md)
+- **Research Strategy**: See [enhanced-research-strategy.md](./enhanced-research-strategy.md)
+- **Android Standards**: See [android-standards.md](./android-standards.md)
+- **Kotlin Style**: See [kotlin-style.md](./kotlin-style.md)
+- **ByteRover Rules**: See [byterover-rules.md](./byterover-rules.md)
 
 ## Claude-Specific Configuration
 
@@ -26,7 +26,7 @@ All core policies are defined in canonical documentation:
 
 ### Available MCP Servers
 
-Claude has access to all 14 MCP servers listed in [docs/assistants/mcp-guide.md](docs/assistants/mcp-guide.md)
+Claude has access to all 14 MCP servers listed in [mcp-guide.md](./mcp-guide.md)
 
 ### Enforcement Priorities
 
@@ -60,7 +60,3 @@ mcp_byterover-mcp_byterover-save-implementation-plan(plan)
 - ALWAYS follow the CRITICAL PLAN PERSISTENCE RULE
 - NEVER skip the 10-step research workflow
 - ALWAYS use MCP servers for supported tasks
-
-## See Also
-
-For detailed documentation, see [docs/assistants/](docs/assistants/) directory.

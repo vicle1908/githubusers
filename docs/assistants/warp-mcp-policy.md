@@ -79,7 +79,3 @@
 
 - Use MCP servers for **ALL** supported tasks
 - Only fall back to manual commands if the relevant MCP server is unavailable **AND** with explicit approval
-
-## See Also
-
-For detailed documentation, see [docs/assistants/](docs/assistants/) directory.
