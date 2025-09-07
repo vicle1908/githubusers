@@ -94,4 +94,3 @@ This document provides an inventory of detekt configuration across the GitHub Us
 - **Convention plugin**: Automatic application to all modules
 - **Baseline caching**: Module-specific issue suppression
 - **Parallel execution**: Independent analysis per module
-

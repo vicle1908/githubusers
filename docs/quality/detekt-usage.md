@@ -84,4 +84,3 @@ This document provides guidance on using detekt for static code analysis in the 
 - Use ktlint ruleset for formatting
 - Configure appropriate thresholds
 - Exclude test directories where appropriate
-

@@ -37,7 +37,6 @@ The `navigation-ksp` processor generates:
 
 #### Generated Provider Structure
 
-
 ```kotlin
 ```kotlin
 
@@ -75,7 +74,6 @@ class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
 ```
 
 #### ServiceLoader Registration
-
 
 ```text
 ```kotlin
@@ -623,4 +621,3 @@ class UsersNavigation : DeepLinkOwner {
 ```
 
 This approach ensures compile-time safety, reduces boilerplate, and enables true modular deep link ownership across feature modules.
-

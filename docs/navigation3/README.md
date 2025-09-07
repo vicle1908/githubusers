@@ -52,4 +52,3 @@ This directory contains documentation for the Navigation 3 implementation in the
 - Use type-safe navigation APIs
 - Test deep link scenarios thoroughly
 - Maintain navigation documentation
-

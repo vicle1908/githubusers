@@ -273,4 +273,3 @@ dependencies {
 - Check [Detekt Ktlint Ruleset Documentation](https://detekt.dev/docs/next/rules/ktlint/)
 - Review [Ktlint Official Rules](https://pinterest.github.io/ktlint/rules/standard/)
 - Consult project documentation for specific configurations
-

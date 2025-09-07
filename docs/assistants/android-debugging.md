@@ -22,7 +22,7 @@
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
 ```
 
-2. Get detailed stack trace:
+1. Get detailed stack trace:
 
 ```bash
 mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
@@ -36,7 +36,7 @@ mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPT
 mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
 ```
 
-2. Component-specific logs:
+1. Component-specific logs:
 
 ```bash
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
@@ -69,19 +69,19 @@ NEVER use `./gradlew` directly.
 mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
 ```
 
-2. Launch App (Mobile-MCP):
+1. Launch App (Mobile-MCP):
 
 ```bash
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 ```
 
-3. Capture Screenshot:
+1. Capture Screenshot:
 
 ```bash
 mcp_mobile-mcp_mobile_take_screenshot()
 ```
 
-4. Verify Success:
+1. Verify Success:
 
 ```bash
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")

@@ -47,7 +47,6 @@ All modules use the `githubusers://` scheme for internal navigation (and https f
 
 #### User Feature Module
 
-
 ```text
 ```yaml
 
@@ -58,6 +57,7 @@ app://users/search?q={query}              # User search
 ```
 
 #### Search Feature Module
+
 ```text
 
 ```yaml
@@ -71,7 +71,6 @@ app://search/history                      # Search history
 ```
 
 #### Core Navigation
-
 
 ```text
 ```yaml
@@ -110,7 +109,6 @@ https://githubusers.example.com/user/{username}
 https://githubusers.example.com/search?q={query}
 https://githubusers.example.com/settings
 ```
-
 
 ---
 
@@ -4229,7 +4227,7 @@ Navigation3Host(controller, startDestination = "app://home") { entry ->
 
 ```
 
-2. **Update navigation calls**:
+1. **Update navigation calls**:
 
 ```kotlin
 
@@ -5209,7 +5207,7 @@ controller.navigate("app://detail/$id")
 
 ```
 
-3. **Register deep link handlers**:
+1. **Register deep link handlers**:
 
 ```kotlin
 
@@ -9043,7 +9041,7 @@ class AnalyticsInterceptor : DeepLinkInterceptor {
 
 ## 📊 Architecture Decision Records (ADR)
 
-### Why Navigation 3 with Deep Links?
+### Why Navigation 3 with Deep Links
 
 1. **Complete module isolation**: Modules don't know about each other
 2. **Universal navigation**: Same pattern for internal and external links
@@ -9055,6 +9053,7 @@ class AnalyticsInterceptor : DeepLinkInterceptor {
 ### Trade-offs
 
 **Pros:**
+
 - Complete decoupling between modules
 - Consistent navigation pattern
 - Easy to test and debug
@@ -9062,6 +9061,7 @@ class AnalyticsInterceptor : DeepLinkInterceptor {
 - Better security through validation
 
 **Cons:**
+
 - Slightly more verbose than direct navigation
 - Need to maintain deep link patterns
 - Runtime resolution overhead (minimal)

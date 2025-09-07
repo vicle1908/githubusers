@@ -8,20 +8,17 @@ This document describes the modern, convention-based build system architecture f
 
 ### 1. **Convention Over Configuration**
 
-
 - All common build logic is centralized in convention plugins
 - Individual modules use minimal, declarative configuration
 - Build behavior is standardized across similar module types
 
 ### 2. **Version Centralization**
 
-
 - All versions are managed through the version catalog (`catalog/gradle/libs.versions.toml`)
 - No hardcoded versions in individual module build files
 - Single source of truth for dependency versions
 
 ### 3. **Dependency Optimization**
-
 
 - Use `implementation` dependencies by defaul
 - Use `api` dependencies only when modules need to expose dependencies to consumers
@@ -51,13 +48,11 @@ githubusers/
 
 #### `githubusers.base.module`
 
-
 - Applied to all modules
 - Configures common project properties
 - Sets up quality tools (Detekt, KtLint)
 
 #### `githubusers.common.version`
-
 
 - Centralizes common version properties
 - Sets `group`, `version`, `compileSdk`, `minSdk`, `targetSdk`
@@ -67,13 +62,11 @@ githubusers/
 
 #### `githubusers.android.library`
 
-
 - Configures Android library modules
 - Sets up namespace generation (prevents BuildConfig duplication)
 - Configures common Android settings
 
 #### `githubusers.android.application`
-
 
 - Configures Android application modules
 - Handles complex application configuration (flavors, build types, NDK)
@@ -81,18 +74,15 @@ githubusers/
 
 #### `githubusers.android.library.compose`
 
-
 - Adds Compose-specific configuration
 - Configures Compose compiler and UI dependencies
 
 #### `githubusers.android.hilt`
 
-
 - Configures Hilt dependency injection
 - Sets up KSP for annotation processing
 
 #### `githubusers.android.room`
-
 
 - Configures Room database components
 - Sets up KSP for Room annotation processing
@@ -101,12 +91,10 @@ githubusers/
 
 #### `githubusers.android.publishing`
 
-
 - Configures Maven publishing for all modules
 - Sets up publication artifacts and POM information
 
 #### `githubusers.android.library.publishing`
-
 
 - Specialized publishing for Android library modules
 - Handles release component publication
@@ -115,12 +103,10 @@ githubusers/
 
 #### `githubusers.quality.detekt`
 
-
 - Configures Detekt static code analysis
 - Applies project-wide Detekt rules
 
 #### `githubusers.quality.ktlint`
-
 
 - Configures KtLint code formatting
 - Applies project-wide KtLint rules
@@ -129,24 +115,20 @@ githubusers/
 
 #### `githubusers.feature.module`
 
-
 - Configures feature modules
 - Sets up feature-specific dependencies and configuration
 
 #### `githubusers.core.module`
-
 
 - Configures core modules
 - Sets up core-specific dependencies and configuration
 
 #### `githubusers.navigation.module`
 
-
 - Configures navigation modules
 - Sets up navigation-specific dependencies and configuration
 
 #### `githubusers.jvm.library`
-
 
 - Configures JVM-only library modules
 - Sets up Kotlin JVM compilation
@@ -159,13 +141,11 @@ The version catalog (`catalog/gradle/libs.versions.toml`) is organized into thre
 
 #### `[versions]`
 
-
 - Library versions (e.g., `kotlin = "2.2.10"`)
 - SDK versions (e.g., `sdk-compile = "36"`)
 - Plugin versions (e.g., `android-gradle-plugin = "8.12.2"`)
 
 #### `[plugins]`
-
 
 - Gradle plugin declarations
 - Convention plugin references
@@ -173,13 +153,11 @@ The version catalog (`catalog/gradle/libs.versions.toml`) is organized into thre
 
 #### `[libraries]`
 
-
 - Library dependencies
 - Platform BOMs
 - Testing dependencies
 
 ### Key Versions
-
 
 ```toml
 ```kotlin
@@ -229,6 +207,7 @@ room = "2.7.2"
 ## Module Configuration Examples
 
 ### Application Module
+
 ```kotlin
 
 ```kotlin
@@ -330,7 +309,6 @@ extensions.configure<ApplicationConfigExtension>("appConfig") {
 ```
 
 ### Feature Module
-
 
 ```kotlin
 ```kotlin
@@ -532,6 +510,7 @@ dependencies {
 ```
 
 ### JVM Library Module
+
 ```kotlin
 
 ```kotlin
@@ -891,13 +870,11 @@ dependencies {
 
 #### `implementation`
 
-
 - **Use by default** for most dependencies
 - Dependencies are not exposed to consumers
 - Reduces transitive dependency exposure
 
 #### `api`
-
 
 - **Use sparingly** only when necessary
 - Dependencies are exposed to consumers
@@ -905,18 +882,15 @@ dependencies {
 
 #### `compileOnly`
 
-
 - Used for annotation processors and build-time dependencies
 - Not included in runtime classpath
 
 #### `ksp`
 
-
 - Used for KSP annotation processors
 - Generates code at build time
 
 ### Platform BOMs
-
 
 ```kotlin
 ```kotlin
@@ -1487,17 +1461,20 @@ implementation(platform(libs.ktor.bom))
 ## Build Configuration
 
 ### Android Configuration
+
 - **Namespace**: Automatically generated to prevent BuildConfig duplication
 - **SDK Versions**: Centralized in convention plugins
 - **Build Types**: Standardized across all modules
 - **Product Flavors**: Configured via convention plugin extensions
 
 ### Kotlin Configuration
+
 - **JVM Target**: Centralized in convention plugins
 - **Compiler Options**: Standardized across all modules
 - **Serialization**: Applied when needed via plugin
 
 ### Quality Tools
+
 - **Detekt**: Static code analysis with project-wide rules
 - **KtLint**: Code formatting with project-wide rules
 - **Configuration**: Centralized in convention plugins
@@ -1507,6 +1484,7 @@ implementation(platform(libs.ktor.bom))
 ### From Legacy Build Files
 
 #### 1. Remove Custom Configuration
+
 ```kotlin
 
 ```kotlin
@@ -2350,7 +2328,6 @@ publishing { ... }
 ```
 
 #### 2. Apply Convention Plugins
-
 
 ```kotlin
 ```kotlin
@@ -3537,6 +3514,7 @@ id("githubusers.feature.module")
 ```
 
 #### 3. Use Version Catalog
+
 ```kotlin
 
 ```kotlin
@@ -5135,7 +5113,6 @@ implementation(libs.kotlin.stdlib)
 ```
 
 #### 4. Optimize Dependencies
-
 
 ```kotlin
 ```kotlin
@@ -7226,6 +7203,7 @@ implementation(libs.androidx.core.ktx)
 ## Best Practices
 
 ### 1. **Plugin Application Order**
+
 ```kotlin
 
 ```kotlin
@@ -9890,7 +9868,6 @@ plugins {
 ```
 
 ### 2. **Dependency Declaration**
-
 
 ```kotlin
 ```kotlin
@@ -13232,12 +13209,14 @@ dependencies {
 ```
 
 ### 3. **Version Management**
+
 - Always use version catalog for versions
 - Never hardcode versions in build files
 - Use platform BOMs for version alignmen
 - Keep versions in sync across related libraries
 
 ### 4. **Module Organization**
+
 - Group related functionality in modules
 - Use clear, descriptive module names
 - Minimize cross-module dependencies
@@ -13248,6 +13227,7 @@ dependencies {
 ### Common Issues
 
 #### 1. **Plugin Not Found**
+
 ```bash
 
 ```kotlin
@@ -17369,7 +17349,6 @@ dependencies {
 ```
 
 #### 2. **Namespace Conflicts**
-
 
 ```bash
 ```kotlin
@@ -22383,6 +22362,7 @@ dependencies {
 ```
 
 #### 3. **Version Conflicts**
+
 ```bash
 
 ```kotlin
@@ -28400,7 +28380,6 @@ dependencies {
 ```
 
 #### 4. **Build Cache Issues**
-
 
 ```bash
 ```kotlin
@@ -35543,6 +35522,7 @@ dependencies {
 ```
 
 ### Debug Commands
+
 ```bash
 
 ```kotlin
@@ -43945,7 +43925,6 @@ dependencies {
 ## Future Enhancements
 
 ### Planned Improvements
-
 
 1. **Enhanced Convention Plugin System**
    - More specialized module types

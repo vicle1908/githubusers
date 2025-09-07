@@ -37,14 +37,12 @@ githubusers/
 
 ### 1. **User Search and Discovery**
 
-
 - Search GitHub users by username
 - View user profiles and information
 - Browse user repositories
 - Search history and suggestions
 
 ### 2. **Modern UI/UX**
-
 
 - Material Design 3 implementation
 - Jetpack Compose for declarative UI
@@ -53,13 +51,11 @@ githubusers/
 
 ### 3. **Navigation 3**
 
-
 - Type-safe navigation with deep linking
 - Navigation persistence and state restoration
 - Complex navigation flows and transitions
 
 ### 4. **Data Management**
-
 
 - Offline-first architecture with Room database
 - Real-time data synchronization
@@ -70,14 +66,12 @@ githubusers/
 
 ### Core Technologies
 
-
 - **Kotlin**: Primary programming language
 - **Android Gradle Plugin**: Build system
 - **Jetpack Compose**: Modern UI toolkit
 - **Navigation 3**: Next-generation navigation
 
 ### Architecture Components
-
 
 - **Hilt**: Dependency injection
 - **Room**: Local database
@@ -86,7 +80,6 @@ githubusers/
 - **Flow**: Reactive streams
 
 ### Quality Tools
-
 
 - **Detekt**: Static code analysis
 - **KtLint**: Code formatting
@@ -97,14 +90,12 @@ githubusers/
 
 ### Application Module (`app/`)
 
-
 - Main entry point for the application
 - Application-level configuration
 - Feature module integration
 - Navigation setup and configuration
 
 ### Core Modules
-
 
 - **`core-domain`**: Business entities and use cases
 - **`core-data`**: Data layer implementation
@@ -114,7 +105,6 @@ githubusers/
 
 ### Feature Modules
 
-
 - **`feature-users`**: User management functionality
 - **`feature-users-list`**: User list and search
 - **`feature-users-detail`**: User profile and details
@@ -122,14 +112,12 @@ githubusers/
 
 ### Navigation Modules
 
-
 - **`navigation-api`**: Navigation contract definitions
 - **`navigation-impl`**: Navigation implementation
 - **`navigation-annotations`**: Navigation annotations
 - **`navigation-ksp`**: Navigation code generation
 
 ### Build System (`plugins/`)
-
 
 - **Convention plugins**: Standardized build configuration
 - **Quality plugins**: Code quality and formatting
@@ -139,14 +127,12 @@ githubusers/
 
 ### 1. **Feature Development**
 
-
 - Create feature modules following established patterns
 - Implement UI with Jetpack Compose
 - Add business logic in domain layer
 - Integrate with data layer
 
 ### 2. **Build System**
-
 
 - Use convention plugins for consistent configuration
 - Manage dependencies through version catalog
@@ -155,14 +141,12 @@ githubusers/
 
 ### 3. **Quality Assurance**
 
-
 - Write unit tests for business logic
 - Implement UI tests for critical flows
 - Use static analysis tools
 - Follow coding standards
 
 ### 4. **Testing Strategy**
-
 
 - **Unit Tests**: Business logic and utilities
 - **Integration Tests**: Module interactions
@@ -173,14 +157,12 @@ githubusers/
 
 ### Prerequisites
 
-
 - Android Studio Hedgehog or later
 - JDK 21
 - Android SDK 36
 - Gradle 8.13+
 
 ### Setup Instructions
-
 
 1. Clone the repository
 1. Open in Android Studio
@@ -189,7 +171,6 @@ githubusers/
 1. Run on device or emulator
 
 ### Build Commands
-
 
 ```bash
 ```text
@@ -246,12 +227,14 @@ githubusers/
 ## Project Structure Guidelines
 
 ### Module Naming
+
 - Use descriptive, purpose-driven names
 - Follow kebab-case convention
 - Group related functionality together
 - Maintain clear module boundaries
 
 ### Package Organization
+
 ```text
 
 ```markdown
@@ -346,7 +329,6 @@ com.example.githubusers/
 
 ### Dependency Management
 
-
 - Use version catalog for all versions
 - Prefer `implementation` over `api`
 - Use platform BOMs for version alignment
@@ -356,14 +338,12 @@ com.example.githubusers/
 
 ### Code Standards
 
-
 - Follow Kotlin coding conventions
 - Use meaningful variable and function names
 - Write comprehensive documentation
 - Include unit tests for new functionality
 
 ### Pull Request Process
-
 
 1. Create feature branch from main
 1. Implement changes following project patterns
@@ -372,7 +352,6 @@ com.example.githubusers/
 1. Submit pull request with clear description
 
 ### Review Guidelines
-
 
 - Code follows established patterns
 - Tests are comprehensive
@@ -383,7 +362,6 @@ com.example.githubusers/
 
 ### Short Term (Next 3 months)
 
-
 - Enhanced search functionality
 - Improved offline experience
 - Performance optimizations
@@ -391,14 +369,12 @@ com.example.githubusers/
 
 ### Medium Term (3-6 months)
 
-
 - User authentication
 - Repository management
 - Social features
 - Advanced filtering
 
 ### Long Term (6+ months)
-
 
 - Multi-platform support
 - Advanced analytics

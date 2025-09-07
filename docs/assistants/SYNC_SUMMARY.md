@@ -25,13 +25,11 @@ Created centralized documentation in `docs/assistants/`:
 
 #### Cursor (.cursor/rules/)
 
-
 - 8 rule files with `.mdc` extension
 - Preserves Cursor-specific formatting
 - Full content parity with canonical docs
 
 #### Augment (.augment/rules/)
-
 
 - 14 rule files with YAML frontmatter
 - Preserves frontmatter metadata
@@ -39,20 +37,17 @@ Created centralized documentation in `docs/assistants/`:
 
 #### KiloCode (.kilocode/rules/)
 
-
 - 10 rule files with glob patterns
 - Maintains alwaysApply directives
 - Full frontmatter preservation
 
 #### Trae (.trae/rules/)
 
-
 - Single combined `project_rules.md`
 - Includes CRITICAL PLAN PERSISTENCE RULE
 - MCP-First policy integrated
 
 #### Gemini (.gemini/)
-
 
 - `settings.json` secured with environment variables
 - No hardcoded secrets
@@ -62,14 +57,12 @@ Created centralized documentation in `docs/assistants/`:
 
 #### Sync Script
 
-
 - Location: `scripts/sync-assistant-rules.sh`
 - Automatically propagates changes from canonical docs
 - Preserves assistant-specific formatting
 - Creates root pointer files
 
 #### Verification Script
-
 
 - Location: `scripts/verify-sync-parity.sh`
 - Checks content parity (ignoring frontmatter)
@@ -78,14 +71,12 @@ Created centralized documentation in `docs/assistants/`:
 
 #### Git Hook
 
-
 - Location: `.git/hooks/pre-commit`
 - Automatically syncs when canonical docs change
 - Stages synced files for commit
 - Ensures consistency across commits
 
 ### 4. Root Pointer Files
-
 
 - `WARP.md` → Points to `docs/assistants/warp-mcp-policy.md`
 - `CLAUDE.md` → Points to `docs/assistants/claude-guide.md`
@@ -104,7 +95,6 @@ All assistants now enforce:
 
 ### Code Quality Standards
 
-
 - **NO wildcard imports** - Single import per line
 - KtLint and Detekt enforcement
 - Clean architecture with MVI pattern
@@ -112,7 +102,6 @@ All assistants now enforce:
 - Version catalog for dependencies
 
 ### ByteRover Integration
-
 
 - CRITICAL PLAN PERSISTENCE RULE enforced
 - Mandatory onboarding workflow
@@ -134,7 +123,6 @@ All assistants now enforce:
 
 ### Test Script
 
-
 - Location: `scripts/test-sync-hook.sh`
 - Verifies hook functionality
 - Confirms automatic sync on canonical doc changes
@@ -143,13 +131,11 @@ All assistants now enforce:
 
 ### To Update Rules
 
-
 1. Edit files in `docs/assistants/`
 1. Run `./scripts/sync-assistant-rules.sh` OR
 1. Commit changes (hook auto-syncs)
 
 ### To Verify Sync
-
 
 ```bash
 ```text
@@ -162,7 +148,6 @@ All assistants now enforce:
 ```
 
 ### To Test Hook
-
 
 ```bash
 
@@ -179,14 +164,12 @@ All assistants now enforce:
 
 ## Next Steps
 
-
 1. Review all changes
 1. Commit with message: `chore: unify AI assistant rules with MCP-first policy`
 1. Push to feature branch
 1. Create PR for review
 
 ## Benefits
-
 
 - **Consistency**: All assistants follow same rules
 - **Maintainability**: Single source of truth
@@ -195,4 +178,4 @@ All assistants now enforce:
 - **Efficiency**: MCP-first workflow for all operations
 
 ---
-*Last Updated: 2025-09-07*
+Last updated: 2025-09-07

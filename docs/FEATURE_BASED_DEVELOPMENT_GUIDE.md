@@ -17,14 +17,12 @@ Each feature module is responsible for:
 
 ### 2. **Module Isolation**
 
-
 - ❌ **No Direct Dependencies**: Features don't directly reference other feature classes
 - ✅ **Deep Link Communication**: All cross-module communication via deep links
 - ✅ **Centralized Types**: Shared types in `navigation-api` module
 - ✅ **Dependency Injection**: Hilt multibindings for handler registration
 
 ### 3. **Type Safety**
-
 
 - ✅ **Compile-Time Safety**: `AppDestination` types prevent runtime errors
 - ✅ **Serialization**: Kotlin serialization for type-safe argument passing

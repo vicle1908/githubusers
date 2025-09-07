@@ -237,4 +237,3 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 - **Accuracy**: 90%+ consensus on recommendations
 - **Efficiency**: 85%+ automation in research workflow
 - **Relevance**: 0.3+ relevance scores for knowledge retrieval
-

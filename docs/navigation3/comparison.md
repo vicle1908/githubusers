@@ -1342,7 +1342,7 @@ Testing and validation plan
   - Smoke flows for list → detail → back; process death restore parity.
   - Predictive back behavior (top-of-stack only interception).
 - Quality gates
-  - Run detekt and ktlintCheck on navigation-* and feature-* modules.
+- Run detekt and ktlintCheck on `navigation-*` and `feature-*` modules.
   - AssembleDebug via Gradle MCP prior to rollout.
 
 Risks and mitigations
@@ -1362,4 +1362,3 @@ Next steps
 - Implement Phase 1 replacement of NavHost with Navigation3Host in app MainActivity.
 - Migrate the user list → detail flow to typed navigation; keep navigation-compose as fallback for any remaining screens until complete.
 - Wire detekt/ktlint checks and assembleDebug via Gradle MCP.
-

@@ -10,7 +10,6 @@ Successfully integrated Navigation 3 concepts with the GitHub Users app, providi
 
 #### NavigationDestination.kt
 
-
 - Type-safe sealed class for all navigation destinations
 - Support for parameterized routes (UserDetail, SearchResults)
 - Deep link patterns for each destination
@@ -18,17 +17,14 @@ Successfully integrated Navigation 3 concepts with the GitHub Users app, providi
 
 #### AppDeepLinks.kt (navigation-api)
 
-
 - Build deep links from typed AppDestination
 - Parse URIs into AppDestination where possible
 
 #### NavigationOptions
 
-
 - launchSingleTop, popUpTo, popUpToInclusive, save/restore state
 
 #### NavigationManager.kt
-
 
 - Centralized navigation handling using Kotlin Flow
 - Clean API for all navigation operations
@@ -37,7 +33,6 @@ Successfully integrated Navigation 3 concepts with the GitHub Users app, providi
 ### 2. Navigation Host
 
 #### Navigation3Host (typed)
-
 
 - Main navigation host with Navigation 3 implementation
 - Start destination defined as a typed AppDestination
@@ -67,7 +62,6 @@ Added comprehensive deep link support:
 
 #### DeepLinkConfiguration.kt
 
-
 - Constants and helper methods for deep link creation
 - Examples of supported deep link formats
 - Both app scheme and web URL patterns
@@ -76,14 +70,12 @@ Added comprehensive deep link support:
 
 #### UserListViewModel
 
-
 - Inject Navigation3Controller directly where navigation is needed
 - Trigger typed navigation using AppDestination or deep links via AppDeepLinks
 
 ## Supported Navigation Patterns
 
 ### 1. Basic Navigation
-
 
 ```kotlin
 ```xml
@@ -113,7 +105,6 @@ controller.navigate(AppDestination.UserDetail(username))
 ```
 
 ### 2. Navigation with Pop Operations
-
 
 ```kotlin
 ```xml
@@ -158,7 +149,6 @@ controller.navigate(
 ```
 
 ### 3. Pop to Specific Screen
-
 
 ```kotlin
 ```xml
@@ -219,7 +209,6 @@ controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive
 ```
 
 ### 4. Deep Link Navigation
-
 
 ```kotlin
 ```xml
@@ -299,7 +288,6 @@ controller.navigate("githubusers://search?q=android")
 ```
 
 ### 5. Clear Stack and Navigate
-
 
 ```kotlin
 ```xml
@@ -547,4 +535,3 @@ setContent {
 1. Add navigation testing with NavigationTestRule
 1. Implement the Settings screen placeholder
 1. Add more sophisticated deep link handling for search queries
-

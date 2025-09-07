@@ -8,13 +8,11 @@ This document describes the multi-module deep link navigation architecture imple
 
 ### 1. Deep Link Resolution (navigation-impl)
 
-
 - DefaultDestinationResolver resolves deep links to NavigationDestination
 - Collects DeepLinkHandler contributions via Hilt multibindings from feature modules
 - Supports both app scheme and web universal links
 
 ### 2. Module Navigator (`ModuleNavigator`)
-
 
 - Main entry point for cross-module navigation
 - Uses AppDeepLinks.parse(uri) to prefer typed AppDestination when possible
@@ -26,14 +24,12 @@ Each feature module implements `com.example.githubusers.navigation.api.DeepLinkH
 
 ### 4. Navigation Host (`Navigation3Host`)
 
-
 - Typed host that renders current Navigation3Entry
 - Start destination defined as a typed AppDestination
 
 ## Deep Link Patterns
 
 ### User Module
-
 
 ```text
 ```yaml
@@ -47,6 +43,7 @@ https://githubusers.example.com/user/{username} - Web URL for user detail
 ```
 
 ### Settings Module
+
 ```text
 
 ```yaml
@@ -63,7 +60,6 @@ https://githubusers.example.com/settings - Web URL for settings
 ```
 
 ### Special Parameters
-
 
 - `clear_stack=true` - Clear navigation back stack before navigating
 
@@ -250,13 +246,11 @@ adb shell am start -W -a android.intent.action.VIEW
 
 ### 1. Module Independence
 
-
 - Modules don't need direct references to each other
 - Navigation is done through URIs, not direct class references
 - Easy to move modules to separate Gradle modules
 
 ### 2. Testability
-
 
 - Deep link handlers can be unit tested independently
 - Mock navigation for testing
@@ -264,13 +258,11 @@ adb shell am start -W -a android.intent.action.VIEW
 
 ### 3. Flexibility
 
-
 - Support multiple URI schemes (app://, https://)
 - Easy to add new modules and routes
 - Can integrate with web navigation
 
 ### 4. Dynamic Features
-
 
 - Supports dynamic feature modules
 - Can check if a module is installed before navigating
@@ -279,7 +271,6 @@ adb shell am start -W -a android.intent.action.VIEW
 ## Testing Deep Links
 
 ### Unit Testing
-
 
 ```kotlin
 ```kotlin
@@ -408,7 +399,6 @@ fun testUserDetailDeepLink() {
 ```
 
 ### Integration Testing
-
 
 ```kotlin
 ```kotlin
@@ -588,7 +578,6 @@ fun testDeepLinkNavigation() = runTest {
 ## Future Enhancements
 
 ### 1. Dynamic Module Suppor
-
 
 ```kotlin
 ```kotlin
@@ -821,7 +810,6 @@ if (moduleManager.isModuleInstalled("premium")) {
 ```
 
 ### 2. Analytics Integration
-
 
 ```kotlin
 ```kotlin
@@ -1113,7 +1101,6 @@ deepLinkRegistry.addInterceptor { deepLink ->
 ```
 
 ### 3. Permission Checking
-
 
 ```kotlin
 ```kotlin
@@ -1468,7 +1455,6 @@ deepLinkRegistry.addPermissionChecker { deepLink ->
 ```
 
 ### 4. Deep Link Validation
-
 
 ```kotlin
 ```kotlin
@@ -1921,4 +1907,3 @@ To migrate existing navigation to deep links:
    - Document all supported deep links
    - Provide examples for each pattern
    - Keep deep link registry up to date
-

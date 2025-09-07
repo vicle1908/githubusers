@@ -8,7 +8,6 @@ Navigation 3 is fully integrated with a typed, deep link–driven approach. The 
 
 ### 1. Dependencies
 
-
 - Added Navigation 3 dependencies:
   - `androidx.navigation3:navigation3-ui`
   - `androidx.navigation3:navigation3-runtime`
@@ -19,7 +18,6 @@ Navigation 3 is fully integrated with a typed, deep link–driven approach. The 
 
 #### Nav3Destinations.kt
 
-
 - Type-safe destinations using Kotlin Serialization
 - Sealed interface with `@Serializable` annotations
 - Supports UserList, UserDetail, and Settings screens
@@ -27,7 +25,6 @@ Navigation 3 is fully integrated with a typed, deep link–driven approach. The 
 - Note: Search functionality is integrated within UserList screen
 
 #### Navigation3Host (typed)
-
 
 - Primary Navigation 3 host
 - Uses Navigation3Controller and typed AppDestination via AppDeepLinks
@@ -276,12 +273,10 @@ We persist a compact, versioned representation of the back stack as deep links o
 
 ### Telemetry (Placeholders)
 
-
 - Hooks exist at persistence read/write points for future metrics/logs (success/failure, sizes, latency).
 - Logging should be rate-limited and structured.
 
 ### Kill Switch
-
 
 - Controlled via DI-provided `PersistenceConfig.enabled`. If disabled, controller skips reads/writes.
 
