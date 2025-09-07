@@ -11,6 +11,8 @@
 ## Preferred MCP Usage
 
 ### Build and Tests
+
+
 - **MANDATORY**: Use Gradle MCP Server for all tasks (quality, build, publish)
 - **NEVER** run `./gradlew` directly
 - Examples:
@@ -18,19 +20,27 @@
   - `assembleDebug` for app (do not install)
 
 ### Android Device Operations
+
+
 - Use Android MCP (adb, logs, package management)
 - Use Mobile-MCP to relaunch the app, tap Connect, and capture focused logs
 - Manual ADB commands are **ONLY** allowed as last resort with explicit user approval
 
 ### Code Indexing and Search
+
+
 - Use Claude Context (semantic indexing) and Repomix when needed
 
 ### External Documentation and Research
+
+
 - DeepWiki, Context7, DocFork for official docs and examples
 - Tavily/Brave for current web info
 - Exa + Zen MCP multi-AI consensus for deep research
 
 ### iOS Quality (when applicable)
+
+
 - Use SwiftLint MCP for Swift projects
 
 ## Quality Enforcement (Android + Backend Kotlin)
@@ -43,16 +53,24 @@
 ## How to Run Locally with MCP Tools
 
 ### Build Plugins (Composite Build)
+
+
 - Run Gradle MCP task `build` in `plugins/`
 
 ### Quality per Module
+
+
 - `app/`: `detekt`, `ktlintCheck` (via Gradle MCP)
 - `feature-*/` and `navigation-*/`: `detekt`, `ktlintCheck` (via Gradle MCP)
 
 ### Assemble App
+
+
 - `app/`: `assembleDebug` (via Gradle MCP) — do not install
 
 ### Install + Validate on Emulator
+
+
 - Use Android MCP to install the built APK
 - Use Mobile-MCP to launch the app, tap Connect, and capture focused logs
 
