@@ -24,6 +24,7 @@ dependencies {
     // Core modules
     implementation(libs.local.core.data)
     implementation(libs.local.navigation.annotations)
+    ksp(libs.local.navigation.annotations)
 
     // Navigation API for deep links
     implementation(libs.local.navigation.api)

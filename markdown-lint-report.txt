@@ -1,7 +1,7 @@
-Markdown Lint Report - Sun Sep  7 16:06:14 +07 2025
+Markdown Lint Report - Sun Sep  7 16:12:31 +07 2025
 =================================
 Total files checked: 82
-Files fixed: 6
+Files fixed: 0
 
 Files with warnings:
   - ./.augment/rules/README.md: Code blocks without language

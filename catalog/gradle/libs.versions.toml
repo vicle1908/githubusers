@@ -46,6 +46,7 @@ coreCommonModule = "1.0.0"
 coreDataModule = "1.0.0"
 coreUiModule = "1.0.0"
 navigationAnnotationsModule = "1.0.0"
+navigationKspModule = "1.0.0"
 coil3 = "3.3.0"
 androidx-core = "1.17.0"
 android-gradle-plugin = "8.13.0"
@@ -215,6 +216,7 @@ local-core-common = { group = "com.example.githubusers", name = "core-common", v
 local-core-data = { group = "com.example.githubusers", name = "core-data", version.ref = "coreDataModule" }
 local-core-ui = { group = "com.example.githubusers", name = "core-ui", version.ref = "coreUiModule" }
 local-navigation-annotations = { group = "com.example.githubusers", name = "navigation-annotations", version.ref = "navigationAnnotationsModule" }
+local-navigation-ksp = { group = "com.example.githubusers", name = "navigation-ksp", version.ref = "navigationKspModule" }
 local-navigation-api = { group = "com.example.githubusers", name = "navigation-api", version.ref = "navigationApiModule" }
 local-navigation-impl = { group = "com.example.githubusers", name = "navigation-impl", version.ref = "navigationImplModule" }
 local-feature-users = { group = "com.example.githubusers", name = "feature-users", version.ref = "featureUsersModule" }

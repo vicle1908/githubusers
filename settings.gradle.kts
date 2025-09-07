@@ -78,6 +78,11 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:navigation-impl")).using(project(":"))
         }
     }
+    includeBuild("navigation-ksp") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:navigation-ksp")).using(project(":"))
+        }
+    }
 
     // Feature modules
     includeBuild("feature-users") {

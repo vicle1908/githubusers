@@ -12,9 +12,9 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 
 ### **MANDATORY KNOWLEDGE RETRIEVAL (Before Any Task):**
 
-1. **ByteOver Knowledge**: Retrieve Android development patterns, MVI implementations, Navigation 3 setups
-2. **OpenMemory Context**: Search for project-specific decisions, user preferences, architecture patterns
-3. **Combined Context**: Use both knowledge sources for comprehensive Android development guidance
+ 1. **ByteOver Knowledge**: Retrieve Android development patterns, MVI implementations, Navigation 3 setups
+ 1. **OpenMemory Context**: Search for project-specific decisions, user preferences, architecture patterns
+ 1. **Combined Context**: Use both knowledge sources for comprehensive Android development guidance
 
 ### **KNOWLEDGE STORAGE (After Successful Tasks):**
 
@@ -125,6 +125,7 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 
 ```kotlin
 ```kotlin
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -140,6 +141,7 @@ sealed interface ViewEffect {
     data class NavigateToDetail(val username: String) : ViewEffec
     data class ShowError(val message: String) : ViewEffec
 }
+
 ```
 
 ### Navigation Implementation
@@ -147,6 +149,8 @@ sealed interface ViewEffect {
 - **Deep Link Navigation**:
 
 ```kotlin
+
+
 ```kotlin
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
@@ -290,6 +294,7 @@ Users can explicitly request multi-AI consultation with:
 
 ```kotlin
 ```kotlin
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -334,11 +339,14 @@ class UserListViewModel @Inject constructor(
         }
     }
 }
+
 ```
 
 ### Deep Link Navigation
 
 ```kotlin
+
+
 ```kotlin
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
@@ -406,6 +414,7 @@ fun UserListScreen(
 
 ```kotlin
 ```kotlin
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -484,6 +493,7 @@ fun SearchBar(
         // Search suggestions...
     }
 }
+
 ```
 
 ## Best Practices Summary

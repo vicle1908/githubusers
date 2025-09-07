@@ -7,6 +7,7 @@ alwaysApply: true
 # Kotlin Development Rule
 
 Scope
+
 - Language-only guidance for Kotlin source. Do not include Android/Compose/Hilt/Navigation/Room/DataStore specifics here (see .kilocode/rules/android.md for platform topics).
 
 ## Style and naming

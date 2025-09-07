@@ -3,13 +3,18 @@
 ## Import Rules (CRITICAL)
 
 ### No Wildcard Imports (MANDATORY)
+
+
 - **NEVER** use wildcard/star imports
 - **ALWAYS** use single imports only
 - Enforced via `.editorconfig` and Detekt rules
 
 ### Import Ordering
+
+
 ```kotlin
 ```kotlin
+
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +22,7 @@ import javax.inject.Injec
 
 // WRONG - Never use wildcards
 import kotlinx.coroutines.flow.*  // FORBIDDEN
+
 ```
 
 ## Naming Conventions
@@ -51,6 +57,8 @@ import kotlinx.coroutines.flow.*  // FORBIDDEN
 
 ### Data Classes
 ```kotlin
+
+
 ```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
@@ -77,8 +85,11 @@ sealed interface ViewState {
 ## Null Safety
 
 ### Safe Calls
+
+
 ```kotlin
 ```kotlin
+
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -104,10 +115,13 @@ val length = username?.length ?: 0
 
 // WRONG - Avoid !!
 val length = username!!.length  // AVOID
+
 ```
 
 ### Validation
 ```kotlin
+
+
 ```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
@@ -144,13 +158,18 @@ fun processUser(user: User?) {
 ## Coroutines and Flow
 
 ### Structured Concurrency
+
+
 - Never use `GlobalScope`
 - Use proper scope managemen
 - Handle cancellation properly
 
 ### Flow Best Practices
+
+
 ```kotlin
 ```kotlin
+
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -192,6 +211,7 @@ val users = userRepository.getUsers()
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = emptyList()
     )
+
 ```
 
 ## Collection Operations
@@ -203,6 +223,8 @@ val users = userRepository.getUsers()
 
 ### Functional Operations
 ```kotlin
+
+
 ```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
@@ -261,6 +283,8 @@ val result = largeList.asSequence()
 ## Scope Functions
 
 ### Usage Guidelines
+
+
 - **let**: Null checks and transformations
 - **apply**: Object configuration
 - **run**: Computing results with receiver
@@ -269,6 +293,7 @@ val result = largeList.asSequence()
 
 ```kotlin
 ```kotlin
+
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -331,6 +356,7 @@ val intent = Intent().apply {
     action = Intent.ACTION_VIEW
     data = Uri.parse(url)
 }
+
 ```
 
 ## Quality Enforcemen
@@ -348,6 +374,8 @@ val intent = Intent().apply {
 
 ### EditorConfig
 ```properties
+
+
 ```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
@@ -422,8 +450,11 @@ wildcard_import = false
 ## Testing Conventions
 
 ### Test Naming
+
+
 ```kotlin
 ```kotlin
+
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -486,7 +517,9 @@ val intent = Intent().apply {
     action = Intent.ACTION_VIEW
     data = Uri.parse(url)
 }
+
 # .editorconfig
+
 [*.{kt,kts}]
 indent_size = 4
 max_line_length = 120
@@ -502,6 +535,7 @@ fun `test getUserById with valid ID returns user`() {
 fun test_getUserById_withValidId_returnsUser() {
     // Test implementation
 }
+
 ```
 
 ### Test Structure
@@ -513,6 +547,8 @@ fun test_getUserById_withValidId_returnsUser() {
 
 ### KDoc
 ```kotlin
+
+
 ```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
@@ -603,6 +639,8 @@ suspend fun getUserDetails(userId: String): User?
 ```
 
 ### Comments
+
+
 - Prefer self-documenting code over comments
 - Use KDoc for public APIs
 - Explain "why" not "what" in comments
@@ -610,11 +648,15 @@ suspend fun getUserDetails(userId: String): User?
 ## MCP Integration Notes
 
 ### Build and Quality Checks
+
+
 - **ALWAYS** run quality checks via Gradle MCP
 - Use `ktlintCheck` and `detekt` tasks
 - Never bypass quality gates
 
 ### Enforcemen
+
+
 - All code must pass KtLint and Detek
 - No wildcard imports policy is non-negotiable
 - Version catalog usage is mandatory

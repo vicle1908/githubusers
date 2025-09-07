@@ -25,31 +25,43 @@
 ## Usage Enforcement Rules
 
 ### Rule 1: Build Operations (CRITICAL)
+
+
 - **ALWAYS** use Gradle MCP for ALL build tasks
 - **NEVER** run `./gradlew` directly
 - **VERIFY** project structure before executing tasks
 
 ### Rule 2: Android Operations
+
+
 - **ALWAYS** use Android MCP for device operations
 - **ALWAYS** use Mobile-MCP for automation and testing
 - Manual ADB commands **ONLY** with explicit user approval as last resort
 
 ### Rule 3: Code Search
+
+
 - **ALWAYS** use Claude Context MCP for code search
 - **NEVER** manually browse files or use basic search tools
 - **ENSURE** codebase is indexed before searching
 
 ### Rule 4: External Information
+
+
 - **ALWAYS** use external search for current information
 - **NEVER** rely solely on training data for time-sensitive info
 - **USE** appropriate service: Context7/DocFork for docs, DeepWiki for repos
 
 ### Rule 5: Memory Management
+
+
 - **ALWAYS** use OpenMemory for persistent storage
 - **ALWAYS** use Byterover for programming patterns
 - **NEVER** rely on conversation memory for important information
 
 ### Rule 6: Research Validation
+
+
 - **ALWAYS** use multiple sources (minimum 3 different MCP tools)
 - **ALWAYS** feed research results to Zen MCP for consensus
 - **FOLLOW** the 10-step research workflow from enhanced-research-strategy.md
@@ -57,11 +69,15 @@
 ## Error Handling and Fallbacks
 
 ### Primary Server Unavailable
-1. **Check** server status and connectivity
-2. **Use** alternative server if available
-3. **Manual** execution ONLY as last resort with explicit user approval
+
+
+ 1. **Check** server status and connectivity
+ 1. **Use** alternative server if available
+ 1. **Manual** execution ONLY as last resort with explicit user approval
 
 ### Fallback Priority
+
+
 - **Build Tasks**: Gradle MCP → Manual with approval only
 - **Android Ops**: Android MCP → Manual ADB with approval only
 - **Code Search**: Claude Context → Manual file browsing
@@ -70,14 +86,18 @@
 ## Knowledge Integration
 
 ### Before Using Any MCP Server
-1. **Retrieve** relevant patterns: `mcp_byterover-mcp_byterover-retrieve-knowledge`
-2. **Search** project context: `mcp_openmemory_search-memories`
-3. **Combine** both knowledge sources for optimal usage
+
+
+ 1. **Retrieve** relevant patterns: `mcp_byterover-mcp_byterover-retrieve-knowledge`
+ 1. **Search** project context: `mcp_openmemory_search-memories`
+ 1. **Combine** both knowledge sources for optimal usage
 
 ### After Successful Operations
-1. **Store** important findings: `mcp_byterover-mcp_byterover-store-knowledge`
-2. **Update** module insights: `mcp_byterover-mcp_byterover-update-module`
-3. **Save** implementation plans: `mcp_byterover-mcp_byterover-save-implementation-plan`
+
+
+ 1. **Store** important findings: `mcp_byterover-mcp_byterover-store-knowledge`
+ 1. **Update** module insights: `mcp_byterover-mcp_byterover-update-module`
+ 1. **Save** implementation plans: `mcp_byterover-mcp_byterover-save-implementation-plan`
 
 ## Quality Standards
 
