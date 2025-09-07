@@ -38,6 +38,44 @@ This directory contains the canonical documentation for all AI assistants workin
 3. Verify with: `./scripts/verify-assistant-sync.sh`
 4. Commit all changes together
 
+### Automatic Sync via Git Hooks (Recommended)
+
+This repository ships with versioned git hooks in `.githooks/` to automatically sync assistant rules on checkout/switch/merge.
+
+Install once per clone/worktree:
+```bash
+./scripts/install-hooks.sh
+```
+The installer sets:
+```bash
+git config core.hooksPath .githooks
+```
+Hooks executed:
+- `post-checkout` (after branch checkout)
+- `post-switch` (after `git switch`)
+- `post-merge` (after merge)
+
+Each hook runs:
+- `./scripts/sync-assistant-rules.sh` (quietly)
+- `./scripts/verify-assistant-sync.sh`
+
+### Multi-worktree Support
+
+When you create a new worktree, run the installer once inside that worktree:
+```bash
+# Create and enter a new worktree
+git worktree add ../worktrees/feature-x main
+cd ../worktrees/feature-x
+
+# Install hooks for this worktree
+./scripts/install-hooks.sh
+
+# Optional: run manually once
+./scripts/sync-assistant-rules.sh
+./scripts/verify-assistant-sync.sh
+```
+This guarantees all assistants remain synchronized across worktrees.
+
 ### Adding New Rules
 
 1. Create new canonical doc in `docs/assistants/`

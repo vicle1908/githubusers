@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# post-checkout: auto-sync assistant rules after checkout/switch
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+if [ -x "$ROOT/scripts/sync-assistant-rules.sh" ]; then
+  # Run sync quietly; never fail developer workflows if sync has issues
+  ( cd "$ROOT" && ./scripts/sync-assistant-rules.sh >/dev/null 2>&1 || true )
+fi
+
+if [ -x "$ROOT/scripts/verify-assistant-sync.sh" ]; then
+  ( cd "$ROOT" && ./scripts/verify-assistant-sync.sh || true )
+fi
+
+exit 0
+
