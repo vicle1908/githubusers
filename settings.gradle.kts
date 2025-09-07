@@ -51,6 +51,16 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:core-data")).using(project(":"))
         }
     }
+    includeBuild("core-networking") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-networking")).using(project(":"))
+        }
+    }
+    includeBuild("core-storage") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-storage")).using(project(":"))
+        }
+    }
     includeBuild("navigation-annotations") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:navigation-annotations")).using(project(":"))

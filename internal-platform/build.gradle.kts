@@ -19,6 +19,8 @@ val internalModules = listOf(
     // ✅ ADD ALL MISSING MODULES
     "com.example.githubusers:core-common" to libs.versions.coreCommonModule.get(),
     "com.example.githubusers:core-data" to libs.versions.coreDataModule.get(),
+    "com.example.githubusers:core-networking" to libs.versions.coreNetworkingModule.get(),
+    "com.example.githubusers:core-storage" to libs.versions.coreStorageModule.get(),
     "com.example.githubusers:navigation-annotations" to libs.versions.navigationAnnotationsModule.get(),
     "com.example.githubusers:navigation-ksp" to libs.versions.navigationKspModule.get(),
     "com.example.githubusers:feature-search" to libs.versions.featureSearchModule.get()

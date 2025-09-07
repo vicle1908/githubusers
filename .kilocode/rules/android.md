@@ -1350,4 +1350,3 @@ This rule ensures the highest quality Android development by combining modern be
 
 - Use the standard widget testing for flutter
 - Use integration tests for each api module.
-

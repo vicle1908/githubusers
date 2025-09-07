@@ -24,4 +24,3 @@ Always use gradle-mcp when needing to run Gradle tasks (build, test, assemble, c
 - Use gradle-mcp for all Gradle-related operations
 - Ensure proper error handling and fallback mechanisms
 - Monitor build performance and optimization opportunities
-

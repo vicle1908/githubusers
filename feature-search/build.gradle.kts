@@ -23,7 +23,8 @@ dependencies {
     implementation(platform(libs.internal.platform))
 
     // Core modules
-    implementation(libs.local.core.data)
+    implementation(libs.local.core.networking)
+    implementation(libs.local.core.storage)
     implementation(libs.local.navigation.annotations)
     ksp(libs.local.navigation.ksp)
 

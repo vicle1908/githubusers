@@ -22,6 +22,7 @@ dependencies {
     // Core modules (reuse shared UI/MVI primitives, no duplication)
     implementation(libs.local.core.ui)
     implementation(libs.local.core.mvi)
+    implementation(libs.local.core.storage)
 
     // Navigation API (handler contract)
     implementation(libs.local.navigation.api)

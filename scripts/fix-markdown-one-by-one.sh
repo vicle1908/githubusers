@@ -164,8 +164,8 @@ fix_structure() {
                 changed=true
             fi
             echo "$line" >> "$temp_file"
-            # Add blank line after heading if needed
-            if [[ -n "$next_line" ]] && [[ "$next_line" != "" ]] && ! [[ "$next_line" =~ ^#+ ]]; then
+            # Add blank line after heading if needed (even if next is another heading)
+            if [[ -n "$next_line" ]] && [[ "$next_line" != "" ]]; then
                 echo "" >> "$temp_file"
                 changed=true
             fi
@@ -279,6 +279,14 @@ echo
 
 # Process files with known issues first
 files_with_issues=(
+    "./.cursor/rules/android-debugging.mdc"
+    "./.cursor/rules/android.mdc"
+    "./.cursor/rules/byterover-rules.mdc"
+    "./.cursor/rules/enhanced-research-strategy.mdc"
+    "./.cursor/rules/kotlin.mdc"
+    "./.cursor/rules/mcp-guide.mdc"
+    "./.cursor/rules/multi-ai-consultation.mdc"
+    "./.cursor/rules/warp-mcp-policy.mdc"
     "./.augment/rules/README.md"
     "./.augment/rules/android-debugging.md"
     "./.augment/rules/android-standards.md"

@@ -147,6 +147,7 @@ This project uses Cursor with custom rules to enforce Android development best p
 ```markdown
 ```markdown
 
+```markdown
 .cursor/rules/
 ├── README.md                    # This file - Overview and status
 ├── android.mdc                  # Android development standards
@@ -160,4 +161,3 @@ This project uses Cursor with custom rules to enforce Android development best p
 ## Support
 
 For questions about these rules or MCP server usage, refer to the specific rule files or check the MCP server status in `mcp-guide.mdc`.
-
