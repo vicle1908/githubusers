@@ -16,7 +16,7 @@ dependencies {
     implementation(libs.local.navigation.annotations)
 
     // KSP API
-    implementation(libs.ksp.api)
+    implementation(libs.ksp.symbol.processing.api)
 
     // Testing
     testImplementation(libs.junit)

@@ -31,30 +31,47 @@ Claude has access to all 14 MCP servers listed in [mcp-guide.md](./mcp-guide.md)
 ### Enforcement Priorities
 
 1. **Gradle MCP** for ALL builds - NEVER use ./gradlew
-2. **Android MCP** for device operations
-3. **Mobile-MCP** for UI automation
-4. **ByteRover** for knowledge management
-5. Manual commands ONLY with explicit approval
+1. **Android MCP** for device operations
+1. **Mobile-MCP** for UI automation
+1. **ByteRover** for knowledge management
+1. Manual commands ONLY with explicit approval
 
 ## Quick Reference
 
 ### Build Tasks
+
+
 ```bash
 ```text
+
+```json
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 ```
 
 ### Android Operations
+
+
 ```bash
 ```text
+
+```json
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 mcp_android_execute_adb_shell_command("logcat -d | tail -20")
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 ```
 
 ### Knowledge Management
+
+
 ```bash
 ```text
+
+```json
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("logcat -d | tail -20")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 mcp_android_execute_adb_shell_command("logcat -d | tail -20")
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")

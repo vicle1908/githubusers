@@ -7,15 +7,15 @@ This directory contains the canonical documentation for all AI assistants workin
 ## Canonical Documents
 
 1. **[warp-mcp-policy.md](./warp-mcp-policy.md)** - MCP-first development workflow
-2. **[mcp-guide.md](./mcp-guide.md)** - MCP server selection and usage
-3. **[enhanced-research-strategy.md](./enhanced-research-strategy.md)** - 10-step research workflow
-4. **[multi-ai-consultation.md](./multi-ai-consultation.md)** - Multi-AI consensus rules
-5. **[android-standards.md](./android-standards.md)** - Android development standards
-6. **[kotlin-style.md](./kotlin-style.md)** - Kotlin code style guide
-7. **[android-debugging.md](./android-debugging.md)** - MCP-based debugging
-8. **[byterover-rules.md](./byterover-rules.md)** - ByteRover workflows and persistence
-9. **[dev-environment.md](./dev-environment.md)** - Environment setup
-10. **[claude-guide.md](./claude-guide.md)** - Claude-specific notes
+1. **[mcp-guide.md](./mcp-guide.md)** - MCP server selection and usage
+1. **[enhanced-research-strategy.md](./enhanced-research-strategy.md)** - 10-step research workflow
+1. **[multi-ai-consultation.md](./multi-ai-consultation.md)** - Multi-AI consensus rules
+1. **[android-standards.md](./android-standards.md)** - Android development standards
+1. **[kotlin-style.md](./kotlin-style.md)** - Kotlin code style guide
+1. **[android-debugging.md](./android-debugging.md)** - MCP-based debugging
+1. **[byterover-rules.md](./byterover-rules.md)** - ByteRover workflows and persistence
+1. **[dev-environment.md](./dev-environment.md)** - Environment setup
+1. **[claude-guide.md](./claude-guide.md)** - Claude-specific notes
 
 ## Sync Locations
 
@@ -34,28 +34,36 @@ This directory contains the canonical documentation for all AI assistants workin
 ### Updating Rules
 
 1. **ALWAYS** update canonical docs in `docs/assistants/` first
-2. Run sync script: `./scripts/sync-assistant-rules.sh`
-3. Verify with: `./scripts/verify-assistant-sync.sh`
-4. Commit all changes together
+1. Run sync script: `./scripts/sync-assistant-rules.sh`
+1. Verify with: `./scripts/verify-assistant-sync.sh`
+1. Commit all changes together
 
 ### Adding New Rules
 
 1. Create new canonical doc in `docs/assistants/`
-2. Update this README
-3. Add to sync script mapping
-4. Run sync and verify
+1. Update this README
+1. Add to sync script mapping
+1. Run sync and verify
 
 ### Verification
 
 Run verification to ensure all assistants have matching content:
+
 ```bash
 ```text
+
+```text
+```text
+
 ./scripts/verify-assistant-sync.sh
+
 ```
 
 ## Critical Policies
 
 ### MCP-First (MANDATORY)
+
+
 - **ALWAYS** use Gradle MCP for builds
 - **NEVER** run `./gradlew` directly
 - Android MCP for device operations
@@ -63,6 +71,8 @@ Run verification to ensure all assistants have matching content:
 - Manual commands ONLY with explicit approval
 
 ### Code Quality (MANDATORY)
+
+
 - **NO wildcard imports** - Single imports only
 - KtLint and Detekt enforcement
 - Version catalog only
@@ -70,12 +80,16 @@ Run verification to ensure all assistants have matching content:
 - Plugin versions via `version.ref`
 
 ### Architecture (MANDATORY)
+
+
 - Clean Architecture with MVI
 - **Navigation 3 ONLY**
 - Feature-based modularization
 - `settings.gradle.kts` as container only
 
 ### Knowledge Management (MANDATORY)
+
+
 - ByteRover for programming patterns
 - OpenMemory for project context
 - **CRITICAL PLAN PERSISTENCE RULE** must be followed

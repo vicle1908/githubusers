@@ -11,20 +11,23 @@ This document outlines the **completed migration** from the centralized `AppDest
 ### New Distributed Architecture Components
 
 1. **Navigation3Controller** - Custom navigation controller interface (updated to use NavCommand)
-2. **Navigation3Host** - Custom Compose host for rendering screens (updated to use deep links)
-3. **FeatureDestination** - Feature-owned destination interfaces (replaces AppDestination)
-4. **FeatureApi** - Type-safe cross-feature navigation interfaces
-5. **NavCommand** - Navigation command interface for type-safe navigation
-6. **DeepLinkHandler** - Feature-specific deep link handlers via Hilt multibindings (updated)
-7. **SecureDeepLinkHandler** - Security validation and telemetry
-8. **DefaultDestinationResolver** - Resolves deep links to destinations using handlers (updated)
+1. **Navigation3Host** - Custom Compose host for rendering screens (updated to use deep links)
+1. **FeatureDestination** - Feature-owned destination interfaces (replaces AppDestination)
+1. **FeatureApi** - Type-safe cross-feature navigation interfaces
+1. **NavCommand** - Navigation command interface for type-safe navigation
+1. **DeepLinkHandler** - Feature-specific deep link handlers via Hilt multibindings (updated)
+1. **SecureDeepLinkHandler** - Security validation and telemetry
+1. **DefaultDestinationResolver** - Resolves deep links to destinations using handlers (updated)
 
 ### New Distributed Flow
 
 ```text
+```text
+
 Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
 DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
 FeatureDestination → Navigation3Host → UI Screen
+
 ```
 
 ## Migration Results: Complete Migration - COMPLETED ✅
@@ -93,12 +96,25 @@ We have successfully implemented a **complete migration** to distributed destina
 
 **Before (Centralized)**:
 ```text
+
+```text
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
 AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
 ```
 
 **After (Distributed)**:
+
 ```text
+```text
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+
 ```
 
 ### 📱 **Feature Ownership**
@@ -113,7 +129,15 @@ FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Co
 ### 1. **Feature Destination Definition**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -127,12 +151,34 @@ sealed class UserDestination : FeatureDestination {
         override val deepLink = "app://users/user/$userId"
     }
 }
+
 ```
 
 2. **Create UserFeatureApi**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -164,12 +210,65 @@ class UserFeatureApiImpl @Inject constructor(
         return NavigateToUserList()
     }
 }
+
 ```
 
 3. **Update UserDeepLinkHandler**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -220,6 +319,7 @@ class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
         }
     }
 }
+
 ```
 
 ### Phase 3: Legacy Code Removal
@@ -268,7 +368,109 @@ class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
 1. **Define FeatureDestination**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -322,12 +524,168 @@ class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
 sealed class MyFeatureDestination : FeatureDestination {
     // Define destinations with route and deepLink
 }
+
 ```
 
 2. **Implement FeatureApi**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -384,12 +742,224 @@ sealed class MyFeatureDestination : FeatureDestination {
 interface MyFeatureApi : FeatureApi {
     // Define navigation methods returning NavCommand
 }
+
 ```
 
 3. **Create DeepLinkHandler**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
+interface MyFeatureApi : FeatureApi {
+    // Define navigation methods returning NavCommand
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -449,12 +1019,283 @@ interface MyFeatureApi : FeatureApi {
 class MyFeatureDeepLinkHandler : DeepLinkHandler {
     // Handle deep links and return AppDestination for compatibility
 }
+
 ```
 
 4. **Register with Hilt**:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+Navigation Request → Navigation3Controller → SecureDeepLinkHandler →
+DeepLinkSecurityValidator → DefaultDestinationResolver → DeepLinkHandler →
+FeatureDestination → Navigation3Host → UI Screen
+AppDestination (centralized) → DeepLinkHandler → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
+interface MyFeatureApi : FeatureApi {
+    // Define navigation methods returning NavCommand
+}
+FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
+// In feature-users module
+sealed class UserDestination : FeatureDestination {
+    object UserList : UserDestination() {
+        override val route = "users/list"
+        override val deepLink = "app://users/list"
+    }
+
+    data class UserDetail(val userId: String) : UserDestination() {
+        override val route = "users/detail/$userId"
+        override val deepLink = "app://users/user/$userId"
+    }
+}
+interface UserFeatureApi : FeatureApi {
+    fun navigateToUserDetail(userId: String): NavCommand
+    fun navigateToUserList(): NavCommand
+}
+
+class UserFeatureApiImpl @Inject constructor(
+    private val navigationController: Navigation3Controller
+) : UserFeatureApi {
+    override val featureId = "users"
+
+    override fun navigateToUserDetail(userId: String): NavCommand {
+        return NavigateToUserDetail(userId)
+    }
+
+    override fun navigateToUserList(): NavCommand {
+        return NavigateToUserList()
+    }
+}
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "users"
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        // Handle distributed destinations only
+        return when {
+            isUserListUri(uri) -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            isUserDetailUri(uri) -> {
+                val userId = extractUserId(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(userId)
+                )
+            }
+            else -> null
+        }
+    }
+}
+sealed class MyFeatureDestination : FeatureDestination {
+    // Define destinations with route and deepLink
+}
+interface MyFeatureApi : FeatureApi {
+    // Define navigation methods returning NavCommand
+}
+class MyFeatureDeepLinkHandler : DeepLinkHandler {
+    // Handle deep links and return AppDestination for compatibility
+}
 FeatureDestination (per feature) → FeatureApi → NavCommand → Navigation3Controller
 // In feature-users module
 sealed class UserDestination : FeatureDestination {
@@ -519,6 +1360,7 @@ class MyFeatureDeepLinkHandler : DeepLinkHandler {
 abstract class MyFeatureNavigationModule : FeatureNavigationModule() {
     // Register handlers and APIs
 }
+
 ```
 
 ### For Existing Features

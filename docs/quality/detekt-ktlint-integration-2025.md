@@ -29,6 +29,8 @@ This document outlines the comprehensive integration of detekt and ktlint rules 
 
 ```toml
 ```text
+
+```markdown
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -40,6 +42,13 @@ detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", versi
 
 ```yaml
 ```text
+
+```yaml
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -60,6 +69,27 @@ formatting:
 
 ```kotlin
 ```gradle
+
+```gradle
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -109,6 +139,45 @@ dependencies {
 
 ```yaml
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -135,6 +204,65 @@ FunctionNaming:
 
 ```yaml
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -163,6 +291,87 @@ TopLevelPropertyNaming:
 
 ```yaml
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -194,6 +403,112 @@ TooManyFunctions:
 
 ```yaml
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -274,6 +589,140 @@ LongParameterList:
 
 ```bash
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -310,6 +759,170 @@ LongParameterList:
 
 ```bash
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
+# The version catalog has been updated automatically
+# No manual dependency changes needed
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
@@ -348,6 +961,202 @@ LongParameterList:
 
 ```bash
 ```kotlin
+
+```kotlin
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
+# The version catalog has been updated automatically
+# No manual dependency changes needed
+# NEW: Detekt Ktlint Ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+
+# REMOVED: Detekt Formatting (replaced by ktlint ruleset)
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+# NEW: Ktlint Ruleset Integration
+ktlint:
+  active: true
+  code_style: 'android_studio'  # Android-specific formatting
+  autoCorrect: true
+
+# UPDATED: Disable formatting rules since ktlint handles them
+formatting:
+  active: false  # Ktlint handles all formatting rules
+// UPDATED: Use ktlint ruleset for perfect alignment
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
+FunctionNaming:
+  ignoreAnnotated: ['Composable']  # @Composable functions can use PascalCase
+TopLevelPropertyNaming:
+  constantPattern: '[A-Z][A-Za-z0-9]*'  # PascalCase for constants
+TooManyFunctions:
+  threshold: 25  # Increased for Compose modules
+  ignoreAnnotatedFunctions: ['Preview', 'Composable']
+LongParameterList:
+  functionThreshold: 8  # Increased for Compose
+  ignoreDefaultParameters: true  # Ignore default parameters
+# The version catalog has been updated automatically
+# No manual dependency changes needed
+# Run detekt to ensure ktlint ruleset is working
+./gradlew detekt
 # NEW: Detekt Ktlint Ruleset
 detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 

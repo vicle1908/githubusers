@@ -5,8 +5,11 @@ Install the hook
 1) From repository root:
 
 ```text
+```text
+
 ln -sf ../../tools/git-hooks/pre-commit .git/hooks/pre-commit
 chmod +x tools/git-hooks/pre-commit
+
 ```
 
 What it does

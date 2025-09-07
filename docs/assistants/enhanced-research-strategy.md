@@ -12,15 +12,15 @@ alwaysApply: true
 ### Research Workflow
 
 1. **Start with existing patterns**: Use `mcp_claude-context_search_code` to find existing codebase patterns
-2. **Get documentation**: Choose either `mcp_context7_resolve-library-id` + `mcp_context7_get-library-docs` OR `mcp_docfork_get-library-docs` for library documentation
-3. **Find repository patterns**: Use `mcp_deepwiki_ask_question` for GitHub repository best practices
-4. **Real-world code examples**: Use `mcp_grep-remote_searchGitHub` for production code patterns
-5. **Semantic search**: Use `mcp_exa_web_search_exa` for neural understanding
-6. **Current information**: Use `mcp_tavily_tavily-search` for web content and trends
-7. **Multi-modal coverage**: Use `mcp_brave-search_brave_web_search` for comprehensive search
-8. **Article insights**: Use `mcp_medium-search_search_medium_topic` for in-depth articles and tutorials
-9. **AI consensus**: Use `mcp_zen_consensus` for multi-model analysis
-10. **Deep analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
+1. **Get documentation**: Choose either `mcp_context7_resolve-library-id` + `mcp_context7_get-library-docs` OR `mcp_docfork_get-library-docs` for library documentation
+1. **Find repository patterns**: Use `mcp_deepwiki_ask_question` for GitHub repository best practices
+1. **Real-world code examples**: Use `mcp_grep-remote_searchGitHub` for production code patterns
+1. **Semantic search**: Use `mcp_exa_web_search_exa` for neural understanding
+1. **Current information**: Use `mcp_tavily_tavily-search` for web content and trends
+1. **Multi-modal coverage**: Use `mcp_brave-search_brave_web_search` for comprehensive search
+1. **Article insights**: Use `mcp_medium-search_search_medium_topic` for in-depth articles and tutorials
+1. **AI consensus**: Use `mcp_zen_consensus` for multi-model analysis
+1. **Deep analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
 
 ### Tool Selection Rules
 
@@ -82,6 +82,8 @@ alwaysApply: true
 
 ```kotlin
 ```gradle
+
+```gradle
 // 1. Find existing patterns
 mcp_claude-context_search_code("Android Navigation 3 implementation")
 
@@ -107,6 +109,27 @@ mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findi
 
 ```kotlin
 ```gradle
+
+```gradle
+// 1. Find existing patterns
+mcp_claude-context_search_code("Android Navigation 3 implementation")
+
+// 2. Get documentation
+mcp_context7_resolve-library-id("androidx.navigation")
+mcp_context7_get-library-docs("/androidx/navigation", "deep links")
+
+// 3. Find best practices
+mcp_deepwiki_ask_question("android/architecture-samples", "Navigation 3 best practices")
+
+// 4. Real-world code examples
+mcp_grep-remote_searchGitHub("NavHost(", language=["Kotlin"])
+
+// 5. Current trends
+mcp_tavily_tavily-search("Android Navigation 3 2024 best practices")
+mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": ["android", "navigation"]})
+
+// 6. AI consensus
+mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
 // 1. Find existing patterns
 mcp_claude-context_search_code("Android Navigation 3 implementation")
 
@@ -185,28 +208,28 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 ### Quick Research (Simple Query)
 
 1. `mcp_tavily_tavily-search` OR `mcp_brave-search_brave_web_search` OR `mcp_medium-search_search_medium_topic`
-2. Direct result
+1. Direct result
 
 ### Medium Research (Implementation)
 
 1. `mcp_claude-context_search_code` (existing patterns)
-2. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
-3. `mcp_deepwiki_ask_question` (repository patterns)
-4. `mcp_grep-remote_searchGitHub` (real-world code examples)
-5. `mcp_medium-search_search_medium_topic` (articles)
+1. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
+1. `mcp_deepwiki_ask_question` (repository patterns)
+1. `mcp_grep-remote_searchGitHub` (real-world code examples)
+1. `mcp_medium-search_search_medium_topic` (articles)
 
 ### Complex Research (Architecture)
 
 1. `mcp_claude-context_search_code` (existing patterns)
-2. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
-3. `mcp_deepwiki_ask_question` (repository patterns)
-4. `mcp_grep-remote_searchGitHub` (real-world code examples)
-5. `mcp_exa_web_search_exa` (semantic understanding)
-6. `mcp_tavily_tavily-search` (current trends)
-7. `mcp_brave-search_brave_web_search` (multi-modal)
-8. `mcp_medium-search_search_medium_topic` (articles)
-9. `mcp_zen_consensus` (multi-AI validation)
-10. `mcp_zen_thinkdeep` (deep analysis)
+1. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
+1. `mcp_deepwiki_ask_question` (repository patterns)
+1. `mcp_grep-remote_searchGitHub` (real-world code examples)
+1. `mcp_exa_web_search_exa` (semantic understanding)
+1. `mcp_tavily_tavily-search` (current trends)
+1. `mcp_brave-search_brave_web_search` (multi-modal)
+1. `mcp_medium-search_search_medium_topic` (articles)
+1. `mcp_zen_consensus` (multi-AI validation)
+1. `mcp_zen_thinkdeep` (deep analysis)
 
 ## Research Quality Metrics
 

@@ -8,6 +8,8 @@ Set these environment variables in your shell profile:
 
 ```bash
 ```bash
+
+```markdown
 # Core MCP Services
 export OPENAI_API_KEY="your-openai-key"
 export GEMINI_API_KEY="your-gemini-key"
@@ -37,26 +39,27 @@ export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/plat
 ### Required MCP Servers
 
 1. **Gradle MCP Server** - Build operations (MANDATORY)
-2. **Android MCP Server** - Device operations
-3. **Mobile-MCP Server** - UI automation
-4. **Claude Context** - Code search
-5. **ByteRover MCP** - Knowledge management
-6. **OpenMemory** - Persistent storage
-7. **DeepWiki** - Repository documentation
-8. **Context7/DocFork** - Library documentation
-9. **Tavily/Brave** - Web search
-10. **Zen MCP** - Multi-AI consultation
+1. **Android MCP Server** - Device operations
+1. **Mobile-MCP Server** - UI automation
+1. **Claude Context** - Code search
+1. **ByteRover MCP** - Knowledge management
+1. **OpenMemory** - Persistent storage
+1. **DeepWiki** - Repository documentation
+1. **Context7/DocFork** - Library documentation
+1. **Tavily/Brave** - Web search
+1. **Zen MCP** - Multi-AI consultation
 
 ## Local Setup
 
 1. Export all required environment variables
-2. Install MCP servers via npm/pip as needed
-3. Configure assistant settings to use environment variables
-4. Never commit actual keys to version control
+1. Install MCP servers via npm/pip as needed
+1. Configure assistant settings to use environment variables
+1. Never commit actual keys to version control
 
 ## CI/CD Setup
 
 Add secrets to your CI/CD platform:
+
 - GitHub Actions: Repository Settings → Secrets
 - GitLab CI: Project Settings → CI/CD → Variables
 - Jenkins: Credentials → Global credentials
@@ -64,7 +67,7 @@ Add secrets to your CI/CD platform:
 ## Security Best Practices
 
 1. Use environment variables, never hardcode secrets
-2. Rotate keys regularly
-3. Use different keys for development and production
-4. Add `.env` files to `.gitignore`
-5. Use secret management tools in production
+1. Rotate keys regularly
+1. Use different keys for development and production
+1. Add `.env` files to `.gitignore`
+1. Use secret management tools in production

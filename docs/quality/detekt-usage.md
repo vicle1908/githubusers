@@ -17,6 +17,8 @@ This document provides guidance on using detekt for static code analysis in the 
 
 ```bash
 ```text
+
+```markdown
 # Run detekt on all modules
 ./gradlew detekt
 

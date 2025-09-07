@@ -41,6 +41,9 @@
 ```kotlin
 ```text
 
+```text
+```text
+
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -52,13 +55,34 @@ navigation.navigate(AppDestination.UserDetail("octocat"))
 ## Build Configuration
 
 ### Version Catalog (MANDATORY)
+
+
 - **ALL** modules MUST use the version catalog
 - **NO** hardcoded versions allowed
 - Example:
+
+
 ```kotlin
 
+```gradle
+```gradle
 
 ```gradle
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+
+
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -92,6 +116,52 @@ dependencies {
 ```kotlin
 ```gradle
 
+```gradle
+```gradle
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+}
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+}
+
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -110,6 +180,8 @@ dependencies {
 ```
 
 ### Dependency Injection
+
+
 - **Hilt** for dependency management
 - Module-based configuration
 - Clear scope boundaries
@@ -117,12 +189,16 @@ dependencies {
 ## UI/UX Standards
 
 ### Material 3 Design
+
+
 - Dynamic color support and adaptive theming
 - Accessibility-first design principles
 - Consistent component usage across the app
 - Follow WCAG guidelines
 
 ### Compose UI
+
+
 - Use `remember` and `derivedStateOf` appropriately
 - Minimize recomposition with proper state management
 - Use `LaunchedEffect` for side effects
@@ -131,17 +207,23 @@ dependencies {
 ## Testing Strategy
 
 ### Unit Testing
+
+
 - Test all ViewModels, Use Cases, Repositories
 - Follow AAA Pattern: Arrange, Act, Assert
 - Naming: `test_[method]_[condition]_[expectedResult]`
 
 ### Integration Testing
+
+
 - Test complete navigation flows
 - API integration with test data
 - Room database operations
 - Hilt module configurations
 
 ### UI Testing
+
+
 - Use `createAndroidComposeRule` for Compose
 - Test deep link handling
 - Verify accessibility features
@@ -149,11 +231,15 @@ dependencies {
 ## Performance Optimization
 
 ### Memory Management
+
+
 - Proper coroutine scope management
 - Use `cachedIn` for Flow operations in ViewModels
 - Avoid memory leaks with lifecycle awareness
 
 ### UI Performance
+
+
 - Minimize recomposition
 - Lazy loading for lists
 - Efficient state management
@@ -162,12 +248,16 @@ dependencies {
 ## Security Implementation
 
 ### Data Protection
+
+
 - Use EncryptedSharedPreferences for sensitive data
 - Implement certificate pinning
 - Validate all user inputs and API responses
 - Secure token storage and rotation
 
 ### Privacy
+
+
 - Data minimization principle
 - Proper consent mechanisms
 - Support data deletion requests
@@ -176,11 +266,15 @@ dependencies {
 ## Code Quality Standards
 
 ### Static Analysis (MANDATORY)
+
+
 - **Detekt**: Code smell detection
 - **KtLint**: Code formatting
 - Both applied via convention plugins
 
 ### Documentation
+
+
 - KDoc for public APIs
 - Clear README files per module
 - Architecture documentation
@@ -189,15 +283,21 @@ dependencies {
 ## MCP Integration Requirements
 
 ### Build Operations
+
+
 - **ALWAYS** use Gradle MCP Server
 - **NEVER** run `./gradlew` directly
 
 ### Device Operations
+
+
 - Use Android MCP for ADB operations
 - Use Mobile-MCP for UI automation
 - Manual ADB only with explicit approval
 
 ### Research and Documentation
+
+
 - Use DeepWiki for Android best practices
 - Use Context7/DocFork for library documentation
 - Validate Navigation 3 implementation with latest docs

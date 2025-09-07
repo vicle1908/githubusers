@@ -12,6 +12,8 @@ Annotate your deep link owning class with `@OwnsDeepLinks`:
 
 ```kotlin
 ```kotlin
+
+```kotlin
 @OwnsDeepLinks(moduleId = "users")
 class UsersDeepLinkOwner : DeepLinkOwner {
     @DeepLinkSpec(patterns = [
@@ -26,6 +28,7 @@ class UsersDeepLinkOwner : DeepLinkOwner {
 ### 2. Code Generation
 
 The `navigation-ksp` processor generates:
+
 - Module-specific provider classes implementing `DeepLinkOwnersProvider` (e.g., `GeneratedDeepLinkOwners_Users_abc123`) in your module’s generated sources
 - ServiceLoader configuration in `META-INF/services/` registering each provider
 - No central registry class; all ownership is discovered at runtime via ServiceLoader
@@ -33,8 +36,21 @@ The `navigation-ksp` processor generates:
 ### 3. Multi-Module Integration
 
 #### Generated Provider Structure
+
+
 ```kotlin
 ```kotlin
+
+```kotlin
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
 @OwnsDeepLinks(moduleId = "users")
 class UsersDeepLinkOwner : DeepLinkOwner {
     @DeepLinkSpec(patterns = [
@@ -59,10 +75,48 @@ class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
 ```
 
 #### ServiceLoader Registration
+
+
 ```text
+```kotlin
+
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
+class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
+    override fun getOwners(): Map<String, Set<String>> {
+        return mapOf(
+            "users" to setOf(
+                "app://users/list",
+                "app://users/{userId}",
+                "https://example.com/users/{userId}"
+            )
+        )
+    }
+}
+
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
+
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
+
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+
 ```
 
 ### 4. Runtime Discovery
@@ -70,15 +124,58 @@ com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc12
 At runtime, navigation-impl discovers all providers via ServiceLoader and aggregates ownership, no DI bindings required:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
+class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
+    override fun getOwners(): Map<String, Set<String>> {
+        return mapOf(
+            "users" to setOf(
+                "app://users/list",
+                "app://users/{userId}",
+                "https://example.com/users/{userId}"
+            )
+        )
+    }
+}
+
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
+
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
 val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
 val ownership: Map<String, Set<String>> = providers
     .flatMap { it.getOwners().entries }
     .groupBy({ it.key }, { it.value })
     .mapValues { (_, sets) -> sets.flatten().toSet() }
+
 ```
 
 ## Configuration Requirements
@@ -88,9 +185,62 @@ val ownership: Map<String, Set<String>> = providers
 In your feature module's `build.gradle.kts`:
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
+class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
+    override fun getOwners(): Map<String, Set<String>> {
+        return mapOf(
+            "users" to setOf(
+                "app://users/list",
+                "app://users/{userId}",
+                "https://example.com/users/{userId}"
+            )
+        )
+    }
+}
+
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
+
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
 val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
 val ownership: Map<String, Set<String>> = providers
@@ -115,6 +265,7 @@ ksp {
 tasks.withType<Jar> {
     from(layout.buildDirectory.dir("generated/ksp/main/resources"))
 }
+
 ```
 
 ### 2. Processor Module Setup
@@ -122,9 +273,91 @@ tasks.withType<Jar> {
 The `navigation-ksp` module must be configured as a JVM library (not Android):
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
+class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
+    override fun getOwners(): Map<String, Set<String>> {
+        return mapOf(
+            "users" to setOf(
+                "app://users/list",
+                "app://users/{userId}",
+                "https://example.com/users/{userId}"
+            )
+        )
+    }
+}
+
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
+
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation(project(":navigation3-api"))
+    ksp(project(":navigation3-ksp"))
+}
+
+// IMPORTANT: Configure KSP to generate resources
+ksp {
+    arg("generate.service.files", "true")
+}
+
+// Ensure resources are included in the JAR
+tasks.withType<Jar> {
+    from(layout.buildDirectory.dir("generated/ksp/main/resources"))
+}
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
 val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
 val ownership: Map<String, Set<String>> = providers
@@ -158,6 +391,7 @@ dependencies {
     implementation("com.squareup:kotlinpoet:$kotlinPoetVersion")
     implementation("com.squareup:kotlinpoet-ksp:$kotlinPoetKspVersion")
 }
+
 ```
 
 ## Troubleshooting
@@ -201,9 +435,129 @@ If migrating from manual deep link registration:
 ## Example: Complete Feature Setup
 
 ```kotlin
+
 ```kotlin
+```kotlin
+
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
+class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
+    override fun getOwners(): Map<String, Set<String>> {
+        return mapOf(
+            "users" to setOf(
+                "app://users/list",
+                "app://users/{userId}",
+                "https://example.com/users/{userId}"
+            )
+        )
+    }
+}
+
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
+
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation(project(":navigation3-api"))
+    ksp(project(":navigation3-ksp"))
+}
+
+// IMPORTANT: Configure KSP to generate resources
+ksp {
+    arg("generate.service.files", "true")
+}
+
+// Ensure resources are included in the JAR
+tasks.withType<Jar> {
+    from(layout.buildDirectory.dir("generated/ksp/main/resources"))
+}
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation(project(":navigation3-api"))
+    ksp(project(":navigation3-ksp"))
+}
+
+// IMPORTANT: Configure KSP to generate resources
+ksp {
+    arg("generate.service.files", "true")
+}
+
+// Ensure resources are included in the JAR
+tasks.withType<Jar> {
+    from(layout.buildDirectory.dir("generated/ksp/main/resources"))
+}
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+}
+
+dependencies {
+    implementation("com.google.devtools.ksp:symbol-processing-api:$kspVersion")
+    implementation("com.squareup:kotlinpoet:$kotlinPoetVersion")
+    implementation("com.squareup:kotlinpoet-ksp:$kotlinPoetKspVersion")
+}
+
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
 val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
 val ownership: Map<String, Set<String>> = providers
@@ -265,6 +619,7 @@ class UsersNavigation : DeepLinkOwner {
         }
     }
 }
+
 ```
 
 This approach ensures compile-time safety, reduces boilerplate, and enables true modular deep link ownership across feature modules.

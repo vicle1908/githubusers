@@ -126,6 +126,9 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 ```kotlin
 ```kotlin
 
+```kotlin
+```kotlin
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -150,8 +153,45 @@ sealed interface ViewEffect {
 
 ```kotlin
 
+```kotlin
+```kotlin
 
 ```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -295,6 +335,104 @@ Users can explicitly request multi-AI consultation with:
 ```kotlin
 ```kotlin
 
+```kotlin
+```kotlin
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -346,8 +484,237 @@ class UserListViewModel @Inject constructor(
 
 ```kotlin
 
+```kotlin
+```kotlin
 
 ```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+
+
+
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten
     data object RefreshUsers : ViewInten
@@ -414,6 +781,444 @@ fun UserListScreen(
 
 ```kotlin
 ```kotlin
+
+```kotlin
+```kotlin
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+@Composable
+fun UserListScreen(
+    viewModel: UserListViewModel,
+    onUserClick: (User) -> Uni
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LazyColumn {
+        items(state.users) { user ->
+            UserItem(
+                user = user,
+                onClick = { onUserClick(user) }
+            )
+        }
+    }
+}
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+
+
+
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+@Composable
+fun UserListScreen(
+    viewModel: UserListViewModel,
+    onUserClick: (User) -> Uni
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LazyColumn {
+        items(state.users) { user ->
+            UserItem(
+                user = user,
+                onClick = { onUserClick(user) }
+            )
+        }
+    }
+}
 
 sealed interface ViewIntent {
     data class SearchUsers(val query: String) : ViewInten

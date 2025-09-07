@@ -163,6 +163,9 @@ This project uses Cursor with custom rules to enforce Android development best p
 ```text
 ```text
 
+```markdown
+```markdown
+
 .cursor/rules/
 ├── README.md                    # This file - Overview and status
 ├── android.mdc                  # Android development standards

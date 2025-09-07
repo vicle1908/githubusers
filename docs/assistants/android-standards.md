@@ -3,17 +3,23 @@
 ## Core Architecture Principles
 
 ### Clean Architecture (MANDATORY)
+
+
 - **Presentation Layer**: Activities, Fragments, ViewModels, Compose UI
 - **Domain Layer**: Use cases, business logic, entities
 - **Data Layer**: Repositories, data sources, DTOs
 
 ### MVI Pattern
+
+
 - **Unidirectional Data Flow**: Intent → ViewModel → State → UI
 - Single source of truth for UI state
 - Clear separation of user actions and system responses
 - Sealed classes for type-safe state management
 
 ### Feature-Based Modularization
+
+
 - Each feature is a self-contained module
 - High cohesion, low coupling
 - Single responsibility principle
@@ -22,19 +28,28 @@
 ## Navigation Policy
 
 ### Navigation 3 ONLY (CRITICAL)
+
+
 - **MANDATORY**: All cross-module navigation MUST use deep links
 - Type-safe destinations with Kotlin Serialization
 - Direct back stack control and state preservation
 - **Validate** with latest docs via DeepWiki/Context7 before implementation
 
 ### Deep Link Patterns
+
+
 ```kotlin
 ```text
+
+```text
+```text
+
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
 // Type-safe navigation
 navigation.navigate(AppDestination.UserDetail("octocat"))
+
 ```
 
 ## Build Configuration
@@ -44,7 +59,21 @@ navigation.navigate(AppDestination.UserDetail("octocat"))
 - **NO** hardcoded versions allowed
 - Example:
 ```kotlin
+
 ```gradle
+```gradle
+
+```gradle
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -57,11 +86,15 @@ dependencies {
 ```
 
 ### Plugin Configuration
+
+
 - Use `version.ref` for plugin versions (e.g., ktlint)
 - Convention plugins in build-logic
 - All modules apply convention plugins
 
 ### Composite Build Structure
+
+
 - Root `settings.gradle.kts` acts **ONLY** as a container
 - Minimal scaffolding in convention plugins
 - Consistent configuration across all modules
@@ -69,8 +102,47 @@ dependencies {
 ## Dependency Management
 
 ### OkHttp BOM Usage
+
+
 ```kotlin
 ```gradle
+
+```gradle
+```gradle
+
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+}
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -85,6 +157,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
 }
+
 ```
 
 ### Dependency Injection
