@@ -28,3 +28,4 @@ The application follows a modern Android architecture, characterized by:
 *   **Paging:** Jetpack Paging 3
 *   **Database:** Jetpack Room
 *   **Testing:** JUnit, MockK, Espresso, AndroidX Test
+

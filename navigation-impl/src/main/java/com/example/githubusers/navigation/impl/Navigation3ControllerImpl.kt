@@ -68,7 +68,7 @@ class Navigation3ControllerImpl
                 popUpTo != null -> {
                     handlePopUpTo(popUpTo, options.popUpToInclusive)
                 }
-                options.launchSingleTop -> {
+                options.singleTop -> {
                     handleSingleTop(entry)
                 }
                 else -> {

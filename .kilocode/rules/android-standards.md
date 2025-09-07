@@ -29,6 +29,7 @@
 
 ### Deep Link Patterns
 ```kotlin
+```text
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -43,6 +44,12 @@ navigation.navigate(AppDestination.UserDetail("octocat"))
 - **NO** hardcoded versions allowed
 - Example:
 ```kotlin
+```gradle
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.okhttp.bom))
@@ -63,6 +70,16 @@ dependencies {
 
 ### OkHttp BOM Usage
 ```kotlin
+```gradle
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+}
 dependencies {
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)

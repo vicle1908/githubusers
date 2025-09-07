@@ -11,6 +11,7 @@ The Navigation3 framework uses KSP (Kotlin Symbol Processing) to generate deep l
 Annotate your deep link owning class with `@OwnsDeepLinks`:
 
 ```kotlin
+```kotlin
 @OwnsDeepLinks(moduleId = "users")
 class UsersDeepLinkOwner : DeepLinkOwner {
     @DeepLinkSpec(patterns = [
@@ -33,7 +34,17 @@ The `navigation-ksp` processor generates:
 
 #### Generated Provider Structure
 ```kotlin
-// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.kt
+```kotlin
+@OwnsDeepLinks(moduleId = "users")
+class UsersDeepLinkOwner : DeepLinkOwner {
+    @DeepLinkSpec(patterns = [
+        "app://users/list",
+        "app://users/{userId}",
+        "https://example.com/users/{userId}"
+    ])
+    fun ownsPattern() {}
+}
+// Generated in: build/generated/ksp/main/kotlin/.../GeneratedDeepLinkOwners_Users_abc123.k
 class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
     override fun getOwners(): Map<String, Set<String>> {
         return mapOf(
@@ -48,7 +59,7 @@ class GeneratedDeepLinkOwners_Users_abc123 : DeepLinkOwnersProvider {
 ```
 
 #### ServiceLoader Registration
-```
+```text
 # Generated in: build/generated/ksp/main/resources/META-INF/services/
 # File: com.example.navigation3.api.DeepLinkOwnersProvider
 com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
@@ -59,6 +70,10 @@ com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc12
 At runtime, navigation-impl discovers all providers via ServiceLoader and aggregates ownership, no DI bindings required:
 
 ```kotlin
+```kotlin
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
 val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
 val ownership: Map<String, Set<String>> = providers
     .flatMap { it.getOwners().entries }
@@ -73,6 +88,15 @@ val ownership: Map<String, Set<String>> = providers
 In your feature module's `build.gradle.kts`:
 
 ```kotlin
+```kotlin
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
 plugins {
     id("com.google.devtools.ksp")
 }
@@ -98,6 +122,33 @@ tasks.withType<Jar> {
 The `navigation-ksp` module must be configured as a JVM library (not Android):
 
 ```kotlin
+```kotlin
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation(project(":navigation3-api"))
+    ksp(project(":navigation3-ksp"))
+}
+
+// IMPORTANT: Configure KSP to generate resources
+ksp {
+    arg("generate.service.files", "true")
+}
+
+// Ensure resources are included in the JAR
+tasks.withType<Jar> {
+    from(layout.buildDirectory.dir("generated/ksp/main/resources"))
+}
 plugins {
     id("org.jetbrains.kotlin.jvm")
 }
@@ -113,8 +164,8 @@ dependencies {
 
 ### ServiceLoader Not Finding Providers
 
-1. **Check resource generation**: Verify `META-INF/services/` files exist in build output
-2. **Verify JAR packaging**: Use `jar tf build/libs/your-module.jar | grep META-INF` 
+1. **Check resource generation**: Verify `META-INF/services/` files exist in build outpu
+2. **Verify JAR packaging**: Use `jar tf build/libs/your-module.jar | grep META-INF`
 3. **Module dependencies**: Ensure runtime classpath includes all feature modules
 
 ### KSP Not Generating Code
@@ -150,7 +201,43 @@ If migrating from manual deep link registration:
 ## Example: Complete Feature Setup
 
 ```kotlin
-// users/src/main/kotlin/com/example/users/navigation/UsersNavigation.kt
+```kotlin
+# Generated in: build/generated/ksp/main/resources/META-INF/services/
+# File: com.example.navigation3.api.DeepLinkOwnersProvider
+com.example.githubusers.navigation.generated.GeneratedDeepLinkOwners_Users_abc123
+val providers = ServiceLoader.load(DeepLinkOwnersProvider::class.java)
+val ownership: Map<String, Set<String>> = providers
+    .flatMap { it.getOwners().entries }
+    .groupBy({ it.key }, { it.value })
+    .mapValues { (_, sets) -> sets.flatten().toSet() }
+plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation(project(":navigation3-api"))
+    ksp(project(":navigation3-ksp"))
+}
+
+// IMPORTANT: Configure KSP to generate resources
+ksp {
+    arg("generate.service.files", "true")
+}
+
+// Ensure resources are included in the JAR
+tasks.withType<Jar> {
+    from(layout.buildDirectory.dir("generated/ksp/main/resources"))
+}
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+}
+
+dependencies {
+    implementation("com.google.devtools.ksp:symbol-processing-api:$kspVersion")
+    implementation("com.squareup:kotlinpoet:$kotlinPoetVersion")
+    implementation("com.squareup:kotlinpoet-ksp:$kotlinPoetKspVersion")
+}
+// users/src/main/kotlin/com/example/users/navigation/UsersNavigation.k
 package com.example.users.navigation
 
 import com.example.navigation3.api.OwnsDeepLinks
@@ -159,19 +246,19 @@ import com.example.navigation3.api.DeepLinkOwner
 
 @OwnsDeepLinks(moduleId = "users")
 class UsersNavigation : DeepLinkOwner {
-    
+
     @DeepLinkSpec(patterns = [
         "app://users/list",
         "app://users/{userId}",
         "https://example.com/users/{userId}"
     ])
     fun userPatterns() {}
-    
+
     override fun handleDeepLink(uri: Uri): Boolean {
         return when {
             uri.path == "/users/list" -> navigateToUserList()
             uri.path?.startsWith("/users/") == true -> {
-                val userId = uri.lastPathSegment
+                val userId = uri.lastPathSegmen
                 navigateToUserDetail(userId)
             }
             else -> false

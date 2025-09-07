@@ -113,6 +113,7 @@ This project uses Cursor with custom rules to enforce Android development best p
 ## File Structure
 
 ```text
+```text
 .cursor/rules/
 ├── README.md                    # This file - Overview and status
 ├── android.mdc                  # Android development standards

@@ -26,7 +26,7 @@ The implementation module provides:
 
 - **`Navigation3ControllerImpl`**: Core navigation logic with deep link resolution
 - **`Navigation3Host`**: Compose UI host for rendering screens
-- **`DefaultDestinationResolver`**: Resolves URIs to NavigationDestination using DeepLinkHandler set
+- **`DefaultDestinationResolver`**: Resolves URIs to NavigationDestination using DeepLinkHandler se
 
 ### 3. Feature Modules
 
@@ -45,14 +45,14 @@ Each feature module:
 All modules use the `githubusers://` scheme for internal navigation (and https for universal links):
 
 #### User Feature Module
-```
+```text
 app://users/list                          # User list screen
 app://users/detail/{username}             # User detail screen
 app://users/search?q={query}              # User search
 ```
 
 #### Search Feature Module
-```
+```text
 app://search                              # Search screen
 app://search?q={query}                    # Search with query
 app://search/trending                     # Trending searches
@@ -60,7 +60,7 @@ app://search/history                      # Search history
 ```
 
 #### Core Navigation
-```
+```text
 app://home                                # Home screen
 app://settings                            # Settings screen
 app://error?message={message}             # Error screen
@@ -70,7 +70,7 @@ app://error?message={message}             # Error screen
 
 For external deep linking:
 
-```
+```text
 https://githubusers.example.com/user/{username}
 https://githubusers.example.com/search?q={query}
 https://githubusers.example.com/settings
@@ -81,22 +81,28 @@ https://githubusers.example.com/settings
 
 ## 🔄 Navigation Flow
 
-### 1. Navigation Request
+### 1. Navigation Reques
 
 ```kotlin
+```text
+https://githubusers.example.com/user/{username}
+https://githubusers.example.com/search?q={query}
+https://githubusers.example.com/settings
 // From any module, navigate using deep link
 navigation.navigate("app://users/detail/octocat")
 ```
 
 ### 2. Deep Link Resolution
 
-```
+```text
 Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
 ```
 
 ### 3. Screen Rendering
 
 ```kotlin
+```text
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
 Navigation3Host { entry ->
     when (entry.destination) {
         is UserDestination.UserDetail -> UserDetailScreen(...)
@@ -113,21 +119,30 @@ Navigation3Host { entry ->
 ### Defining a Feature's Deep Links
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
 // In feature-users module
 class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
-    
+
     override val moduleId = "users"
-    
+
     override fun supportedPatterns() = listOf(
         "app://users/list",
         "app://users/detail/{username}",
         "app://users/search"
     )
-    
+
     override fun handleDeepLink(uri: Uri): DeepLinkResult? {
         return when {
             uri.path == "/users/list" -> DeepLinkResult(
-                destination = UserDestination.UserList
+                destination = UserDestination.UserLis
             )
             uri.path?.startsWith("/users/detail/") == true -> {
                 val username = extractUsername(uri)
@@ -144,13 +159,48 @@ class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
 ### Registering Deep Link Handler
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
 // In feature's Hilt module
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UserNavigationModule {
-    
+
     @Binds
-    @IntoSet
+    @IntoSe
     abstract fun bindUserDeepLinkHandler(
         handler: UserDeepLinkHandler
     ): DeepLinkHandler
@@ -160,6 +210,52 @@ abstract class UserNavigationModule {
 ### Navigating Between Modules
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
 // From Search module to User Detail
 class SearchViewModel @Inject constructor(
     private val navigation: Navigation3Controller
@@ -176,6 +272,63 @@ class SearchViewModel @Inject constructor(
 ### Building Deep Links
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
 // Helper object for building deep links
 object UserDeepLinks {
     fun userDetail(username: String, clearStack: Boolean = false): String {
@@ -195,6 +348,73 @@ object UserDeepLinks {
 Control navigation behavior with `NavigationOptions`:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
 navigation.navigate(
     deepLink = "app://users/detail/octocat",
     options = NavigationOptions(
@@ -216,14 +436,91 @@ navigation.navigate(
 Always validate deep link parameters:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
 override fun handleDeepLink(uri: Uri): DeepLinkResult? {
     val username = uri.getQueryParameter("username")
-    
+
     // Validate username
     if (!isValidUsername(username)) {
-        return null // Reject invalid input
+        return null // Reject invalid inpu
     }
-    
+
     return DeepLinkResult(...)
 }
 ```
@@ -233,6 +530,93 @@ override fun handleDeepLink(uri: Uri): DeepLinkResult? {
 Implement interceptors for permission-based navigation:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
 class AuthInterceptor : DeepLinkInterceptor {
     override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
         if (deepLink.contains("premium") && !user.isPremium) {
@@ -252,13 +636,110 @@ class AuthInterceptor : DeepLinkInterceptor {
 ### Unit Testing
 
 ```kotlin
-@Test
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
 fun `test user detail deep link`() {
     val handler = UserDeepLinkHandler()
     val uri = Uri.parse("app://users/detail/octocat")
-    
+
     val result = handler.handleDeepLink(uri)
-    
+
     assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
     assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
 }
@@ -267,13 +748,120 @@ fun `test user detail deep link`() {
 ### Integration Testing
 
 ```kotlin
-@Test
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
 fun `test navigation flow`() = runTest {
     val controller = Navigation3ControllerImpl(registry, resolver)
-    
+
     controller.navigate("app://users/list")
     controller.navigate("app://users/detail/octocat")
-    
+
     val backStack = controller.currentBackStack.value
     assertThat(backStack).hasSize(2)
     assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
@@ -311,6 +899,124 @@ fun `test navigation flow`() = runTest {
 1. **Replace NavHost with Navigation3Host**:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
+fun `test navigation flow`() = runTest {
+    val controller = Navigation3ControllerImpl(registry, resolver)
+
+    controller.navigate("app://users/list")
+    controller.navigate("app://users/detail/octocat")
+
+    val backStack = controller.currentBackStack.value
+    assertThat(backStack).hasSize(2)
+    assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
+}
 // Before
 NavHost(navController, startDestination = "home") {
     composable("home") { HomeScreen() }
@@ -327,6 +1033,135 @@ Navigation3Host(controller, startDestination = "app://home") { entry ->
 2. **Update navigation calls**:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
+fun `test navigation flow`() = runTest {
+    val controller = Navigation3ControllerImpl(registry, resolver)
+
+    controller.navigate("app://users/list")
+    controller.navigate("app://users/detail/octocat")
+
+    val backStack = controller.currentBackStack.value
+    assertThat(backStack).hasSize(2)
+    assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
+}
+// Before
+NavHost(navController, startDestination = "home") {
+    composable("home") { HomeScreen() }
+}
+
+// After
+Navigation3Host(controller, startDestination = "app://home") { entry ->
+    when (entry.destination) {
+        is HomeDestination -> HomeScreen()
+    }
+}
 // Before
 navController.navigate("detail/$id")
 
@@ -337,11 +1172,145 @@ controller.navigate("app://detail/$id")
 3. **Register deep link handlers**:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
+fun `test navigation flow`() = runTest {
+    val controller = Navigation3ControllerImpl(registry, resolver)
+
+    controller.navigate("app://users/list")
+    controller.navigate("app://users/detail/octocat")
+
+    val backStack = controller.currentBackStack.value
+    assertThat(backStack).hasSize(2)
+    assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
+}
+// Before
+NavHost(navController, startDestination = "home") {
+    composable("home") { HomeScreen() }
+}
+
+// After
+Navigation3Host(controller, startDestination = "app://home") { entry ->
+    when (entry.destination) {
+        is HomeDestination -> HomeScreen()
+    }
+}
+// Before
+navController.navigate("detail/$id")
+
+// After
+controller.navigate("app://detail/$id")
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class FeatureNavigationModule {
     @Binds
-    @IntoSet
+    @IntoSe
     abstract fun bindDeepLinkHandler(handler: FeatureDeepLinkHandler): DeepLinkHandler
 }
 ```
@@ -355,6 +1324,147 @@ abstract class FeatureNavigationModule {
 Support for dynamic feature modules with lazy loading:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
+fun `test navigation flow`() = runTest {
+    val controller = Navigation3ControllerImpl(registry, resolver)
+
+    controller.navigate("app://users/list")
+    controller.navigate("app://users/detail/octocat")
+
+    val backStack = controller.currentBackStack.value
+    assertThat(backStack).hasSize(2)
+    assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
+}
+// Before
+NavHost(navController, startDestination = "home") {
+    composable("home") { HomeScreen() }
+}
+
+// After
+Navigation3Host(controller, startDestination = "app://home") { entry ->
+    when (entry.destination) {
+        is HomeDestination -> HomeScreen()
+    }
+}
+// Before
+navController.navigate("detail/$id")
+
+// After
+controller.navigate("app://detail/$id")
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class FeatureNavigationModule {
+    @Binds
+    @IntoSe
+    abstract fun bindDeepLinkHandler(handler: FeatureDeepLinkHandler): DeepLinkHandler
+}
 class DynamicFeatureInterceptor : DeepLinkInterceptor {
     override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
         if (deepLink.startsWith("app://premium/")) {
@@ -374,6 +1484,159 @@ class DynamicFeatureInterceptor : DeepLinkInterceptor {
 Track navigation events:
 
 ```kotlin
+```kotlin
+Request → Navigation3Controller → DeepLinkResolver → DeepLinkHandler → NavigationDestination
+Navigation3Host { entry ->
+    when (entry.destination) {
+        is UserDestination.UserDetail -> UserDetailScreen(...)
+        is SearchDestination.Search -> SearchScreen(...)
+        // ... other destinations
+    }
+}
+// In feature-users module
+class UserDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+
+    override val moduleId = "users"
+
+    override fun supportedPatterns() = listOf(
+        "app://users/list",
+        "app://users/detail/{username}",
+        "app://users/search"
+    )
+
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+        return when {
+            uri.path == "/users/list" -> DeepLinkResult(
+                destination = UserDestination.UserLis
+            )
+            uri.path?.startsWith("/users/detail/") == true -> {
+                val username = extractUsername(uri)
+                DeepLinkResult(
+                    destination = UserDestination.UserDetail(username)
+                )
+            }
+            else -> null
+        }
+    }
+}
+// In feature's Hilt module
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class UserNavigationModule {
+
+    @Binds
+    @IntoSe
+    abstract fun bindUserDeepLinkHandler(
+        handler: UserDeepLinkHandler
+    ): DeepLinkHandler
+}
+// From Search module to User Detail
+class SearchViewModel @Inject constructor(
+    private val navigation: Navigation3Controller
+) {
+    fun onUserClicked(username: String) {
+        viewModelScope.launch {
+            // MUST use deep link for cross-module navigation
+            navigation.navigate("app://users/detail/$username")
+        }
+    }
+}
+// Helper object for building deep links
+object UserDeepLinks {
+    fun userDetail(username: String, clearStack: Boolean = false): String {
+        return buildString {
+            append("app://users/detail/")
+            append(Uri.encode(username))
+            if (clearStack) append("?clear_stack=true")
+        }
+    }
+}
+navigation.navigate(
+    deepLink = "app://users/detail/octocat",
+    options = NavigationOptions(
+        launchSingleTop = true,        // Avoid duplicate destinations
+        popUpTo = "app://home",        // Clear back stack up to home
+        popUpToInclusive = false,      // Keep home in stack
+        animate = true,                 // Enable animations
+        transition = NavigationTransition.SlideHorizontal
+    )
+)
+override fun handleDeepLink(uri: Uri): DeepLinkResult? {
+    val username = uri.getQueryParameter("username")
+
+    // Validate username
+    if (!isValidUsername(username)) {
+        return null // Reject invalid inpu
+    }
+
+    return DeepLinkResult(...)
+}
+class AuthInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.contains("premium") && !user.isPremium) {
+            // Redirect to upgrade screen
+            navigation.navigate("app://upgrade")
+            return true // Intercept navigation
+        }
+        return false
+    }
+}
+@Tes
+fun `test user detail deep link`() {
+    val handler = UserDeepLinkHandler()
+    val uri = Uri.parse("app://users/detail/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertThat(result?.destination).isInstanceOf(UserDestination.UserDetail::class.java)
+    assertThat((result?.destination as UserDestination.UserDetail).username).isEqualTo("octocat")
+}
+@Tes
+fun `test navigation flow`() = runTest {
+    val controller = Navigation3ControllerImpl(registry, resolver)
+
+    controller.navigate("app://users/list")
+    controller.navigate("app://users/detail/octocat")
+
+    val backStack = controller.currentBackStack.value
+    assertThat(backStack).hasSize(2)
+    assertThat(backStack.last().deepLink).isEqualTo("app://users/detail/octocat")
+}
+// Before
+NavHost(navController, startDestination = "home") {
+    composable("home") { HomeScreen() }
+}
+
+// After
+Navigation3Host(controller, startDestination = "app://home") { entry ->
+    when (entry.destination) {
+        is HomeDestination -> HomeScreen()
+    }
+}
+// Before
+navController.navigate("detail/$id")
+
+// After
+controller.navigate("app://detail/$id")
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class FeatureNavigationModule {
+    @Binds
+    @IntoSe
+    abstract fun bindDeepLinkHandler(handler: FeatureDeepLinkHandler): DeepLinkHandler
+}
+class DynamicFeatureInterceptor : DeepLinkInterceptor {
+    override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
+        if (deepLink.startsWith("app://premium/")) {
+            // Load dynamic module if needed
+            if (!isPremiumModuleInstalled()) {
+                installPremiumModule()
+                return true // Intercept and retry after installation
+            }
+        }
+        return false
+    }
+}
 class AnalyticsInterceptor : DeepLinkInterceptor {
     override suspend fun intercept(deepLink: String, options: NavigationOptions): Boolean {
         analytics.trackNavigation(deepLink, options)

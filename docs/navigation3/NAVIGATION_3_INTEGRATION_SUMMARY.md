@@ -37,6 +37,7 @@ Successfully integrated Navigation 3 concepts with the GitHub Users app, providi
 #### AndroidManifest.xml
 Added comprehensive deep link support:
 ```xml
+```xml
 <!-- App scheme: githubusers://users, githubusers://user/username -->
 <data android:scheme="githubusers" />
 
@@ -64,11 +65,34 @@ Added comprehensive deep link support:
 
 ### 1. Basic Navigation
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
 controller.navigate(AppDestination.UserDetail(username))
 ```
 
 ### 2. Navigation with Pop Operations
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
+controller.navigate(AppDestination.UserDetail(username))
 controller.navigate(
     AppDestination.UserList,
     options = NavigationOptions(popUpTo = AppDeepLinks.build(AppDestination.UserList), popUpToInclusive = true)
@@ -77,11 +101,44 @@ controller.navigate(
 
 ### 3. Pop to Specific Screen
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
+controller.navigate(AppDestination.UserDetail(username))
+controller.navigate(
+    AppDestination.UserList,
+    options = NavigationOptions(popUpTo = AppDeepLinks.build(AppDestination.UserList), popUpToInclusive = true)
+)
 controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive = false)
 ```
 
 ### 4. Deep Link Navigation
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
+controller.navigate(AppDestination.UserDetail(username))
+controller.navigate(
+    AppDestination.UserList,
+    options = NavigationOptions(popUpTo = AppDeepLinks.build(AppDestination.UserList), popUpToInclusive = true)
+)
+controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive = false)
 // From external app: githubusers://user/octocat
 // From web: https://githubusers.example.com/user/octocat
 controller.navigate("githubusers://search?q=android")
@@ -89,6 +146,26 @@ controller.navigate("githubusers://search?q=android")
 
 ### 5. Clear Stack and Navigate
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
+controller.navigate(AppDestination.UserDetail(username))
+controller.navigate(
+    AppDestination.UserList,
+    options = NavigationOptions(popUpTo = AppDeepLinks.build(AppDestination.UserList), popUpToInclusive = true)
+)
+controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive = false)
+// From external app: githubusers://user/octocat
+// From web: https://githubusers.example.com/user/octocat
+controller.navigate("githubusers://search?q=android")
 controller.clearBackStack()
 controller.navigate(AppDestination.UserList)
 ```
@@ -106,6 +183,28 @@ controller.navigate(AppDestination.UserList)
 The app now uses `Navigation3Host` with typed start destination:
 
 ```kotlin
+```xml
+<!-- App scheme: githubusers://users, githubusers://user/username -->
+<data android:scheme="githubusers" />
+
+<!-- Web URLs: https://githubusers.example.com/users -->
+<data android:scheme="https" android:host="githubusers.example.com" />
+
+<!-- App Links with auto-verification for specific paths -->
+<data android:pathPrefix="/user" />
+<data android:pathPrefix="/users" />
+<data android:pathPrefix="/search" />
+controller.navigate(AppDestination.UserDetail(username))
+controller.navigate(
+    AppDestination.UserList,
+    options = NavigationOptions(popUpTo = AppDeepLinks.build(AppDestination.UserList), popUpToInclusive = true)
+)
+controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive = false)
+// From external app: githubusers://user/octocat
+// From web: https://githubusers.example.com/user/octocat
+controller.navigate("githubusers://search?q=android")
+controller.clearBackStack()
+controller.navigate(AppDestination.UserList)
 setContent {
     GithubUsersTheme {
         Navigation3Host(
@@ -125,3 +224,4 @@ setContent {
 3. Add navigation testing with NavigationTestRule
 4. Implement the Settings screen placeholder
 5. Add more sophisticated deep link handling for search queries
+

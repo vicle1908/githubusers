@@ -1,0 +1,17 @@
+{
+    "referencedLibraries": [
+        "/Users/vinhlekhanh/Library/Android/sdk/platforms/android-34/android.jar",
+        "/Users/vinhlekhanh/Library/Android/sdk/platforms/android-35/android.jar",
+        "/Users/vinhlekhanh/Library/Android/sdk/platforms/android-36/android.jar"
+    ],
+    "sourcePaths": [
+        "app/src/main/java",
+        "feature-users/src/main/java", 
+        "feature-settings/src/main/java",
+        "core-ui/src/main/java",
+        "core-mvi/src/main/java",
+        "navigation-api/src/main/java",
+        "navigation-impl/src/main/java"
+    ],
+    "outputPath": "build/classes"
+}

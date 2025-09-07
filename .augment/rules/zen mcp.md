@@ -33,3 +33,4 @@ type: "manual"
 - Consensus threshold of 70% for major recommendations
 - Automatic fallback if primary models unavailable
 - Comprehensive analysis reports with all perspectives
+

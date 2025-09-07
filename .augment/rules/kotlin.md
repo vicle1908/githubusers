@@ -81,3 +81,4 @@ description: "Example description"
 - Kotlin coroutines/Flow (general): https://kotlinlang.org/docs/coroutines-overview
 - Detekt import rules (no wildcard imports): https://detekt.dev/docs/rules/style , https://detekt.dev/docs/rules/formatting
 - KtLint rules (no-wildcard-imports, import ordering): https://pinterest.github.io/ktlint/rules/standard/
+

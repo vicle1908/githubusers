@@ -1,0 +1,159 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Kotlin: ktlintCheck",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "app:ktlintCheck"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Kotlin: ktlintFormat",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "app:ktlintFormat"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Android: Build Debug",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "app:assembleDebug"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Android: Build Release",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "app:assembleRelease"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Android: Lint Debug",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "app:lintDebug"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Detekt: Static Analysis",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "detekt"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Gradle: Clean",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "clean"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Gradle: Build All",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "buildAll"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Android: Install Debug APK",
+            "type": "shell",
+            "command": "adb",
+            "args": [
+                "install",
+                "-r",
+                "app/build/outputs/apk/debug/app-debug.apk"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "dependsOn": "Android: Build Debug"
+        },
+        {
+            "label": "Android: Run Tests",
+            "type": "shell",
+            "command": "./gradlew",
+            "args": [
+                "test"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:RepositoryItem.kt$@Composable fun RepositoryItem( repository: Repository, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserDetailContent.kt$@Composable fun UserDetailContent( userDetail: UserDetail, isFollowing: Boolean, isFollowActionInProgress: Boolean, isBioExpanded: Boolean, repositories: LazyPagingItems&lt;Repository&gt;, onFollowClick: () -&gt; Unit, onBioClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun UserDetailScreen( uiState: UserDetailViewModel.UserDetailUiState, repositoriesFlow: androidx.paging.compose.LazyPagingItems&lt;com.example.githubusers.feature.users.detail.domain.entity.Repository&gt;, onIntent: (UserDetailViewModel.UserDetailIntent) -&gt; Unit, onBackClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserInfoCard.kt$@Composable fun UserInfoCard( userDetail: UserDetail, isFollowing: Boolean, isFollowActionInProgress: Boolean, isBioExpanded: Boolean, onFollowClick: () -&gt; Unit, onBioClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserListContent.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun UserListContent( pagingUsers: LazyPagingItems&lt;UserSummary&gt;, onUserClick: (UserSummary) -&gt; Unit, onRefresh: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserListScreen.kt$@Composable fun UserListScreen( viewModel: UserListViewModel = hiltViewModel(), modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserListSearchBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun UserListSearchBar( query: String, isSearchMode: Boolean, onQueryChange: (String) -&gt; Unit, onSearch: (String) -&gt; Unit, onActivateSearch: () -&gt; Unit, onDismissSearch: () -&gt; Unit, onClearSearch: () -&gt; Unit, focusRequester: FocusRequester, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:UserOverview.kt$@Composable fun UserOverview( userDetail: UserDetail, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:UserListScreen.kt$( uiState: com.example.githubusers.feature.users.list.presentation.state.UserListState, onSearchQueryChange: (String) -&gt; Unit, onSearchSubmit: (String) -&gt; Unit, onUserClick: (com.example.githubusers.feature.users.list.domain.entity.UserSummary) -&gt; Unit, onRefresh: () -&gt; Unit, onRetry: () -&gt; Unit, onClearSearch: () -&gt; Unit, onToggleSearchActive: (Boolean) -&gt; Unit, onBackPress: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:UserListSearchBar.kt$( query: String, isSearchMode: Boolean, onQueryChange: (String) -&gt; Unit, onSearch: (String) -&gt; Unit, onActivateSearch: () -&gt; Unit, onDismissSearch: () -&gt; Unit, onClearSearch: () -&gt; Unit, focusRequester: FocusRequester, modifier: Modifier = Modifier, )</ID>
+    <ID>MaxLineLength:DomainModule.kt$DomainModule$fun</ID>
+    <ID>MaxLineLength:UserDetailScreen.kt$repositoriesFlow: androidx.paging.compose.LazyPagingItems&lt;com.example.githubusers.feature.users.detail.domain.entity.Repository&gt;</ID>
+    <ID>MaxLineLength:UserListApiService.kt$UserListApiService$Log.d(TAG, "Search returned ${searchResponse.items.size} users out of ${searchResponse.totalCount} total")</ID>
+    <ID>MaxLineLength:UserListLocalDataSourceImpl.kt$UserListLocalDataSourceImpl$override fun searchUsersPagingSource(query: String): PagingSource&lt;Int, UserEntity&gt;</ID>
+    <ID>MaxLineLength:UsersScreens.kt$is UserDetailState.Loading -&gt; Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }</ID>
+    <ID>MaxLineLength:UsersViewModels.kt$UsersListViewModel$is UsersIntent.SearchChanged -&gt; updateState { copy(query = intent.query, isSearching = true, error = null) }</ID>
+    <ID>ReturnCount:UserDeepLinkHandler.kt$UserDeepLinkHandler$override fun handleDeepLink(uri: Uri): DeepLinkResult?</ID>
+    <ID>SwallowedException:Converters.kt$Converters$e: Exception</ID>
+    <ID>SwallowedException:EnhancedSearchUseCase.kt$EnhancedGetTrendingUsersUseCase$e: Exception</ID>
+    <ID>SwallowedException:EnhancedSearchUseCase.kt$EnhancedManageSearchHistoryUseCase$e: Exception</ID>
+    <ID>SwallowedException:RepositoryMapper.kt$RepositoryMapper$e: Exception</ID>
+    <ID>SwallowedException:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$e: Exception</ID>
+    <ID>SwallowedException:UserDetailMapper.kt$UserDetailMapper$e: Exception</ID>
+    <ID>SwallowedException:UserDetailRemoteDataSource.kt$UserDetailRemoteDataSourceImpl$e: Exception</ID>
+    <ID>SwallowedException:UserDetailRepositoryImpl.kt$UserDetailRepositoryImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Converters.kt$Converters$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:EnhancedSearchPagingSource.kt$EnhancedSearchPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:EnhancedSearchUseCase.kt$EnhancedGetTrendingUsersUseCase$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:EnhancedSearchUseCase.kt$EnhancedManageSearchHistoryUseCase$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:RepositoryMapper.kt$RepositoryMapper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:RepositoryPagingSource.kt$RepositoryPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SearchPagingSource.kt$SearchPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$fallbackError: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserDetailMapper.kt$UserDetailMapper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserDetailRemoteDataSource.kt$UserDetailRemoteDataSourceImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserDetailRepositoryImpl.kt$UserDetailRepositoryImpl$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserListApiService.kt$UserListApiService$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserListPagingSource.kt$UserListPagingSource$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserListRemoteMediator.kt$UserListRemoteMediator$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

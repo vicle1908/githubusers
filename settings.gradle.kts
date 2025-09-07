@@ -46,19 +46,19 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:core-common")).using(project(":"))
         }
     }
-    includeBuild("core-mvi") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:core-mvi")).using(project(":"))
-        }
-    }
-    includeBuild("core-domain") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:core-domain")).using(project(":"))
-        }
-    }
     includeBuild("core-data") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:core-data")).using(project(":"))
+        }
+    }
+    includeBuild("navigation-annotations") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:navigation-annotations")).using(project(":"))
+        }
+    }
+    includeBuild("core-mvi") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-mvi")).using(project(":"))
         }
     }
     includeBuild("core-ui") {
@@ -78,16 +78,6 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:navigation-impl")).using(project(":"))
         }
     }
-    includeBuild("navigation-annotations") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:navigation-annotations")).using(project(":"))
-        }
-    }
-    includeBuild("navigation-ksp") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:navigation-ksp")).using(project(":"))
-        }
-    }
 
     // Feature modules
     includeBuild("feature-users") {
@@ -95,20 +85,14 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:feature-users")).using(project(":"))
         }
     }
-    includeBuild("feature-users-list") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:feature-users-list")).using(project(":"))
-        }
-    }
-
-    includeBuild("feature-users-detail") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:feature-users-detail")).using(project(":"))
-        }
-    }
     includeBuild("feature-search") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:feature-search")).using(project(":"))
+        }
+    }
+    includeBuild("feature-settings") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:feature-settings")).using(project(":"))
         }
     }
 

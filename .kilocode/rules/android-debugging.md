@@ -18,11 +18,14 @@
 
 1. **Get Crash Logs (Android MCP)**:
 ```bash
+```text
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
 ```
 
 2. **Get Detailed Stack Trace**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
 mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
 ```
 
@@ -30,11 +33,18 @@ mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPT
 
 1. **Search Code Patterns**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
 mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
 ```
 
 2. **Component-Specific Logs**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
 ```
 
@@ -43,6 +53,11 @@ mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActi
 1. **Apply Code Fixes** using appropriate editing tools
 2. **Search for Similar Issues**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
 mcp_claude-context_search_code("similar pattern that needs fixing")
 ```
 
@@ -50,6 +65,12 @@ mcp_claude-context_search_code("similar pattern that needs fixing")
 
 **MANDATORY - Use Gradle MCP**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 ```
 
@@ -59,6 +80,13 @@ mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 
 1. **Install APK (Android MCP)**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
 ```
 
@@ -66,16 +94,43 @@ Or use the install_apk helper if available
 
 2. **Launch App (Mobile-MCP)**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 ```
 
 3. **Capture Screenshot**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 mcp_mobile-mcp_mobile_take_screenshot()
 ```
 
 4. **Verify Success**:
 ```bash
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
 ```
 
@@ -85,11 +140,34 @@ mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)
 
 **Problem**:
 ```kotlin
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
 DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
 ```
 
 **Solution**:
 ```kotlin
+```text
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
 DateTimeFormatter.ofPattern("MMMM yyyy")
     .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
 ```
@@ -98,11 +176,40 @@ DateTimeFormatter.ofPattern("MMMM yyyy")
 
 **Problem**:
 ```kotlin
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
 val username = savedStateHandle["username"]  // Can be null
 ```
 
 **Solution**:
 ```kotlin
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
 val username = savedStateHandle["username"] ?: ""
 ```
 
@@ -110,11 +217,44 @@ val username = savedStateHandle["username"] ?: ""
 
 **Problem**:
 ```kotlin
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
 "app://users/$username"  // Incorrect pattern
 ```
 
 **Solution**:
 ```kotlin
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
 "app://users/user/$username"  // Correct deep link
 ```
 
@@ -122,21 +262,99 @@ val username = savedStateHandle["username"] ?: ""
 
 ### Crash Detection
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
 ```
 
 ### Component Debugging
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
 mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
 ```
 
 ### Stack Trace Analysis
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
 mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
 ```
 
 ### Real-time Monitoring
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
 mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
 ```
 
@@ -144,32 +362,182 @@ mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)'
 
 ### Clean Build
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
 mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
 ```
 
 ### Debug Build
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 ```
 
 ### Install APK
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 # Via Android MCP
 mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
 ```
 
 ### Verify Installation
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+# Via Android MCP
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
 mcp_android_execute_adb_shell_command("pm list packages | grep githubusers")
 ```
 
 ### Launch App
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+# Via Android MCP
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_android_execute_adb_shell_command("pm list packages | grep githubusers")
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 ```
 
 ### Take Screenshot
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+# Via Android MCP
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_android_execute_adb_shell_command("pm list packages | grep githubusers")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 mcp_mobile-mcp_mobile_take_screenshot()
 ```
 
@@ -182,6 +550,35 @@ mcp_mobile-mcp_mobile_take_screenshot()
 
 If manual ADB is approved:
 ```bash
+```kotlin
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_claude-context_search_code("date formatting Instant LocalDate conversion")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|MainActivity)' | tail -15")
+mcp_claude-context_search_code("similar pattern that needs fixing")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(Success|UserDetail)' | tail -10")
+DateTimeFormatter.ofPattern("MMMM yyyy").format(instant)  // Crashes
+DateTimeFormatter.ofPattern("MMMM yyyy")
+    .format(instant.atZone(ZoneId.systemDefault()).toLocalDate())
+val username = savedStateHandle["username"]  // Can be null
+val username = savedStateHandle["username"] ?: ""
+"app://users/$username"  // Incorrect pattern
+"app://users/user/$username"  // Correct deep link
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(FATAL|AndroidRuntime|Exception|Error|Crash)' | tail -20")
+mcp_android_execute_adb_shell_command("logcat -d | grep -E '(UserDetail|ViewModel|Repository)' | tail -15")
+mcp_android_execute_adb_shell_command("logcat -d | grep -A 30 -B 5 'FATAL EXCEPTION' | tail -40")
+mcp_android_execute_adb_shell_command("logcat -c && logcat | grep -E '(YourTag)' | head -10")
+mcp_gradle-mcp-server_execute_gradle_task(":app:clean")
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+# Via Android MCP
+mcp_android_execute_adb_shell_command("pm install -r /path/to/app-debug.apk")
+mcp_android_execute_adb_shell_command("pm list packages | grep githubusers")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
+mcp_mobile-mcp_mobile_take_screenshot()
 # Only with explicit approval
 adb install -r app-debug.apk
 adb logcat -d | grep "FATAL"

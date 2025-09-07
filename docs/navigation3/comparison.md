@@ -13,6 +13,7 @@ Current implementation (what’s in this repo today)
 - UI graph entry uses Navigation Compose with string routes and rememberNavController().
 
 ```kotlin path=/Users/vinhlekhanh/Downloads/project/company/times/githubusers/app/src/main/java/com/example/githubusers/presentation/MainActivity.kt start=97
+```kotlin
 NavHost(
     navController = navController,
     startDestination = "userList",
@@ -60,6 +61,49 @@ NavHost(
 - Typed Navigation 3 API already exists and is wired for deep link ownership and back stack persistence.
 
 ```kotlin path=/Users/vinhlekhanh/Downloads/project/company/times/githubusers/navigation-api/src/main/java/com/example/githubusers/navigation/api/AppDestination.kt start=1
+```kotlin
+NavHost(
+    navController = navController,
+    startDestination = "userList",
+    modifier = Modifier.fillMaxSize().padding(padding),
+) {
+    composable("userList") {
+        val viewModel: UserListViewModel = hiltViewModel()
+        val state by viewModel.state.collectAsState()
+
+        // Navigate when a user is selected
+        LaunchedEffect(state.selectedUser) {
+            state.selectedUser?.let { user ->
+                navController.navigate("userDetail/${user.login}")
+            }
+        }
+
+        UserListScreen(
+            viewModel = viewModel,
+        )
+    }
+    composable("userDetail/{username}") { backStackEntry ->
+        val viewModel: UserDetailViewModel = hiltViewModel()
+        val username = backStackEntry.arguments?.getString("username")
+        if (username == null) {
+            navController.navigateUp()
+            return@composable
+        }
+        val uiState by viewModel.uiState.collectAsState()
+        val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
+
+        UserDetailScreen(
+            uiState = uiState,
+            repositoriesFlow = repositoriesFlow,
+            onIntent = { intent ->
+                viewModel.onIntent(intent)
+            },
+            onBackClick = {
+                navController.navigateUp()
+            },
+        )
+    }
+}
 package com.example.githubusers.navigation.api
 
 import kotlinx.serialization.Serializable
@@ -88,6 +132,74 @@ sealed interface AppDestination {
 ```
 
 ```kotlin path=/Users/vinhlekhanh/Downloads/project/company/times/githubusers/navigation-impl/src/main/java/com/example/githubusers/navigation/impl/Navigation3Host.kt start=18
+```kotlin
+NavHost(
+    navController = navController,
+    startDestination = "userList",
+    modifier = Modifier.fillMaxSize().padding(padding),
+) {
+    composable("userList") {
+        val viewModel: UserListViewModel = hiltViewModel()
+        val state by viewModel.state.collectAsState()
+
+        // Navigate when a user is selected
+        LaunchedEffect(state.selectedUser) {
+            state.selectedUser?.let { user ->
+                navController.navigate("userDetail/${user.login}")
+            }
+        }
+
+        UserListScreen(
+            viewModel = viewModel,
+        )
+    }
+    composable("userDetail/{username}") { backStackEntry ->
+        val viewModel: UserDetailViewModel = hiltViewModel()
+        val username = backStackEntry.arguments?.getString("username")
+        if (username == null) {
+            navController.navigateUp()
+            return@composable
+        }
+        val uiState by viewModel.uiState.collectAsState()
+        val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
+
+        UserDetailScreen(
+            uiState = uiState,
+            repositoriesFlow = repositoriesFlow,
+            onIntent = { intent ->
+                viewModel.onIntent(intent)
+            },
+            onBackClick = {
+                navController.navigateUp()
+            },
+        )
+    }
+}
+package com.example.githubusers.navigation.api
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Project-wide typed destinations for Navigation 3.
+ * Keep this in navigation-api so features can reference types without app dependency.
+ */
+sealed interface AppDestination {
+    @Serializable
+    data object UserList : AppDestination
+
+    @Serializable
+    data class UserDetail(
+        val username: String,
+    ) : AppDestination
+
+    @Serializable
+    data class Search(
+        val query: String? = null,
+    ) : AppDestination
+
+    @Serializable
+    data object Settings : AppDestination
+}
 @Composable
 fun Navigation3Host(
     controller: Navigation3Controller,
@@ -123,6 +235,106 @@ fun Navigation3Host(
 ```
 
 ```kotlin path=/Users/vinhlekhanh/Downloads/project/company/times/githubusers/navigation-impl/src/main/java/com/example/githubusers/navigation/impl/DefaultDestinationResolver.kt start=21
+```kotlin
+NavHost(
+    navController = navController,
+    startDestination = "userList",
+    modifier = Modifier.fillMaxSize().padding(padding),
+) {
+    composable("userList") {
+        val viewModel: UserListViewModel = hiltViewModel()
+        val state by viewModel.state.collectAsState()
+
+        // Navigate when a user is selected
+        LaunchedEffect(state.selectedUser) {
+            state.selectedUser?.let { user ->
+                navController.navigate("userDetail/${user.login}")
+            }
+        }
+
+        UserListScreen(
+            viewModel = viewModel,
+        )
+    }
+    composable("userDetail/{username}") { backStackEntry ->
+        val viewModel: UserDetailViewModel = hiltViewModel()
+        val username = backStackEntry.arguments?.getString("username")
+        if (username == null) {
+            navController.navigateUp()
+            return@composable
+        }
+        val uiState by viewModel.uiState.collectAsState()
+        val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
+
+        UserDetailScreen(
+            uiState = uiState,
+            repositoriesFlow = repositoriesFlow,
+            onIntent = { intent ->
+                viewModel.onIntent(intent)
+            },
+            onBackClick = {
+                navController.navigateUp()
+            },
+        )
+    }
+}
+package com.example.githubusers.navigation.api
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Project-wide typed destinations for Navigation 3.
+ * Keep this in navigation-api so features can reference types without app dependency.
+ */
+sealed interface AppDestination {
+    @Serializable
+    data object UserList : AppDestination
+
+    @Serializable
+    data class UserDetail(
+        val username: String,
+    ) : AppDestination
+
+    @Serializable
+    data class Search(
+        val query: String? = null,
+    ) : AppDestination
+
+    @Serializable
+    data object Settings : AppDestination
+}
+@Composable
+fun Navigation3Host(
+    controller: Navigation3Controller,
+    startDestination: String,
+    modifier: Modifier = Modifier,
+    canInterceptBack: (Navigation3Entry) -> Boolean = { false },
+    onInterceptBack: (Navigation3Entry) -> Unit = {},
+    content: @Composable (Navigation3Entry) -> Unit,
+) {
+    val currentEntry by controller.currentEntry.collectAsState()
+
+    // Initialize with persistence restore, then navigate to start if still empty
+    LaunchedEffect(Unit) {
+        val restored = controller.restoreFromPersistence()
+        if (!restored && currentEntry == null) {
+            controller.navigate(startDestination)
+        }
+    }
+
+    // Handle back gestures at top-of-stack only
+    currentEntry?.let { entry ->
+        BackHandler(true) {
+            if (canInterceptBack(entry)) {
+                onInterceptBack(entry)
+            } else {
+                controller.navigateBack()
+            }
+        }
+        // Display current destination
+        content(entry)
+    }
+}
 override fun resolve(deepLink: String): NavigationDestination? {
     // Normalize before resolution
     val normalizedUri = UriNormalizer.normalize(Uri.parse(deepLink))
@@ -225,6 +437,148 @@ Incremental migration strategy
 
 Example MainActivity migration (illustrative)
 ```kotlin path=null start=null
+```kotlin
+NavHost(
+    navController = navController,
+    startDestination = "userList",
+    modifier = Modifier.fillMaxSize().padding(padding),
+) {
+    composable("userList") {
+        val viewModel: UserListViewModel = hiltViewModel()
+        val state by viewModel.state.collectAsState()
+
+        // Navigate when a user is selected
+        LaunchedEffect(state.selectedUser) {
+            state.selectedUser?.let { user ->
+                navController.navigate("userDetail/${user.login}")
+            }
+        }
+
+        UserListScreen(
+            viewModel = viewModel,
+        )
+    }
+    composable("userDetail/{username}") { backStackEntry ->
+        val viewModel: UserDetailViewModel = hiltViewModel()
+        val username = backStackEntry.arguments?.getString("username")
+        if (username == null) {
+            navController.navigateUp()
+            return@composable
+        }
+        val uiState by viewModel.uiState.collectAsState()
+        val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
+
+        UserDetailScreen(
+            uiState = uiState,
+            repositoriesFlow = repositoriesFlow,
+            onIntent = { intent ->
+                viewModel.onIntent(intent)
+            },
+            onBackClick = {
+                navController.navigateUp()
+            },
+        )
+    }
+}
+package com.example.githubusers.navigation.api
+
+import kotlinx.serialization.Serializable
+
+/**
+ * Project-wide typed destinations for Navigation 3.
+ * Keep this in navigation-api so features can reference types without app dependency.
+ */
+sealed interface AppDestination {
+    @Serializable
+    data object UserList : AppDestination
+
+    @Serializable
+    data class UserDetail(
+        val username: String,
+    ) : AppDestination
+
+    @Serializable
+    data class Search(
+        val query: String? = null,
+    ) : AppDestination
+
+    @Serializable
+    data object Settings : AppDestination
+}
+@Composable
+fun Navigation3Host(
+    controller: Navigation3Controller,
+    startDestination: String,
+    modifier: Modifier = Modifier,
+    canInterceptBack: (Navigation3Entry) -> Boolean = { false },
+    onInterceptBack: (Navigation3Entry) -> Unit = {},
+    content: @Composable (Navigation3Entry) -> Unit,
+) {
+    val currentEntry by controller.currentEntry.collectAsState()
+
+    // Initialize with persistence restore, then navigate to start if still empty
+    LaunchedEffect(Unit) {
+        val restored = controller.restoreFromPersistence()
+        if (!restored && currentEntry == null) {
+            controller.navigate(startDestination)
+        }
+    }
+
+    // Handle back gestures at top-of-stack only
+    currentEntry?.let { entry ->
+        BackHandler(true) {
+            if (canInterceptBack(entry)) {
+                onInterceptBack(entry)
+            } else {
+                controller.navigateBack()
+            }
+        }
+        // Display current destination
+        content(entry)
+    }
+}
+override fun resolve(deepLink: String): NavigationDestination? {
+    // Normalize before resolution
+    val normalizedUri = UriNormalizer.normalize(Uri.parse(deepLink))
+    val uri = normalizedUri
+    val normalized = normalizedUri.toString()
+
+    telemetry.onResolveAttempt(normalized)
+
+    // Try core destinations first
+    when {
+        normalized == "app://home" -> return CoreNavigationDestination.Home
+        normalized == "app://settings" -> return CoreNavigationDestination.Settings
+        normalized.startsWith("app://error") -> {
+            val message = uri.getQueryParameter("message") ?: "Unknown error"
+            val code = uri.getQueryParameter("code")?.toIntOrNull()
+            return CoreNavigationDestination.Error(message, code)
+        }
+    }
+
+    // Prefer handlers whose moduleId is present in the (optional) ownership registry
+    val owners = ownershipSource.owners
+    val (ownedHandlers, otherHandlers) = handlers.partition { it.moduleId in owners.keys }
+    val orderedHandlers = if (ownedHandlers.isNotEmpty()) ownedHandlers + otherHandlers else handlers.toList()
+
+    // Prepare a URI optimized for handler matching, while keeping the original normalized string for fallback/telemetry
+    val handlerUri = handlerUriForMatching(uri)
+
+    // Try registered handlers
+    for (handler in orderedHandlers) {
+        val result = handler.handleDeepLink(handlerUri)
+        if (result != null) {
+            val owned = handler.moduleId in owners
+            telemetry.onResolveSuccess(normalized, owned)
+            // Convert typed destination to canonical deep link for downstream handling
+            return GenericDestination(AppDeepLinks.build(result.destination))
+        }
+    }
+
+    // Fallback - create a generic destination
+    telemetry.onResolveFallback(normalized)
+    return GenericDestination(normalized)
+}
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   @Inject lateinit var controller: Navigation3Controller

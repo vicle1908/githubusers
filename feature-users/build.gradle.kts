@@ -18,15 +18,12 @@ plugins {
 }
 
 dependencies {
-    // Navigation deep link ownership via KSP
-    implementation(libs.local.navigation.annotations)
-    ksp(libs.local.navigation.ksp)
-
     // Import internal platform BOM for version management (implementation since we don't expose it)
     implementation(platform(libs.internal.platform))
 
-    // Domain modules - versions managed by internal platform BOM (implementation since we don't expose it)
-    implementation(libs.local.core.domain)
+    // Core modules
+    implementation(libs.local.core.data)
+    implementation(libs.local.navigation.annotations)
 
     // Navigation API for deep links
     implementation(libs.local.navigation.api)

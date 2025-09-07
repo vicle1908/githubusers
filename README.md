@@ -36,4 +36,4 @@ This project is a sample Android app that demonstrates the following technologie
 ## License
 
 This project is licensed under the MIT License.
-    
+

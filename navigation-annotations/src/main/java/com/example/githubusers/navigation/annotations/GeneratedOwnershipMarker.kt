@@ -1,7 +1,8 @@
 package com.example.githubusers.navigation.annotations
 
 /**
- * Internal marker interface for generated ownership modules.
- * This is intentionally empty; generation uses Dagger multibinding.
+ * Marker annotation for generated deep link ownership classes.
  */
-interface GeneratedOwnershipMarker
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.SOURCE)
+annotation class GeneratedOwnershipMarker

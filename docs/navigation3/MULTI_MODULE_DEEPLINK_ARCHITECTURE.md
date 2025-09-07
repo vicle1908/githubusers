@@ -26,16 +26,16 @@ Each feature module implements `com.example.githubusers.navigation.api.DeepLinkH
 ## Deep Link Patterns
 
 ### User Module
-```
-githubusers://users                     - User list
+```text
+githubusers://users                     - User lis
 githubusers://user/{username}           - User detail
 githubusers://search?q={query}          - Search (integrated in UserList)
-https://githubusers.example.com/users   - Web URL for user list
+https://githubusers.example.com/users   - Web URL for user lis
 https://githubusers.example.com/user/{username} - Web URL for user detail
 ```
 
 ### Settings Module
-```
+```text
 githubusers://settings                  - Settings home
 githubusers://settings/profile          - Profile settings
 githubusers://settings/theme            - Theme settings
@@ -51,6 +51,12 @@ https://githubusers.example.com/settings - Web URL for settings
 ### Navigate Between Modules
 
 ```kotlin
+```text
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
 // Typed navigation
 moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
 
@@ -61,6 +67,17 @@ moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
 ### Register a New Module
 
 ```kotlin
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
 // 1. Create a handler in the feature module (navigation-api)
 class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
     override val moduleId = "mymodule"
@@ -71,7 +88,7 @@ class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
     override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
 }
 
-// 2. Contribute via Hilt
+// 2. Contribute via Hil
 @Module
 @InstallIn(SingletonComponent::class)
 object MyModuleNavigationDi {
@@ -89,9 +106,37 @@ Deep links are automatically handled when:
 
 Example:
 ```bash
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
 # Test deep link via adb
-adb shell am start -W -a android.intent.action.VIEW \
-  -d "githubusers://user/google" \
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
   com.example.githubusers
 ```
 
@@ -121,13 +166,45 @@ adb shell am start -W -a android.intent.action.VIEW \
 
 ### Unit Testing
 ```kotlin
-@Test
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
 fun testUserDetailDeepLink() {
     val handler = UserModuleDeepLinkHandler()
     val uri = Uri.parse("githubusers://user/octocat")
-    
+
     val result = handler.handleDeepLink(uri)
-    
+
     assertNotNull(result)
     assertTrue(result.destination is Nav3Destination.UserDetail)
     assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
@@ -136,7 +213,50 @@ fun testUserDetailDeepLink() {
 
 ### Integration Testing
 ```kotlin
-@Test
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
+fun testUserDetailDeepLink() {
+    val handler = UserModuleDeepLinkHandler()
+    val uri = Uri.parse("githubusers://user/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertNotNull(result)
+    assertTrue(result.destination is Nav3Destination.UserDetail)
+    assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
+}
+@Tes
 fun testDeepLinkNavigation() = runTest {
     val deepLink = "githubusers://user/google"
     moduleNavigator.navigateToModule(deepLink)
@@ -147,8 +267,58 @@ fun testDeepLinkNavigation() = runTest {
 
 ## Future Enhancements
 
-### 1. Dynamic Module Support
+### 1. Dynamic Module Suppor
 ```kotlin
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
+fun testUserDetailDeepLink() {
+    val handler = UserModuleDeepLinkHandler()
+    val uri = Uri.parse("githubusers://user/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertNotNull(result)
+    assertTrue(result.destination is Nav3Destination.UserDetail)
+    assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
+}
+@Tes
+fun testDeepLinkNavigation() = runTest {
+    val deepLink = "githubusers://user/google"
+    moduleNavigator.navigateToModule(deepLink)
+    // Verify Navigation3Controller currentEntry reflects target deep link
+    assertThat(controller.currentEntry.value?.deepLink).isEqualTo(deepLink)
+}
 // Check if module is installed
 if (moduleManager.isModuleInstalled("premium")) {
     moduleNavigator.navigateToModule("githubusers://premium/features")
@@ -159,6 +329,62 @@ if (moduleManager.isModuleInstalled("premium")) {
 
 ### 2. Analytics Integration
 ```kotlin
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
+fun testUserDetailDeepLink() {
+    val handler = UserModuleDeepLinkHandler()
+    val uri = Uri.parse("githubusers://user/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertNotNull(result)
+    assertTrue(result.destination is Nav3Destination.UserDetail)
+    assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
+}
+@Tes
+fun testDeepLinkNavigation() = runTest {
+    val deepLink = "githubusers://user/google"
+    moduleNavigator.navigateToModule(deepLink)
+    // Verify Navigation3Controller currentEntry reflects target deep link
+    assertThat(controller.currentEntry.value?.deepLink).isEqualTo(deepLink)
+}
+// Check if module is installed
+if (moduleManager.isModuleInstalled("premium")) {
+    moduleNavigator.navigateToModule("githubusers://premium/features")
+} else {
+    // Prompt to install or fallback to web
+}
 // Track deep link usage
 deepLinkRegistry.addInterceptor { deepLink ->
     analytics.trackDeepLink(deepLink)
@@ -167,6 +393,66 @@ deepLinkRegistry.addInterceptor { deepLink ->
 
 ### 3. Permission Checking
 ```kotlin
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
+fun testUserDetailDeepLink() {
+    val handler = UserModuleDeepLinkHandler()
+    val uri = Uri.parse("githubusers://user/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertNotNull(result)
+    assertTrue(result.destination is Nav3Destination.UserDetail)
+    assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
+}
+@Tes
+fun testDeepLinkNavigation() = runTest {
+    val deepLink = "githubusers://user/google"
+    moduleNavigator.navigateToModule(deepLink)
+    // Verify Navigation3Controller currentEntry reflects target deep link
+    assertThat(controller.currentEntry.value?.deepLink).isEqualTo(deepLink)
+}
+// Check if module is installed
+if (moduleManager.isModuleInstalled("premium")) {
+    moduleNavigator.navigateToModule("githubusers://premium/features")
+} else {
+    // Prompt to install or fallback to web
+}
+// Track deep link usage
+deepLinkRegistry.addInterceptor { deepLink ->
+    analytics.trackDeepLink(deepLink)
+}
 // Check if user has access before navigation
 deepLinkRegistry.addPermissionChecker { deepLink ->
     userPermissions.canAccess(deepLink)
@@ -175,6 +461,70 @@ deepLinkRegistry.addPermissionChecker { deepLink ->
 
 ### 4. Deep Link Validation
 ```kotlin
+```kotlin
+githubusers://settings                  - Settings home
+githubusers://settings/profile          - Profile settings
+githubusers://settings/theme            - Theme settings
+githubusers://settings/about            - About page
+https://githubusers.example.com/settings - Web URL for settings
+// Typed navigation
+moduleNavigator.navigateTo(AppDestination.UserDetail("octocat"))
+
+// Deep link navigation (raw URI)
+moduleNavigator.navigateToModule("githubusers://settings?clear_stack=true")
+// 1. Create a handler in the feature module (navigation-api)
+class MyModuleDeepLinkHandler @Inject constructor() : DeepLinkHandler {
+    override val moduleId = "mymodule"
+    override fun supportedPatterns() = listOf(
+        "githubusers://mymodule",
+        "githubusers://mymodule/{id}"
+    )
+    override fun handleDeepLink(uri: Uri): DeepLinkResult? { /* ... */ }
+}
+
+// 2. Contribute via Hil
+@Module
+@InstallIn(SingletonComponent::class)
+object MyModuleNavigationDi {
+    @Provides @IntoSet @Singleton
+    fun provideMyModuleHandler(): DeepLinkHandler = MyModuleDeepLinkHandler()
+}
+# Test deep link via adb
+adb shell am start -W -a android.intent.action.VIEW
+  -d "githubusers://user/google"
+  com.example.githubusers
+@Tes
+fun testUserDetailDeepLink() {
+    val handler = UserModuleDeepLinkHandler()
+    val uri = Uri.parse("githubusers://user/octocat")
+
+    val result = handler.handleDeepLink(uri)
+
+    assertNotNull(result)
+    assertTrue(result.destination is Nav3Destination.UserDetail)
+    assertEquals("octocat", (result.destination as Nav3Destination.UserDetail).username)
+}
+@Tes
+fun testDeepLinkNavigation() = runTest {
+    val deepLink = "githubusers://user/google"
+    moduleNavigator.navigateToModule(deepLink)
+    // Verify Navigation3Controller currentEntry reflects target deep link
+    assertThat(controller.currentEntry.value?.deepLink).isEqualTo(deepLink)
+}
+// Check if module is installed
+if (moduleManager.isModuleInstalled("premium")) {
+    moduleNavigator.navigateToModule("githubusers://premium/features")
+} else {
+    // Prompt to install or fallback to web
+}
+// Track deep link usage
+deepLinkRegistry.addInterceptor { deepLink ->
+    analytics.trackDeepLink(deepLink)
+}
+// Check if user has access before navigation
+deepLinkRegistry.addPermissionChecker { deepLink ->
+    userPermissions.canAccess(deepLink)
+}
 // Validate deep links at compile time
 @DeepLink("githubusers://user/{username}")
 fun navigateToUser(username: String) {
@@ -213,3 +563,4 @@ To migrate existing navigation to deep links:
    - Document all supported deep links
    - Provide examples for each pattern
    - Keep deep link registry up to date
+

@@ -81,6 +81,7 @@ alwaysApply: true
 #### Android Development Research
 
 ```kotlin
+```gradle
 // 1. Find existing patterns
 mcp_claude-context_search_code("Android Navigation 3 implementation")
 
@@ -105,6 +106,26 @@ mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findi
 #### Library Migration Research
 
 ```kotlin
+```gradle
+// 1. Find existing patterns
+mcp_claude-context_search_code("Android Navigation 3 implementation")
+
+// 2. Get documentation
+mcp_context7_resolve-library-id("androidx.navigation")
+mcp_context7_get-library-docs("/androidx/navigation", "deep links")
+
+// 3. Find best practices
+mcp_deepwiki_ask_question("android/architecture-samples", "Navigation 3 best practices")
+
+// 4. Real-world code examples
+mcp_grep-remote_searchGitHub("NavHost(", language=["Kotlin"])
+
+// 5. Current trends
+mcp_tavily_tavily-search("Android Navigation 3 2024 best practices")
+mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": ["android", "navigation"]})
+
+// 6. AI consensus
+mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
 // 1. Existing patterns
 mcp_claude-context_search_code("migration from old library to new library")
 
@@ -193,3 +214,4 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 - **Accuracy**: 90%+ consensus on recommendations
 - **Efficiency**: 85%+ automation in research workflow
 - **Relevance**: 0.3+ relevance scores for knowledge retrieval
+

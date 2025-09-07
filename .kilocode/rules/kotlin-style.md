@@ -9,10 +9,11 @@
 
 ### Import Ordering
 ```kotlin
+```kotlin
 // Correct - Single imports only
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
+import javax.inject.Injec
 
 // WRONG - Never use wildcards
 import kotlinx.coroutines.flow.*  // FORBIDDEN
@@ -50,11 +51,19 @@ import kotlinx.coroutines.flow.*  // FORBIDDEN
 
 ### Data Classes
 ```kotlin
-// Correct
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
 data class User(
     val id: String,
     val username: String,
-    val createdAt: Instant
+    val createdAt: Instan
 )
 
 // Use sealed classes for state
@@ -69,6 +78,27 @@ sealed interface ViewState {
 
 ### Safe Calls
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
 // Correct - Use safe calls
 val length = username?.length ?: 0
 
@@ -78,6 +108,32 @@ val length = username!!.length  // AVOID
 
 ### Validation
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
 // Use require/check for preconditions
 fun processUser(user: User?) {
     requireNotNull(user) { "User cannot be null" }
@@ -89,11 +145,42 @@ fun processUser(user: User?) {
 
 ### Structured Concurrency
 - Never use `GlobalScope`
-- Use proper scope management
+- Use proper scope managemen
 - Handle cancellation properly
 
 ### Flow Best Practices
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
 // Expose read-only StateFlow
 private val _state = MutableStateFlow(initialState)
 val state: StateFlow<ViewState> = _state.asStateFlow()
@@ -116,6 +203,48 @@ val users = userRepository.getUsers()
 
 ### Functional Operations
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
+// Expose read-only StateFlow
+private val _state = MutableStateFlow(initialState)
+val state: StateFlow<ViewState> = _state.asStateFlow()
+
+// Use stateIn/shareIn for cold flows
+val users = userRepository.getUsers()
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
 // Prefer functional style
 val activeUsers = users
     .filter { it.isActive }
@@ -139,6 +268,59 @@ val result = largeList.asSequence()
 - **with**: Rarely used, prefer `run`
 
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
+// Expose read-only StateFlow
+private val _state = MutableStateFlow(initialState)
+val state: StateFlow<ViewState> = _state.asStateFlow()
+
+// Use stateIn/shareIn for cold flows
+val users = userRepository.getUsers()
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+// Prefer functional style
+val activeUsers = users
+    .filter { it.isActive }
+    .map { it.username }
+    .sorted()
+
+// Use sequences for large collections
+val result = largeList.asSequence()
+    .filter { it.meetsCriteria() }
+    .map { transform(it) }
+    .toList()
 // Correct usage
 user?.let { activeUser ->
     processUser(activeUser)
@@ -151,14 +333,14 @@ val intent = Intent().apply {
 }
 ```
 
-## Quality Enforcement
+## Quality Enforcemen
 
-### KtLint
+### KtLin
 - Format code automatically
 - Enforce Kotlin conventions
 - Integrated via convention plugin
 
-### Detekt
+### Detek
 - Static code analysis
 - Code smell detection
 - Custom rules for project standards
@@ -166,6 +348,69 @@ val intent = Intent().apply {
 
 ### EditorConfig
 ```properties
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
+// Expose read-only StateFlow
+private val _state = MutableStateFlow(initialState)
+val state: StateFlow<ViewState> = _state.asStateFlow()
+
+// Use stateIn/shareIn for cold flows
+val users = userRepository.getUsers()
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+// Prefer functional style
+val activeUsers = users
+    .filter { it.isActive }
+    .map { it.username }
+    .sorted()
+
+// Use sequences for large collections
+val result = largeList.asSequence()
+    .filter { it.meetsCriteria() }
+    .map { transform(it) }
+    .toList()
+// Correct usage
+user?.let { activeUser ->
+    processUser(activeUser)
+}
+
+// Object configuration
+val intent = Intent().apply {
+    action = Intent.ACTION_VIEW
+    data = Uri.parse(url)
+}
 # .editorconfig
 [*.{kt,kts}]
 indent_size = 4
@@ -178,20 +423,89 @@ wildcard_import = false
 
 ### Test Naming
 ```kotlin
-@Test
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
+// Expose read-only StateFlow
+private val _state = MutableStateFlow(initialState)
+val state: StateFlow<ViewState> = _state.asStateFlow()
+
+// Use stateIn/shareIn for cold flows
+val users = userRepository.getUsers()
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+// Prefer functional style
+val activeUsers = users
+    .filter { it.isActive }
+    .map { it.username }
+    .sorted()
+
+// Use sequences for large collections
+val result = largeList.asSequence()
+    .filter { it.meetsCriteria() }
+    .map { transform(it) }
+    .toList()
+// Correct usage
+user?.let { activeUser ->
+    processUser(activeUser)
+}
+
+// Object configuration
+val intent = Intent().apply {
+    action = Intent.ACTION_VIEW
+    data = Uri.parse(url)
+}
+# .editorconfig
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 120
+kotlin_imports_layout = single
+wildcard_import = false
+@Tes
 fun `test getUserById with valid ID returns user`() {
     // Test implementation
 }
 
 // Or traditional naming
-@Test
+@Tes
 fun test_getUserById_withValidId_returnsUser() {
     // Test implementation
 }
 ```
 
 ### Test Structure
-- Follow AAA pattern: Arrange, Act, Assert
+- Follow AAA pattern: Arrange, Act, Asser
 - Use descriptive test names
 - One assertion per test when possible
 
@@ -199,9 +513,88 @@ fun test_getUserById_withValidId_returnsUser() {
 
 ### KDoc
 ```kotlin
+```kotlin
+// Correct - Single imports only
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Injec
+
+// WRONG - Never use wildcards
+import kotlinx.coroutines.flow.*  // FORBIDDEN
+// Correc
+data class User(
+    val id: String,
+    val username: String,
+    val createdAt: Instan
+)
+
+// Use sealed classes for state
+sealed interface ViewState {
+    data object Loading : ViewState
+    data class Success(val data: List<User>) : ViewState
+    data class Error(val message: String) : ViewState
+}
+// Correct - Use safe calls
+val length = username?.length ?: 0
+
+// WRONG - Avoid !!
+val length = username!!.length  // AVOID
+// Use require/check for preconditions
+fun processUser(user: User?) {
+    requireNotNull(user) { "User cannot be null" }
+    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
+}
+// Expose read-only StateFlow
+private val _state = MutableStateFlow(initialState)
+val state: StateFlow<ViewState> = _state.asStateFlow()
+
+// Use stateIn/shareIn for cold flows
+val users = userRepository.getUsers()
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+// Prefer functional style
+val activeUsers = users
+    .filter { it.isActive }
+    .map { it.username }
+    .sorted()
+
+// Use sequences for large collections
+val result = largeList.asSequence()
+    .filter { it.meetsCriteria() }
+    .map { transform(it) }
+    .toList()
+// Correct usage
+user?.let { activeUser ->
+    processUser(activeUser)
+}
+
+// Object configuration
+val intent = Intent().apply {
+    action = Intent.ACTION_VIEW
+    data = Uri.parse(url)
+}
+# .editorconfig
+[*.{kt,kts}]
+indent_size = 4
+max_line_length = 120
+kotlin_imports_layout = single
+wildcard_import = false
+@Tes
+fun `test getUserById with valid ID returns user`() {
+    // Test implementation
+}
+
+// Or traditional naming
+@Tes
+fun test_getUserById_withValidId_returnsUser() {
+    // Test implementation
+}
 /**
  * Retrieves user details from the repository.
- * 
+ *
  * @param userId The unique identifier of the user
  * @return User details or null if not found
  * @throws NetworkException if network request fails
@@ -221,7 +614,7 @@ suspend fun getUserDetails(userId: String): User?
 - Use `ktlintCheck` and `detekt` tasks
 - Never bypass quality gates
 
-### Enforcement
-- All code must pass KtLint and Detekt
+### Enforcemen
+- All code must pass KtLint and Detek
 - No wildcard imports policy is non-negotiable
 - Version catalog usage is mandatory

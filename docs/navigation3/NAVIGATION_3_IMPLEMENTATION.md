@@ -30,6 +30,7 @@ Navigation 3 is fully integrated with a typed, deep link–driven approach. The 
 
 **Typed Destinations + Deep Links:**
 ```kotlin
+```kotlin
 // Build from typed destination
 val deepLink = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
 controller.navigate(deepLink)
@@ -43,6 +44,13 @@ controller.navigate(AppDestination.UserDetail("octocat"))
 
 **Typed Destinations in navigation-api:**
 ```kotlin
+```kotlin
+// Build from typed destination
+val deepLink = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
+controller.navigate(deepLink)
+
+// Or navigate with typed directly
+controller.navigate(AppDestination.UserDetail("octocat"))
 sealed interface AppDestination {
     @Serializable data object UserList : AppDestination
     @Serializable data class UserDetail(val username: String) : AppDestination
@@ -73,16 +81,58 @@ Fully migrated to typed Navigation 3. Legacy NavigationManager and SimpleNav3Hos
 
 **Navigate to User Detail (typed):**
 ```kotlin
+```kotlin
+// Build from typed destination
+val deepLink = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
+controller.navigate(deepLink)
+
+// Or navigate with typed directly
+controller.navigate(AppDestination.UserDetail("octocat"))
+sealed interface AppDestination {
+    @Serializable data object UserList : AppDestination
+    @Serializable data class UserDetail(val username: String) : AppDestination
+    @Serializable data class Search(val query: String? = null) : AppDestination
+    @Serializable data object Settings : AppDestination
+}
 controller.navigate(AppDestination.UserDetail("octocat"))
 ```
 
 **Navigate via deep link:**
 ```kotlin
+```kotlin
+// Build from typed destination
+val deepLink = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
+controller.navigate(deepLink)
+
+// Or navigate with typed directly
+controller.navigate(AppDestination.UserDetail("octocat"))
+sealed interface AppDestination {
+    @Serializable data object UserList : AppDestination
+    @Serializable data class UserDetail(val username: String) : AppDestination
+    @Serializable data class Search(val query: String? = null) : AppDestination
+    @Serializable data object Settings : AppDestination
+}
+controller.navigate(AppDestination.UserDetail("octocat"))
 controller.navigate(AppDeepLinks.build(AppDestination.UserDetail("octocat")))
 ```
 
 **Pop to start:**
 ```kotlin
+```kotlin
+// Build from typed destination
+val deepLink = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
+controller.navigate(deepLink)
+
+// Or navigate with typed directly
+controller.navigate(AppDestination.UserDetail("octocat"))
+sealed interface AppDestination {
+    @Serializable data object UserList : AppDestination
+    @Serializable data class UserDetail(val username: String) : AppDestination
+    @Serializable data class Search(val query: String? = null) : AppDestination
+    @Serializable data object Settings : AppDestination
+}
+controller.navigate(AppDestination.UserDetail("octocat"))
+controller.navigate(AppDeepLinks.build(AppDestination.UserDetail("octocat")))
 controller.popBackStackTo(AppDeepLinks.build(AppDestination.UserList), inclusive = false)
 ```
 

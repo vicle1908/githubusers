@@ -19,15 +19,14 @@ plugins {
 }
 
 dependencies {
-    // Navigation deep link ownership via KSP
-    implementation(libs.local.navigation.annotations)
-    ksp(libs.local.navigation.ksp)
     // Platform for version alignment
     implementation(platform(libs.internal.platform))
 
-    // Shared modules
-    implementation(libs.local.core.domain)
+    // Core modules
     implementation(libs.local.core.data)
+    implementation(libs.local.navigation.annotations)
+
+    // Shared modules
     implementation(libs.local.navigation.api)
 
     // AndroidX

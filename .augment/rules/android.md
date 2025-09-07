@@ -40,12 +40,12 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
   - Single source of truth for UI state
   - Clear separation of user actions and system responses
 - **Repository Pattern**: Data access abstraction and caching
-- **Dependency Injection**: Hilt for clean dependency management
+- **Dependency Injection**: Hilt for clean dependency managemen
 - **SOLID Principles**: Throughout all implementations
 
 ### Navigation & UI Architecture
 
-- **Navigation 3**: Modern navigation with deep link support
+- **Navigation 3**: Modern navigation with deep link suppor
   - All cross-module navigation MUST use deep links
   - Type-safe destinations with Kotlin Serialization
   - Direct back stack control and state preservation
@@ -55,7 +55,7 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
   - Consistent component usage across the app
 - **ViewBinding**: Type-safe view access (preferred over findViewById)
 - **ConstraintLayout**: Flexible and performant layouts
-- **Fragments**: Modular UI components with proper lifecycle management
+- **Fragments**: Modular UI components with proper lifecycle managemen
 
 ## Kotlin Best Practices
 
@@ -89,13 +89,13 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 - Use default parameter values instead of null checks
 - Follow RO-RO pattern for complex parameters (Receive Object, Return Object)
 
-### Data Management
+### Data Managemen
 
 - Use data classes for data structures
 - Encapsulate data in composite types, avoid primitive obsession
 - Implement validation in data classes, not in functions
 - Prefer immutability with `val` for read-only data
-- Use sealed classes/interfaces for type-safe state management
+- Use sealed classes/interfaces for type-safe state managemen
 
 ### Class Design
 
@@ -119,14 +119,15 @@ You are a Senior Kotlin programmer with extensive Android framework experience, 
 
 ## Android-Specific Implementation
 
-### State Management
+### State Managemen
 
 - **MVI Pattern Implementation**:
 
 ```kotlin
+```kotlin
 sealed interface ViewIntent {
-    data class SearchUsers(val query: String) : ViewIntent
-    data object RefreshUsers : ViewIntent
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
 }
 
 data class ViewState(
@@ -136,8 +137,8 @@ data class ViewState(
 )
 
 sealed interface ViewEffect {
-    data class NavigateToDetail(val username: String) : ViewEffect
-    data class ShowError(val message: String) : ViewEffect
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
 }
 ```
 
@@ -146,6 +147,22 @@ sealed interface ViewEffect {
 - **Deep Link Navigation**:
 
 ```kotlin
+```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
 // Navigate using deep links
 navigation.navigate("githubusers://users/detail/octocat")
 
@@ -170,10 +187,10 @@ navigation.navigate(AppDestination.UserDetail("octocat"))
 
 - **Memory Management**:
   - Use `remember` and `derivedStateOf` appropriately
-  - Implement proper coroutine scope management
+  - Implement proper coroutine scope managemen
   - Use `cachedIn` for Flow operations in ViewModels
 - **UI Performance**:
-  - Minimize recomposition with proper state management
+  - Minimize recomposition with proper state managemen
   - Use `LaunchedEffect` for side effects
   - Implement proper loading states and error handling
 
@@ -185,7 +202,7 @@ navigation.navigate(AppDestination.UserDetail("octocat"))
 - **Use Cases**: Test business logic with mocked dependencies
 - **Repositories**: Test data operations and caching
 - **Mappers**: Test data transformations
-- **Follow AAA Pattern**: Arrange, Act, Assert
+- **Follow AAA Pattern**: Arrange, Act, Asser
 
 ### Integration Testing
 
@@ -272,15 +289,36 @@ Users can explicitly request multi-AI consultation with:
 ### ViewModel with MVI Pattern
 
 ```kotlin
+```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
 @HiltViewModel
 class UserListViewModel @Inject constructor(
     private val observeUserListUseCase: ObserveUserListUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    
+
     private val _state = MutableStateFlow(UserListState())
     val state: StateFlow<UserListState> = _state.asStateFlow()
-    
+
     fun processIntent(intent: UserListIntent) {
         when (intent) {
             is UserListIntent.SearchUsers -> executeSearch(intent.query)
@@ -288,7 +326,7 @@ class UserListViewModel @Inject constructor(
             is UserListIntent.UserClicked -> navigateToDetail(intent.user)
         }
     }
-    
+
     private fun executeSearch(query: String) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
@@ -301,13 +339,58 @@ class UserListViewModel @Inject constructor(
 ### Deep Link Navigation
 
 ```kotlin
+```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
 @Composable
 fun UserListScreen(
     viewModel: UserListViewModel,
-    onUserClick: (User) -> Unit
+    onUserClick: (User) -> Uni
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    
+
     LazyColumn {
         items(state.users) { user ->
             UserItem(
@@ -322,6 +405,67 @@ fun UserListScreen(
 ### Material 3 Search Implementation
 
 ```kotlin
+```kotlin
+sealed interface ViewIntent {
+    data class SearchUsers(val query: String) : ViewInten
+    data object RefreshUsers : ViewInten
+}
+
+data class ViewState(
+    val users: List<User> = emptyList(),
+    val isLoading: Boolean = false,
+    val error: String? = null
+)
+
+sealed interface ViewEffect {
+    data class NavigateToDetail(val username: String) : ViewEffec
+    data class ShowError(val message: String) : ViewEffec
+}
+// Navigate using deep links
+navigation.navigate("githubusers://users/detail/octocat")
+
+// Type-safe navigation
+navigation.navigate(AppDestination.UserDetail("octocat"))
+@HiltViewModel
+class UserListViewModel @Inject constructor(
+    private val observeUserListUseCase: ObserveUserListUseCase,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(UserListState())
+    val state: StateFlow<UserListState> = _state.asStateFlow()
+
+    fun processIntent(intent: UserListIntent) {
+        when (intent) {
+            is UserListIntent.SearchUsers -> executeSearch(intent.query)
+            is UserListIntent.RefreshUsers -> refreshUsers()
+            is UserListIntent.UserClicked -> navigateToDetail(intent.user)
+        }
+    }
+
+    private fun executeSearch(query: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, error = null) }
+            // Implementation details...
+        }
+    }
+}
+@Composable
+fun UserListScreen(
+    viewModel: UserListViewModel,
+    onUserClick: (User) -> Uni
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LazyColumn {
+        items(state.users) { user ->
+            UserItem(
+                user = user,
+                onClick = { onUserClick(user) }
+            )
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
@@ -347,7 +491,7 @@ fun SearchBar(
 ### ✅ DO
 
 - Use Clean Architecture with clear layer separation
-- Implement MVI pattern for state management
+- Implement MVI pattern for state managemen
 - Use Navigation 3 with deep link navigation
 - Follow Material 3 design guidelines
 - Write comprehensive tests for all layers
@@ -366,9 +510,9 @@ fun SearchBar(
 - Ignore performance implications
 - Violate SOLID principles
 
-## Continuous Improvement
+## Continuous Improvemen
 
-### Code Review Checklist
+### Code Review Checklis
 
 - [ ] Follows Clean Architecture principles
 - [ ] Implements MVI pattern correctly
@@ -391,3 +535,4 @@ This rule ensures the highest quality Android development by combining modern be
 
 - Use the standard widget testing for flutter
 - Use integration tests for each api module.
+

@@ -40,17 +40,24 @@ Claude has access to all 14 MCP servers listed in [mcp-guide.md](./mcp-guide.md)
 
 ### Build Tasks
 ```bash
+```text
 mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 ```
 
 ### Android Operations
 ```bash
+```text
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
 mcp_android_execute_adb_shell_command("logcat -d | tail -20")
 mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 ```
 
 ### Knowledge Management
 ```bash
+```text
+mcp_gradle-mcp-server_execute_gradle_task(":app:assembleDebug")
+mcp_android_execute_adb_shell_command("logcat -d | tail -20")
+mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 mcp_byterover-mcp_byterover-retrieve-knowledge("query")
 mcp_byterover-mcp_byterover-save-implementation-plan(plan)
 ```

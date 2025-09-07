@@ -118,11 +118,14 @@ All assistants now enforce:
 
 ### To Verify Sync
 ```bash
+```text
 ./scripts/verify-sync-parity.sh
 ```
 
 ### To Test Hook
 ```bash
+```text
+./scripts/verify-sync-parity.sh
 ./scripts/test-sync-hook.sh
 ```
 

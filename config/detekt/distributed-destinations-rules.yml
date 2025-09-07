@@ -1,0 +1,102 @@
+# Distributed Destinations Lint Rules
+# These rules enforce the distributed destinations architecture patterns
+
+distributed-destinations:
+  # Rule: Prevent direct AppDestination usage
+  no-app-destination-usage:
+    active: true
+    severity: error
+    message: "AppDestination usage is not allowed. Use FeatureApi for cross-module navigation instead."
+    excludes: []
+    
+  # Rule: Ensure FeatureApi implementations have proper structure
+  feature-api-structure:
+    active: true
+    severity: warning
+    message: "FeatureApi implementations should follow the established pattern with featureId and NavCommand return types."
+    excludes: []
+    
+  # Rule: Ensure DeepLinkHandler implementations use distributed destinations
+  deep-link-handler-distributed:
+    active: true
+    severity: error
+    message: "DeepLinkHandler implementations must use distributed destinations, not centralized ones."
+    excludes: []
+    
+  # Rule: Ensure proper naming conventions for feature navigation
+  feature-navigation-naming:
+    active: true
+    severity: warning
+    message: "Feature navigation classes should follow naming conventions: {Feature}Destination, {Feature}Api, {Feature}DeepLinkHandler."
+    excludes: []
+
+# Custom rules for distributed destinations
+custom-rules:
+  # Rule: Check for proper FeatureApi interface implementation
+  feature-api-interface:
+    active: true
+    severity: error
+    message: "FeatureApi implementations must extend FeatureApi interface and provide featureId property."
+    excludes: []
+    
+  # Rule: Check for proper NavCommand usage
+  nav-command-usage:
+    active: true
+    severity: warning
+    message: "Navigation should use NavCommand for type safety."
+    excludes: []
+    
+  # Rule: Check for proper deep link patterns
+  deep-link-patterns:
+    active: true
+    severity: warning
+    message: "Deep link patterns should follow established conventions: app://, githubusers://, https://."
+    excludes: []
+
+# Architecture rules
+architecture:
+  # Rule: Prevent circular dependencies between features
+  no-circular-dependencies:
+    active: true
+    severity: error
+    message: "Features should not have circular dependencies. Use FeatureApi for cross-module communication."
+    excludes: []
+    
+  # Rule: Ensure proper module boundaries
+  module-boundaries:
+    active: true
+    severity: warning
+    message: "Navigation code should be properly organized within feature modules."
+    excludes: []
+
+# Performance rules
+performance:
+  # Rule: Check for efficient deep link handling
+  efficient-deep-link-handling:
+    active: true
+    severity: warning
+    message: "Deep link handlers should efficiently process URIs without unnecessary allocations."
+    excludes: []
+    
+  # Rule: Check for proper lazy initialization
+  lazy-initialization:
+    active: true
+    severity: info
+    message: "Consider lazy initialization for expensive navigation operations."
+    excludes: []
+
+# Documentation rules
+documentation:
+  # Rule: Ensure proper documentation for navigation APIs
+  navigation-api-documentation:
+    active: true
+    severity: warning
+    message: "Navigation APIs should be properly documented with usage examples."
+    excludes: []
+    
+  # Rule: Ensure proper documentation for deep link patterns
+  deep-link-documentation:
+    active: true
+    severity: info
+    message: "Deep link patterns should be documented with examples."
+    excludes: []

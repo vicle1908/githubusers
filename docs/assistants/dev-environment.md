@@ -7,6 +7,7 @@
 Set these environment variables in your shell profile:
 
 ```bash
+```bash
 # Core MCP Services
 export OPENAI_API_KEY="your-openai-key"
 export GEMINI_API_KEY="your-gemini-key"

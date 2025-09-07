@@ -23,6 +23,7 @@ This document outlines the migration from previous detekt versions to 1.23.8, in
 ### Update Dependencies
 
 ```toml
+```text
 # OLD: detekt-formatting
 # detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
 
@@ -33,6 +34,12 @@ detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", versi
 ### Configuration Changes
 
 ```yaml
+```text
+# OLD: detekt-formatting
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+
+# NEW: ktlint ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 # OLD: Formatting rules enabled
 formatting:
   active: true
@@ -52,6 +59,26 @@ ktlint:
 ### Plugin Updates
 
 ```kotlin
+```gradle
+# OLD: detekt-formatting
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+
+# NEW: ktlint ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+# OLD: Formatting rules enabled
+formatting:
+  active: true
+  # ... many formatting rules
+
+# NEW: Formatting handled by ktlint
+formatting:
+  active: false
+
+# NEW: Ktlint integration
+ktlint:
+  active: true
+  code_style: 'android_studio'
+  autoCorrect: true
 // OLD: detekt-formatting
 dependencies {
     add("detektPlugins", libs.findLibrary("detekt-formatting").get())
@@ -102,6 +129,35 @@ dependencies {
 ### Check Configuration
 
 ```bash
+```gradle
+# OLD: detekt-formatting
+# detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+
+# NEW: ktlint ruleset
+detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+# OLD: Formatting rules enabled
+formatting:
+  active: true
+  # ... many formatting rules
+
+# NEW: Formatting handled by ktlint
+formatting:
+  active: false
+
+# NEW: Ktlint integration
+ktlint:
+  active: true
+  code_style: 'android_studio'
+  autoCorrect: true
+// OLD: detekt-formatting
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-formatting").get())
+}
+
+// NEW: ktlint ruleset
+dependencies {
+    add("detektPlugins", libs.findLibrary("detekt-ktlint-rules").get())
+}
 # Verify detekt configuration
 ./gradlew detekt --console=plain
 

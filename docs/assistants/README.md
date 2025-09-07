@@ -49,6 +49,7 @@ This directory contains the canonical documentation for all AI assistants workin
 
 Run verification to ensure all assistants have matching content:
 ```bash
+```text
 ./scripts/verify-assistant-sync.sh
 ```
 

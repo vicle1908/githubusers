@@ -17,13 +17,13 @@ This document describes the modern, convention-based build system architecture f
 - Single source of truth for dependency versions
 
 ### 3. **Dependency Optimization**
-- Use `implementation` dependencies by default
+- Use `implementation` dependencies by defaul
 - Use `api` dependencies only when modules need to expose dependencies to consumers
-- Platform BOMs for version alignment
+- Platform BOMs for version alignmen
 
 ## Project Structure
 
-```
+```tex
 githubusers/
 ├── app/                           # Main application module
 ├── core-*/                        # Core functionality modules
@@ -133,6 +133,16 @@ The version catalog (`catalog/gradle/libs.versions.toml`) is organized into thre
 
 ### Key Versions
 ```toml
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
 [versions]
 kotlin = "2.2.10"
 android-gradle-plugin = "8.12.2"
@@ -145,6 +155,22 @@ room = "2.7.2"
 
 ### Application Module
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -162,6 +188,35 @@ extensions.configure<ApplicationConfigExtension>("appConfig") {
 
 ### Feature Module
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -174,7 +229,7 @@ dependencies {
     // Use implementation for internal dependencies
     implementation(libs.local.core.domain)
     implementation(libs.local.navigation.api)
-    
+
     // Use api only when exposing to consumers
     api(libs.local.feature.users)
 }
@@ -182,6 +237,51 @@ dependencies {
 
 ### JVM Library Module
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
 plugins {
     alias(libs.plugins.kotlin.jvm)
     id("githubusers.jvm.library")
@@ -195,7 +295,7 @@ dependencies {
 }
 ```
 
-## Dependency Management
+## Dependency Managemen
 
 ### Dependency Types
 
@@ -219,7 +319,63 @@ dependencies {
 
 ### Platform BOMs
 ```kotlin
-// Use platform BOMs for version alignment
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
 implementation(platform(libs.internal.platform))
 implementation(platform(libs.androidx.compose.bom))
 implementation(platform(libs.ktor.bom))
@@ -249,6 +405,66 @@ implementation(platform(libs.ktor.bom))
 
 #### 1. Remove Custom Configuration
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
 // ❌ Remove these blocks
 android { ... }
 kotlin { ... }
@@ -257,6 +473,70 @@ publishing { ... }
 
 #### 2. Apply Convention Plugins
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
 // ✅ Apply appropriate convention plugins
 id("githubusers.android.library")
 id("githubusers.feature.module")
@@ -264,6 +544,73 @@ id("githubusers.feature.module")
 
 #### 3. Use Version Catalog
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
 // ❌ Don't hardcode versions
 implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
 
@@ -273,6 +620,78 @@ implementation(libs.kotlin.stdlib)
 
 #### 4. Optimize Dependencies
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
 // ❌ Don't expose unnecessary dependencies
 api(libs.androidx.core.ktx)
 
@@ -284,30 +703,196 @@ implementation(libs.androidx.core.ktx)
 
 ### 1. **Plugin Application Order**
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
 plugins {
-    // 1. Apply base Android/Kotlin plugins first
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
     // 2. Apply convention plugins
     id("githubusers.android.library")
     id("githubusers.feature.module")
-    
-    // 3. Apply quality plugins last
+
+    // 3. Apply quality plugins las
     id("githubusers.quality.detekt")
 }
 ```
 
 ### 2. **Dependency Declaration**
 ```kotlin
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
 dependencies {
     // Group dependencies by type
     // Core dependencies
     implementation(libs.local.core.domain)
-    
+
     // UI dependencies
     implementation(libs.androidx.compose.ui)
-    
+
     // Testing dependencies
     testImplementation(libs.junit)
 }
@@ -316,7 +901,7 @@ dependencies {
 ### 3. **Version Management**
 - Always use version catalog for versions
 - Never hardcode versions in build files
-- Use platform BOMs for version alignment
+- Use platform BOMs for version alignmen
 - Keep versions in sync across related libraries
 
 ### 4. **Module Organization**
@@ -331,6 +916,106 @@ dependencies {
 
 #### 1. **Plugin Not Found**
 ```bash
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
+dependencies {
+    // Group dependencies by type
+    // Core dependencies
+    implementation(libs.local.core.domain)
+
+    // UI dependencies
+    implementation(libs.androidx.compose.ui)
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+}
 # Error: Plugin with id 'githubusers.android.library' not found
 # Solution: Ensure plugins module is built and included
 ./gradlew :plugins:build
@@ -338,18 +1023,333 @@ dependencies {
 
 #### 2. **Namespace Conflicts**
 ```bash
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
+dependencies {
+    // Group dependencies by type
+    // Core dependencies
+    implementation(libs.local.core.domain)
+
+    // UI dependencies
+    implementation(libs.androidx.compose.ui)
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+}
+# Error: Plugin with id 'githubusers.android.library' not found
+# Solution: Ensure plugins module is built and included
+./gradlew :plugins:build
 # Error: Type com.example.githubusers.BuildConfig is defined multiple times
 # Solution: Convention plugins automatically generate unique namespaces
 ```
 
 #### 3. **Version Conflicts**
 ```bash
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
+dependencies {
+    // Group dependencies by type
+    // Core dependencies
+    implementation(libs.local.core.domain)
+
+    // UI dependencies
+    implementation(libs.androidx.compose.ui)
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+}
+# Error: Plugin with id 'githubusers.android.library' not found
+# Solution: Ensure plugins module is built and included
+./gradlew :plugins:build
+# Error: Type com.example.githubusers.BuildConfig is defined multiple times
+# Solution: Convention plugins automatically generate unique namespaces
 # Error: Multiple versions of the same library
 # Solution: Use platform BOMs and version catalog
 ```
 
 #### 4. **Build Cache Issues**
 ```bash
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
+dependencies {
+    // Group dependencies by type
+    // Core dependencies
+    implementation(libs.local.core.domain)
+
+    // UI dependencies
+    implementation(libs.androidx.compose.ui)
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+}
+# Error: Plugin with id 'githubusers.android.library' not found
+# Solution: Ensure plugins module is built and included
+./gradlew :plugins:build
+# Error: Type com.example.githubusers.BuildConfig is defined multiple times
+# Solution: Convention plugins automatically generate unique namespaces
+# Error: Multiple versions of the same library
+# Solution: Use platform BOMs and version catalog
 # Error: Configuration cache problems
 # Solution: Clear build cache
 ./gradlew clean
@@ -357,6 +1357,116 @@ dependencies {
 
 ### Debug Commands
 ```bash
+```kotlin
+githubusers/
+├── app/                           # Main application module
+├── core-*/                        # Core functionality modules
+├── feature-*/                     # Feature modules
+├── navigation-*/                  # Navigation modules
+├── plugins/                       # Convention plugins
+├── catalog/                       # Version catalog
+├── internal-platform/             # Internal BOM module
+└── test-module/                  # Testing utilities
+[versions]
+kotlin = "2.2.10"
+android-gradle-plugin = "8.12.2"
+compose-compiler = "1.6.0"
+hilt = "2.57.1"
+room = "2.7.2"
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.application")
+    // ... other plugins
+}
+
+// Configure via convention plugin extensions
+extensions.configure<ApplicationConfigExtension>("appConfig") {
+    applicationId = libs.versions.application.id.get()
+    versionCode = libs.versions.app.version.code.get().toInt()
+    versionName = libs.versions.app.version.name.get()
+}
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+    // ... other plugins
+}
+
+dependencies {
+    // Use implementation for internal dependencies
+    implementation(libs.local.core.domain)
+    implementation(libs.local.navigation.api)
+
+    // Use api only when exposing to consumers
+    api(libs.local.feature.users)
+}
+plugins {
+    alias(libs.plugins.kotlin.jvm)
+    id("githubusers.jvm.library")
+    id("githubusers.common.version")
+}
+
+dependencies {
+    // Use api for core functionality that should be exposed
+    api(libs.kotlinx.coroutines.core)
+    api(libs.androidx.paging.common)
+}
+// Use platform BOMs for version alignmen
+implementation(platform(libs.internal.platform))
+implementation(platform(libs.androidx.compose.bom))
+implementation(platform(libs.ktor.bom))
+// ❌ Remove these blocks
+android { ... }
+kotlin { ... }
+publishing { ... }
+// ✅ Apply appropriate convention plugins
+id("githubusers.android.library")
+id("githubusers.feature.module")
+// ❌ Don't hardcode versions
+implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.10")
+
+// ✅ Use version catalog
+implementation(libs.kotlin.stdlib)
+// ❌ Don't expose unnecessary dependencies
+api(libs.androidx.core.ktx)
+
+// ✅ Use implementation when possible
+implementation(libs.androidx.core.ktx)
+plugins {
+    // 1. Apply base Android/Kotlin plugins firs
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+
+    // 2. Apply convention plugins
+    id("githubusers.android.library")
+    id("githubusers.feature.module")
+
+    // 3. Apply quality plugins las
+    id("githubusers.quality.detekt")
+}
+dependencies {
+    // Group dependencies by type
+    // Core dependencies
+    implementation(libs.local.core.domain)
+
+    // UI dependencies
+    implementation(libs.androidx.compose.ui)
+
+    // Testing dependencies
+    testImplementation(libs.junit)
+}
+# Error: Plugin with id 'githubusers.android.library' not found
+# Solution: Ensure plugins module is built and included
+./gradlew :plugins:build
+# Error: Type com.example.githubusers.BuildConfig is defined multiple times
+# Solution: Convention plugins automatically generate unique namespaces
+# Error: Multiple versions of the same library
+# Solution: Use platform BOMs and version catalog
+# Error: Configuration cache problems
+# Solution: Clear build cache
+./gradlew clean
 # List all available tasks
 ./gradlew tasks
 
@@ -375,7 +1485,7 @@ dependencies {
 ### Planned Improvements
 1. **Enhanced Convention Plugin System**
    - More specialized module types
-   - Automatic dependency management
+   - Automatic dependency managemen
    - Build variant optimization
 
 2. **Advanced Version Management**

@@ -32,13 +32,11 @@ javax-inject = "1"
 
 
 coreMviModule = "1.0.0"
-coreDomainModule = "1.0.0"
 navigationApiModule = "1.2.0"
 navigationImplModule = "1.0.0"
 featureUsersModule = "1.0.0"
-featureUsersListModule = "1.0.0"
-featureUsersDetailModule = "1.0.0"
 featureSearchModule = "1.0.0"
+featureSettingsModule = "1.0.0"
 # Flavor aggregators removed - direct feature module dependencies used instead
 appModule = "1.0.0"
 catalogModule = "1.0.0"
@@ -48,7 +46,6 @@ coreCommonModule = "1.0.0"
 coreDataModule = "1.0.0"
 coreUiModule = "1.0.0"
 navigationAnnotationsModule = "1.0.0"
-navigationKspModule = "1.0.0"
 coil3 = "3.3.0"
 androidx-core = "1.17.0"
 android-gradle-plugin = "8.13.0"
@@ -214,18 +211,15 @@ detekt-ktlint-rules = { module = "dev.detekt:detekt-rules-ktlint-wrapper", versi
 # Internal platform BOM - consumed using platform() dependency
 internal-platform = { group = "com.example.githubusers", name = "internal-platform", version.ref = "internalPlatformModule" }
 local-core-mvi = { group = "com.example.githubusers", name = "core-mvi", version.ref = "coreMviModule" }
-local-core-domain = { group = "com.example.githubusers", name = "core-domain", version.ref = "coreDomainModule" }
 local-core-common = { group = "com.example.githubusers", name = "core-common", version.ref = "coreCommonModule" }
 local-core-data = { group = "com.example.githubusers", name = "core-data", version.ref = "coreDataModule" }
 local-core-ui = { group = "com.example.githubusers", name = "core-ui", version.ref = "coreUiModule" }
+local-navigation-annotations = { group = "com.example.githubusers", name = "navigation-annotations", version.ref = "navigationAnnotationsModule" }
 local-navigation-api = { group = "com.example.githubusers", name = "navigation-api", version.ref = "navigationApiModule" }
 local-navigation-impl = { group = "com.example.githubusers", name = "navigation-impl", version.ref = "navigationImplModule" }
-local-navigation-annotations = { group = "com.example.githubusers", name = "navigation-annotations", version.ref = "navigationAnnotationsModule" }
-local-navigation-ksp = { group = "com.example.githubusers", name = "navigation-ksp", version.ref = "navigationKspModule" }
 local-feature-users = { group = "com.example.githubusers", name = "feature-users", version.ref = "featureUsersModule" }
-local-feature-users-list = { group = "com.example.githubusers", name = "feature-users-list", version.ref = "featureUsersListModule" }
-local-feature-users-detail = { group = "com.example.githubusers", name = "feature-users-detail", version.ref = "featureUsersDetailModule" }
 local-feature-search = { group = "com.example.githubusers", name = "feature-search", version.ref = "featureSearchModule" }
+local-feature-settings = { group = "com.example.githubusers", name = "feature-settings", version.ref = "featureSettingsModule" }
 # Flavor aggregator dependencies removed - direct feature module dependencies used instead
 
 # Gradle plugins for plugins module

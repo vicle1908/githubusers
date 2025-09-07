@@ -2,53 +2,48 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
-    id("githubusers.android.library")
-    id("githubusers.android.hilt")
-    id("githubusers.common.version")
     alias(libs.plugins.kotlin.serialization)
-    id("githubusers.android.publishing")
-    id("githubusers.android.library.publishing")
     // Quality plugins: our conventions now apply the underlying plugins internally
     id("githubusers.quality.detekt")
     id("githubusers.test.convention")
     id("githubusers.quality.ktlint")
+    id("githubusers.android.library")
+    id("githubusers.android.hilt")
+    id("githubusers.common.version")
+    id("githubusers.android.publishing")
+    id("githubusers.android.library.publishing")
 }
 
 dependencies {
-    // Platform for version alignment
+    // Import internal platform BOM for version management
     implementation(platform(libs.internal.platform))
 
-    implementation(libs.local.core.domain)
+    // Core modules
     implementation(libs.local.core.common)
 
-    // Network - Ktor
+    // Ktor for networking
     implementation(platform(libs.ktor.bom))
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.ktor)
+    implementation(libs.ktor.client.resources)
+    implementation(libs.ktor.client.serialization)
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    // Local storage
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
-    ksp(libs.androidx.room.compiler)
-
-    // Dependency injection
+    // Hilt for DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Paging
-    implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.common)
-
-    // Coroutines
-    implementation(libs.kotlinx.coroutines.android)
+    // Core Android
+    implementation(libs.androidx.core.ktx)
 
     // Testing
-    testImplementation(libs.bundles.testing.unit)
-    androidTestImplementation(libs.bundles.testing.android.base)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }

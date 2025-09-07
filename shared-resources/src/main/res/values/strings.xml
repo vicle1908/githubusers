@@ -1,0 +1,17 @@
+<resources>
+    <!-- Common UI strings -->
+    <string name="common_loading">Loading...</string>
+    <string name="common_error">Error</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_ok">OK</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    
+    <!-- Common error messages -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_not_found">The requested item was not found.</string>
+</resources>
+
+

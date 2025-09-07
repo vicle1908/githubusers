@@ -16,7 +16,7 @@ The project follows Clean Architecture principles with clear separation of conce
 ### Modular Design
 The project is organized into focused, single-responsibility modules:
 
-```
+```text
 githubusers/
 ├── app/                           # Main application entry point
 ├── core-*/                        # Core functionality and utilities
@@ -148,6 +148,15 @@ githubusers/
 
 ### Build Commands
 ```bash
+```text
+githubusers/
+├── app/                           # Main application entry point
+├── core-*/                        # Core functionality and utilities
+├── feature-*/                     # Feature-specific modules
+├── navigation-*/                  # Navigation and routing
+├── plugins/                       # Build system convention plugins
+├── catalog/                       # Dependency version management
+└── internal-platform/             # Internal dependency alignment
 # Clean build
 ./gradlew clean
 
@@ -170,7 +179,7 @@ githubusers/
 - Maintain clear module boundaries
 
 ### Package Organization
-```
+```text
 com.example.githubusers/
 ├── feature/                       # Feature-specific packages
 ├── core/                          # Core functionality

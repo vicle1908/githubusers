@@ -80,16 +80,6 @@ interface Navigation3Controller {
     fun restoreFromPersistence(): Boolean
 }
 
-/**
- * Navigation options for Navigation 3
- */
-data class NavigationOptions(
-    val launchSingleTop: Boolean = false,
-    val popUpTo: String? = null,
-    val popUpToInclusive: Boolean = false,
-    val restoreState: Boolean = false,
-    val saveState: Boolean = false,
-)
 
 /**
  * Navigation entry representing a destination in the back stack

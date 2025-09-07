@@ -55,15 +55,12 @@ android {
 
 dependencies {
     // Core modules
-    implementation(libs.local.core.data)
-    implementation(libs.local.core.domain)
     implementation(libs.local.core.ui)
 
     // Feature modules
     implementation(libs.local.feature.users)
-    implementation(libs.local.feature.users.list)
-    implementation(libs.local.feature.users.detail)
     implementation(libs.local.feature.search)
+    implementation(libs.local.feature.settings)
 
     // Navigation modules (composite builds)
     implementation(libs.local.navigation.api)
