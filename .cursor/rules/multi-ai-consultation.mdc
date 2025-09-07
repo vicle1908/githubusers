@@ -1,3 +1,15 @@
+---
+description: Framework for consulting multiple AI models to build comprehensive consensus
+alwaysApply: true
+globs:
+  - "**/*"
+tags:
+  - consultation
+  - consensus
+  - multi-ai
+  - decision-making
+---
+
 # Multi-AI Consultation Rules
 
 ## Core Consultation Enforcement

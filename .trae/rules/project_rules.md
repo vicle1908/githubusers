@@ -5,6 +5,19 @@
 Always use byterover-retrieve-knowledge tool to get the related context before any tasks
 Always use byterover-store-knowledge to store all the critical informations after successful tasks
 
+---
+description: ByteRover MCP tool usage and plan persistence rules for consistent development workflow
+alwaysApply: true
+globs:
+  - "**/*"
+tags:
+  - byterover
+  - planning
+  - persistence
+  - workflow
+priority: highest
+---
+
 # ByteRover MCP Server Rules
 
 ## Tool Overview

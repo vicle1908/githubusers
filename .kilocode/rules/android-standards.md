@@ -4,7 +4,7 @@
 
 ### Clean Architecture (MANDATORY)
 - **Presentation Layer**: Activities, Fragments, ViewModels, Compose UI
-- **Domain Layer**: Use cases, business logic, entities  
+- **Domain Layer**: Use cases, business logic, entities
 - **Data Layer**: Repositories, data sources, DTOs
 
 ### MVI Pattern

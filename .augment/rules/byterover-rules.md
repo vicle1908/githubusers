@@ -1,4 +1,14 @@
 ---
+description: ByteRover MCP tool usage and plan persistence rules for consistent development workflow
+alwaysApply: true
+globs:
+  - "**/*"
+tags:
+  - byterover
+  - planning
+  - persistence
+  - workflow
+priority: highest
 ---
 
 # ByteRover MCP Server Rules

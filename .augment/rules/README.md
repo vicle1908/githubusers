@@ -36,23 +36,6 @@ This project uses Cursor with custom rules to enforce Android development best p
 - Semantic search and AI consensus building
 - **Status**: ✅ **ACTIVE** - Research optimization
 
-### 1. **android.mdc** - Android Development Standards
-- Clean Architecture with MVI pattern
-- Navigation 3 with deep link support
-- Material 3 design guidelines
-- Kotlin best practices and testing strategies
-- **Status**: ✅ **ACTIVE** - Core Android development guidelines
-
-### 2. **multi-ai-consultation.mdc** - AI Consultation Framework
-- Multi-AI analysis for critical decisions
-- Architecture reviews and complex problem-solving
-- **Status**: ✅ **ACTIVE** - AI consultation framework
-
-### 3. **mcp-guide.mdc** - MCP Server Usage & Enforcement
-- MCP server configuration and usage guidelines
-- Tool accessibility and best practices
-- **Status**: ✅ **ACTIVE** - MCP server management
-
 ## MCP Server Status Dashboard
 
 ### ✅ **FULLY OPERATIONAL**

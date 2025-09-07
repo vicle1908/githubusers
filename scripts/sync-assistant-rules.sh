@@ -269,11 +269,16 @@ for file in android-standards kotlin-style mcp-guide enhanced-research-strategy 
     if [ -f "$dest" ]; then
         # Extract frontmatter
         awk '/^---$/,/^---$/' "$dest" > /tmp/frontmatter.txt
-        # Combine frontmatter with new content
-        cat /tmp/frontmatter.txt > "$dest.tmp"
-        echo "" >> "$dest.tmp"
-        cat "$src" >> "$dest.tmp"
-        mv "$dest.tmp" "$dest"
+        # If frontmatter is non-empty (contains more than just the markers), preserve it
+        if [ -s /tmp/frontmatter.txt ] && [ $(grep -c '^---$' /tmp/frontmatter.txt) -eq 2 ] && [ $(wc -l < /tmp/frontmatter.txt) -ge 3 ]; then
+            cat /tmp/frontmatter.txt > "$dest.tmp"
+            echo "" >> "$dest.tmp"
+            cat "$src" >> "$dest.tmp"
+            mv "$dest.tmp" "$dest"
+        else
+            # No meaningful frontmatter: write canonical content directly
+            cat "$src" > "$dest"
+        fi
     else
         cat "$src" > "$dest"
     fi
@@ -292,11 +297,16 @@ for file in android-standards kotlin-style mcp-guide enhanced-research-strategy 
     if [ -f "$dest" ]; then
         # Extract frontmatter with globs
         awk '/^---$/,/^---$/' "$dest" > /tmp/frontmatter.txt
-        # Combine frontmatter with new content
-        cat /tmp/frontmatter.txt > "$dest.tmp"
-        echo "" >> "$dest.tmp"
-        cat "$src" >> "$dest.tmp"
-        mv "$dest.tmp" "$dest"
+        # If frontmatter contains globs or non-empty YAML, preserve it
+        if [ -s /tmp/frontmatter.txt ] && [ $(grep -c '^---$' /tmp/frontmatter.txt) -eq 2 ] && [ $(wc -l < /tmp/frontmatter.txt) -ge 3 ]; then
+            cat /tmp/frontmatter.txt > "$dest.tmp"
+            echo "" >> "$dest.tmp"
+            cat "$src" >> "$dest.tmp"
+            mv "$dest.tmp" "$dest"
+        else
+            # No meaningful frontmatter: write canonical content directly
+            cat "$src" > "$dest"
+        fi
     else
         cat "$src" > "$dest"
     fi
@@ -352,6 +362,5 @@ echo "Next steps:"
 echo "  1. Review .gemini/settings.json for hardcoded secrets"
 echo "  2. Run verification: ./scripts/verify-assistant-sync.sh"
 echo "  3. Commit changes with message: 'chore: unify assistant policies MCP-first'"
-EOF
 
 chmod +x "$PROJECT_ROOT/scripts/sync-assistant-rules.sh"

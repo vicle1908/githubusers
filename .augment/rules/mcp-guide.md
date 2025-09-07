@@ -1,6 +1,3 @@
----
----
-
 # MCP Server Usage Guide
 
 ## Core MCP-First Enforcement
