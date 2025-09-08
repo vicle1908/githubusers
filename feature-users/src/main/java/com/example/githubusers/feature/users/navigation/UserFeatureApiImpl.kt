@@ -11,7 +11,7 @@ class UserFeatureApiImpl
     @Inject
     constructor() : UserFeatureApi {
         override fun navigateToUserList(filter: String?): NavCommand {
-            val destination = UserDestination.UserList(filter)
+            val destination = UserDestination.UserList
             return NavCommand.Navigate(
                 route = destination.route,
                 deepLink = destination.deepLink,
@@ -29,11 +29,11 @@ class UserFeatureApiImpl
         }
 
         override fun navigateToUserSearch(query: String): NavCommand {
-            val destination = UserDestination.UserSearch(query)
+            // Navigate to the search feature instead of a user-specific search
             return NavCommand.Navigate(
-                route = destination.route,
-                deepLink = destination.deepLink,
-                arguments = mapOf("query" to query),
+                route = "search",
+                deepLink = "app://search${query.takeIf { it.isNotEmpty() }?.let { "?q=$it" } ?: ""}",
+                arguments = query.takeIf { it.isNotEmpty() }?.let { mapOf("query" to it) } ?: emptyMap(),
             )
         }
     }

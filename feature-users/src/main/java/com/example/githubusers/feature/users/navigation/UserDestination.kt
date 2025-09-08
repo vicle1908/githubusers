@@ -1,39 +1,24 @@
 package com.example.githubusers.feature.users.navigation
 
 import com.example.githubusers.navigation.api.NavigationDestination
+import kotlinx.serialization.Serializable
 
 /**
  * Navigation destinations for the Users feature module.
- * All navigation to user screens MUST use deep links.
+ * Owned by feature-users per feature-based architecture.
  */
 sealed interface UserDestination : NavigationDestination {
-    /**
-     * User list screen destination
-     */
-    data class UserList(
-        val filter: String? = null,
-    ) : UserDestination {
-        override val route = "users/list"
-        override val deepLink = "app://users${filter?.let { "?filter=$it" } ?: ""}"
+    @Serializable
+    data object UserList : UserDestination {
+        override val route: String = "users/list"
+        override val deepLink: String = "app://users/list"
     }
 
-    /**
-     * User detail screen destination
-     */
+    @Serializable
     data class UserDetail(
         val username: String,
     ) : UserDestination {
-        override val route = "users/detail/$username"
-        override val deepLink = "app://users/$username"
-    }
-
-    /**
-     * User search screen destination
-     */
-    data class UserSearch(
-        val query: String = "",
-    ) : UserDestination {
-        override val route = "users/search"
-        override val deepLink = "app://users/search${query.takeIf { it.isNotEmpty() }?.let { "?q=$it" } ?: ""}"
+        override val route: String = "users/detail/$username"
+        override val deepLink: String = "app://users/user/$username"
     }
 }

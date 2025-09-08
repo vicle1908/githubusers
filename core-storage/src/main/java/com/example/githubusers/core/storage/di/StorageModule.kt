@@ -11,16 +11,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object StorageModule {
+    @Provides
+    @Singleton
+    fun provideDataStoreProvider(): DataStoreProvider = DataStoreProvider()
 
     @Provides
     @Singleton
-    fun provideDataStoreProvider(): DataStoreProvider {
-        return DataStoreProvider()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRoomDatabaseProvider(): RoomDatabaseProvider {
-        return RoomDatabaseProvider()
-    }
+    fun provideRoomDatabaseProvider(): RoomDatabaseProvider = RoomDatabaseProvider()
 }

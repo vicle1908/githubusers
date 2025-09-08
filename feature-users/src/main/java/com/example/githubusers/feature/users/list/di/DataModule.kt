@@ -19,21 +19,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
-import javax.inject.Qualifier
 import javax.inject.Singleton
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class UserListHttpClient
 
 /**
  * Hilt module for data layer dependencies.
@@ -51,31 +37,6 @@ abstract class DataModule {
     abstract fun bindUserListRemoteDataSource(impl: UserListRemoteDataSourceImpl): UserListRemoteDataSource
 
     companion object {
-        @Provides
-        @Singleton
-        @UserListHttpClient
-        fun provideHttpClient(): HttpClient =
-            HttpClient(OkHttp) {
-                install(ContentNegotiation) {
-                    json(
-                        Json {
-                            prettyPrint = true
-                            isLenient = true
-                            ignoreUnknownKeys = true
-                        },
-                    )
-                }
-
-                install(Logging) {
-                    level = LogLevel.INFO
-                }
-
-                defaultRequest {
-                    url("https://api.github.com/")
-                    contentType(ContentType.Application.Json)
-                }
-            }
-
         @Provides
         @Singleton
         fun provideUserListDatabase(
@@ -98,8 +59,6 @@ abstract class DataModule {
 
         @Provides
         @Singleton
-        fun provideUserListApiService(
-            @UserListHttpClient client: HttpClient,
-        ): UserListApiService = UserListApiService(client)
+        fun provideUserListApiService(client: HttpClient): UserListApiService = UserListApiService(client)
     }
 }

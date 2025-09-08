@@ -19,13 +19,21 @@ plugins {
 
 dependencies {
     // Import internal platform BOM for version management (implementation since we don't expose it)
-    implementation(platform(libs.internal.platform))
+//    implementation(platform(libs.internal.platform))
 
     // Core modules
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
-    implementation(libs.local.navigation.annotations)
-    ksp(libs.local.navigation.ksp)
+
+    // Ktor for networking (needed for HttpClient type)
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.client.core)
+
+    // Room for local database
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
+    ksp(libs.androidx.room.compiler)
 
     // Navigation API for deep links
     implementation(libs.local.navigation.api)

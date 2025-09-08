@@ -2,6 +2,6 @@
 
 This file has been moved to maintain consistency.
 
-Please see: [docs/assistants/claude-guide.md](docs/assistants/claude-guide.md)
+Please see: [docs/assistants/](docs/assistants/)
 
 All assistant rules are now centralized in `docs/assistants/`

@@ -1,38 +1,218 @@
-
 # GitHub Users Android App
 
-This project is a sample Android app that demonstrates the following technologies:
+A modern Android application demonstrating best practices in Android development with a feature-based modular architecture, Navigation 3, and clean architecture principles.
 
-- Kotlin
-- Jetpack Compose for UI
-- MVI Architecture
-- Room for local caching
-- Ktor for network calls
-- Hilt for dependency injection
-- Kotlin Flow for reactive programming
+## 🚀 Features
 
-## Features
+- **User Discovery**: Search and browse GitHub users with real-time search
+- **User Profiles**: View detailed user information, repositories, and activity
+- **Offline Support**: Local caching with Room database for offline access
+- **Modern UI**: Material Design 3 with Jetpack Compose
+- **Type-Safe Navigation**: Navigation 3 with deep linking support
+- **Modular Architecture**: Feature-based modules with complete isolation
 
-1. Fetch and display a list of GitHub users.
-2. Scroll to load more users, with 20 users per fetch.
-3. Display user details on clicking an item.
-4. Cache data locally using Room.
-5. Display data from the cache when offline or on subsequent app launches.
+## 🏗️ Architecture
 
-## Project Structure
+### Clean Architecture
+- **Presentation Layer**: Jetpack Compose UI, ViewModels, and user interactions
+- **Domain Layer**: Business logic, use cases, and entities
+- **Data Layer**: Repositories, data sources, and API integration
 
-- **data**: Contains network, DAO, Repository, and Database classes.
-- **domain**: Data model representing GitHub users.
-- **presentation**: Composables for displaying GitHub users in a list and details view.
-- **viewmodel**: The ViewModel that follows the MVI pattern to manage state.
+### Feature-Based Modular Design
+```
+githubusers/
+├── app/                    # Main application entry point
+├── core-*/                 # Core functionality modules
+│   ├── core-common/        # Common utilities and extensions
+│   ├── core-mvi/           # MVI pattern implementation
+│   ├── core-networking/    # Network layer
+│   ├── core-storage/       # Local storage and caching
+│   └── core-ui/            # Shared UI components
+├── feature-*/              # Feature-specific modules
+│   ├── feature-users/      # User management and profiles
+│   ├── feature-search/     # Search functionality
+│   └── feature-settings/   # App settings and preferences
+├── navigation-*/           # Navigation system
+│   ├── navigation-api/     # Navigation contracts
+│   └── navigation-impl/    # Navigation implementation
+├── plugins/                # Build system convention plugins
+└── catalog/                # Dependency version management
+```
 
-## Instructions
+### Navigation 3 Architecture
+- **Type-Safe Navigation**: Compile-time navigation safety with `AppDestination` types
+- **Deep Link Support**: Multi-module deep link architecture
+- **Feature Isolation**: Each feature owns its navigation destinations
+- **Cross-Module Communication**: Via deep links only
 
-1. Clone the repository.
-2. Open the project in Android Studio.
-3. Build and run the app on an emulator or physical device.
-4. Ensure internet connectivity for fetching GitHub users.
+## 🛠️ Technology Stack
 
-## License
+### Core Technologies
+- **Kotlin**: Primary programming language
+- **Jetpack Compose**: Modern declarative UI toolkit
+- **Navigation 3**: Next-generation type-safe navigation
+- **Material Design 3**: Modern design system
 
-This project is licensed under the MIT License.
+### Architecture Components
+- **Hilt**: Dependency injection framework
+- **Room**: Local database and caching
+- **Ktor**: HTTP client for API communication
+- **Coroutines & Flow**: Asynchronous programming
+- **Kotlin Serialization**: Type-safe data serialization
+
+### Quality & Testing
+- **Detekt**: Static code analysis
+- **KtLint**: Code formatting and style
+- **JUnit**: Unit testing framework
+- **MockK**: Mocking framework for Kotlin
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Android Studio Hedgehog (2023.1.1) or later
+- JDK 21
+- Android SDK 34
+- Gradle 8.13+
+
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd githubusers
+   ```
+
+2. **Open in Android Studio**
+   - Open the project in Android Studio
+   - Wait for Gradle sync to complete
+
+3. **Build and Run**
+   ```bash
+   # Build the project
+   ./gradlew build
+   
+   # Run on device/emulator
+   ./gradlew :app:installDebug
+   ```
+
+### Build Commands
+
+```bash
+# Clean build
+./gradlew clean
+
+# Build debug variant
+./gradlew :app:assembleDebug
+
+# Run all tests
+./gradlew test
+
+# Run specific module tests
+./gradlew :feature-users:test
+
+# Build all modules
+./gradlew build
+```
+
+## 📱 App Features
+
+### User Management
+- **User List**: Browse GitHub users with pagination
+- **User Search**: Real-time search with query suggestions
+- **User Details**: Comprehensive user profile information
+- **Repository View**: Browse user repositories and contributions
+
+### Settings & Preferences
+- **Theme Selection**: Light, dark, and system theme support
+- **App Preferences**: Customizable app behavior
+- **Data Management**: Clear cache and reset preferences
+
+### Offline Experience
+- **Local Caching**: Room database for offline data access
+- **Smart Sync**: Automatic data synchronization when online
+- **Offline Indicators**: Clear UI feedback for offline state
+
+## 🧪 Testing
+
+### Test Structure
+```
+src/test/           # Unit tests
+src/androidTest/    # Integration and UI tests
+```
+
+### Running Tests
+```bash
+# Run all unit tests
+./gradlew test
+
+# Run specific module tests
+./gradlew :feature-users:test
+
+# Run UI tests
+./gradlew connectedAndroidTest
+
+# Generate test coverage
+./gradlew jacocoTestReport
+```
+
+## 🔧 Development
+
+### Code Quality
+- **Detekt**: Static analysis for code quality
+- **KtLint**: Code formatting and style enforcement
+- **Pre-commit Hooks**: Automated quality checks
+
+### Build System
+- **Convention Plugins**: Standardized build configuration
+- **Version Catalog**: Centralized dependency management
+- **Composite Builds**: Optimized build performance
+
+### Development Workflow
+1. Create feature branch from `main`
+2. Implement changes following project patterns
+3. Add tests and documentation
+4. Ensure all quality checks pass
+5. Submit pull request with clear description
+
+## 📚 Documentation
+
+- **[Architecture Guide](docs/PROJECT_OVERVIEW.md)**: Complete project architecture overview
+- **[Navigation Guide](docs/NAVIGATION_ARCHITECTURE.md)**: Navigation 3 implementation details
+- **[Feature Development](docs/FEATURE_BASED_DEVELOPMENT_GUIDE.md)**: Feature-based development patterns
+- **[Build System](docs/BUILD_SYSTEM.md)**: Build system architecture and conventions
+
+## 🤝 Contributing
+
+### Code Standards
+- Follow Kotlin coding conventions
+- Use meaningful variable and function names
+- Write comprehensive documentation
+- Include unit tests for new functionality
+
+### Pull Request Process
+1. Create feature branch from `main`
+2. Implement changes following project patterns
+3. Add tests and documentation
+4. Ensure build passes and quality checks
+5. Submit pull request with clear description
+
+### Review Guidelines
+- Code follows established patterns
+- Tests are comprehensive and passing
+- Documentation is updated
+- Build system changes are minimal
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [GitHub API](https://docs.github.com/en/rest) for user data
+- [Android Jetpack](https://developer.android.com/jetpack) for modern Android development
+- [Material Design](https://material.io/) for design system
+- [Kotlin](https://kotlinlang.org/) for the programming language
+
+---
+
+**Built with ❤️ using modern Android development practices**

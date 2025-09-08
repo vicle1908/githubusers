@@ -20,13 +20,11 @@ plugins {
 
 dependencies {
     // Platform for version alignment
-    implementation(platform(libs.internal.platform))
+//    implementation(platform(libs.internal.platform))
 
     // Core modules
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
-    implementation(libs.local.navigation.annotations)
-    ksp(libs.local.navigation.ksp)
 
     // Shared modules
     implementation(libs.local.navigation.api)

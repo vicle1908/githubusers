@@ -1,0 +1,74 @@
+[
+  {
+    "label": "Build All Modules",
+    "command": "./gradlew",
+    "args": ["buildAll"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["build", "gradle"]
+  },
+  {
+    "label": "Clean All Modules", 
+    "command": "./gradlew",
+    "args": ["cleanAll"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["build", "gradle"]
+  },
+  {
+    "label": "Assemble App Debug",
+    "command": "./gradlew", 
+    "args": ["assembleApp"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["build", "gradle", "android"]
+  },
+  {
+    "label": "Install App Dev",
+    "command": "./gradlew",
+    "args": ["installAppDev"],
+    "cwd": "$ZED_WORKTREE_ROOT", 
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["build", "gradle", "android", "install"]
+  },
+  {
+    "label": "Install App Prod",
+    "command": "./gradlew",
+    "args": ["installAppProd"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always", 
+    "use_new_terminal": false,
+    "tags": ["build", "gradle", "android", "install"]
+  },
+  {
+    "label": "Run Tests",
+    "command": "./gradlew", 
+    "args": ["test"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["test", "gradle"]
+  },
+  {
+    "label": "Lint Check",
+    "command": "./gradlew",
+    "args": ["lint"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false, 
+    "tags": ["test", "gradle", "android"]
+  },
+  {
+    "label": "Detekt Check",
+    "command": "./gradlew",
+    "args": ["detekt"], 
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "use_new_terminal": false,
+    "tags": ["test", "gradle", "kotlin"]
+  }
+]

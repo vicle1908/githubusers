@@ -1,7 +1,6 @@
 package com.example.githubusers.navigation.impl
 
 import android.net.Uri
-import com.example.githubusers.navigation.api.AppDestination
 import com.example.githubusers.navigation.api.DeepLinkHandler
 import com.example.githubusers.navigation.api.DeepLinkResult
 import org.junit.Assert.assertEquals
@@ -17,7 +16,7 @@ private class OwnedUsersHandler : DeepLinkHandler {
     override fun supportedPatterns(): List<String> = listOf("app://users")
 
     override fun handleDeepLink(uri: Uri): DeepLinkResult? =
-        if (uri.scheme == "app" && uri.path == "/users") DeepLinkResult(AppDestination.UserList) else null
+        if (uri.scheme == "app" && uri.path == "/users") DeepLinkResult(TestUtils.MockUserList()) else null
 }
 
 private class FallbackSearchHandler : DeepLinkHandler {
@@ -26,7 +25,7 @@ private class FallbackSearchHandler : DeepLinkHandler {
     override fun supportedPatterns(): List<String> = listOf("app://users")
 
     override fun handleDeepLink(uri: Uri): DeepLinkResult? =
-        if (uri.scheme == "app" && uri.path == "/users") DeepLinkResult(AppDestination.Search("owned_vs_fallback")) else null
+        if (uri.scheme == "app" && uri.path == "/users") DeepLinkResult(TestUtils.MockSearch("owned_vs_fallback")) else null
 }
 
 private class FakeOwnershipSource : DeepLinkOwnershipSource {
@@ -45,8 +44,8 @@ class DefaultDestinationResolverOwnershipTest {
             )
         val dest = resolver.resolve("app://users")
         assertNotNull(dest)
-        // Owned handler returns UserList -> canonical deep link should be githubusers://users
-        assertEquals("githubusers://users", dest!!.deepLink)
+        // Owned handler returns UserList -> canonical deep link should be app://users/list
+        assertEquals("app://users/list", dest!!.deepLink)
     }
 
     @Test
@@ -58,7 +57,7 @@ class DefaultDestinationResolverOwnershipTest {
             )
         val dest = resolver.resolve("app://users")
         assertNotNull(dest)
-        // Fallback handler returns Search -> canonical deep link should be githubusers://search?q=owned_vs_fallback
-        assertEquals("githubusers://search?q=owned_vs_fallback", dest!!.deepLink)
+        // Fallback handler returns Search -> canonical deep link should be app://search?q=owned_vs_fallback
+        assertEquals("app://search?q=owned_vs_fallback", dest!!.deepLink)
     }
 }

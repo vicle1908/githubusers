@@ -1,6 +1,5 @@
 package com.example.githubusers.navigation.impl
 
-import com.example.githubusers.navigation.api.AppDestination
 import com.example.githubusers.navigation.api.NavigationDestination
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -28,9 +27,9 @@ class Navigation3ControllerImplBackStackParityTest {
     @Test
     fun popBackStackTo_nonInclusive_keeps_target_and_above_trimmed() {
         val controller = Navigation3ControllerImpl(FakeResolver2())
-        controller.navigate(AppDestination.UserList)
-        controller.navigate(AppDestination.UserDetail("octocat"))
-        controller.navigate(AppDestination.Search("android"))
+        controller.navigate("githubusers://users")
+        controller.navigate("githubusers://user/octocat")
+        controller.navigate("githubusers://search?q=android")
         assertEquals(3, controller.backStack.value.size)
 
         // Pop back to users (non-inclusive) => target remains top
@@ -48,9 +47,9 @@ class Navigation3ControllerImplBackStackParityTest {
     @Test
     fun popBackStackTo_inclusive_removes_target_as_well() {
         val controller = Navigation3ControllerImpl(FakeResolver2())
-        controller.navigate(AppDestination.UserList)
-        controller.navigate(AppDestination.UserDetail("octocat"))
-        controller.navigate(AppDestination.Search("android"))
+        controller.navigate("githubusers://users")
+        controller.navigate("githubusers://user/octocat")
+        controller.navigate("githubusers://search?q=android")
         assertEquals(3, controller.backStack.value.size)
 
         // Pop back to users (inclusive) => stack is empty
@@ -63,8 +62,8 @@ class Navigation3ControllerImplBackStackParityTest {
     @Test
     fun clearBackStack_empties_all_and_currentEntry() {
         val controller = Navigation3ControllerImpl(FakeResolver2())
-        controller.navigate(AppDestination.UserList)
-        controller.navigate(AppDestination.UserDetail("octocat"))
+        controller.navigate("githubusers://users")
+        controller.navigate("githubusers://user/octocat")
         assertFalse(controller.backStack.value.isEmpty())
 
         controller.clearBackStack()

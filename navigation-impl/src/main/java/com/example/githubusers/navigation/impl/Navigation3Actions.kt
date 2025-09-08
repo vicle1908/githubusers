@@ -61,17 +61,19 @@ class Navigation3Actions(
     }
 
     /**
-     * Navigate to home (typed)
+     * Navigate to home using deep link
+     * Note: Use deep links for feature-specific navigation to maintain feature ownership
      */
     fun navigateToHome() {
-        controller.navigate(com.example.githubusers.navigation.api.AppDestination.UserList)
+        controller.navigate("app://users/list")
     }
 
     /**
-     * Navigate to settings (typed)
+     * Navigate to settings using deep link
+     * Note: Use deep links for feature-specific navigation to maintain feature ownership
      */
     fun navigateToSettings() {
-        controller.navigate(com.example.githubusers.navigation.api.AppDestination.Settings)
+        controller.navigate("app://settings")
     }
 
     /**

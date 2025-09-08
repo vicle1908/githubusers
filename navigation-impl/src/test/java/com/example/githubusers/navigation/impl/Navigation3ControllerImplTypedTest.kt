@@ -1,6 +1,5 @@
 package com.example.githubusers.navigation.impl
 
-import com.example.githubusers.navigation.api.AppDestination
 import com.example.githubusers.navigation.api.NavigationDestination
 import com.example.githubusers.navigation.api.NavigationOptions
 import org.junit.Assert.assertEquals
@@ -29,7 +28,7 @@ class Navigation3ControllerImplTypedTest {
     fun typedNavigate_pushesBackStack() {
         val controller = Navigation3ControllerImpl(FakeResolver())
         // Start at UserList
-        controller.navigate(AppDestination.UserList)
+        controller.navigate("githubusers://users")
         assertEquals(1, controller.backStack.value.size)
         assertEquals(
             "githubusers://users",
@@ -39,7 +38,7 @@ class Navigation3ControllerImplTypedTest {
         )
 
         // Navigate to user detail
-        controller.navigate(AppDestination.UserDetail("octocat"))
+        controller.navigate("githubusers://user/octocat")
         assertEquals(2, controller.backStack.value.size)
         assertEquals(
             "githubusers://user/octocat",
@@ -52,13 +51,13 @@ class Navigation3ControllerImplTypedTest {
     @Test
     fun typedNavigate_popUpTo_trimsBackStack() {
         val controller = Navigation3ControllerImpl(FakeResolver())
-        controller.navigate(AppDestination.UserList)
-        controller.navigate(AppDestination.UserDetail("octocat"))
+        controller.navigate("githubusers://users")
+        controller.navigate("githubusers://user/octocat")
         assertEquals(2, controller.backStack.value.size)
 
         // pop back to users (keep it)
         controller.navigate(
-            AppDestination.UserList,
+            "githubusers://users",
             NavigationOptions(popUpTo = "githubusers://users", popUpToInclusive = false),
         )
         // After popUpTo(non-inclusive), stack should contain users and then the new users entry
@@ -75,24 +74,24 @@ class Navigation3ControllerImplTypedTest {
     @Test
     fun typedNavigate_launchSingleTop_avoidsDuplicate() {
         val controller = Navigation3ControllerImpl(FakeResolver())
-        controller.navigate(AppDestination.UserList)
+        controller.navigate("githubusers://users")
         val sizeBefore = controller.backStack.value.size
         // Navigating to same destination with singleTop should not add
-        controller.navigate(AppDestination.UserList, NavigationOptions(launchSingleTop = true))
+        controller.navigate("githubusers://users", NavigationOptions(singleTop = true))
         assertEquals(sizeBefore, controller.backStack.value.size)
 
         // Navigating to user detail then singleTop user detail again won't add duplicate
-        controller.navigate(AppDestination.UserDetail("octocat"))
+        controller.navigate("githubusers://user/octocat")
         val sizeDetail = controller.backStack.value.size
-        controller.navigate(AppDestination.UserDetail("octocat"), NavigationOptions(launchSingleTop = true))
+        controller.navigate("githubusers://user/octocat", NavigationOptions(singleTop = true))
         assertEquals(sizeDetail, controller.backStack.value.size)
     }
 
     @Test
     fun navigateBack_pops() {
         val controller = Navigation3ControllerImpl(FakeResolver())
-        controller.navigate(AppDestination.UserList)
-        controller.navigate(AppDestination.UserDetail("octocat"))
+        controller.navigate("githubusers://users")
+        controller.navigate("githubusers://user/octocat")
         assertTrue(controller.navigateBack())
         assertEquals("githubusers://users", controller.currentEntry.value?.deepLink)
         // at root, navigateBack should return false

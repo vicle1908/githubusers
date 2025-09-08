@@ -9,7 +9,6 @@ tags:
   - multi-ai
   - decision-making
 ---
-
 # Multi-AI Consultation Rules
 
 ## Core Consultation Enforcement
@@ -21,8 +20,8 @@ tags:
 Multi-AI consultation integrates with the 10-step research workflow:
 
 1. **Steps 1-8**: Complete research using MCP servers (Claude Context, Context7/DocFork, DeepWiki, Grep-Remote, Exa, Tavily, Brave, Medium Search)
-1. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
-1. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
+2. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
+3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
 
 ## Trigger Conditions
 
@@ -57,20 +56,20 @@ Automatically activate multi-AI consultation when:
 ### Phase 1: Pre-Consultation Setup
 
 1. **Knowledge Retrieval**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
-1. **Context Gathering**: Use `mcp_openmemory_search-memories` for project context
-1. **Research Completion**: Ensure 10-step research workflow is completed
+2. **Context Gathering**: Use `mcp_openmemory_search-memories` for project context
+3. **Research Completion**: Ensure 10-step research workflow is completed
 
 ### Phase 2: Multi-AI Analysis
 
 1. **Consensus Building**: Use `mcp_zen_consensus` for multi-model validation
-1. **Deep Analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
-1. **Planning**: Use `mcp_zen_planner` for implementation planning
+2. **Deep Analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
+3. **Planning**: Use `mcp_zen_planner` for implementation planning
 
 ### Phase 3: Knowledge Integration
 
 1. **Store Insights**: Use `mcp_byterover-mcp_byterover-store-knowledge` for patterns
-1. **Update Memory**: Use `mcp_openmemory_add-memory` for project decisions
-1. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans
+2. **Update Memory**: Use `mcp_openmemory_add-memory` for project decisions
+3. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans
 
 ## Usage Enforcement Rules
 

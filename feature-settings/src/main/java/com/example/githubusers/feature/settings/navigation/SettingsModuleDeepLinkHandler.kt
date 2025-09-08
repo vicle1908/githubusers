@@ -1,6 +1,7 @@
 package com.example.githubusers.feature.settings.navigation
 
 import android.net.Uri
+import com.example.githubusers.feature.settings.navigation.SettingsDestination
 import com.example.githubusers.navigation.api.DeepLinkHandler
 import com.example.githubusers.navigation.api.DeepLinkResult
 import com.example.githubusers.navigation.api.getBooleanQueryParameter
@@ -34,9 +35,7 @@ class SettingsModuleDeepLinkHandler
             if (isSettingsUri(uri)) {
                 val section = extractSection(uri)
                 DeepLinkResult(
-                    route = section?.let { "settings/$it" } ?: "settings",
-                    deepLink = uri.toString(),
-                    arguments = section?.let { mapOf("section" to it) } ?: emptyMap(),
+                    destination = SettingsDestination.Settings(section = section),
                     clearBackStack = uri.getBooleanQueryParameter("clear_stack", false),
                 )
             } else {

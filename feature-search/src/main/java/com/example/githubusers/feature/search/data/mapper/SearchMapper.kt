@@ -1,7 +1,7 @@
 package com.example.githubusers.feature.search.data.mapper
 
-import com.example.githubusers.core.data.api.GitHubUser
-import com.example.githubusers.core.data.api.GitHubUserDetail
+import com.example.githubusers.feature.search.data.model.GitHubUser
+import com.example.githubusers.feature.search.data.model.GitHubUserDetail
 import com.example.githubusers.feature.search.domain.entity.SearchResult
 import com.example.githubusers.feature.search.domain.entity.SearchResultType
 

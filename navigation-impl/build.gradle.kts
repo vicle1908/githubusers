@@ -20,11 +20,10 @@ plugins {
 dependencies {
     // Import internal platform BOM for version management
     // Platform version comes from catalog: internal-platform-module = "1.0.0"
-    implementation(platform(libs.internal.platform))
+//    implementation(platform(libs.internal.platform))
 
     // Core modules
-    implementation(libs.local.navigation.annotations)
-    
+
     // Navigation API - version managed by internal platform BOM
     // No version needed - comes from platform constraints
     api(libs.local.navigation.api)

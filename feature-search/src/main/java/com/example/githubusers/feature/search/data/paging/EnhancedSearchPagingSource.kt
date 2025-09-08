@@ -2,7 +2,7 @@ package com.example.githubusers.feature.search.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.githubusers.core.data.api.GitHubApiService
+import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.mapper.toSearchResult
 import com.example.githubusers.feature.search.domain.entity.SearchFilter
 import com.example.githubusers.feature.search.domain.entity.SearchResult
@@ -14,7 +14,7 @@ import io.ktor.http.encodeURLQueryComponent
  * Enhanced paging source for search results with improved URL encoding and error handling
  */
 class EnhancedSearchPagingSource(
-    private val apiService: GitHubApiService,
+    private val apiService: SearchApiService,
     private val query: String,
     private val filter: SearchFilter,
 ) : PagingSource<Int, SearchResult>() {

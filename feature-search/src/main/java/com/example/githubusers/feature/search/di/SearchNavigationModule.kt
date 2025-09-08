@@ -9,8 +9,8 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 
 /**
- * Hilt module for Search feature navigation.
- * Registers the search deep link handler with the navigation system.
+ * Hilt module to expose the Search feature deep link handler to the app.
+ * Owned by feature-search per feature-based architecture.
  */
 @Module
 @InstallIn(SingletonComponent::class)

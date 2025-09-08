@@ -3,7 +3,7 @@ package com.example.githubusers.feature.search.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.githubusers.core.data.api.GitHubApiService
+import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.local.SearchHistoryDataSource
 import com.example.githubusers.feature.search.data.paging.SearchPagingSource
 import com.example.githubusers.feature.search.data.paging.TrendingUsersPagingSource
@@ -21,7 +21,7 @@ import javax.inject.Singleton
 class SearchRepositoryImpl
     @Inject
     constructor(
-        private val apiService: GitHubApiService,
+        private val apiService: SearchApiService,
         private val searchHistoryDataSource: SearchHistoryDataSource,
     ) : SearchRepository {
         companion object {

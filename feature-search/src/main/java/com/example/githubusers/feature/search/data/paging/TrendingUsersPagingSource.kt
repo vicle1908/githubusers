@@ -2,7 +2,7 @@ package com.example.githubusers.feature.search.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.githubusers.core.data.api.GitHubApiService
+import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.mapper.toSearchResult
 import com.example.githubusers.feature.search.domain.entity.SearchResult
 import java.time.LocalDate
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
  * Paging source for trending users (users with most followers recently)
  */
 class TrendingUsersPagingSource(
-    private val apiService: GitHubApiService,
+    private val apiService: SearchApiService,
 ) : PagingSource<Int, SearchResult>() {
     override fun getRefreshKey(state: PagingState<Int, SearchResult>): Int? =
         state.anchorPosition?.let { anchorPosition ->
@@ -46,27 +46,6 @@ class TrendingUsersPagingSource(
                 nextKey = if (searchResults.isEmpty()) null else page + 1,
             )
         } catch (e: Exception) {
-            // Fallback to regular users list if search fails
-            try {
-                val since = ((params.key ?: 1) - 1) * params.loadSize
-                val users =
-                    apiService.getUsers(
-                        since = since,
-                        perPage = params.loadSize,
-                    )
-
-                val searchResults =
-                    users.map { user ->
-                        user.toSearchResult()
-                    }
-
-                LoadResult.Page(
-                    data = searchResults,
-                    prevKey = if (since == 0) null else params.key?.minus(1),
-                    nextKey = if (searchResults.isEmpty()) null else (params.key ?: 1) + 1,
-                )
-            } catch (fallbackError: Exception) {
-                LoadResult.Error(fallbackError)
-            }
+            LoadResult.Error(e)
         }
 }

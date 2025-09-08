@@ -1,11 +1,11 @@
 package com.example.githubusers.presentation.navigation.deeplink
 
-import com.example.githubusers.navigation.api.AppDestination
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Navigator for cross-module navigation using typed destinations via Navigation3Controller.
+ * Navigator for cross-module navigation using deep links via Navigation3Controller.
+ * Uses deep links to maintain feature ownership of destinations.
  */
 @Singleton
 class ModuleNavigator
@@ -14,28 +14,28 @@ class ModuleNavigator
         private val navigation3Controller: com.example.githubusers.navigation.api.Navigation3Controller,
     ) {
         /**
-         * Navigate to a typed destination using Navigation 3 controller.
+         * Navigate to a destination using deep link.
          */
         suspend fun navigateTo(
-            destination: AppDestination,
+            deepLink: String,
             clearBackStack: Boolean = false,
         ) {
             if (clearBackStack) navigation3Controller.clearBackStack()
-            navigation3Controller.navigate(destination)
+            navigation3Controller.navigate(deepLink)
         }
     }
 
 /**
- * Extension functions for easier module navigation
+ * Extension functions for easier module navigation using deep links
  */
 suspend fun ModuleNavigator.navigateToUserDetail(username: String) {
-    navigateTo(AppDestination.UserDetail(username))
+    navigateTo("app://users/user/$username")
 }
 
 suspend fun ModuleNavigator.navigateToSettings() {
-    navigateTo(AppDestination.Settings)
+    navigateTo("app://settings")
 }
 
 suspend fun ModuleNavigator.navigateToSearch(query: String) {
-    navigateTo(AppDestination.Search(query))
+    navigateTo("app://search?q=$query")
 }

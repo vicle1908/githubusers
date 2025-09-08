@@ -13,11 +13,13 @@ echo "🔍 Verifying AI Assistant Rules Sync..."
 echo ""
 
 # Function to compute checksum of content (ignoring frontmatter)
+# Robustly strips a single top-of-file YAML frontmatter block, tolerating BOM and whitespace.
 get_content_checksum() {
     local file="$1"
     if [ -f "$file" ]; then
-        # Skip frontmatter if present and compute checksum
-        awk '/^---$/,/^---$/{next}1' "$file" | shasum -a 256 | cut -d' ' -f1
+        # Use Perl to remove an optional BOM + YAML frontmatter block at the very start of the file
+        # Pattern: optional BOM, then '---' line, non-greedy until next '---' line, then a trailing newline (if present)
+        perl -0777 -pe 's/^\x{FEFF}?---\s*\n.*?\n---\s*\n//s' "$file" | shasum -a 256 | cut -d' ' -f1
     else
         echo "MISSING"
     fi

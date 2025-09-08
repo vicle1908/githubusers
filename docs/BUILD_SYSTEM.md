@@ -2045,7 +2045,7 @@ dependencies {
     api(libs.androidx.paging.common)
 }
 // Use platform BOMs for version alignmen
-implementation(platform(libs.internal.platform))
+//implementation(platform(libs.internal.platform))
 implementation(platform(libs.androidx.compose.bom))
 implementation(platform(libs.ktor.bom))
 

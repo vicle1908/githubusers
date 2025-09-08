@@ -28,7 +28,6 @@ import com.example.githubusers.feature.users.detail.presentation.ui.UserDetailSc
 import com.example.githubusers.feature.users.detail.presentation.viewmodel.UserDetailViewModel
 import com.example.githubusers.feature.users.list.presentation.ui.UserListScreen
 import com.example.githubusers.feature.users.list.presentation.viewmodel.UserListViewModel
-import com.example.githubusers.navigation.api.AppDestination
 import com.example.githubusers.navigation.api.Navigation3Controller
 import com.example.githubusers.navigation.impl.Navigation3Host
 import com.example.githubusers.presentation.theme.GithubUsersTheme
@@ -37,9 +36,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     @Inject
     lateinit var controller: Navigation3Controller
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -88,18 +87,17 @@ fun MainNavGraph(
     ) { padding ->
         Navigation3Host(
             controller = controller,
-            startDestination = AppDestination.UserList,
+            startDestination = "app://users/list",
             modifier = Modifier.fillMaxSize().padding(padding),
         ) { entry ->
-            when (entry.destination) {
-                is AppDestination.UserList -> {
+            when (entry.destination.route) {
+                "users/list" -> {
                     val viewModel: UserListViewModel = hiltViewModel()
                     UserListScreen(
                         viewModel = viewModel,
                     )
                 }
-                is AppDestination.UserDetail -> {
-                    val destination = entry.destination as AppDestination.UserDetail
+                "users/detail/{username}" -> {
                     // Use Navigation3Entry arguments for proper Navigation 3 integration
                     val viewModel: UserDetailViewModel = hiltViewModel()
                     val uiState by viewModel.uiState.collectAsState()
@@ -116,17 +114,18 @@ fun MainNavGraph(
                         },
                     )
                 }
-                is AppDestination.Search -> {
+                "search" -> {
                     SearchRoute(
-                        navigator = object : com.example.githubusers.feature.search.presentation.navigation.SearchNavigator {
-                            override fun navigateToUserDetail(username: String) {
-                                controller.navigate(AppDestination.UserDetail(username))
-                            }
-                            
-                            override fun navigateBack() {
-                                controller.navigateUp()
-                            }
-                        }
+                        navigator =
+                            object : com.example.githubusers.feature.search.presentation.navigation.SearchNavigator {
+                                override fun navigateToUserDetail(username: String) {
+                                    controller.navigate("app://users/user/$username")
+                                }
+
+                                override fun navigateBack() {
+                                    controller.navigateUp()
+                                }
+                            },
                     )
                 }
             }

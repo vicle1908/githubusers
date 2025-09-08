@@ -1,7 +1,6 @@
 package com.example.githubusers.navigation.impl
 
 import android.net.Uri
-import com.example.githubusers.navigation.api.AppDeepLinks
 import com.example.githubusers.navigation.api.CoreNavigationDestination
 import com.example.githubusers.navigation.api.DeepLinkHandler
 import com.example.githubusers.navigation.api.NavigationDestination
@@ -52,7 +51,16 @@ class DefaultDestinationResolver
                     val owned = handler.moduleId in owners
                     telemetry.onResolveSuccess(normalized, owned)
                     // Convert typed destination to canonical deep link for downstream handling
-                    return GenericDestination(AppDeepLinks.build(result.destination))
+                    val deepLink =
+                        when (val dest = result.destination) {
+                            is com.example.githubusers.navigation.api.NavigationDestination -> dest.deepLink
+                            else -> {
+                                // Since AppDestination is empty, we can't build a deep link from a generic destination
+                                // This should not happen in practice as all feature destinations should implement NavigationDestination
+                                throw IllegalArgumentException("Cannot build deep link from destination: $dest")
+                            }
+                        }
+                    return GenericDestination(deepLink)
                 }
             }
 

@@ -17,7 +17,7 @@ plugins {
 
 dependencies {
     // Import internal platform BOM for version management
-    implementation(platform(libs.internal.platform))
+//    implementation(platform(libs.internal.platform))
 
     // Core modules
     implementation(libs.local.core.common)

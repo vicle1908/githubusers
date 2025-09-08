@@ -80,7 +80,6 @@ interface Navigation3Controller {
     fun restoreFromPersistence(): Boolean
 }
 
-
 /**
  * Navigation entry representing a destination in the back stack
  */

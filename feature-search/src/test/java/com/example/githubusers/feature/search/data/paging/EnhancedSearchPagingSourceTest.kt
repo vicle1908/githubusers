@@ -1,6 +1,6 @@
 package com.example.githubusers.feature.search.data.paging
 
-import com.example.githubusers.core.data.api.GitHubApiService
+import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.domain.entity.SearchFilter
 import com.example.githubusers.feature.search.domain.entity.SearchResultType
 import com.example.githubusers.feature.search.domain.entity.SearchSortOption
@@ -110,7 +110,7 @@ class EnhancedSearchPagingSourceTest {
     }
 
     private fun newPagingSource(filter: SearchFilter): EnhancedSearchPagingSource {
-        val api = mockk<GitHubApiService>(relaxed = true)
+        val api = mockk<SearchApiService>(relaxed = true)
         return EnhancedSearchPagingSource(api, "", filter)
     }
 }

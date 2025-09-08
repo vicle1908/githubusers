@@ -3,6 +3,7 @@ package com.example.githubusers.navigation.impl
 import android.net.Uri
 import com.example.githubusers.navigation.api.DeepLinkHandler
 import com.example.githubusers.navigation.api.DeepLinkResult
+import com.example.githubusers.navigation.impl.TestUtils.MockUserList
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -17,15 +18,11 @@ class NavigationRegressionTest {
     @Test
     fun `test deep link result creation`() {
         // Given
-        val result =
-            DeepLinkResult(
-                route = "test/route",
-                deepLink = "githubusers://test",
-            )
+        val mockDestination = MockUserList()
+        val result = DeepLinkResult(destination = mockDestination)
 
         // Then
-        assertEquals("test/route", result.route)
-        assertEquals("githubusers://test", result.deepLink)
+        assertEquals(mockDestination, result.destination)
         assertFalse(result.clearBackStack)
         assertTrue(result.singleTop)
         assertNull(result.popUpTo)
@@ -35,10 +32,10 @@ class NavigationRegressionTest {
     @Test
     fun `test deep link result with options`() {
         // Given
+        val mockDestination = MockUserList()
         val result =
             DeepLinkResult(
-                route = "test/route",
-                deepLink = "githubusers://test",
+                destination = mockDestination,
                 arguments = mapOf("param" to "value"),
                 clearBackStack = true,
                 singleTop = false,
@@ -47,8 +44,7 @@ class NavigationRegressionTest {
             )
 
         // Then
-        assertEquals("test/route", result.route)
-        assertEquals("githubusers://test", result.deepLink)
+        assertEquals(mockDestination, result.destination)
         assertEquals(mapOf("param" to "value"), result.arguments)
         assertTrue(result.clearBackStack)
         assertFalse(result.singleTop)
@@ -76,12 +72,12 @@ class NavigationRegressionTest {
     }
 
     @Test
-    fun `test generic destination creation`() {
+    fun `test core destination creation`() {
         // Given
-        val destination = GenericDestination("test/route", "githubusers://test")
+        val destination = com.example.githubusers.navigation.api.CoreNavigationDestination.Home
 
         // Then
-        assertEquals("test/route", destination.route)
-        assertEquals("githubusers://test", destination.deepLink)
+        assertEquals("home", destination.route)
+        assertEquals("app://home", destination.deepLink)
     }
 }

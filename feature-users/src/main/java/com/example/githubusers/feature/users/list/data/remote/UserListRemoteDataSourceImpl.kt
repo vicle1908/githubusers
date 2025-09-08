@@ -2,7 +2,6 @@ package com.example.githubusers.feature.users.list.data.remote
 
 import com.example.githubusers.feature.users.list.data.remote.dto.SearchResponse
 import com.example.githubusers.feature.users.list.data.remote.dto.UserDto
-import com.example.githubusers.feature.users.list.di.UserListHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class UserListRemoteDataSourceImpl
     @Inject
     constructor(
-        @UserListHttpClient private val httpClient: HttpClient,
+        private val httpClient: HttpClient,
     ) : UserListRemoteDataSource {
         override suspend fun getUsers(
             since: Int,

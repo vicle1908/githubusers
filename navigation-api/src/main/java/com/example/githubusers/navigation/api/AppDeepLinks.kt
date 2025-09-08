@@ -11,16 +11,13 @@ object AppDeepLinks {
 
     /**
      * Build a deep link (app scheme) for a typed destination.
+     * Note: Only handles shared destinations. Feature-specific destinations are handled by their respective modules.
+     * Currently empty as all destinations are owned by feature modules.
      */
     fun build(deeplink: AppDestination): String =
         when (deeplink) {
-            is AppDestination.UserList -> "$SCHEME://users"
-            is AppDestination.UserDetail -> "$SCHEME://user/${Uri.encode(deeplink.username)}"
-            is AppDestination.Search ->
-                deeplink.query?.let { q ->
-                    "$SCHEME://search?q=${Uri.encode(q)}"
-                } ?: "$SCHEME://search"
-            is AppDestination.Settings -> "$SCHEME://settings"
+            // All destinations are now owned by feature modules
+            else -> throw IllegalArgumentException("No shared destinations available")
         }
 
     /**
@@ -36,38 +33,8 @@ object AppDeepLinks {
         // Support app scheme and verified web host
         if (scheme != SCHEME && !(scheme == "https" && uri.host == WEB_HOST)) return null
 
-        return if (scheme == SCHEME) {
-            // githubusers://<host>/<optional path>
-            when (uri.host?.lowercase()) {
-                "users" -> AppDestination.UserList
-                "user" -> {
-                    val username = uri.pathSegments.firstOrNull()?.let { Uri.decode(it) }
-                    if (!username.isNullOrEmpty()) AppDestination.UserDetail(username) else null
-                }
-                "search" -> {
-                    val q = uri.getQueryParameter("q")
-                    AppDestination.Search(q)
-                }
-                "settings" -> AppDestination.Settings
-                else -> null
-            }
-        } else {
-            // https://githubusers.example.com/<path>
-            val segments = uri.pathSegments
-            if (segments.isEmpty()) return null
-            when (segments.first().lowercase()) {
-                "users" -> AppDestination.UserList
-                "user" -> {
-                    val username = segments.getOrNull(1)?.let { Uri.decode(it) }
-                    if (!username.isNullOrEmpty()) AppDestination.UserDetail(username) else null
-                }
-                "search" -> {
-                    val q = uri.getQueryParameter("q")
-                    AppDestination.Search(q)
-                }
-                "settings" -> AppDestination.Settings
-                else -> null
-            }
-        }
+        // All destinations are now owned by feature modules
+        // This method is kept for future shared destinations if needed
+        return null
     }
 }

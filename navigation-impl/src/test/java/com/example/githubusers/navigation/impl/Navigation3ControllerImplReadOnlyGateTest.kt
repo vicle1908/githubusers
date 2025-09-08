@@ -1,6 +1,5 @@
 package com.example.githubusers.navigation.impl
 
-import com.example.githubusers.navigation.api.AppDestination
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -25,7 +24,7 @@ class Navigation3ControllerImplReadOnlyGateTest {
                     com.example.githubusers.navigation.impl.guard
                         .ReadOnlyNavGate(true),
             )
-        controller.navigate(AppDestination.UserList)
+        controller.navigate("githubusers://users")
         assertTrue(controller.backStack.value.isEmpty())
         assertEquals(null, controller.currentEntry.value)
     }

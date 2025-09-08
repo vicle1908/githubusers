@@ -70,7 +70,7 @@ class SearchPagingSourceTest {
 
     // Spy class to access the protected method
     class SearchPagingSourceSpy(
-        apiService: com.example.githubusers.core.data.api.GitHubApiService?,
+        apiService: com.example.githubusers.feature.search.data.api.SearchApiService?,
         query: String,
         filter: SearchFilter,
     ) : SearchPagingSource(apiService, query, filter) {

@@ -4,24 +4,13 @@ import kotlinx.serialization.Serializable
 
 /**
  * Project-wide typed destinations for Navigation 3.
- * Keep this in navigation-api so features can reference types without app dependency.
+ * Only contains destinations that are truly shared across multiple features.
+ * Feature-specific destinations should be owned by their respective feature modules.
+ *
+ * Currently empty as all destinations are now owned by their respective feature modules.
  */
 @Serializable
 sealed interface AppDestination {
-
-    @Serializable
-    data object UserList : AppDestination
-
-    @Serializable
-    data class UserDetail(
-        val username: String,
-    ) : AppDestination
-
-    @Serializable
-    data class Search(
-        val query: String? = null,
-    ) : AppDestination
-
-    @Serializable
-    data object Settings : AppDestination
+    // All destinations are now owned by their respective feature modules
+    // This interface is kept for future shared destinations if needed
 }

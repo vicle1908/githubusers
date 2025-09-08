@@ -33,22 +33,17 @@ if (useCompositeBuilds) {
         }
     }
 
-    // Internal platform BOM
-    includeBuild("internal-platform") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:internal-platform")).using(project(":"))
-        }
-    }
+//    // Internal platform BOM
+//    includeBuild("internal-platform") {
+//        dependencySubstitution {
+//            substitute(module("com.example.githubusers:internal-platform")).using(project(":"))
+//        }
+//    }
 
     // Core modules
     includeBuild("core-common") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:core-common")).using(project(":"))
-        }
-    }
-    includeBuild("core-data") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:core-data")).using(project(":"))
         }
     }
     includeBuild("core-networking") {
@@ -59,11 +54,6 @@ if (useCompositeBuilds) {
     includeBuild("core-storage") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:core-storage")).using(project(":"))
-        }
-    }
-    includeBuild("navigation-annotations") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:navigation-annotations")).using(project(":"))
         }
     }
     includeBuild("core-mvi") {
@@ -86,11 +76,6 @@ if (useCompositeBuilds) {
     includeBuild("navigation-impl") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:navigation-impl")).using(project(":"))
-        }
-    }
-    includeBuild("navigation-ksp") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:navigation-ksp")).using(project(":"))
         }
     }
 

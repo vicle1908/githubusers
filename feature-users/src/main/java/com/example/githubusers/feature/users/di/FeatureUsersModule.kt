@@ -4,10 +4,13 @@ import androidx.paging.map
 import com.example.githubusers.feature.users.FeatureUsersRepository
 import com.example.githubusers.feature.users.UserDetailUi
 import com.example.githubusers.feature.users.UserUi
+import com.example.githubusers.feature.users.data.repository.UserRepositoryImpl
+import com.example.githubusers.feature.users.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Singleton
 
@@ -21,6 +24,10 @@ abstract class FeatureUsersModule {
     @Binds
     @Singleton
     abstract fun bindFeatureUsersRepository(impl: FeatureUsersRepositoryImpl): FeatureUsersRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 }
 
 /**
@@ -31,29 +38,32 @@ abstract class FeatureUsersModule {
 class FeatureUsersRepositoryImpl
     @javax.inject.Inject
     constructor(
-        private val appRepo: com.example.githubusers.core.domain.repository.UserRepository,
+        private val appRepo: com.example.githubusers.feature.users.domain.repository.UserRepository,
     ) : FeatureUsersRepository {
         override fun getUsersPaged(query: String) =
             appRepo.getUsersPaged(query).mapPaging { user ->
-                UserUi(id = user.id, username = user.login, avatarUrl = user.avatarUrl, htmlUrl = user.htmlUrl)
+                UserUi(id = user.id.toInt(), username = user.login, avatarUrl = user.avatarUrl, htmlUrl = user.htmlUrl)
             }
 
         override fun getUserDetail(username: String) =
-            appRepo.getUserDetail(username).map { result ->
-                result.map { detail ->
-                    detail?.let {
-                        UserDetailUi(
-                            id = it.id,
-                            username = it.login,
-                            avatarUrl = it.avatarUrl,
-                            htmlUrl = it.htmlUrl,
-                            location = it.location,
-                            followers = it.followers,
-                            following = it.following,
-                            blog = it.blog,
-                        )
-                    }
-                }
+            flow {
+                val result = appRepo.getUserDetail(username)
+                emit(
+                    result.map { detail ->
+                        detail?.let {
+                            UserDetailUi(
+                                id = it.id.toInt(),
+                                username = it.login,
+                                avatarUrl = it.avatarUrl,
+                                htmlUrl = it.htmlUrl,
+                                location = it.location,
+                                followers = it.followers,
+                                following = it.following,
+                                blog = it.blog,
+                            )
+                        }
+                    },
+                )
             }
     }
 

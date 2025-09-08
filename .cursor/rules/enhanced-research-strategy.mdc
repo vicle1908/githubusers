@@ -1,8 +1,6 @@
 ---
-description: Research strategy rules for comprehensive information gathering before implementation
 alwaysApply: true
 ---
-
 # Research Strategy Rules
 
 ## Core Research Enforcement
@@ -103,7 +101,6 @@ mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": [
 
 // 6. AI consensus
 mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
-
 ```
 
 #### Library Migration Research
@@ -131,8 +128,6 @@ mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": [
 
 // 6. AI consensus
 mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
-
-
 // 1. Find existing patterns
 mcp_claude-context_search_code("Android Navigation 3 implementation")
 
@@ -239,3 +234,4 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 - **Completeness**: 80%+ coverage across tool categories
 - **Accuracy**: 90%+ consensus on recommendations
 - **Efficiency**: 85%+ automation in research workflow
+- **Relevance**: 0.3+ relevance scores for knowledge retrieval

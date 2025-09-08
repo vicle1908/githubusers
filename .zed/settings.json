@@ -1,0 +1,45 @@
+{
+    "languages": {
+        "Kotlin": {
+            "language_servers": ["kotlin-language-server"],
+            "formatter": "language_server",
+            "format_on_save": "on",
+            "tab_size": 4,
+            "hard_tabs": false
+        }
+    },
+    "lsp": {
+        "kotlin-language-server": {
+            "settings": {
+                "compiler": {
+                    "jvm": {
+                        "target": "21"
+                    }
+                },
+                "completion": {
+                    "snippets": {
+                        "enabled": true
+                    }
+                },
+                "diagnostics": {
+                    "enabled": true,
+                    "debounceTime": 2000
+                },
+                "indexing": {
+                    "enabled": true
+                }
+            }
+        }
+    },
+    "format_on_save": "on",
+    "tab_size": 4,
+    "hard_tabs": false,
+    "buffer_font_family": ".ZedMono",
+    "git": {
+        "git_gutter": "tracked_files",
+        "inline_blame": {
+            "enabled": true
+        }
+    },
+    "vim_mode": false
+}

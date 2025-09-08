@@ -99,7 +99,7 @@ This guide provides Claude-specific configuration while referencing canonical do
 
 All core policies are defined in canonical documentation:
 
-- **MCP-First Workflow**: See [warp-mcp-policy.md](./warp-mcp-policy.md)
+- **MCP-First Workflow**: See [mcp-guide.md](./mcp-guide.md)
 - **MCP Server Usage**: See [mcp-guide.md](./mcp-guide.md)
 - **Research Strategy**: See [enhanced-research-strategy.md](./enhanced-research-strategy.md)
 - **Android Standards**: See [android-standards.md](./android-standards.md)
@@ -163,8 +163,7 @@ This directory contains the canonical documentation for all AI assistants workin
 
 ## Canonical Documents
 
-1. **[warp-mcp-policy.md](./warp-mcp-policy.md)** - MCP-first development workflow
-2. **[mcp-guide.md](./mcp-guide.md)** - MCP server selection and usage
+1. **[mcp-guide.md](./mcp-guide.md)** - MCP-first policy, server selection and usage
 3. **[enhanced-research-strategy.md](./enhanced-research-strategy.md)** - 10-step research workflow
 4. **[multi-ai-consultation.md](./multi-ai-consultation.md)** - Multi-AI consensus rules
 5. **[android-standards.md](./android-standards.md)** - Android development standards
@@ -248,13 +247,43 @@ echo "🔄 Syncing to assistant directories..."
 
 # Sync to Cursor (.mdc files)
 echo "  📋 Syncing to Cursor..."
-cp "$CANONICAL_DIR/android-standards.md" "$PROJECT_ROOT/.cursor/rules/android.mdc"
-cp "$CANONICAL_DIR/mcp-guide.md" "$PROJECT_ROOT/.cursor/rules/mcp-guide.mdc"
-cp "$CANONICAL_DIR/enhanced-research-strategy.md" "$PROJECT_ROOT/.cursor/rules/enhanced-research-strategy.mdc"
-cp "$CANONICAL_DIR/multi-ai-consultation.md" "$PROJECT_ROOT/.cursor/rules/multi-ai-consultation.mdc"
-cp "$CANONICAL_DIR/byterover-rules.md" "$PROJECT_ROOT/.cursor/rules/byterover-rules.mdc"
-cp "$CANONICAL_DIR/android-debugging.md" "$PROJECT_ROOT/.cursor/rules/android-debugging.mdc"
-cp "$CANONICAL_DIR/kotlin-style.md" "$PROJECT_ROOT/.cursor/rules/kotlin.mdc"
+# Preserve existing MDC frontmatter if present, then append canonical body
+for file in android-standards kotlin-style mcp-guide enhanced-research-strategy multi-ai-consultation byterover-rules android-debugging; do
+  case $file in
+    android-standards)
+      src="$CANONICAL_DIR/android-standards.md"
+      dest="$PROJECT_ROOT/.cursor/rules/android.mdc"
+      ;;
+    kotlin-style)
+      src="$CANONICAL_DIR/kotlin-style.md"
+      dest="$PROJECT_ROOT/.cursor/rules/kotlin.mdc"
+      ;;
+    *)
+      src="$CANONICAL_DIR/$file.md"
+      dest="$PROJECT_ROOT/.cursor/rules/$file.mdc"
+      ;;
+  esac
+
+  if [ -f "$dest" ]; then
+    # Extract frontmatter block if present (first YAML block delimited by ---)
+    awk 'NR==1 && $0=="---"{in_fm=1; print; next} in_fm{print; if($0=="---"){in_fm=0; exit}}' "$dest" > /tmp/cursor_mdc_frontmatter.txt || true
+    if [ -s /tmp/cursor_mdc_frontmatter.txt ] && [ "$(grep -c '^---$' /tmp/cursor_mdc_frontmatter.txt)" -eq 2 ] && [ "$(wc -l < /tmp/cursor_mdc_frontmatter.txt)" -ge 3 ]; then
+      cat /tmp/cursor_mdc_frontmatter.txt > "$dest.tmp"
+      # Append canonical body, stripping ONLY top-of-file frontmatter if present (keep in-body horizontal rules)
+      perl -0777 -pe 's/^\x{FEFF}?---\s*\n.*?\n---\s*\n//s' "$src" >> "$dest.tmp"
+      mv "$dest.tmp" "$dest"
+    else
+      # No meaningful frontmatter: write canonical body directly (strip only top-of-file frontmatter if present)
+      perl -0777 -pe 's/^\x{FEFF}?---\s*\n.*?\n---\s*\n//s' "$src" > "$dest"
+    fi
+    rm -f /tmp/cursor_mdc_frontmatter.txt
+  else
+    # Destination missing: write canonical body (strip only top-of-file frontmatter if present)
+    mkdir -p "$(dirname "$dest")"
+    perl -0777 -pe 's/^\x{FEFF}?---\s*\n.*?\n---\s*\n//s' "$src" > "$dest"
+  fi
+
+done
 
 # Sync to Augment (preserve frontmatter)
 echo "  📋 Syncing to Augment..."
@@ -333,7 +362,7 @@ cat > "$PROJECT_ROOT/WARP.md" << 'EOF'
 
 This file has been moved to maintain consistency.
 
-Please see: [docs/assistants/warp-mcp-policy.md](docs/assistants/warp-mcp-policy.md)
+Please see: [docs/assistants/mcp-guide.md](docs/assistants/mcp-guide.md)
 
 All assistant rules are now centralized in `docs/assistants/`
 EOF

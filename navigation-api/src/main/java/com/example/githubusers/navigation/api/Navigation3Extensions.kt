@@ -18,6 +18,3 @@ fun Navigation3Controller.switchSection(
  * allow system back to finish the activity rather than forcing an alternate route.
  */
 fun Navigation3Controller.navigateUpOrFinish(): Boolean = navigateUp()
-
-
-

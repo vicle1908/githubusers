@@ -11,10 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkingModule {
-
     @Provides
     @Singleton
-    fun provideHttpClient(provider: HttpClientProvider): HttpClient {
-        return provider.createHttpClient()
-    }
+    fun provideHttpClient(provider: HttpClientProvider): HttpClient = provider.createHttpClient()
 }

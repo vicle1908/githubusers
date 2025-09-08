@@ -11,10 +11,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -57,7 +57,7 @@ fun UserOverview(
                 )
 
                 InfoRow(
-                    icon = Icons.Default.CalendarMonth,
+                    icon = Icons.Filled.DateRange,
                     label = "Joined",
                     value =
                         DateTimeFormatter
@@ -67,7 +67,7 @@ fun UserOverview(
 
                 userDetail.email?.let {
                     InfoRow(
-                        icon = Icons.Default.Email,
+                        icon = Icons.Filled.Email,
                         label = "Email",
                         value = it,
                     )
@@ -75,7 +75,7 @@ fun UserOverview(
 
                 userDetail.blog?.takeIf { it.isNotBlank() }?.let {
                     InfoRow(
-                        icon = Icons.Default.Language,
+                        icon = Icons.Filled.Info,
                         label = "Website",
                         value = it,
                     )
@@ -83,7 +83,7 @@ fun UserOverview(
 
                 userDetail.twitterUsername?.let {
                     InfoRow(
-                        icon = Icons.Default.Public,
+                        icon = Icons.Filled.Person,
                         label = "Twitter",
                         value = "@$it",
                     )

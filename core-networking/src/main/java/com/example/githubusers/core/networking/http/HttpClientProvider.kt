@@ -14,25 +14,27 @@ import javax.inject.Singleton
  * This is shared infrastructure that features can use.
  */
 @Singleton
-class HttpClientProvider @Inject constructor() {
-    
-    /**
-     * Creates a configured HTTP client with common settings.
-     * Features can use this as a base and add feature-specific configuration.
-     */
-    fun createHttpClient(): HttpClient {
-        return HttpClient(Android) {
-            install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                    encodeDefaults = true
-                })
+class HttpClientProvider
+    @Inject
+    constructor() {
+        /**
+         * Creates a configured HTTP client with common settings.
+         * Features can use this as a base and add feature-specific configuration.
+         */
+        fun createHttpClient(): HttpClient =
+            HttpClient(Android) {
+                install(ContentNegotiation) {
+                    json(
+                        Json {
+                            ignoreUnknownKeys = true
+                            isLenient = true
+                            encodeDefaults = true
+                        },
+                    )
+                }
+                install(Logging) {
+                    // Configure logging level based on build type
+                    // This will be handled by the feature modules
+                }
             }
-            install(Logging) {
-                // Configure logging level based on build type
-                // This will be handled by the feature modules
-            }
-        }
     }
-}

@@ -2,7 +2,6 @@ package com.example.githubusers.feature.users.detail.data.remote.api
 
 import com.example.githubusers.feature.users.detail.data.remote.dto.RepositoryDto
 import com.example.githubusers.feature.users.detail.data.remote.dto.UserDetailDto
-import com.example.githubusers.feature.users.detail.di.UserDetailHttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
@@ -38,7 +37,7 @@ interface UserDetailRemoteDataSource {
 class UserDetailRemoteDataSourceImpl
     @Inject
     constructor(
-        @UserDetailHttpClient private val httpClient: HttpClient,
+        private val httpClient: HttpClient,
     ) : UserDetailRemoteDataSource {
         override suspend fun getUserDetail(username: String): UserDetailDto = httpClient.get("users/$username").body()
 

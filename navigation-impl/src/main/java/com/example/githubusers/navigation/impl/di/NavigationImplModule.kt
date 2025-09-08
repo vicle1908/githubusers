@@ -11,9 +11,6 @@ import com.example.githubusers.navigation.impl.NoOpNavigationTelemetry
 import com.example.githubusers.navigation.impl.PersistenceConfig
 import com.example.githubusers.navigation.impl.SharedPrefsBackStackStore
 import com.example.githubusers.navigation.impl.guard.ReadOnlyNavGate
-import com.example.githubusers.navigation.api.Navigation3Controller
-import com.example.githubusers.navigation.impl.Navigation3ControllerImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

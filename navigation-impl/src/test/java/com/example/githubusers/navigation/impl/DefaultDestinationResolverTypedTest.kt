@@ -1,10 +1,11 @@
 package com.example.githubusers.navigation.impl
 
 import android.net.Uri
-import com.example.githubusers.navigation.api.AppDeepLinks
-import com.example.githubusers.navigation.api.AppDestination
 import com.example.githubusers.navigation.api.DeepLinkHandler
 import com.example.githubusers.navigation.api.DeepLinkResult
+import com.example.githubusers.navigation.impl.TestUtils.MockSearch
+import com.example.githubusers.navigation.impl.TestUtils.MockUserDetail
+import com.example.githubusers.navigation.impl.TestUtils.MockUserList
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
@@ -17,12 +18,9 @@ private class FakeTypedUsersHandler : DeepLinkHandler {
 
     override fun supportedPatterns(): List<String> =
         listOf(
-            "githubusers://users",
-            "githubusers://user/{username}",
-            "githubusers://search",
-            "https://githubusers.example.com/users",
-            "https://githubusers.example.com/user/{username}",
-            "https://githubusers.example.com/search",
+            "app://users/list",
+            "app://users/user/{username}",
+            "app://search",
         )
 
     override fun handleDeepLink(uri: Uri): DeepLinkResult? {
@@ -31,21 +29,17 @@ private class FakeTypedUsersHandler : DeepLinkHandler {
         val path = uri.path.orEmpty()
         return when {
             // List
-            (scheme == "githubusers" && host == "users") || (scheme == "https" && host == "githubusers.example.com" && path == "/users") ->
-                DeepLinkResult(destination = AppDestination.UserList)
+            scheme == "app" && host == "users" && path == "/list" ->
+                DeepLinkResult(destination = MockUserList())
             // Detail
-            (scheme == "githubusers" && host == "user" && uri.pathSegments.size == 1) -> {
-                val username = uri.pathSegments.first()
-                DeepLinkResult(destination = AppDestination.UserDetail(username))
-            }
-            (scheme == "https" && host == "githubusers.example.com" && path.startsWith("/user/")) -> {
+            scheme == "app" && host == "users" && path.startsWith("/user/") -> {
                 val username = path.removePrefix("/user/")
-                DeepLinkResult(destination = AppDestination.UserDetail(username))
+                DeepLinkResult(destination = MockUserDetail(username))
             }
             // Search
-            ((scheme == "githubusers" || scheme == "https") && (host == "search" || path.startsWith("/search"))) -> {
+            scheme == "app" && host == "search" -> {
                 val q = uri.getQueryParameter("q")
-                DeepLinkResult(destination = AppDestination.Search(q))
+                DeepLinkResult(destination = MockSearch(q))
             }
             else -> null
         }
@@ -60,34 +54,32 @@ class DefaultDestinationResolverTypedTest {
     @Test
     fun resolves_userList_from_typed_handler() {
         val r = resolver()
-        val dest = r.resolve("githubusers://users")
+        val dest = r.resolve("app://users/list")
         assertNotNull(dest)
-        assertEquals("githubusers://users", dest!!.deepLink)
+        assertEquals("app://users/list", dest!!.deepLink)
     }
 
     @Test
     fun resolves_userDetail_from_typed_handler() {
         val r = resolver()
-        val link = AppDeepLinks.build(AppDestination.UserDetail("octocat"))
-        val dest = r.resolve(link)
+        val dest = r.resolve("app://users/user/octocat")
         assertNotNull(dest)
-        assertEquals("githubusers://user/octocat", dest!!.deepLink)
+        assertEquals("app://users/user/octocat", dest!!.deepLink)
     }
 
     @Test
     fun resolves_search_from_typed_handler_with_query() {
         val r = resolver()
-        val link = AppDeepLinks.build(AppDestination.Search("android ui"))
-        val dest = r.resolve(link)
+        val dest = r.resolve("app://search?q=android%20ui")
         assertNotNull(dest)
-        assertEquals("githubusers://search?q=android%20ui", dest!!.deepLink)
+        assertEquals("app://search?q=android%20ui", dest!!.deepLink)
     }
 
     @Test
     fun falls_back_to_generic_for_unknown() {
         val r = resolver()
-        val dest = r.resolve("githubusers://unknown/path")
+        val dest = r.resolve("app://unknown/path")
         assertNotNull(dest)
-        assertEquals("githubusers://unknown/path", dest!!.deepLink)
+        assertEquals("app://unknown/path", dest!!.deepLink)
     }
 }

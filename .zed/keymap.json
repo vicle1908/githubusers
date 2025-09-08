@@ -1,0 +1,44 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      // Android Studio / IntelliJ-style shortcuts
+      "cmd-shift-f": "workspace::DeploySearch",
+      "cmd-shift-r": "editor::FindAllReferences",
+      "cmd-b": "editor::GoToDefinition",
+      "cmd-alt-b": "editor::GoToImplementation",
+      "cmd-shift-b": "workspace::Build",
+      "cmd-r": "task::Rerun",
+      "shift-f6": "editor::Rename",
+      "cmd-shift-t": "file_finder::Toggle",
+      "cmd-shift-o": "outline::Toggle",
+      "cmd-shift-e": "project_panel::ToggleFocus",
+
+      // Gradle-specific shortcuts
+      "cmd-shift-g b": ["task::Spawn", {"command": "./gradlew", "args": ["buildAll"]}],
+      "cmd-shift-g c": ["task::Spawn", {"command": "./gradlew", "args": ["cleanAll"]}],
+      "cmd-shift-g i": ["task::Spawn", {"command": "./gradlew", "args": ["installAppDev"]}],
+      "cmd-shift-g t": ["task::Spawn", {"command": "./gradlew", "args": ["test"]}],
+      "cmd-shift-g l": ["task::Spawn", {"command": "./gradlew", "args": ["lint"]}],
+      "cmd-shift-g d": ["task::Spawn", {"command": "./gradlew", "args": ["detekt"]}],
+
+      // Code formatting and organization
+      "cmd-alt-l": "editor::Format",
+      "cmd-alt-o": "editor::OrganizeImports",
+
+      // Navigation
+      "cmd-shift-left": "pane::ActivatePrevItem",
+      "cmd-shift-right": "pane::ActivateNextItem",
+      "cmd-1": "project_panel::ToggleFocus",
+      "cmd-3": "outline::Toggle",
+      "cmd-9": "terminal_panel::ToggleFocus"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "cmd-n": "project_panel::NewFile",
+      "cmd-shift-n": "project_panel::NewDirectory"
+    }
+  }
+]

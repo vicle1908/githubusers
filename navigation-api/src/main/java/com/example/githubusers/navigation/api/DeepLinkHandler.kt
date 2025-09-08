@@ -29,7 +29,7 @@ interface DeepLinkHandler {
  * Result of deep link handling
  */
 data class DeepLinkResult(
-    val destination: AppDestination,
+    val destination: Any, // Generic destination - can be any feature-specific destination
     val arguments: Map<String, String> = emptyMap(),
     val clearBackStack: Boolean = false,
     val singleTop: Boolean = true,
