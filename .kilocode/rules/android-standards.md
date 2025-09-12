@@ -1,7 +1,3 @@
----
-description: "Android development standards: Clean Architecture with MVI; Navigation 3 via deep links; version catalog and convention plugins; OkHttp BOM; MCP-first workflows."
-alwaysApply: true
----
 # Android Development Standards
 
 ## Core Architecture Principles
