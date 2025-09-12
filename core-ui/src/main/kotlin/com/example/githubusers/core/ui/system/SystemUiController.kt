@@ -20,8 +20,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 @Composable
 @Suppress("FunctionNaming")
 fun SystemUiController(
-    statusBarColor: Color = Color.Transparent,
-    navigationBarColor: Color = Color.Transparent,
     darkIcons: Boolean = false,
     darkNavigationIcons: Boolean = false,
     isNavigationBarContrastEnforced: Boolean = true
@@ -29,23 +27,15 @@ fun SystemUiController(
     val view = LocalView.current
 
     DisposableEffect(
-        statusBarColor,
-        navigationBarColor,
         darkIcons,
         darkNavigationIcons,
         isNavigationBarContrastEnforced
     ) {
         val window = (view.context as? Activity)?.window ?: return@DisposableEffect onDispose {}
 
-        val previousStatusBarColor = window.statusBarColor
-        val previousNavigationBarColor = window.navigationBarColor
         val insetsController = WindowCompat.getInsetsController(window, view)
         val previousStatusBarDarkIcons = insetsController.isAppearanceLightStatusBars
         val previousNavigationBarDarkIcons = insetsController.isAppearanceLightNavigationBars
-
-        // Set colors
-        window.statusBarColor = statusBarColor.toArgb()
-        window.navigationBarColor = navigationBarColor.toArgb()
 
         // Set icon colors
         insetsController.isAppearanceLightStatusBars = darkIcons
@@ -57,9 +47,6 @@ fun SystemUiController(
         }
 
         onDispose {
-            // Restore previous values
-            window.statusBarColor = previousStatusBarColor
-            window.navigationBarColor = previousNavigationBarColor
             insetsController.isAppearanceLightStatusBars = previousStatusBarDarkIcons
             insetsController.isAppearanceLightNavigationBars = previousNavigationBarDarkIcons
         }
@@ -70,7 +57,7 @@ fun SystemUiController(
  * Hide system bars (status bar and navigation bar)
  */
 @Composable
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "Unused")
 fun HideSystemBars() {
     val view = LocalView.current
 
@@ -96,7 +83,7 @@ fun HideSystemBars() {
  * Make the app edge-to-edge (draw behind system bars)
  */
 @Composable
-@Suppress("FunctionNaming")
+@Suppress("FunctionNaming", "Unused")
 fun EdgeToEdgeSystemUi() {
     val view = LocalView.current
 
@@ -105,10 +92,6 @@ fun EdgeToEdgeSystemUi() {
 
         // Enable edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        // Make system bars transparent
-        window.statusBarColor = Color.Transparent.toArgb()
-        window.navigationBarColor = Color.Transparent.toArgb()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
@@ -120,19 +103,3 @@ fun EdgeToEdgeSystemUi() {
     }
 }
 
-/**
- * Control system UI visibility flags directly
- */
-@Suppress("DEPRECATION")
-fun Window.setSystemUiVisibility(
-    fullscreen: Boolean = false,
-    hideNavigation: Boolean = false,
-    immersive: Boolean = false
-) {
-    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-        (if (fullscreen) View.SYSTEM_UI_FLAG_FULLSCREEN else 0) or
-        (if (hideNavigation) View.SYSTEM_UI_FLAG_HIDE_NAVIGATION else 0) or
-        (if (immersive) View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY else 0)
-}

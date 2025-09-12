@@ -1,5 +1,6 @@
 package com.example.githubusers.navigation.impl
 
+import android.util.Log
 import androidx.compose.material3.Text
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -29,6 +30,7 @@ class Navigation3FeatureRegistry @Inject constructor(
                 try {
                     provider.createEntry(key)
                 } catch (e: IllegalArgumentException) {
+                    Log.e("Navigation3FeatureRegistry", "Provider failed to create entry for $key", e)
                     // Fallback to error entry if provider fails
                     NavEntry(key) {
                         Text(text = "Error loading destination: $key")

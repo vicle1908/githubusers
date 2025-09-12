@@ -8,7 +8,7 @@ import androidx.navigation3.runtime.NavKey
  * Each feature implements this to own its destinations without exposing implementation details.
  */
 interface FeatureDestinationProvider {
-    /**co
+    /**
      * True when this provider can resolve [key] to content.
      * This method should be fast and not perform heavy operations.
      */

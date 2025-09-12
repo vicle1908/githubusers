@@ -25,7 +25,7 @@ private val Context.searchDataStore: DataStore<Preferences> by preferencesDataSt
 @Singleton
 class SearchHistoryDataSource
 @Inject
-constructor(@ApplicationContext private val context: Context) {
+constructor(@param:ApplicationContext private val context: Context) {
     companion object {
         private val SEARCH_HISTORY_KEY = stringSetPreferencesKey("search_history")
         private const val MAX_HISTORY_SIZE = 10
