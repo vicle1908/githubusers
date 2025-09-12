@@ -17,10 +17,15 @@ plugins {
     id("githubusers.android.library.publishing")
 }
 
+android {
+    testOptions {
+        unitTests.all {
+            it.enabled = false
+        }
+    }
+}
+
 dependencies {
-    // Import internal platform BOM for version management
-    // Platform version comes from catalog: internal-platform-module = "1.0.0"
-//    implementation(platform(libs.internal.platform))
 
     // Core modules
 

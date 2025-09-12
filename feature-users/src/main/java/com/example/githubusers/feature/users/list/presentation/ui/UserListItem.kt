@@ -21,10 +21,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.githubusers.core.ui.accessibility.accessibleListItem
 import com.example.githubusers.feature.users.list.domain.entity.UserSummary
 
 /**
@@ -35,20 +40,39 @@ fun UserListItem(
     user: UserSummary,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    position: Int? = null,
+    totalItems: Int? = null,
 ) {
     Card(
         modifier =
             modifier
                 .fillMaxWidth()
                 .clickable { onClick() }
-                .padding(horizontal = 16.dp, vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                .padding(horizontal = 8.dp, vertical = 0.dp)
+                .let { cardModifier ->
+                    if (position != null && totalItems != null) {
+                        cardModifier.accessibleListItem(
+                            itemContent = "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}",
+                            position = position,
+                            totalItems = totalItems,
+                            hasAction = true,
+                            additionalInfo = "Double tap to view user details",
+                        )
+                    } else {
+                        cardModifier.semantics {
+                            contentDescription =
+                                "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}. Double tap to view details"
+                            role = Role.Button
+                        }
+                    }
+                },
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
+                    .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // User avatar
@@ -69,7 +93,7 @@ fun UserListItem(
                         .clip(CircleShape),
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
             // User login name
             Text(
@@ -84,7 +108,7 @@ fun UserListItem(
                     text = user.type,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier.padding(start = 4.dp),
                 )
             }
         }

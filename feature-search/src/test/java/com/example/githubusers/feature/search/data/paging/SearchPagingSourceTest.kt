@@ -1,27 +1,32 @@
 package com.example.githubusers.feature.search.data.paging
 
+import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.domain.entity.SearchFilter
 import com.example.githubusers.feature.search.domain.entity.SearchResultType
 import com.example.githubusers.feature.search.domain.entity.SearchSortOption
+import io.ktor.http.encodeURLQueryComponent
+import io.mockk.mockk
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SearchPagingSourceTest {
     @Test
-    fun `buildSearchQuery should handle special characters correctly`() {
+    fun `buildEncodedSearchQuery should handle special characters in base query`() {
         // Given
         val filter = SearchFilter()
-        val searchPagingSource = SearchPagingSourceSpy(null, "", filter)
+        val pagingSource = newPagingSource(filter)
 
         // When
-        val result = searchPagingSource.buildSearchQuery("test query with spaces", filter)
+        val result = pagingSource.buildEncodedSearchQuery("test query with spaces & symbols", filter)
 
-        // Then
-        assertTrue(result.contains("test query with spaces"))
+        // Then: derive expected using Ktor's encoder for consistency
+        val expected = "test query with spaces & symbols".encodeURLQueryComponent(spaceToPlus = true)
+        assertTrue(result.contains(expected))
     }
 
     @Test
-    fun `buildSearchQuery should handle complex queries with filters`() {
+    fun `buildEncodedSearchQuery should handle complex queries with filters`() {
         // Given
         val filter =
             SearchFilter(
@@ -30,18 +35,18 @@ class SearchPagingSourceTest {
                 language = "Kotlin",
                 minRepos = 10,
                 minFollowers = 100,
-                sortBy = SearchSortOption.FOLLOWERS,
+                sortBy = SearchSortOption.FOLLOWERS
             )
 
-        val searchPagingSource = SearchPagingSourceSpy(null, "", filter)
+        val pagingSource = newPagingSource(filter)
 
         // When
-        val searchQuery = searchPagingSource.buildSearchQuery("test user", filter)
+        val searchQuery = pagingSource.buildEncodedSearchQuery("test user", filter)
 
         // Then
-        assertTrue(searchQuery.contains("test user"))
+        assertTrue(searchQuery.contains("test+user"))
         assertTrue(searchQuery.contains("type:user"))
-        assertTrue(searchQuery.contains("location:San Francisco"))
+        assertTrue(searchQuery.contains("location:San+Francisco"))
         assertTrue(searchQuery.contains("language:Kotlin"))
         assertTrue(searchQuery.contains("repos:>=10"))
         assertTrue(searchQuery.contains("followers:>=100"))
@@ -49,34 +54,63 @@ class SearchPagingSourceTest {
     }
 
     @Test
-    fun `buildSearchQuery should handle special characters in filter values`() {
+    fun `buildEncodedSearchQuery should handle special characters in filter values`() {
         // Given
         val filter =
             SearchFilter(
                 location = "New York, NY",
-                language = "C++",
+                language = "C++"
             )
 
-        val searchPagingSource = SearchPagingSourceSpy(null, "", filter)
+        val pagingSource = newPagingSource(filter)
 
         // When
-        val searchQuery = searchPagingSource.buildSearchQuery("special chars", filter)
+        val searchQuery = pagingSource.buildEncodedSearchQuery("special chars", filter)
 
         // Then
-        assertTrue(searchQuery.contains("special chars"))
-        assertTrue(searchQuery.contains("location:New York, NY"))
-        assertTrue(searchQuery.contains("language:C++"))
+        assertTrue(searchQuery.contains("special+chars"))
+        assertTrue(searchQuery.contains("location:New+York%2C+NY"))
+        assertTrue(searchQuery.contains("language:C%2B%2B"))
     }
 
-    // Spy class to access the protected method
-    class SearchPagingSourceSpy(
-        apiService: com.example.githubusers.feature.search.data.api.SearchApiService?,
-        query: String,
-        filter: SearchFilter,
-    ) : SearchPagingSource(apiService, query, filter) {
-        public override fun buildSearchQuery(
-            baseQuery: String,
-            filter: SearchFilter,
-        ): String = super.buildSearchQuery(baseQuery, filter)
+    @Test
+    fun `buildEncodedSearchQuery should handle empty base query`() {
+        // Given
+        val filter =
+            SearchFilter(
+                location = "Tokyo"
+            )
+
+        val pagingSource = newPagingSource(filter)
+
+        // When
+        val searchQuery = pagingSource.buildEncodedSearchQuery("", filter)
+
+        // Then
+        assertTrue(searchQuery.contains("location:Tokyo"))
+        assertFalse(searchQuery.startsWith(" "))
+    }
+
+    @Test
+    fun `buildEncodedSearchQuery should handle blank base query`() {
+        // Given
+        val filter =
+            SearchFilter(
+                language = "JavaScript"
+            )
+
+        val pagingSource = newPagingSource(filter)
+
+        // When
+        val searchQuery = pagingSource.buildEncodedSearchQuery("   ", filter)
+
+        // Then
+        assertTrue(searchQuery.contains("language:JavaScript"))
+        assertFalse(searchQuery.startsWith(" "))
+    }
+
+    private fun newPagingSource(filter: SearchFilter): SearchPagingSource {
+        val api = mockk<SearchApiService>(relaxed = true)
+        return SearchPagingSource(api, "", filter)
     }
 }

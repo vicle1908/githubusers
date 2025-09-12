@@ -5,7 +5,7 @@ Scope:
 - Apply KtLint and Detekt via convention plugins across all modules
 - Wire ktlintCheck and detekt into the Gradle check lifecycle
 - Align Detekt formatting rules via detekt-ktlint wrapper and disable Detekt formatting rules
-- Centralize Detekt configuration under config/detekt/detekt.yml
+- Centralize Detekt configuration under plugins/src/main/resources/detekt/detekt.yml
 
 Decisions:
 
@@ -31,7 +31,7 @@ Decisions:
 
 1. Centralized configuration
 
-- Decision: Move root detekt.yml to config/detekt/detekt.yml; keep module baselines at config/detekt/baseline.xml.
+- Decision: Move root detekt.yml into plugins/src/main/resources/detekt/detekt.yml; keep module baselines at config/detekt/baseline.xml.
 
 1. Generated code exclusions
 

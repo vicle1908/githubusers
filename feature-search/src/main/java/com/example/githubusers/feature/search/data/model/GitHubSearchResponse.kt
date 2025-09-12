@@ -7,8 +7,4 @@ import kotlinx.serialization.Serializable
  * Owned by feature-search module per feature-based architecture
  */
 @Serializable
-data class GitHubSearchResponse(
-    val total_count: Int,
-    val incomplete_results: Boolean,
-    val items: List<GitHubUser>,
-)
+data class GitHubSearchResponse(val total_count: Int, val incomplete_results: Boolean, val items: List<GitHubUser>)

@@ -8,7 +8,7 @@ Quality conventions
   - Sets ext.android=true and wires ktlintCheck into check
 - Detekt convention:
   - Configures when io.gitlab.arturbosch.detekt is present
-  - Uses config at config/detekt/detekt.yml
+  - Uses config at plugins/src/main/resources/detekt/detekt.yml
   - Adds detekt-formatting ruleset
   - Wires detekt into check
   - ignoreFailures defaults to false; override with -Pdetekt.ignoreFailures=true
@@ -23,7 +23,7 @@ Module coverage
 
 Configuration
 
-- Detekt configuration centralized at config/detekt/detekt.yml
+- Detekt configuration centralized at plugins/src/main/resources/detekt/detekt.yml
 - Module-level duplicate detekt.yml moved to docs/quality/legacy/
 - .editorconfig at repo root enforces single imports (no wildcard) via ktlint_official style
 

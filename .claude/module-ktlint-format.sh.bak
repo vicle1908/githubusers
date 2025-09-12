@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# Claude Code Post-Edit Hook: File-specific ktlint formatting per module
+# Runs after Edit/MultiEdit/Write to format only the affected Kotlin file(s)
+
+set -euo pipefail
+
+# Function to log messages
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >&2
+}
+
+# Read hook input from stdin (JSON)
+input=$(cat)
+
+# Parse tool information from JSON input
+tool_name=$(echo "$input" | jq -r '.tool_name // empty')
+
+# Extract file paths: support single file_path or array from .tool_input.files[] or .tool_input.edits[].file_path (for future multi-file tools)
+file_paths=()
+# Parse file paths using while read for compatibility
+file_paths=()
+if jq -e '.tool_input.file_path' <<< "$input" > /dev/null 2>&1; then
+  jq -r '.tool_input.file_path // empty' <<< "$input" | while IFS= read -r fp; do
+    file_paths+=("$fp")
+  done
+elif jq -e '.tool_input.files' <<< "$input" > /dev/null 2>&1; then
+  jq -r '.tool_input.files[] // empty' <<< "$input" | while IFS= read -r fp; do
+    file_paths+=("$fp")
+  done
+elif jq -e '.tool_input.edits' <<< "$input" > /dev/null 2>&1; then
+  jq -r '.tool_input.edits[].file_path // .tool_input.file_path // empty' <<< "$input" | while IFS= read -r fp; do
+    file_paths+=("$fp")
+  done
+else
+  jq -r '.tool_input.file_path // empty' <<< "$input" | while IFS= read -r fp; do
+    file_paths+=("$fp")
+  done
+fi
+
+log "Hook triggered by tool: $tool_name"
+log "Files to process: ${file_paths[*]:-none}"
+# Process each file path (filter Kotlin only)
+declare -A module_files  # Assoc array: module -> list of relative_paths
+kotlin_files=()
+
+for fp in "${file_paths[@]}"; do
+  if [[ "$fp" =~ \.(kt|kts)$ ]]; then
+    kotlin_files+=("$fp")
+  fi
+done
+
+if [ ${#kotlin_files[@]} -eq 0 ]; then
+  log "No Kotlin files to process. Skipping."
+  exit 0
+fi
+
+log "Processing ${#kotlin_files[@]} Kotlin file(s)..."
+
+# Change to project root
+cd "$(dirname "$0")/.."
+
+# Group files by module
+for fp in "${file_paths[@]}"; do
+  # Filter Kotlin files
+  if [[ "$fp" =~ \.(kt|kts)$ ]]; then
+    kotlin_files+=("$fp")
+  fi
+done
+
+if [ ${#kotlin_files[@]} -eq 0 ]; then
+  log "No Kotlin files to process. Skipping."
+  exit 0
+fi
+
+log "Processing ${#kotlin_files[@]} Kotlin file(s)..."
+
+# Change to project root
+cd "$(dirname "$0")/.."
+
+# Group files by module
+for fp in "${kotlin_files[@]}"; do
+  # Extract module and relative path
+  module=$(echo "$fp" | sed -n 's|.*/\([a-zA-Z0-9-]*\)/src/.*|\1|p')
+  relative_path="src/${fp#*/src/}"
+
+  if [ -z "$module" ] || [ -z "$relative_path" ]; then
+    log "Warning: Could not parse module/path for $fp. Skipping."
+    continue
+  fi
+
+  # Append to module's file list (space-separated for batching)
+  if [ -n "${module_files[$module]:-}" ]; then
+    module_files[$module]="${module_files[$module]:-} $relative_path"
+  else
+    module_files[$module]="$relative_path"
+  fi
+
+  log "Added $relative_path to module $module"
+done
+
+# Run ktlint per module with batched files
+for module in "${!module_files[@]}"; do
+  module_task=":$module:ktlintFormat"
+  files_str="${module_files[$module]}"
+  log "Running $module_task on: $files_str"
+  if ./gradlew "$module_task" "$files_str" > /dev/null 2>&1; then
+    num_files=$(echo "$files_str" | wc -w)
+    log "✅ ktlint formatting completed for module $module ($num_files files)"
+  else
+    num_files=$(echo "$files_str" | wc -w)
+    log "⚠️ ktlint format encountered issues for module $module ($num_files files, non-critical)"
+  fi
+done
+
+log "Multi-file ktlint formatting completed."
+
+# For MultiEdit, this hook runs per edit, but if needed, extend to parse .tool_input.edits[]
+exit 0

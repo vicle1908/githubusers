@@ -12,5 +12,5 @@ data class GitHubUser(
     val login: String,
     val avatar_url: String,
     val type: String,
-    val score: Double? = null,
+    val score: Double? = null
 )

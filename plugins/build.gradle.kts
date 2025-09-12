@@ -40,6 +40,9 @@ dependencies {
 
     // Bring ktlint-gradle onto the classpath via version catalog
     implementation(libs.ktlint.gradle)
+
+    // Version update plugin for dependency management (use library alias, not plugin alias)
+    implementation(libs.gradle.versions.plugin)
 }
 
 tasks {
@@ -138,6 +141,10 @@ gradlePlugin {
             id = "githubusers.platform.module"
             implementationClass = "com.example.githubusers.plugins.PlatformModuleConventionPlugin"
         }
+        register("dependencyUpdate") {
+            id = "githubusers.dependency.update"
+            implementationClass = "com.example.githubusers.plugins.DependencyUpdatePlugin"
+        }
     }
 }
 
@@ -145,23 +152,23 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            
+
             // Suppress duplicate publication warning by using different artifactId
             artifactId = "githubusers-plugins"
-            
+
             // POM customization
             pom {
                 name.set("GitHubUsers Gradle Plugins")
                 description.set("Convention plugins for GitHubUsers project")
                 url.set("https://github.com/your-org/githubusers")
-                
+
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
                         url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
-                
+
                 developers {
                     developer {
                         id.set("your-id")
@@ -169,7 +176,7 @@ publishing {
                         email.set("your-email@example.com")
                     }
                 }
-                
+
                 scm {
                     connection.set("scm:git:git://github.com/your-org/githubusers.git")
                     developerConnection.set("scm:git:ssh://github.com/your-org/githubusers.git")
@@ -178,20 +185,20 @@ publishing {
             }
         }
     }
-    
+
     repositories {
         // Local Maven repository
         mavenLocal()
-        
+
         // Remote Maven repository (Nexus/Artifactory) - only if configured
         val nexusReleaseUrl = project.findProperty("nexusReleaseUrl") as String?
         val nexusSnapshotUrl = project.findProperty("nexusSnapshotUrl") as String?
-        
+
         if (!nexusReleaseUrl.isNullOrBlank() && !nexusSnapshotUrl.isNullOrBlank()) {
             maven {
                 name = "nexus"
                 url = uri(if (version.toString().endsWith("SNAPSHOT")) nexusSnapshotUrl else nexusReleaseUrl)
-                
+
                 credentials {
                     username = project.findProperty("nexusUsername") as String? ?: ""
                     password = project.findProperty("nexusPassword") as String? ?: ""

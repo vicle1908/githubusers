@@ -35,8 +35,8 @@ dependencies {
     }
 
     // ✅ IMPORT EXTERNAL BOMs FROM CATALOG
-//    api(platform(libs.ktor.bom))
-//    api(platform(libs.androidx.compose.bom))
-//    api(platform(libs.okhttp.bom))
-//    api(platform(libs.coil.bom))
+    api(platform(libs.ktor.bom))
+    api(platform(libs.androidx.compose.bom))
+    api(platform(libs.okhttp.bom))
+    api(platform(libs.coil.bom))
 }

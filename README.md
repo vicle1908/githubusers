@@ -1,6 +1,11 @@
 # GitHub Users Android App
 
-A modern Android application demonstrating best practices in Android development with a feature-based modular architecture, Navigation 3, and clean architecture principles.
+[![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)](https://kotlinlang.org)
+[![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg)](https://android-arsenal.com/api?level=24)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+A modern Android application demonstrating best practices in Android development with a feature-based modular architecture, custom Navigation 3 implementation, and clean architecture principles.
 
 ## 🚀 Features
 
@@ -98,20 +103,23 @@ githubusers/
 ### Build Commands
 
 ```bash
-# Clean build
-./gradlew clean
+# Clean build (with optimizations)
+./gradlew clean --configuration-cache --build-cache
 
-# Build debug variant
-./gradlew :app:assembleDebug
+# Build debug variant (optimized)
+./gradlew :app:assembleDebug --configuration-cache --build-cache --parallel
 
-# Run all tests
-./gradlew test
+# Run all tests (optimized)
+./gradlew test --configuration-cache --build-cache --parallel
 
 # Run specific module tests
-./gradlew :feature-users:test
+./gradlew :feature-users:test --configuration-cache --build-cache
 
-# Build all modules
-./gradlew build
+# Build all modules (composite build)
+./gradlew buildAll --configuration-cache --build-cache --parallel
+
+# Quality checks
+./gradlew detekt ktlintCheck --configuration-cache --build-cache --parallel
 ```
 
 ## 📱 App Features
@@ -166,6 +174,9 @@ src/androidTest/    # Integration and UI tests
 - **Convention Plugins**: Standardized build configuration
 - **Version Catalog**: Centralized dependency management
 - **Composite Builds**: Optimized build performance
+- **Configuration Cache**: Gradle 9.0+ with configuration caching enabled
+- **Build Cache**: Local build cache with 30-day retention
+- **KSP Migration**: Migrated from KAPT to KSP for faster annotation processing
 
 ### Development Workflow
 1. Create feature branch from `main`

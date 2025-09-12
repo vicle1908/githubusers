@@ -41,168 +41,162 @@ class UserListScreenSearchTest {
     }
 
     @Test
-    fun searchBar_whenClicked_expandsAndAllowsTextInput() =
-        runTest {
-            // Given: Search screen is displayed
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenClicked_expandsAndAllowsTextInput() = runTest {
+        // Given: Search screen is displayed
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // When: User clicks on the search bar
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-
-            // Then: Search bar should be expanded and accept input
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
-
-            // Clear button should appear
-            composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("Clear search"), 3000)
-            composeTestRule.onNodeWithContentDescription("Clear search").assertIsDisplayed()
         }
+
+        // When: User clicks on the search bar
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+
+        // Then: Search bar should be expanded and accept input
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
+
+        // Clear button should appear
+        composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("Clear search"), 3000)
+        composeTestRule.onNodeWithContentDescription("Clear search").assertIsDisplayed()
+    }
 
     @Test
-    fun searchBar_whenTextEntered_showsSearchResults() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenTextEntered_showsSearchResults() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // When: User types in search bar
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("defunkt")
-
-            // Then: Search results should appear after debounce
-            composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
-            composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
         }
+
+        // When: User types in search bar
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("defunkt")
+
+        // Then: Search results should appear after debounce
+        composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
+        composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
+    }
 
     @Test
-    fun searchBar_whenCancelClicked_collapsesSearchBar() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenCancelClicked_collapsesSearchBar() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Given: Search mode is active
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
-
-            // When: User clicks cancel
-            composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Then: Search bar should collapse and show regular user list
-            // The query text should not be visible anymore
         }
+
+        // Given: Search mode is active
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
+
+        // When: User clicks cancel
+        composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Then: Search bar should collapse and show regular user list
+        // The query text should not be visible anymore
+    }
 
     @Test
-    fun searchBar_whenClearClicked_clearsSearchQuery() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenClearClicked_clearsSearchQuery() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Given: Search query is entered
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test query")
-
-            // When: User clicks clear (X) button
-            composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("Clear search"), 3000)
-            composeTestRule.onNodeWithContentDescription("Clear search").performClick()
-
-            // Then: Search query should be cleared
-            composeTestRule
-                .onNodeWithText("Search GitHub users...", useUnmergedTree = true)
-                .assertIsDisplayed()
         }
+
+        // Given: Search query is entered
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test query")
+
+        // When: User clicks clear (X) button
+        composeTestRule.waitUntilAtLeastOneExists(hasContentDescription("Clear search"), 3000)
+        composeTestRule.onNodeWithContentDescription("Clear search").performClick()
+
+        // Then: Search query should be cleared
+        composeTestRule
+            .onNodeWithText("Search GitHub users...", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
 
     @Test
-    fun searchResults_whenEmpty_showsNoResultsMessage() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchResults_whenEmpty_showsNoResultsMessage() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // When: User searches for non-existent user
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("xyznonexistentuser123")
-
-            // Then: No results message should be displayed
-            composeTestRule.waitUntilAtLeastOneExists(
-                hasText("No results found for 'xyznonexistentuser123'"),
-                5000,
-            )
-            composeTestRule
-                .onNodeWithText("No results found for 'xyznonexistentuser123'")
-                .assertIsDisplayed()
         }
+
+        // When: User searches for non-existent user
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("xyznonexistentuser123")
+
+        // Then: No results message should be displayed
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasText("No results found for 'xyznonexistentuser123'"),
+            5000
+        )
+        composeTestRule
+            .onNodeWithText("No results found for 'xyznonexistentuser123'")
+            .assertIsDisplayed()
+    }
 
     @Test
-    fun searchHistory_whenAvailable_showsRecentSearches() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchHistory_whenAvailable_showsRecentSearches() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // First, perform a search to create history
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("kotlin")
-
-            // Wait for search to complete and cancel
-            composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // When: User clicks search bar again
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-
-            // Then: Search history might be shown (depends on implementation)
-            // Note: This test may need adjustment based on actual search history implementation
         }
+
+        // First, perform a search to create history
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("kotlin")
+
+        // Wait for search to complete and cancel
+        composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // When: User clicks search bar again
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+
+        // Then: Search history might be shown (depends on implementation)
+        // Note: This test may need adjustment based on actual search history implementation
+    }
 }

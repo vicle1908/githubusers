@@ -1,9 +1,16 @@
 root = true
 
 [*.{kt,kts}]
-ktlint_code_style = ktlint_official
+# Adopt Android Studio code style to match IDE defaults and Compose indentation
+ktlint_code_style = android_studio
+indent_style = space
+indent_size = 4
+continuation_indent_size = 8
+max_line_length = 120
+
+# KtLint naming ignore for annotations commonly used in Compose and tests
 ktlint_function_naming_ignore_when_annotated_with = Composable,Preview,Test
+
 # Enforce single imports (no wildcard)
 ij_kotlin_packages_to_use_import_on_demand =
 ij_kotlin_name_count_to_use_star_import = 99
-

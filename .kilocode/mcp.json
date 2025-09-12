@@ -1,41 +1,5 @@
 {
   "mcpServers": {
-    "git-mcp-server": {
-      "command": "npx",
-      "args": [
-        "@cyanheads/git-mcp-server"
-      ],
-      "env": {
-        "MCP_LOG_LEVEL": "info",
-        "GIT_SIGN_COMMITS": "false"
-      },
-      "alwaysAllow": [
-        "git_add",
-        "git_branch",
-        "git_checkout",
-        "git_cherry_pick",
-        "git_clean",
-        "git_clear_working_dir",
-        "git_clone",
-        "git_commit",
-        "git_diff",
-        "git_fetch",
-        "git_init",
-        "git_log",
-        "git_merge",
-        "git_set_working_dir",
-        "git_show",
-        "git_stash",
-        "git_pull",
-        "git_push",
-        "git_rebase",
-        "git_remote",
-        "git_reset",
-        "git_status",
-        "git_tag",
-        "git_worktree",
-        "git_wrapup_instructions"
-      ]
-    }
+    
   }
 }

@@ -2,7 +2,12 @@ package com.example.githubusers.plugins
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskAction
 
 /**
  * Task to sync module versions from catalog to platform BOM.
@@ -10,7 +15,7 @@ import org.gradle.api.tasks.*
  */
 @CacheableTask
 abstract class PlatformVersionSyncTask : DefaultTask() {
-    
+
     @get:InputFile
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val catalogFile: RegularFileProperty
@@ -41,13 +46,14 @@ abstract class PlatformVersionSyncTask : DefaultTask() {
                 }
             }
         }
-        
+
         // Update platform build file
         val platformContent = platform.readText()
         var updatedContent = platformContent
 
         versions.forEach { (module, version) ->
-            val pattern = """(api\("com\.example\.githubusers:$module"\) \{\s*version \{\s*//.*\s*strictly\(")[^"]+("\))""".toRegex(RegexOption.MULTILINE)
+            val pattern = """(api\("com\.example\.githubusers:$module"\) \{\s*version \{\s*//.*\s*strictly\(")[^"]+("\))"""
+                .toRegex(RegexOption.MULTILINE)
             updatedContent = updatedContent.replace(pattern) { matchResult ->
                 "${matchResult.groupValues[1]}$version${matchResult.groupValues[2]}"
             }

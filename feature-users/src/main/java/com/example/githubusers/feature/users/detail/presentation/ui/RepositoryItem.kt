@@ -55,126 +55,148 @@ fun RepositoryItem(
                 color = MaterialTheme.colorScheme.primary,
             )
 
-            // Fork indicator
-            if (repository.isFork) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Filled.Share,
-                        contentDescription = "Forked",
-                        modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "Forked repository",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
+            ForkIndicator(repository = repository)
 
-            // Description
-            repository.description?.let { description ->
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            DescriptionSection(description = repository.description)
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Topics
-            if (repository.topics.isNotEmpty()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    repository.topics.take(3).forEach { topic ->
-                        TopicChip(topic = topic)
-                    }
-                    if (repository.topics.size > 3) {
-                        Text(
-                            text = "+${repository.topics.size - 3}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
+            TopicsSection(topics = repository.topics)
+
+            StatsRow(
+                language = repository.language,
+                stargazersCount = repository.stargazersCount,
+                forksCount = repository.forksCount,
+                updatedAt = repository.updatedAt,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ForkIndicator(repository: Repository) {
+    if (repository.isFork) {
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Filled.Share,
+                contentDescription = "Forked",
+                modifier = Modifier.size(14.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "Forked repository",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+private fun DescriptionSection(description: String?) {
+    description?.let { desc ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = desc,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun TopicsSection(topics: List<String>) {
+    if (topics.isNotEmpty()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            topics.take(3).forEach { topic ->
+                TopicChip(topic = topic)
             }
-
-            // Stats and language
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    // Language
-                    repository.language?.let { language ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            LanguageDot(language = language)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = language,
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-
-                    // Stars
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "Stars",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = repository.stargazersCount.toString(),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-
-                    // Forks
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = "Forks",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = repository.forksCount.toString(),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-
-                // Updated date
+            if (topics.size > 3) {
                 Text(
-                    text =
-                        DateTimeFormatter
-                            .ofPattern("MMM d, yyyy")
-                            .format(repository.updatedAt.atZone(ZoneId.systemDefault()).toLocalDate()),
+                    text = "+${topics.size - 3}",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
+        Spacer(modifier = Modifier.height(12.dp))
+    }
+}
+
+@Composable
+private fun StatsRow(
+    language: String?,
+    stargazersCount: Int,
+    forksCount: Int,
+    updatedAt: java.time.Instant,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            language?.let { lang ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    LanguageDot(language = lang)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = lang,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = "Stars",
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stargazersCount.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = "Forks",
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = forksCount.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        Text(
+            text =
+                DateTimeFormatter
+                    .ofPattern("MMM d, yyyy")
+                    .format(updatedAt.atZone(ZoneId.systemDefault()).toLocalDate()),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 

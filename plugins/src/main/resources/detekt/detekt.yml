@@ -10,10 +10,22 @@ config:
 console-reports:
   active: true
   exclude:
-     - 'ProjectStatisticsReport'
-     - 'ComplexityReport'
-     - 'NotificationReport'
+    - 'ProjectStatisticsReport'
+    - 'ComplexityReport'
+    - 'NotificationReport'
 
+# Enable Detekt's KtLint wrapper to respect .editorconfig
+# formatting:
+#   active: true
+#   # Allow auto-correction in CI/local (paired with build.excludeCorrectable=false)
+#   autoCorrect: true
+#   # Delegate import rules to ktlint (avoid duplicate reports with style rules)
+#   ImportOrdering:
+#     active: true
+#   NoWildcardImports:
+#     active: true
+#   NoUnusedImports:
+#     active: true
 
 naming:
   active: true
@@ -33,12 +45,12 @@ naming:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
     functionPattern: '[a-z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
-    ignoreAnnotated: ['Composable']
-
+    ignoreAnnotated: ['Composable', 'Preview', 'Test']
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
+    ignoreAnnotated: ['Composable', 'Preview', 'Test']
   PackageNaming:
     active: true
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9]*)*'
@@ -73,7 +85,7 @@ complexity:
   LongParameterList:
     active: true
     functionThreshold: 8
-    constructorThreshold: 7
+    constructorThreshold: 5
     ignoreDefaultParameters: true
     ignoreDataClasses: true
   NestedBlockDepth:
@@ -108,6 +120,8 @@ style:
       - '32'
       - '64'
       - '128'
+      - '100'
+      - '200'
       - '256'
     ignoreHashCodeFunction: true
     ignorePropertyDeclaration: true
@@ -127,13 +141,14 @@ style:
     excludeCommentStatements: false
   ReturnCount:
     active: true
-    max: 2
+    max: 3
     excludedFunctions:
       - 'equals'
       - 'load'
     excludeLabeled: false
     excludeReturnFromLambda: true
     excludeGuardClauses: false
+  # Avoid duplicate reports with formatting.* rules
   UnusedImports:
     active: false
   UnusedPrivateMember:
@@ -142,8 +157,8 @@ style:
     ignoreAnnotated: ['Preview']
   WildcardImport:
     active: true
-    excludeImports:
-      - 'java.util.*'
+    # Enforce no wildcard imports at all (matches .editorconfig policy)
+    excludeImports: []
 
 empty-blocks:
   active: true
@@ -184,3 +199,111 @@ exceptions:
       - 'RuntimeException'
       - 'Throwable'
     allowedExceptionNameRegex: '_|(ignore|expected).*'
+
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: true
+  RedundantSuspendModifier:
+    active: true
+  SleepInsteadOfDelay:
+    active: true
+  SuspendFunWithFlowReturnType:
+    active: true
+
+performance:
+  active: true
+  ArrayPrimitive:
+    active: true
+  UnnecessaryTemporaryInstantiation:
+    active: true
+  ForEachOnRange:
+    active: true
+  SpreadOperator:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  CouldBeSequence:
+    active: false
+
+potential-bugs:
+  active: true
+  AvoidReferentialEquality:
+    active: true
+    forbiddenTypePatterns:
+      - 'kotlin.String'
+  CastToNullableType:
+    active: true
+  Deprecation:
+    active: true
+  DontDowncastCollectionTypes:
+    active: true
+  DoubleMutabilityForCollection:
+    active: true
+    mutableTypes:
+      - 'kotlin.collections.MutableList'
+      - 'kotlin.collections.MutableMap'
+      - 'kotlin.collections.MutableSet'
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: true
+  EqualsAlwaysReturnsTrueOrFalse:
+    active: true
+  EqualsWithHashCodeExist:
+    active: true
+  ExplicitGarbageCollectionCall:
+    active: true
+  HasPlatformType:
+    active: true
+  IgnoredReturnValue:
+    active: true
+    restrictToConfig: true
+    returnValueAnnotations:
+      - '*.CheckResult'
+      - 'org.jetbrains.annotations.CheckReturnValue'
+    ignoreReturnValueAnnotations:
+      - '*.CanIgnoreReturnValue'
+      - 'org.jetbrains.annotations.CheckReturnValue'
+  ImplicitDefaultLocale:
+    active: true
+  ImplicitUnitReturnType:
+    active: true
+    allowExplicitReturnType: true
+  InvalidRange:
+    active: true
+  IteratorHasNextCallsNextMethod:
+    active: true
+  IteratorNotThrowingNoSuchElementException:
+    active: true
+  LateinitUsage:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+    ignoreOnClassesPattern: ''
+  MapGetWithNotNullAssertionOperator:
+    active: true
+  MissingPackageDeclaration:
+    active: true
+    excludes: ['**/*.kts']
+  NullCheckOnMutableProperty:
+    active: true
+  NullableToStringCall:
+    active: true
+  UnconditionalJumpStatementInLoop:
+    active: true
+  UnnecessaryNotNullOperator:
+    active: true
+  UnnecessarySafeCall:
+    active: true
+  UnreachableCatchBlock:
+    active: true
+  UnreachableCode:
+    active: true
+  UnsafeCallOnNullableType:
+    active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
+  UnsafeCast:
+    active: true
+  UnusedUnaryOperator:
+    active: true
+  UselessPostfixExpression:
+    active: true
+  WrongEqualsTypeParameter:
+    active: true

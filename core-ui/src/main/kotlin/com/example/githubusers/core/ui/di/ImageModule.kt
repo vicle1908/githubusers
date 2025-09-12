@@ -14,10 +14,7 @@ import javax.inject.Singleton
 object ImageModule {
     @Provides
     @Singleton
-    fun provideImageLoader(
-        @ApplicationContext context: Context,
-    ): ImageLoader =
-        ImageLoader
-            .Builder(context)
-            .build()
+    fun provideImageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader
+        .Builder(context)
+        .build()
 }

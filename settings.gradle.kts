@@ -32,6 +32,13 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:plugins")).using(project(":"))
         }
     }
+    
+    // Testing utilities
+    includeBuild("testing") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:testing")).using(project(":"))
+        }
+    }
 
 //    // Internal platform BOM
 //    includeBuild("internal-platform") {
@@ -78,6 +85,7 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:navigation-impl")).using(project(":"))
         }
     }
+    // navigation3-poc removed
 
     // Feature modules
     includeBuild("feature-users") {

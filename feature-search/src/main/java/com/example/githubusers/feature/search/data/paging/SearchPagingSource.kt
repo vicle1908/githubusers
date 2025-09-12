@@ -7,14 +7,16 @@ import com.example.githubusers.feature.search.data.mapper.toSearchResult
 import com.example.githubusers.feature.search.domain.entity.SearchFilter
 import com.example.githubusers.feature.search.domain.entity.SearchResult
 import com.example.githubusers.feature.search.domain.entity.SearchSortOption
+import io.ktor.http.encodeURLParameter
+import io.ktor.http.encodeURLQueryComponent
 
 /**
- * Paging source for search results
+ * Paging source for search results with proper URL encoding and error handling
  */
-open class SearchPagingSource(
-    private val apiService: SearchApiService?,
+class SearchPagingSource(
+    private val apiService: SearchApiService,
     private val query: String,
-    private val filter: SearchFilter,
+    private val filter: SearchFilter
 ) : PagingSource<Int, SearchResult>() {
     override fun getRefreshKey(state: PagingState<Int, SearchResult>): Int? =
         state.anchorPosition?.let { anchorPosition ->
@@ -22,65 +24,57 @@ open class SearchPagingSource(
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchResult> {
-        // Skip actual API call for testing
-        if (apiService == null) {
-            return LoadResult.Page(
-                data = emptyList(),
-                prevKey = null,
-                nextKey = null,
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SearchResult> = try {
+        val page = params.key ?: 1
+        val searchQuery = buildEncodedSearchQuery(query, filter)
+
+        val response =
+            apiService.searchUsers(
+                query = searchQuery,
+                page = page,
+                perPage = params.loadSize
             )
-        }
 
-        return try {
-            val page = params.key ?: 1
-            val searchQuery = buildSearchQuery(query, filter)
+        val searchResults =
+            response.items.map { user ->
+                user.toSearchResult()
+            }
 
-            val response =
-                apiService.searchUsers(
-                    query = searchQuery,
-                    page = page,
-                    perPage = params.loadSize,
-                )
-
-            val searchResults =
-                response.items.map { user ->
-                    user.toSearchResult()
-                }
-
-            LoadResult.Page(
-                data = searchResults,
-                prevKey = if (page == 1) null else page - 1,
-                nextKey = if (searchResults.isEmpty()) null else page + 1,
-            )
-        } catch (e: Exception) {
-            LoadResult.Error(e)
-        }
+        LoadResult.Page(
+            data = searchResults,
+            prevKey = if (page == 1) null else page - 1,
+            nextKey = if (searchResults.isEmpty()) null else page + 1
+        )
+    } catch (e: Exception) {
+        // Enhanced error handling
+        LoadResult.Error(SearchException("Failed to load search results", e))
     }
 
     /**
-     * Build search query with filters
-     * This method is made open for testing purposes
+     * Build search query with proper URL encoding for all components
+     * This method ensures that all parts of the query are properly encoded
      */
-    open fun buildSearchQuery(
-        baseQuery: String,
-        filter: SearchFilter,
-    ): String {
-        val queryParts = mutableListOf(baseQuery)
+    internal fun buildEncodedSearchQuery(baseQuery: String, filter: SearchFilter): String {
+        val queryParts = mutableListOf<String>()
 
-        // Add type filter
+        // Add base query with proper encoding
+        if (baseQuery.isNotBlank()) {
+            queryParts.add(encodeQueryComponent(baseQuery))
+        }
+
+        // Add type filter with proper encoding
         filter.type?.let { type ->
-            queryParts.add("type:${type.name.lowercase()}")
+            queryParts.add("type:${encodeParameterValue(type.name.lowercase())}")
         }
 
-        // Add location filter
+        // Add location filter with proper encoding
         filter.location?.let { location ->
-            queryParts.add("location:$location")
+            queryParts.add("location:${encodeParameterValue(location)}")
         }
 
-        // Add language filter
+        // Add language filter with proper encoding
         filter.language?.let { language ->
-            queryParts.add("language:$language")
+            queryParts.add("language:${encodeParameterValue(language)}")
         }
 
         // Add minimum repos filter
@@ -108,4 +102,21 @@ open class SearchPagingSource(
 
         return queryParts.joinToString(" ")
     }
+
+    /**
+     * Encode query component for search terms
+     * Uses Ktor's encodeURLQueryComponent with appropriate settings
+     */
+    private fun encodeQueryComponent(value: String): String = value.encodeURLQueryComponent(spaceToPlus = true)
+
+    /**
+     * Encode parameter values for query qualifiers
+     * Uses Ktor's encodeURLParameter for proper encoding
+     */
+    private fun encodeParameterValue(value: String): String = value.encodeURLParameter(spaceToPlus = true)
 }
+
+/**
+ * Custom exception for search-related errors
+ */
+class SearchException(message: String, cause: Throwable? = null) : Exception(message, cause)

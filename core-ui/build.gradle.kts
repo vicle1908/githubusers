@@ -42,6 +42,9 @@ dependencies {
     api(libs.androidx.lifecycle.runtime.ktx)
     api(libs.androidx.lifecycle.runtime.compose)
 
+    // Logging
+    api(libs.timber)
+
     // Hilt for dependency injection
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

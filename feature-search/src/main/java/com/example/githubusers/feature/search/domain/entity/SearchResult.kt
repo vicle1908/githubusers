@@ -14,12 +14,12 @@ data class SearchResult(
     val location: String? = null,
     val company: String? = null,
     val publicRepos: Int? = null,
-    val followers: Int? = null,
+    val followers: Int? = null
 )
 
 enum class SearchResultType {
     USER,
-    ORGANIZATION,
+    ORGANIZATION
 }
 
 /**
@@ -31,12 +31,12 @@ data class SearchFilter(
     val language: String? = null,
     val minRepos: Int? = null,
     val minFollowers: Int? = null,
-    val sortBy: SearchSortOption = SearchSortOption.BEST_MATCH,
+    val sortBy: SearchSortOption = SearchSortOption.BEST_MATCH
 )
 
 enum class SearchSortOption {
     BEST_MATCH,
     FOLLOWERS,
     REPOSITORIES,
-    JOINED,
+    JOINED
 }

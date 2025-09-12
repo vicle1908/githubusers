@@ -39,7 +39,8 @@ class UserDetailRemoteDataSourceImpl
     constructor(
         private val httpClient: HttpClient,
     ) : UserDetailRemoteDataSource {
-        override suspend fun getUserDetail(username: String): UserDetailDto = httpClient.get("users/$username").body()
+        override suspend fun getUserDetail(username: String): UserDetailDto =
+            httpClient.get("https://api.github.com/users/$username").body()
 
         override suspend fun getUserRepositories(
             username: String,
@@ -48,7 +49,7 @@ class UserDetailRemoteDataSourceImpl
             sort: String,
         ): List<RepositoryDto> =
             httpClient
-                .get("users/$username/repos") {
+                .get("https://api.github.com/users/$username/repos") {
                     parameter("page", page)
                     parameter("per_page", perPage)
                     parameter("sort", sort)
@@ -56,17 +57,17 @@ class UserDetailRemoteDataSourceImpl
 
         override suspend fun isFollowing(username: String): Boolean =
             try {
-                val response = httpClient.get("user/following/$username")
+                val response = httpClient.get("https://api.github.com/user/following/$username")
                 response.status == HttpStatusCode.NoContent
             } catch (e: Exception) {
                 false
             }
 
         override suspend fun followUser(username: String) {
-            httpClient.put("user/following/$username")
+            httpClient.put("https://api.github.com/user/following/$username")
         }
 
         override suspend fun unfollowUser(username: String) {
-            httpClient.delete("user/following/$username")
+            httpClient.delete("https://api.github.com/user/following/$username")
         }
     }

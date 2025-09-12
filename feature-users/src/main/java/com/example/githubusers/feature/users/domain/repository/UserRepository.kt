@@ -19,29 +19,4 @@ interface UserRepository {
      * Get user details by username
      */
     suspend fun getUserDetail(username: String): Result<UserDetail?>
-
-    /**
-     * Get user by ID
-     */
-    suspend fun getUserById(id: Long): Result<User>
-
-    /**
-     * Get user repositories
-     */
-    suspend fun getUserRepositories(username: String): Result<List<com.example.githubusers.feature.users.domain.entity.Repository>>
-
-    /**
-     * Search users
-     */
-    suspend fun searchUsers(query: String): Result<List<User>>
-
-    /**
-     * Get cached user details
-     */
-    fun getCachedUserDetail(username: String): Flow<UserDetail?>
-
-    /**
-     * Clear user cache
-     */
-    suspend fun clearUserCache()
 }

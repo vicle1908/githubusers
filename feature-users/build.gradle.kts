@@ -9,21 +9,18 @@ plugins {
     id("githubusers.quality.detekt")
     id("githubusers.test.convention")
     id("githubusers.quality.ktlint")
-    id("githubusers.android.library")
-    id("githubusers.android.library.compose")
-    id("githubusers.android.hilt")
+    id("githubusers.feature.module")
     id("githubusers.common.version")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
 }
 
 dependencies {
-    // Import internal platform BOM for version management (implementation since we don't expose it)
-//    implementation(platform(libs.internal.platform))
 
     // Core modules
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
+    implementation(libs.local.core.ui)
 
     // Ktor for networking (needed for HttpClient type)
     implementation(platform(libs.ktor.bom))
@@ -35,11 +32,11 @@ dependencies {
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
 
-    // Navigation API for deep links
-    implementation(libs.local.navigation.api)
-
     // Core MVI base
     implementation(libs.local.core.mvi)
+
+    // Navigation runtime for deep link dispatch + back stack
+    implementation(libs.local.navigation.impl)
 
     // Compose and UI
     implementation(platform(libs.androidx.compose.bom))
@@ -47,10 +44,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.activity.compose)
-
-    // Hilt for DI
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 
     // Paging
     implementation(libs.androidx.paging.runtime)
@@ -72,9 +65,9 @@ dependencies {
     // Hilt navigation-compose for hiltViewModel()
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Core
-    implementation(libs.androidx.core.ktx)
+    // Hilt runtime + compiler for multibindings (@IntoSet) in this feature
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
-    // Unit tests
-    testImplementation(libs.junit)
+    // Unit tests (common ones provided by convention plugin)
 }

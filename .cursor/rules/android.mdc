@@ -25,6 +25,8 @@ alwaysApply: true
 - High cohesion, low coupling
 - Single responsibility principle
 - Clear module boundaries and interfaces
+- Feature should own their destination and deeplink
+- Feature should own their logic, api call
 
 ## Navigation Policy
 

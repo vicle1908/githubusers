@@ -15,7 +15,7 @@ if [[ -n "$changed_kotlin" ]]; then
   # Best-effort fast path: attempt to format in the module of the first file
   # Fallback: run ktlintFormat on top-level affected included builds if needed
   # This path assumes ktlint plugin is applied via conventions
-  ./gradlew --quiet -p plugins :ktlintFormat || true
+  ./gradlew --quiet ktlintFormat || true
 fi
 
 # Always run detekt at module or repo-level as fallback (non-blocking formatting already done)

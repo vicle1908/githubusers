@@ -17,8 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,13 +42,18 @@ fun UserListContent(
     modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-    var isRefreshing by remember { mutableStateOf(false) }
+    // Battery optimization: Use derivedStateOf to avoid unnecessary recompositions
+    val isLandscape by remember {
+        derivedStateOf { configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE }
+    }
+
     val pullToRefreshState = rememberPullToRefreshState()
 
-    // Update refreshing state based on load state
-    isRefreshing = pagingUsers.loadState.refresh is LoadState.Loading
+    // Battery optimization: Use derivedStateOf for refresh state to reduce recompositions
+    val isRefreshing by remember {
+        derivedStateOf { pagingUsers.loadState.refresh is LoadState.Loading }
+    }
 
     // Debug logging
     android.util.Log.d("UserListContent", "Load state: ${pagingUsers.loadState.refresh}, Item count: ${pagingUsers.itemCount}")
@@ -106,9 +111,9 @@ fun UserListContent(
                     // Grid layout for landscape
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         items(
@@ -126,8 +131,8 @@ fun UserListContent(
                 } else {
                     // List layout for portrait
                     LazyColumn(
-                        contentPadding = PaddingValues(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         items(

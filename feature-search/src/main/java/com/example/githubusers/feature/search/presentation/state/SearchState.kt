@@ -13,5 +13,5 @@ data class SearchState(
     val currentFilter: SearchFilter = SearchFilter(),
     val isFilterExpanded: Boolean = false,
     val showTrending: Boolean = true,
-    val errorMessage: String? = null,
+    val errorMessage: String? = null
 )

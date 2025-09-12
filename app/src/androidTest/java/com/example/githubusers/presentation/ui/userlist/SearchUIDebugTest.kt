@@ -38,36 +38,35 @@ class SearchUIDebugTest {
     }
 
     @Test
-    fun debugSearchUI_printSemanticTree() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.lifecycle.viewmodel.compose
-                            .viewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun debugSearchUI_printSemanticTree() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.lifecycle.viewmodel.compose
+                        .viewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Print initial state
-            println("=== Initial State ===")
-            composeTestRule.onRoot().printToLog("DEBUG_INITIAL")
-
-            // Click search bar
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            Thread.sleep(1000)
-
-            println("\n=== After clicking search bar ===")
-            composeTestRule.onRoot().printToLog("DEBUG_SEARCH_EXPANDED")
-
-            // Type text
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
-            Thread.sleep(1000)
-
-            println("\n=== After typing text ===")
-            composeTestRule.onRoot().printToLog("DEBUG_WITH_TEXT")
         }
+
+        // Print initial state
+        println("=== Initial State ===")
+        composeTestRule.onRoot().printToLog("DEBUG_INITIAL")
+
+        // Click search bar
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        Thread.sleep(1000)
+
+        println("\n=== After clicking search bar ===")
+        composeTestRule.onRoot().printToLog("DEBUG_SEARCH_EXPANDED")
+
+        // Type text
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("test")
+        Thread.sleep(1000)
+
+        println("\n=== After typing text ===")
+        composeTestRule.onRoot().printToLog("DEBUG_WITH_TEXT")
+    }
 }

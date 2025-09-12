@@ -1,6 +1,7 @@
 package com.example.githubusers.feature.search.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,11 +13,21 @@ import com.example.githubusers.feature.search.presentation.viewmodel.SearchViewM
  * Route composable for the Search feature
  */
 @Composable
-fun SearchRoute(navigator: SearchNavigator) {
+fun SearchRoute(navigator: SearchNavigator, initialQuery: String? = null) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
     val trendingUsers = viewModel.trendingUsers.collectAsLazyPagingItems()
+
+    // If opened via deep link with a query, execute immediately once
+    androidx.compose.runtime.LaunchedEffect(initialQuery) {
+        if (!initialQuery.isNullOrBlank()) {
+            viewModel.processIntent(
+                com.example.githubusers.feature.search.presentation.intent.SearchIntent
+                    .ExecuteSearch(initialQuery)
+            )
+        }
+    }
 
     SearchScreen(
         state = state,
@@ -28,6 +39,6 @@ fun SearchRoute(navigator: SearchNavigator) {
         },
         onNavigateBack = {
             navigator.navigateBack()
-        },
+        }
     )
 }

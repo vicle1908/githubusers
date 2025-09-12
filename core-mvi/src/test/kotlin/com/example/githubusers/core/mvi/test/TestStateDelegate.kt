@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * Test implementation of StateDelegate that tracks state history.
  * Useful for verifying state transitions in tests.
  */
-class TestStateDelegate<S : ViewState>(
-    initialState: S,
-) : StateDelegate<S> {
+class TestStateDelegate<S : ViewState>(initialState: S) : StateDelegate<S> {
     private val _state = MutableStateFlow(initialState)
     override val state: StateFlow<S> = _state.asStateFlow()
 

@@ -2,6 +2,7 @@ package com.example.githubusers.feature.users.list.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.feature.users.list.data.local.UserListDatabase
 import com.example.githubusers.feature.users.list.data.local.UserListLocalDataSource
 import com.example.githubusers.feature.users.list.data.local.UserListLocalDataSourceImpl
@@ -59,6 +60,9 @@ abstract class DataModule {
 
         @Provides
         @Singleton
-        fun provideUserListApiService(client: HttpClient): UserListApiService = UserListApiService(client)
+        fun provideUserListApiService(
+            client: HttpClient,
+            performanceMonitor: PerformanceMonitor,
+        ): UserListApiService = UserListApiService(client, performanceMonitor)
     }
 }

@@ -27,7 +27,8 @@ dependencies {
     api(libs.androidx.lifecycle.viewmodel.ktx)
     api(libs.kotlinx.coroutines.core)
 
-    // No navigation runtime needed in core-mvi after decoupling
+    // Navigation API for navigation interfaces
+    api(libs.local.navigation.api)
 
     // Hilt
     implementation(libs.hilt.android)

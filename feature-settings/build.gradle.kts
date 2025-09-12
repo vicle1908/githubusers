@@ -9,23 +9,19 @@ plugins {
     id("githubusers.quality.detekt")
     id("githubusers.test.convention")
     id("githubusers.quality.ktlint")
-    id("githubusers.android.library")
-    id("githubusers.android.library.compose")
-    id("githubusers.android.hilt")
+    id("githubusers.feature.module")
     id("githubusers.common.version")
 }
 
 dependencies {
     // Internal platform BOM for consistent versions
-//    implementation(platform(libs.internal.platform))
 
     // Core modules (reuse shared UI/MVI primitives, no duplication)
     implementation(libs.local.core.ui)
     implementation(libs.local.core.mvi)
     implementation(libs.local.core.storage)
 
-    // Navigation API (handler contract)
-    implementation(libs.local.navigation.api)
+    // Navigation API (provided by convention plugin)
 
     // Compose and UI basics (for any future settings UI)
     implementation(platform(libs.androidx.compose.bom))
@@ -35,25 +31,20 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Hilt for DI
+    // Hilt runtime + compiler for feature DI (@IntoSet bindings)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Core Android
-    implementation(libs.androidx.core.ktx)
+    // Hilt and Core Android (provided by convention plugin)
     // DataStore for preferences
     implementation(libs.androidx.datastore.preferences)
 
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // Navigation3
+    implementation(libs.androidx.navigation3.runtime)
+
+    // Testing (common ones provided by convention plugin)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.hilt.android.testing)
-    kspAndroidTest(libs.hilt.compiler)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)

@@ -36,44 +36,42 @@ class UserListScreenBasicTest {
     }
 
     @Test
-    fun searchBar_isDisplayed() =
-        runTest {
-            // Given: Screen is displayed
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_isDisplayed() = runTest {
+        // Given: Screen is displayed
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Then: Search bar should be visible
-            composeTestRule.onNodeWithText("Search GitHub users...").assertIsDisplayed()
         }
+
+        // Then: Search bar should be visible
+        composeTestRule.onNodeWithText("Search GitHub users...").assertIsDisplayed()
+    }
 
     @Test
-    fun searchBar_whenClicked_becomesActive() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.hilt.navigation.compose
-                            .hiltViewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenClicked_becomesActive() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.hilt.navigation.compose
+                        .hiltViewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // When: User clicks on the search bar
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-
-            // Then: Search bar should still be visible (expanded state)
-            composeTestRule.onNodeWithText("Search GitHub users...").assertIsDisplayed()
         }
+
+        // When: User clicks on the search bar
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+
+        // Then: Search bar should still be visible (expanded state)
+        composeTestRule.onNodeWithText("Search GitHub users...").assertIsDisplayed()
+    }
 }

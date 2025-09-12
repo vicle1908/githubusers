@@ -5,6 +5,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.githubusers.core.ui.performance.PerformanceMonitor
+import com.example.githubusers.core.ui.performance.withMemoryTracking
 import com.example.githubusers.feature.users.list.domain.entity.UserSummary
 import com.example.githubusers.feature.users.list.domain.usecase.ObserveUserListUseCase
 import com.example.githubusers.feature.users.list.presentation.intent.UserListIntent
@@ -29,6 +31,7 @@ class UserListViewModel
     @Inject
     constructor(
         private val observeUserListUseCase: ObserveUserListUseCase,
+        private val performanceMonitor: PerformanceMonitor,
         savedStateHandle: SavedStateHandle,
     ) : ViewModel() {
         companion object {
@@ -96,13 +99,15 @@ class UserListViewModel
 
         private fun executeSearch(query: String) {
             Log.d(TAG, "Execute search: $query")
-            if (query.isNotBlank() && query.length >= MIN_SEARCH_LENGTH) {
-                searchQueryInternal.value = query
-                _state.update {
-                    it.copy(
-                        searchQuery = query,
-                        isSearchMode = false,
-                    )
+            performanceMonitor.withMemoryTracking("UserSearch") {
+                if (query.isNotBlank() && query.length >= MIN_SEARCH_LENGTH) {
+                    searchQueryInternal.value = query
+                    _state.update {
+                        it.copy(
+                            searchQuery = query,
+                            isSearchMode = false,
+                        )
+                    }
                 }
             }
         }
@@ -124,12 +129,14 @@ class UserListViewModel
         }
 
         private fun dismissSearch() {
-            _state.update { it.copy(isSearchMode = false) }
-            // Clear search query if it's empty
-            if (searchQueryInternal.value.isBlank()) {
-                _state.update { it.copy(searchQuery = "") }
-                searchQueryInternal.value = ""
+            // When dismissing search, clear the search query and return to normal list
+            _state.update {
+                it.copy(
+                    isSearchMode = false,
+                    searchQuery = "",
+                )
             }
+            searchQueryInternal.value = ""
         }
 
         private fun refreshUsers() {

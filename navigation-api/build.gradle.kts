@@ -13,11 +13,12 @@ plugins {
 }
 
 dependencies {
+    // Compose BOM to provide versions for androidx.compose artifacts
+    implementation(platform(libs.androidx.compose.bom))
     // Core dependencies only - no implementation details
     api(libs.kotlinx.serialization.json)
     api(libs.androidx.navigation3.runtime)
-
-    // For Uri handling
+    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.core.ktx)
 
     // Unit testing

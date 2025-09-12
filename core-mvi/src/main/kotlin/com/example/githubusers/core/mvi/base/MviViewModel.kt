@@ -17,9 +17,8 @@ import kotlinx.coroutines.launch
  * @param S State type for UI state
  * @param E Effect type for one-time side effects
  */
-abstract class MviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect>(
-    initialState: S,
-) : ViewModel(),
+abstract class MviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect>(initialState: S) :
+    ViewModel(),
     StateDelegate<S> by MutableStateDelegate(initialState),
     EffectDelegate<E> by ChannelEffectDelegate() {
     /**
@@ -34,17 +33,14 @@ abstract class MviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect>(
      */
     fun onIntent(intent: I) {
         viewModelScope.launch {
-            processIntent(intent)
+            processIntent(intent) // Test hook update
         }
     }
 
     /**
      * Helper method to update state and send effect in one operation
      */
-    protected suspend fun updateStateWithEffect(
-        stateReducer: S.() -> S,
-        effect: E,
-    ) {
+    protected suspend fun updateStateWithEffect(stateReducer: S.() -> S, effect: E) {
         updateState(stateReducer)
         sendEffect(effect)
     }

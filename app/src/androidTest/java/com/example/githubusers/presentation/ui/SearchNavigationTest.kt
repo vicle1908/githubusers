@@ -42,141 +42,137 @@ class SearchNavigationTest {
     }
 
     @Test
-    fun searchResults_afterPerformingSearch_persistWhenReturning() =
-        runTest {
-            // Note: This test focuses on verifying the search state persistence
-            // In a real app with navigation, you'd test the full navigation flow
+    fun searchResults_afterPerformingSearch_persistWhenReturning() = runTest {
+        // Note: This test focuses on verifying the search state persistence
+        // In a real app with navigation, you'd test the full navigation flow
 
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.lifecycle.viewmodel.compose
-                            .viewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = { /* In real test, this would navigate */ },
-                    )
-                }
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.lifecycle.viewmodel.compose
+                        .viewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = { /* In real test, this would navigate */ }
+                )
             }
-
-            // Step 1: Perform search
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
-
-            // Wait for search results
-            composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
-            composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
-
-            // Step 2: Collapse search (simulating navigation away)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Step 3: Verify search query is still visible in collapsed search bar
-            composeTestRule.onNodeWithText("def", useUnmergedTree = true).assertIsDisplayed()
-
-            // Step 4: Verify search results are still displayed (not the full user list)
-            composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
         }
+
+        // Step 1: Perform search
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
+
+        // Wait for search results
+        composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
+        composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
+
+        // Step 2: Collapse search (simulating navigation away)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Step 3: Verify search query is still visible in collapsed search bar
+        composeTestRule.onNodeWithText("def", useUnmergedTree = true).assertIsDisplayed()
+
+        // Step 4: Verify search results are still displayed (not the full user list)
+        composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
+    }
 
     @Test
-    fun searchState_whenSearchModeIsInactiveButQueryExists_showsSearchResults() =
-        runTest {
-            // This tests the specific bug fix where isSearchMode=false but query="def"
+    fun searchState_whenSearchModeIsInactiveButQueryExists_showsSearchResults() = runTest {
+        // This tests the specific bug fix where isSearchMode=false but query="def"
 
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.lifecycle.viewmodel.compose
-                            .viewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.lifecycle.viewmodel.compose
+                        .viewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Perform search
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
-
-            // Wait for results
-            composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
-
-            // Collapse search bar
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Then: Search results should still be displayed
-            composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
-            composeTestRule.onNodeWithText("def", useUnmergedTree = true).assertIsDisplayed()
         }
+
+        // Perform search
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
+
+        // Wait for results
+        composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
+
+        // Collapse search bar
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Then: Search results should still be displayed
+        composeTestRule.onNodeWithText("defunkt").assertIsDisplayed()
+        composeTestRule.onNodeWithText("def", useUnmergedTree = true).assertIsDisplayed()
+    }
 
     @Test
-    fun searchBar_whenClearingAfterNavigation_returnsToFullList() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.lifecycle.viewmodel.compose
-                            .viewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = {},
-                    )
-                }
+    fun searchBar_whenClearingAfterNavigation_returnsToFullList() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.lifecycle.viewmodel.compose
+                        .viewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = {}
+                )
             }
-
-            // Perform search
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
-
-            // Wait for results and collapse
-            composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // When: User expands search bar and clears the query
-            composeTestRule.onNodeWithText("def", useUnmergedTree = true).performClick()
-            composeTestRule.onNodeWithContentDescription("Clear search").performClick()
-
-            // Then: Should show full user list (not search results)
-            // Cancel to close search mode
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Verify we're back to showing the regular user list
-            // (In a real test, we'd verify specific users from the regular list appear)
         }
+
+        // Perform search
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("def")
+
+        // Wait for results and collapse
+        composeTestRule.waitUntilAtLeastOneExists(hasText("defunkt"), 5000)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // When: User expands search bar and clears the query
+        composeTestRule.onNodeWithText("def", useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithContentDescription("Clear search").performClick()
+
+        // Then: Should show full user list (not search results)
+        // Cancel to close search mode
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Verify we're back to showing the regular user list
+        // (In a real test, we'd verify specific users from the regular list appear)
+    }
 
     @Test
-    fun navigation_multipleSearchesRemainConsistent() =
-        runTest {
-            composeTestRule.setContent {
-                GithubUsersTheme {
-                    val viewModel: UserListViewModel =
-                        androidx.lifecycle.viewmodel.compose
-                            .viewModel()
-                    UserListScreenWithSearch(
-                        viewModel = viewModel,
-                        onUserClick = { /* Simulate navigation */ },
-                    )
-                }
+    fun navigation_multipleSearchesRemainConsistent() = runTest {
+        composeTestRule.setContent {
+            GithubUsersTheme {
+                val viewModel: UserListViewModel =
+                    androidx.lifecycle.viewmodel.compose
+                        .viewModel()
+                UserListScreenWithSearch(
+                    viewModel = viewModel,
+                    onUserClick = { /* Simulate navigation */ }
+                )
             }
-
-            // Perform first search
-            composeTestRule.onNodeWithText("Search GitHub users...").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("kotlin")
-
-            // Wait and cancel
-            composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Clear and perform second search
-            composeTestRule.onNodeWithText("kotlin", useUnmergedTree = true).performClick()
-            composeTestRule.onNodeWithContentDescription("Clear search").performClick()
-            composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("android")
-
-            // Verify second search works
-            composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
-            composeTestRule.onNodeWithText("Cancel").performClick()
-
-            // Verify second query persists
-            composeTestRule.onNodeWithText("android", useUnmergedTree = true).assertIsDisplayed()
         }
+
+        // Perform first search
+        composeTestRule.onNodeWithText("Search GitHub users...").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("kotlin")
+
+        // Wait and cancel
+        composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Clear and perform second search
+        composeTestRule.onNodeWithText("kotlin", useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithContentDescription("Clear search").performClick()
+        composeTestRule.onNodeWithText("Search GitHub users...").performTextInput("android")
+
+        // Verify second search works
+        composeTestRule.waitUntilAtLeastOneExists(hasText("Cancel"), 3000)
+        composeTestRule.onNodeWithText("Cancel").performClick()
+
+        // Verify second query persists
+        composeTestRule.onNodeWithText("android", useUnmergedTree = true).assertIsDisplayed()
+    }
 }

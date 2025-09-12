@@ -3,7 +3,6 @@ package com.example.githubusers.core.mvi.processors
 import com.example.githubusers.core.mvi.contracts.ViewEffect
 import com.example.githubusers.core.mvi.contracts.ViewIntent
 import com.example.githubusers.core.mvi.contracts.ViewState
-import com.example.githubusers.core.mvi.navigation.NavigationDestination
 
 /**
  * Interface for processing intents in a modular way.
@@ -17,7 +16,7 @@ interface IntentProcessor<I : ViewIntent, S : ViewState, E : ViewEffect> {
      * @param currentState Current state
      * @param updateState Function to update state
      * @param sendEffect Function to send effects
-     * @param navigate Function to navigate
+     * @param navigateDeepLink Function to navigate
      * @return true if the intent was handled, false otherwise
      */
     suspend fun process(
@@ -25,6 +24,6 @@ interface IntentProcessor<I : ViewIntent, S : ViewState, E : ViewEffect> {
         currentState: S,
         updateState: (S.() -> S) -> Unit,
         sendEffect: suspend (E) -> Unit,
-        navigate: suspend (NavigationDestination) -> Unit,
+        navigateDeepLink: suspend (String) -> Unit
     ): Boolean
 }

@@ -2,11 +2,10 @@ package com.example.githubusers.plugins
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import java.io.File
+import java.net.URL
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
-import java.net.URISyntaxException
-import java.net.URL
 
 /**
  * Detekt convention plugin that applies the Detekt plugin and configures it
@@ -22,7 +21,6 @@ import java.net.URL
  */
 class DetektConventionPlugin : Plugin<Project> {
 
-    @Throws(URISyntaxException::class)
     fun Any.getFileFromResource(fileName: String): File {
         val classLoader: ClassLoader = javaClass.classLoader
         val resource: URL? = classLoader.getResource(fileName)

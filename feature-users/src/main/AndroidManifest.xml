@@ -1,17 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
-        <activity
-            android:name=".UsersActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="app" android:host="users" />
-                <data android:scheme="githubusers" />
-                <data android:scheme="https" android:host="githubusers.example.com" />
-            </intent-filter>
-        </activity>
-    </application>
+    <!-- Feature modules should not declare activities in single-activity architecture -->
 </manifest>

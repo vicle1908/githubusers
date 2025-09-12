@@ -4,32 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.githubusers.feature.search.presentation.navigation.SearchRoute
-import com.example.githubusers.feature.users.detail.presentation.ui.UserDetailScreen
-import com.example.githubusers.feature.users.detail.presentation.viewmodel.UserDetailViewModel
-import com.example.githubusers.feature.users.list.presentation.ui.UserListScreen
-import com.example.githubusers.feature.users.list.presentation.viewmodel.UserListViewModel
-import com.example.githubusers.navigation.api.Navigation3Controller
-import com.example.githubusers.navigation.impl.Navigation3Host
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.example.githubusers.di.NavigationConstants
+import com.example.githubusers.navigation.api.LocalNavigateBack
+import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
+import com.example.githubusers.navigation.impl.DeepLinkDispatcher
+import com.example.githubusers.navigation.impl.Navigation3FeatureRegistry
+import com.example.githubusers.performance.StartupPerformanceTracker
+import com.example.githubusers.presentation.navigation.deeplink.ModuleNavigator
 import com.example.githubusers.presentation.theme.GithubUsersTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -37,98 +30,89 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
-    lateinit var controller: Navigation3Controller
+    lateinit var registry: Navigation3FeatureRegistry
+
+    @Inject
+    lateinit var dispatcher: DeepLinkDispatcher
+
+    @Inject
+    lateinit var startupPerformanceTracker: StartupPerformanceTracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startupPerformanceTracker.markActivityCreated()
         enableEdgeToEdge()
+
         setContent {
             GithubUsersTheme {
-                MainNavGraph(
-                    controller = controller,
-                    modifier =
-                        Modifier
-                            .fillMaxSize(),
-                )
+                // Initialize back stack from incoming deep link if present; otherwise push start destination
+                val initialKey = intent?.data?.let { dispatcher.toKey(it) }
+                    ?: dispatcher.toKey(NavigationConstants.START_DESTINATION)
+                    ?: throw IllegalStateException("No valid initial destination found")
+                
+                // Debug logging
+                android.util.Log.d("MainActivity", "Initial key: $initialKey")
+                android.util.Log.d("MainActivity", "Start destination: ${NavigationConstants.START_DESTINATION}")
+
+                val backStack = rememberNavBackStack(initialKey)
+
+                CompositionLocalProvider(
+                    LocalNavigateToDeepLink provides { deepLink ->
+                        val navigator = ModuleNavigator(dispatcher)
+                        navigator.navigateTo(backStack, deepLink)
+                    },
+                    LocalNavigateBack provides {
+                        backStack.removeLastOrNull() != null
+                    }
+                ) {
+                    MainNavGraph(
+                        backStack = backStack,
+                        registry = registry,
+                        dispatcher = dispatcher,
+                        startupPerformanceTracker = startupPerformanceTracker,
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavGraph(
-    controller: Navigation3Controller,
+    backStack: androidx.navigation3.runtime.NavBackStack<NavKey>,
+    registry: Navigation3FeatureRegistry,
+    dispatcher: DeepLinkDispatcher,
     modifier: Modifier = Modifier,
+    startupPerformanceTracker: StartupPerformanceTracker? = null
 ) {
-    val navBackStackEntry by controller.currentEntry.collectAsState(null)
-    val currentDestination = navBackStackEntry?.destination
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    // Track first frame rendered and time-to-interactive
+    LaunchedEffect(backStack) {
+        android.util.Log.d("MainNavGraph", "LaunchedEffect called with backStack: $backStack")
+        startupPerformanceTracker?.markFirstFrameRendered()
+        startupPerformanceTracker?.markTimeToInteractive()
+    }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "Github Users",
-                            modifier = Modifier.align(Alignment.Center),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
-                    }
-                },
-                navigationIcon = {
-                },
-                scrollBehavior = scrollBehavior,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-    ) { padding ->
-        Navigation3Host(
-            controller = controller,
-            startDestination = "app://users/list",
-            modifier = Modifier.fillMaxSize().padding(padding),
-        ) { entry ->
-            when (entry.destination.route) {
-                "users/list" -> {
-                    val viewModel: UserListViewModel = hiltViewModel()
-                    UserListScreen(
-                        viewModel = viewModel,
-                    )
-                }
-                "users/detail/{username}" -> {
-                    // Use Navigation3Entry arguments for proper Navigation 3 integration
-                    val viewModel: UserDetailViewModel = hiltViewModel()
-                    val uiState by viewModel.uiState.collectAsState()
-                    val repositoriesFlow = viewModel.repositoriesFlow.collectAsLazyPagingItems()
-
-                    UserDetailScreen(
-                        uiState = uiState,
-                        repositoriesFlow = repositoriesFlow,
-                        onIntent = { intent ->
-                            viewModel.onIntent(intent)
-                        },
-                        onBackClick = {
-                            controller.navigateUp()
-                        },
-                    )
-                }
-                "search" -> {
-                    SearchRoute(
-                        navigator =
-                            object : com.example.githubusers.feature.search.presentation.navigation.SearchNavigator {
-                                override fun navigateToUserDetail(username: String) {
-                                    controller.navigate("app://users/user/$username")
-                                }
-
-                                override fun navigateBack() {
-                                    controller.navigateUp()
-                                }
-                            },
-                    )
-                }
+    android.util.Log.d("MainNavGraph", "About to call NavDisplay with backStack: $backStack")
+    android.util.Log.d("MainNavGraph", "BackStack size: ${backStack.size}")
+    NavDisplay(
+        backStack = backStack,
+        onBack = { keysToRemove ->
+            android.util.Log.d("MainNavGraph", "onBack called with keysToRemove: $keysToRemove")
+            repeat(keysToRemove) {
+                backStack.removeLastOrNull()
             }
-        }
+        },
+        entryDecorators = listOf(
+            rememberSceneSetupNavEntryDecorator(),
+            rememberSavedStateNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(),
+        ),
+        modifier = modifier
+    ) { key ->
+        // Feature-owned entry provider - delegates to registry
+        android.util.Log.d("MainNavGraph", "EntryProvider called with key: $key")
+        // Use the registry's entry provider function
+        registry.createEntryProvider()(key)
     }
 }

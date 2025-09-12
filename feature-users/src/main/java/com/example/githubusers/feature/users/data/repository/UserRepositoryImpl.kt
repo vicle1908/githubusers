@@ -8,7 +8,6 @@ import com.example.githubusers.feature.users.domain.entity.UserDetail
 import com.example.githubusers.feature.users.domain.repository.UserRepository
 import com.example.githubusers.feature.users.list.domain.repository.UserListRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -59,31 +58,5 @@ class UserRepositoryImpl
                     updatedAt = detailEntity.updatedAt.toString(),
                 )
             }
-        }
-
-        override suspend fun getUserById(id: Long): Result<User> {
-            // TODO: Implement if needed
-            return Result.failure(NotImplementedError("getUserById not implemented"))
-        }
-
-        override suspend fun getUserRepositories(
-            username: String,
-        ): Result<List<com.example.githubusers.feature.users.domain.entity.Repository>> {
-            // TODO: Implement if needed
-            return Result.failure(NotImplementedError("getUserRepositories not implemented"))
-        }
-
-        override suspend fun searchUsers(query: String): Result<List<User>> {
-            // TODO: Implement if needed
-            return Result.failure(NotImplementedError("searchUsers not implemented"))
-        }
-
-        override fun getCachedUserDetail(username: String): Flow<UserDetail?> {
-            // TODO: Implement if needed
-            return flowOf(null)
-        }
-
-        override suspend fun clearUserCache() {
-            // TODO: Implement if needed
         }
     }

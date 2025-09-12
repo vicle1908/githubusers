@@ -5,6 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.feature.users.list.data.local.UserListDatabase
 import com.example.githubusers.feature.users.list.data.mapper.toDomainModel
 import com.example.githubusers.feature.users.list.data.paging.UserListPagingSource
@@ -25,6 +26,7 @@ class UserListRepositoryImpl
     constructor(
         private val apiService: UserListApiService,
         private val database: UserListDatabase,
+        private val performanceMonitor: PerformanceMonitor,
     ) : UserListRepository {
         companion object {
             private const val PAGE_SIZE = 20
@@ -43,7 +45,7 @@ class UserListRepositoryImpl
                             initialLoadSize = PAGE_SIZE,
                             enablePlaceholders = false,
                         ),
-                    remoteMediator = UserListRemoteMediator(apiService, database),
+                    remoteMediator = UserListRemoteMediator(apiService, database, performanceMonitor),
                     pagingSourceFactory = { database.userSummaryDao().getUsersPaged() },
                 ).flow.map { pagingData ->
                     pagingData.map { entity ->
@@ -60,7 +62,7 @@ class UserListRepositoryImpl
                             initialLoadSize = 30,
                             enablePlaceholders = false,
                         ),
-                    pagingSourceFactory = { UserListPagingSource(apiService, query) },
+                    pagingSourceFactory = { UserListPagingSource(apiService, query, performanceMonitor) },
                 ).flow
             }
 
@@ -75,7 +77,7 @@ class UserListRepositoryImpl
                         initialLoadSize = PAGE_SIZE,
                         enablePlaceholders = false,
                     ),
-                remoteMediator = UserListRemoteMediator(apiService, database),
+                remoteMediator = UserListRemoteMediator(apiService, database, performanceMonitor),
                 pagingSourceFactory = { database.userSummaryDao().getUsersPaged() },
             ).flow.map { pagingData ->
                 pagingData.map { entity ->
@@ -94,7 +96,7 @@ class UserListRepositoryImpl
                         initialLoadSize = 30,
                         enablePlaceholders = false,
                     ),
-                pagingSourceFactory = { UserListPagingSource(apiService, query) },
+                pagingSourceFactory = { UserListPagingSource(apiService, query, performanceMonitor) },
             ).flow
         }
 

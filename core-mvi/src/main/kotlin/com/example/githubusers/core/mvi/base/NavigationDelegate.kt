@@ -1,37 +1,22 @@
 package com.example.githubusers.core.mvi.base
 
-import com.example.githubusers.core.mvi.navigation.NavigationDestination
-
 /**
  * Delegation interface for navigation in MVI architecture.
  * Provides a clean API for navigation operations compatible with Navigation3.
  */
 interface NavigationDelegate {
     /**
-     * Navigate to a specific destination
-     */
-    suspend fun navigate(destination: NavigationDestination)
-
-    /**
-     * Navigate back in the navigation stack
-     */
-    suspend fun navigateBack()
-
-    /**
-     * Navigate using a deep link URI
+     * Navigate using a deep link URI resolved by the app dispatcher.
      */
     suspend fun navigateDeepLink(uri: String)
 
     /**
-     * Pop back stack to a specific destination
+     * Navigate back in the back stack.
      */
-    suspend fun popBackStackTo(
-        destination: NavigationDestination,
-        inclusive: Boolean = false,
-    )
+    suspend fun navigateBack()
 
     /**
-     * Clear the entire back stack and navigate to destination
+     * Clear the entire back stack and navigate via deep link.
      */
-    suspend fun clearBackStackAndNavigate(destination: NavigationDestination)
+    suspend fun clearBackStackAndNavigate(uri: String)
 }

@@ -7,7 +7,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 /**
  * Enhanced KtLint Convention Plugin with unified configuration support.
- * 
+ *
  * Features:
  * - Android-specific code style configuration
  * - Consistent exclusion patterns across modules
@@ -19,39 +19,39 @@ class KtlintConventionPlugin : Plugin<Project> {
         with(target) {
             // Apply the KtLint plugin internally
             pluginManager.apply("org.jlleitschuh.gradle.ktlint")
-            
+
             // Configure the KtLint plugin
             configureKtlintPlugin()
         }
     }
-    
+
     private fun Project.configureKtlintPlugin() {
         // Configure ktlint defaults using the typed extension API
         val ext = extensions.getByType(KtlintExtension::class.java)
-        
-        // Enable Android code style
-        ext.android.set(true)
-        
+
+        // Use .editorconfig as the single source of truth for code style
+        // (android_studio style is declared in .editorconfig)
+
         // Enable verbose output for better debugging
         ext.verbose.set(true)
-        
+
         // Configure reporters for better integration
         ext.reporters {
             reporter(ReporterType.PLAIN)
             reporter(ReporterType.CHECKSTYLE)
             reporter(ReporterType.HTML)
         }
-        
-        // Exclude generated and build directories consistently
+
+        // Exclude generated and build directories consistently (KSP-only)
         ext.filter {
             exclude("**/build/**")
             exclude("**/generated/**")
             exclude("**/build/generated/**")
             exclude("**/build/ksp/**")
-            exclude("**/build/tmp/kapt3/**")
-            exclude("**/build/generated/kapt/**")
             exclude("**/build/generated/ksp/**")
             exclude("**/build/intermediates/**")
+            // Additional KSP exclusions for comprehensive coverage
+            exclude("**/ksp/**")
         }
 
         // Wire ktlint checks into standard verification lifecycle
@@ -60,34 +60,11 @@ class KtlintConventionPlugin : Plugin<Project> {
                 dependsOn("ktlintCheck")
             }
         }
-        
-        // Configure ktlint tasks for better performance and metrics
-        tasks.withType(org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask::class.java).configureEach {
-            // Add quality metrics collection
-            doLast {
-                logger.lifecycle("🎨 KtLint completed for ${project.name}")
-                collectKtLintMetrics()
-            }
-        }
-    }
-    
-    /**
-     * Collect KtLint quality metrics for reporting
-     */
-    private fun Project.collectKtLintMetrics() {
-        val reportDir = file("${layout.buildDirectory.get().asFile}/reports/ktlint")
-        if (reportDir.exists()) {
-            val htmlReport = reportDir.resolve("ktlintMain.html")
-            if (htmlReport.exists()) {
-                logger.lifecycle("   📊 KtLint report: ${htmlReport.absolutePath}")
-            }
-            
-            val checkstyleReport = reportDir.resolve("ktlintMain.xml")
-            if (checkstyleReport.exists()) {
-                logger.lifecycle("   📋 KtLint checkstyle: ${checkstyleReport.absolutePath}")
-            }
-        }
-    }
-    
 
+        // Configure ktlint tasks for better performance
+        tasks.withType(org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask::class.java).configureEach {
+            // Configuration cache compatible approach - avoid project access at execution time
+            outputs.cacheIf { true }
+        }
+    }
 }

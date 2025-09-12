@@ -14,22 +14,19 @@ import androidx.core.content.ContextCompat
  * Uses standard Android APIs with Compose integration.
  */
 @Composable
-fun rememberPermissionState(
-    permission: String,
-    onPermissionResult: (Boolean) -> Unit = {},
-): PermissionState {
+fun rememberPermissionState(permission: String, onPermissionResult: (Boolean) -> Unit = {}): PermissionState {
     val context = LocalContext.current
     val permissionGranted =
         remember {
             mutableStateOf(
                 ContextCompat.checkSelfPermission(context, permission) ==
-                    PackageManager.PERMISSION_GRANTED,
+                    PackageManager.PERMISSION_GRANTED
             )
         }
 
     val launcher =
         rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission(),
+            ActivityResultContracts.RequestPermission()
         ) { isGranted ->
             permissionGranted.value = isGranted
             onPermissionResult(isGranted)
@@ -39,7 +36,7 @@ fun rememberPermissionState(
         PermissionState(
             permission = permission,
             isGranted = permissionGranted.value,
-            requestPermission = { launcher.launch(permission) },
+            requestPermission = { launcher.launch(permission) }
         )
     }
 }
@@ -50,7 +47,7 @@ fun rememberPermissionState(
 @Composable
 fun rememberMultiplePermissionsState(
     permissions: List<String>,
-    onPermissionsResult: (Map<String, Boolean>) -> Unit = {},
+    onPermissionsResult: (Map<String, Boolean>) -> Unit = {}
 ): MultiplePermissionsState {
     val context = LocalContext.current
     val permissionsStatus =
@@ -59,13 +56,13 @@ fun rememberMultiplePermissionsState(
                 permissions.associateWith { permission ->
                     ContextCompat.checkSelfPermission(context, permission) ==
                         PackageManager.PERMISSION_GRANTED
-                },
+                }
             )
         }
 
     val launcher =
         rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions(),
+            ActivityResultContracts.RequestMultiplePermissions()
         ) { results ->
             permissionsStatus.value = results
             onPermissionsResult(results)
@@ -76,20 +73,16 @@ fun rememberMultiplePermissionsState(
             permissions = permissions,
             permissionsStatus = permissionsStatus.value,
             allGranted = permissionsStatus.value.values.all { it },
-            requestPermissions = { launcher.launch(permissions.toTypedArray()) },
+            requestPermissions = { launcher.launch(permissions.toTypedArray()) }
         )
     }
 }
 
-data class PermissionState(
-    val permission: String,
-    val isGranted: Boolean,
-    val requestPermission: () -> Unit,
-)
+data class PermissionState(val permission: String, val isGranted: Boolean, val requestPermission: () -> Unit)
 
 data class MultiplePermissionsState(
     val permissions: List<String>,
     val permissionsStatus: Map<String, Boolean>,
     val allGranted: Boolean,
-    val requestPermissions: () -> Unit,
+    val requestPermissions: () -> Unit
 )

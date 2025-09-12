@@ -12,10 +12,7 @@ interface SearchRepository {
     /**
      * Search for users with advanced filters
      */
-    fun searchUsers(
-        query: String,
-        filter: SearchFilter = SearchFilter(),
-    ): Flow<PagingData<SearchResult>>
+    fun searchUsers(query: String, filter: SearchFilter = SearchFilter()): Flow<PagingData<SearchResult>>
 
     /**
      * Get recent search queries

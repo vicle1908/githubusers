@@ -2,6 +2,8 @@ package com.example.githubusers.feature.users.list.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.githubusers.core.ui.performance.PerformanceMonitor
+import com.example.githubusers.core.ui.performance.withMemoryTracking
 import com.example.githubusers.feature.users.list.data.mapper.toDomainModel
 import com.example.githubusers.feature.users.list.data.remote.UserListApiService
 import com.example.githubusers.feature.users.list.domain.entity.UserSummary
@@ -12,6 +14,7 @@ import com.example.githubusers.feature.users.list.domain.entity.UserSummary
 class UserListPagingSource(
     private val apiService: UserListApiService,
     private val query: String,
+    private val performanceMonitor: PerformanceMonitor,
 ) : PagingSource<Int, UserSummary>() {
     override fun getRefreshKey(state: PagingState<Int, UserSummary>): Int? =
         state.anchorPosition?.let { anchorPosition ->
@@ -32,7 +35,10 @@ class UserListPagingSource(
 
             response.fold(
                 onSuccess = { searchResponse ->
-                    val users = searchResponse.items.map { it.toDomainModel() }
+                    val users =
+                        performanceMonitor.withMemoryTracking("UserSearchMapping-Page$page") {
+                            searchResponse.items.map { it.toDomainModel() }
+                        }
 
                     LoadResult.Page(
                         data = users,
@@ -41,11 +47,11 @@ class UserListPagingSource(
                     )
                 },
                 onFailure = { exception ->
-                    LoadResult.Error(exception)
+                    LoadResult.Error<Int, UserSummary>(exception)
                 },
             )
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            LoadResult.Error<Int, UserSummary>(e)
         }
     }
 }

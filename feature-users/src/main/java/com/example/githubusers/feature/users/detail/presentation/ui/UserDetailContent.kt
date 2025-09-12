@@ -40,7 +40,7 @@ fun UserDetailContent(
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("Overview", "Repositories")
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()  ) {
         // User info card
         UserInfoCard(
             userDetail = userDetail,
@@ -74,38 +74,51 @@ fun UserDetailContent(
         }
 
         // Tab content
-        when (selectedTabIndex) {
-            0 -> {
-                // Overview tab
-                UserOverview(
-                    userDetail = userDetail,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                )
-            }
-            1 -> {
-                // Repositories tab
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    items(
-                        count = repositories.itemCount,
-                        key = repositories.itemKey { it.id },
-                        contentType = repositories.itemContentType { "repository" },
-                    ) { index ->
-                        val repository = repositories[index]
-                        repository?.let {
-                            RepositoryItem(
-                                repository = it,
-                                onClick = { /* Handle repository click */ },
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                            )
-                        }
+        TabContent(
+            userDetail = userDetail,
+            repositories = repositories,
+            selectedTabIndex = selectedTabIndex,
+        )
+    }
+}
+
+@Composable
+private fun TabContent(
+    userDetail: UserDetail,
+    repositories: LazyPagingItems<Repository>,
+    selectedTabIndex: Int,
+) {
+    when (selectedTabIndex) {
+        0 -> {
+            // Overview tab
+            UserOverview(
+                userDetail = userDetail,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+            )
+        }
+        1 -> {
+            // Repositories tab
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(
+                    count = repositories.itemCount,
+                    key = repositories.itemKey { it.id },
+                    contentType = repositories.itemContentType { "repository" },
+                ) { index ->
+                    val repository = repositories[index]
+                    repository?.let {
+                        RepositoryItem(
+                            repository = it,
+                            onClick = { /* Handle repository click */ },
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                        )
                     }
                 }
             }

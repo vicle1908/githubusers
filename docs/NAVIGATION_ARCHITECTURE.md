@@ -2,163 +2,264 @@
 
 ## 🎯 Overview
 
-This guide documents the complete Navigation 3 implementation in the GitHub Users project, featuring a multi-module deep link architecture that enables type-safe, modular navigation across feature boundaries.
+This guide documents the complete Navigation 3 implementation in the GitHub Users project, featuring a **feature-based modular architecture** that enables type-safe, modular navigation across feature boundaries. Each feature module owns its navigation destinations and deep links, ensuring complete module isolation.
 
 ## 🏗️ Architecture Principles
 
 ### 1. **Feature-Based Navigation Ownership**
-- Each feature module owns its deep links and navigation destinations
-- No direct dependencies between feature modules
-- All cross-module communication via deep links
+
+- **Each feature module owns its deep links and navigation destinations**
+- **No centralized navigation destinations** - all destinations are feature-specific
+- **No direct dependencies between feature modules**
+- **All cross-module communication via deep links**
+- **App module acts only as orchestrator** - no navigation logic duplication
 
 ### 2. **Type-Safe Navigation**
-- Compile-time navigation safety with `AppDestination` types
-- Kotlin Serialization for type-safe argument passing
-- Deep link validation and error handling
 
-### 3. **Multi-Module Deep Link Architecture**
-- Centralized deep link resolution in `navigation-impl`
-- Feature modules contribute deep link handlers via Hilt multibindings
-- Support for both app scheme and web universal links
+- **Compile-time navigation safety** with feature-specific destination types
+- **No Kotlin Serialization required** - destinations use `Map<String, Any>` for arguments
+- **Deep link validation and error handling**
+- **SOLID principles** applied throughout navigation architecture
+
+### 3. **Modern Data Persistence**
+
+- **DataStore migration completed** - SharedPreferences deprecated
+- **Asynchronous persistence** with coroutines support
+- **Type-safe data storage** with Preferences DataStore
+- **Migration service** for seamless transition from legacy storage
 
 ## 📱 Core Components
 
 ### Navigation API (`navigation-api`)
 
-**AppDestination.kt** - Type-safe destination definitions:
+**NavigationDestination.kt** - Base interface for all destinations:
+
 ```kotlin
-@Serializable
-sealed interface AppDestination {
-    @Serializable
-    data class UserList(val query: String = "") : AppDestination
-    
-    @Serializable
-    data class UserDetail(val username: String) : AppDestination
-    
-    @Serializable
-    data class Settings(val section: String = "general") : AppDestination
+interface NavigationDestination {
+    val route: String
+    val deepLink: String
+    val arguments: Map<String, Any>
 }
 ```
 
-**AppDeepLinks.kt** - Deep link utilities:
+**Navigation3Controller.kt** - Main navigation controller interface:
+
 ```kotlin
-object AppDeepLinks {
-    fun build(destination: AppDestination): String
-    fun parse(uri: String): AppDestination?
-    fun isValid(uri: String): Boolean
+interface Navigation3Controller {
+    fun navigate(destination: NavigationDestination)
+    fun navigateBack(): Boolean
+    fun navigateUp(): Boolean
+    fun popBackStackTo(destination: NavigationDestination, inclusive: Boolean): Boolean
+    fun clearBackStack()
 }
 ```
 
-**DeepLinkHandler.kt** - Interface for feature deep link handling:
+**DestinationResolver.kt** - Interface for resolving deep links:
+
 ```kotlin
-interface DeepLinkHandler {
-    fun canHandle(uri: String): Boolean
-    fun handle(uri: String): NavigationDestination?
+interface DestinationResolver {
+    fun resolve(deepLink: String): NavigationDestination?
+}
+```
+
+### Feature Module Destinations
+
+**UserDestination.kt** - User feature destinations:
+
+```kotlin
+sealed interface UserDestination : NavigationDestination {
+    data object UserList : UserDestination {
+        override val route: String = "users/list"
+        override val deepLink: String = "app://users/list"
+        override val arguments: Map<String, Any> = emptyMap()
+    }
+
+    data class UserDetail(val username: String) : UserDestination {
+        override val route: String = "users/detail/$username"
+        override val deepLink: String = "app://users/user/$username"
+        override val arguments: Map<String, Any> = mapOf("username" to username)
+    }
+}
+```
+
+**SearchDestination.kt** - Search feature destinations:
+
+```kotlin
+sealed interface SearchDestination : NavigationDestination {
+    data class Search(val query: String? = null) : SearchDestination {
+        override val route: String = "search"
+        override val deepLink: String = buildString {
+            append("app://search")
+            query?.let { append("?q=$it") }
+        }
+        override val arguments: Map<String, Any> = query?.let { mapOf("query" to it) } ?: emptyMap()
+    }
 }
 ```
 
 ### Navigation Implementation (`navigation-impl`)
 
-**DefaultDestinationResolver.kt** - Central deep link resolution:
+**DefaultDestinationResolver.kt** - Feature-based deep link resolution:
+
 ```kotlin
 @Singleton
 class DefaultDestinationResolver @Inject constructor(
-    private val deepLinkHandlers: Set<@JvmSuppressWildcards DeepLinkHandler>
-) {
-    fun resolve(uri: String): NavigationDestination?
+    private val featureResolvers: Set<@JvmSuppressWildcards DestinationResolver>
+) : DestinationResolver {
+    override fun resolve(deepLink: String): NavigationDestination? {
+        return featureResolvers.firstNotNullOfOrNull { it.resolve(deepLink) }
+    }
 }
 ```
 
-**Navigation3Actions.kt** - Navigation actions and utilities:
+**Navigation3ControllerImpl.kt** - SOLID-compliant navigation controller:
+
 ```kotlin
 @Singleton
-class Navigation3Actions @Inject constructor(
-    private val controller: Navigation3Controller
-) {
-    fun navigateToUserDetail(username: String)
-    fun navigateToUserList(query: String = "")
-    fun navigateToSettings(section: String = "general")
+class Navigation3ControllerImpl @Inject constructor(
+    private val stateManager: NavigationStateManager,
+    private val commandExecutor: NavigationCommandExecutor,
+    private val persistenceManager: NavigationPersistenceManager,
+    private val telemetryManager: NavigationTelemetryManager
+) : Navigation3Controller {
+    override fun navigate(destination: NavigationDestination) {
+        commandExecutor.execute(NavigateCommand(destination))
+    }
+    // ... other navigation methods
 }
 ```
 
-**Navigation3Host** - Typed navigation host:
+**DataStoreBackStackStore.kt** - Modern persistence with DataStore:
+
 ```kotlin
-@Composable
-fun Navigation3Host(
-    controller: Navigation3Controller,
-    startDestination: AppDestination = AppDestination.UserList()
-)
+@Singleton
+class DataStoreBackStackStore @Inject constructor(
+    private val context: Context,
+    private val dataStoreProvider: DataStoreProvider,
+) : BackStackStore {
+    override suspend fun save(payload: PersistedBackStack) {
+        dataStore.edit { preferences ->
+            preferences[KEY_SCHEMA] = payload.schemaVersion
+            preferences[KEY_TIMESTAMP] = payload.timestamp
+            preferences[KEY_ENTRIES] = payload.entries.toSet()
+        }
+    }
+    // ... other persistence methods
+}
+```
+
+**NavigationMigrationService.kt** - Seamless migration from SharedPreferences:
+
+```kotlin
+@Singleton
+class NavigationMigrationService @Inject constructor(
+    private val context: Context,
+    private val dataStoreProvider: DataStoreProvider,
+) {
+    suspend fun migrateIfNeeded(): Boolean {
+        // Migrate from SharedPreferences to DataStore
+        // Clear old data after successful migration
+    }
+}
 ```
 
 ## 🔗 Deep Link Patterns
 
-### User Module Deep Links
+### User Module Deep Links (Feature-Owned)
 
 | Pattern | Description | Example |
 |---------|-------------|---------|
-| `githubusers://users` | User list screen | `githubusers://users` |
-| `githubusers://users?q={query}` | User list with search | `githubusers://users?q=octocat` |
-| `githubusers://user/{username}` | User detail screen | `githubusers://user/octocat` |
-| `https://githubusers.example.com/users` | Web URL for user list | `https://githubusers.example.com/users` |
-| `https://githubusers.example.com/user/{username}` | Web URL for user detail | `https://githubusers.example.com/user/octocat` |
+| `app://users/list` | User list screen | `app://users/list` |
+| `app://users/user/{username}` | User detail screen | `app://users/user/octocat` |
 
-### Settings Module Deep Links
+### Search Module Deep Links (Feature-Owned)
 
 | Pattern | Description | Example |
 |---------|-------------|---------|
-| `githubusers://settings` | Settings screen | `githubusers://settings` |
-| `githubusers://settings/{section}` | Settings with section | `githubusers://settings/theme` |
+| `app://search` | Search screen | `app://search` |
+| `app://search?q={query}` | Search with query | `app://search?q=octocat` |
+
+### Settings Module Deep Links (Feature-Owned)
+
+| Pattern | Description | Example |
+|---------|-------------|---------|
+| `app://settings` | Settings screen | `app://settings` |
+| `app://settings?section={section}` | Settings with section | `app://settings?section=theme` |
+
+### Deep Link Ownership
+
+- **Each feature module owns its deep link patterns**
+- **No centralized deep link management**
+- **Feature modules provide their own `DestinationResolver` implementations**
+- **App module orchestrates but doesn't define deep links**
 
 ## 🚀 Implementation Guide
 
 ### 1. **Creating a New Feature Module**
 
-#### Step 1: Define Destinations
+#### Step 1: Define Feature Destinations
+
 ```kotlin
 // In your feature module
-@Serializable
-data class YourFeatureDestination(val param: String) : AppDestination
+sealed interface YourFeatureDestination : NavigationDestination {
+    data object YourFeatureList : YourFeatureDestination {
+        override val route: String = "your-feature/list"
+        override val deepLink: String = "app://your-feature/list"
+        override val arguments: Map<String, Any> = emptyMap()
+    }
+
+    data class YourFeatureDetail(val id: String) : YourFeatureDestination {
+        override val route: String = "your-feature/detail/$id"
+        override val deepLink: String = "app://your-feature/detail/$id"
+        override val arguments: Map<String, Any> = mapOf("id" to id)
+    }
+}
 ```
 
-#### Step 2: Implement Deep Link Handler
+#### Step 2: Implement Destination Resolver
+
 ```kotlin
 @Singleton
-class YourFeatureDeepLinkHandler @Inject constructor() : DeepLinkHandler {
-    override fun canHandle(uri: String): Boolean {
-        return uri.startsWith("githubusers://your-feature")
-    }
-    
-    override fun handle(uri: String): NavigationDestination? {
-        // Parse URI and return NavigationDestination
-        return YourFeatureDestination(...)
+class YourFeatureDestinationResolver @Inject constructor() : DestinationResolver {
+    override fun resolve(deepLink: String): NavigationDestination? {
+        return when {
+            deepLink == "app://your-feature/list" -> YourFeatureDestination.YourFeatureList
+            deepLink.startsWith("app://your-feature/detail/") -> {
+                val id = deepLink.substringAfterLast("/")
+                YourFeatureDestination.YourFeatureDetail(id)
+            }
+            else -> null
+        }
     }
 }
 ```
 
 #### Step 3: Register with Hilt
+
 ```kotlin
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class YourFeatureNavigationModule {
     @Binds
     @IntoSet
-    abstract fun bindDeepLinkHandler(
-        handler: YourFeatureDeepLinkHandler
-    ): DeepLinkHandler
+    abstract fun bindDestinationResolver(
+        resolver: YourFeatureDestinationResolver
+    ): DestinationResolver
 }
 ```
 
 ### 2. **Navigation from UI Components**
 
 #### Type-Safe Navigation
+
 ```kotlin
 @Composable
 fun UserListScreen(
-    navigationActions: Navigation3Actions
+    navigationController: Navigation3Controller
 ) {
     Button(
         onClick = { 
-            navigationActions.navigateToUserDetail("octocat") 
+            navigationController.navigate(UserDestination.UserDetail("octocat"))
         }
     ) {
         Text("View User")
@@ -167,34 +268,68 @@ fun UserListScreen(
 ```
 
 #### Direct Deep Link Navigation
+
 ```kotlin
 val controller = LocalNavigation3Controller.current
-controller.navigate(AppDestination.UserDetail("octocat"))
+controller.navigate(UserDestination.UserDetail("octocat"))
+```
+
+#### Cross-Feature Navigation
+
+```kotlin
+@Composable
+fun UserDetailScreen(
+    navigationController: Navigation3Controller
+) {
+    Button(
+        onClick = { 
+            // Navigate to search feature
+            navigationController.navigate(SearchDestination.Search("octocat"))
+        }
+    ) {
+        Text("Search for User")
+    }
+}
 ```
 
 ### 3. **Testing Navigation**
 
-#### Unit Testing Deep Link Handlers
+#### Unit Testing Destination Resolvers
+
 ```kotlin
 @Test
-fun `should handle user detail deep link`() {
-    val handler = UserDeepLinkHandler()
-    val uri = "githubusers://user/octocat"
+fun `should resolve user detail deep link`() {
+    val resolver = UserDestinationResolver()
+    val deepLink = "app://users/user/octocat"
     
-    assertTrue(handler.canHandle(uri))
-    val destination = handler.handle(uri)
+    val destination = resolver.resolve(deepLink)
     assertNotNull(destination)
+    assertTrue(destination is UserDestination.UserDetail)
+    assertEquals("octocat", destination.username)
 }
 ```
 
 #### Integration Testing
+
 ```kotlin
 @Test
 fun `should navigate to user detail from deep link`() {
     // Test complete navigation flow
-    val deepLink = "githubusers://user/octocat"
-    val result = navigationActions.navigate(deepLink)
+    val destination = UserDestination.UserDetail("octocat")
+    navigationController.navigate(destination)
     // Verify navigation state
+}
+```
+
+#### Testing DataStore Migration
+
+```kotlin
+@Test
+fun `should migrate from SharedPreferences to DataStore`() = runTest {
+    val migrationService = NavigationMigrationService(context, dataStoreProvider)
+    val result = migrationService.migrateIfNeeded()
+    assertTrue(result)
+    // Verify data was migrated correctly
 }
 ```
 
@@ -203,72 +338,107 @@ fun `should navigate to user detail from deep link`() {
 ### Dependencies
 
 **Version Catalog** (`catalog/gradle/libs.versions.toml`):
-```toml
-[navigation3]
-navigation3-ui = "1.0.0-alpha15"
-navigation3-runtime = "1.0.0-alpha15"
-lifecycle-viewmodel-navigation3 = "2.8.7"
 
-[serialization]
-kotlinx-serialization-core = "1.7.3"
-kotlinx-serialization-json = "1.7.3"
+```toml
+[datastore]
+androidx-datastore-preferences = "1.1.1"
+
+[core-storage]
+core-storage = { group = "com.example.githubusers", name = "core-storage", version.ref = "coreStorageModule" }
 ```
 
-**Module Dependencies**:
+**Navigation-Impl Module Dependencies**:
+
 ```kotlin
 dependencies {
-    implementation(libs.navigation3.ui)
-    implementation(libs.navigation3.runtime)
-    implementation(libs.lifecycle.viewmodel.navigation3)
-    implementation(libs.serialization.kotlinx.serialization.core)
-    implementation(libs.serialization.kotlinx.serialization.json)
+    // Core storage for DataStore infrastructure
+    implementation(libs.local.core.storage)
+    
+    // DataStore for navigation persistence
+    implementation(libs.androidx.datastore.preferences)
+    
+    // Navigation API
+    implementation(libs.local.navigation.api)
 }
 ```
 
 ### Hilt Configuration
 
-**Navigation Module** (`app/di/NavigationModule.kt`):
+**Navigation Implementation Module** (`navigation-impl/di/NavigationImplModule.kt`):
+
 ```kotlin
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class NavigationModule {
-    @Binds
-    abstract fun bindDestinationResolver(
-        impl: DefaultDestinationResolver
-    ): DestinationResolver
+abstract class NavigationImplModule {
+    companion object {
+        @Provides
+        @Singleton
+        @DefaultNavBackStackStore
+        fun provideDefaultBackStackStore(
+            @ApplicationContext context: Context,
+            dataStoreProvider: DataStoreProvider,
+        ): BackStackStore = DataStoreBackStackStore(context, dataStoreProvider)
+
+        @Provides
+        @Singleton
+        fun provideNavigationMigrationService(
+            @ApplicationContext context: Context,
+            dataStoreProvider: DataStoreProvider,
+        ): NavigationMigrationService = NavigationMigrationService(context, dataStoreProvider)
+    }
+}
+```
+
+**App Module** (`app/di/AppNavigationModule.kt`):
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object AppNavigationModule {
+    // App module only provides orchestration - no navigation logic duplication
+    // Feature modules handle their own DI configuration
 }
 ```
 
 ## 📊 Performance Considerations
 
-### 1. **Deep Link Resolution**
-- Deep link handlers are registered once at startup
-- Resolution is O(n) where n is the number of handlers
-- Consider handler ordering for performance-critical paths
+### 1. **Feature-Based Resolution**
 
-### 2. **Type Safety Overhead**
-- Kotlin Serialization adds minimal overhead
-- Compile-time safety prevents runtime navigation errors
-- Deep link validation prevents invalid navigation attempts
+- **Feature resolvers are registered once at startup**
+- **Resolution is O(n) where n is the number of feature modules**
+- **Each feature module owns its resolution logic**
+- **No centralized deep link management overhead**
+
+### 2. **DataStore Performance**
+
+- **Asynchronous persistence** with coroutines support
+- **Type-safe data storage** with Preferences DataStore
+- **Better performance** compared to SharedPreferences
+- **Automatic migration** from legacy storage
 
 ### 3. **Memory Management**
-- Navigation state is managed by Navigation 3
-- Deep link handlers are singletons with minimal memory footprint
-- Proper cleanup in navigation lifecycle
+
+- **SOLID-compliant architecture** with clear separation of concerns
+- **Feature modules are isolated** with minimal memory footprint
+- **Proper cleanup** in navigation lifecycle
+- **No navigation logic duplication** in app module
 
 ## 🧪 Testing Strategy
 
 ### 1. **Unit Tests**
+
 - Test individual deep link handlers
 - Test destination parsing and validation
 - Test navigation action creation
 
 ### 2. **Integration Tests**
+
 - Test complete navigation flows
 - Test deep link resolution across modules
 - Test navigation state management
 
 ### 3. **UI Tests**
+
 - Test navigation from user interactions
 - Test deep link handling from external sources
 - Test navigation state restoration
@@ -276,50 +446,115 @@ abstract class NavigationModule {
 ## 🚨 Common Issues and Solutions
 
 ### 1. **Deep Link Not Resolved**
+
 **Problem**: Deep link returns null destination
-**Solution**: 
+
+**Solution**:
+
 - Check handler registration in Hilt module
 - Verify `canHandle()` method logic
 - Ensure proper URI format
 
 ### 2. **Type Safety Errors**
+
 **Problem**: Compilation errors with destination types
 **Solution**:
+
 - Add `@Serializable` annotation to destination classes
 - Check serialization dependencies
 - Verify destination parameter types
 
 ### 3. **Navigation State Issues**
+
 **Problem**: Navigation state not preserved
 **Solution**:
+
 - Use Navigation 3's built-in state management
 - Check navigation options configuration
 - Verify deep link parameter handling
 
+## 🔄 DataStore Migration
+
+### Migration Overview
+
+The navigation system has been successfully migrated from SharedPreferences to DataStore for improved performance and type safety.
+
+### Migration Components
+
+1. **DataStoreBackStackStore** - Modern persistence implementation
+2. **NavigationMigrationService** - Seamless migration orchestration
+3. **SharedPrefsBackStackStore** - Deprecated legacy implementation
+
+### Migration Process
+
+```kotlin
+// Automatic migration on app startup
+val migrationService = NavigationMigrationService(context, dataStoreProvider)
+val success = migrationService.migrateIfNeeded()
+```
+
+### Benefits
+
+- **Better Performance**: Asynchronous operations with coroutines
+- **Type Safety**: Preferences DataStore with compile-time safety
+- **Future-Proof**: Modern Android storage solution
+- **Backward Compatible**: Automatic migration from legacy storage
+
 ## 🔮 Future Enhancements
 
-### 1. **Advanced Deep Link Features**
-- Dynamic deep link generation
-- Deep link analytics and tracking
-- A/B testing for navigation flows
+### 1. **AndroidX Navigation 3 Evaluation**
 
-### 2. **Performance Optimizations**
-- Deep link handler caching
-- Lazy loading of navigation destinations
-- Navigation state compression
+- **Phase 2**: Evaluate migration to AndroidX Navigation 3
+- **Proof of Concept**: Create AndroidX Navigation 3 implementation
+- **Performance Comparison**: Benchmark against current solution
+- **Feature Compatibility**: Assess deep links, telemetry, and ownership
+
+### 2. **Advanced Features**
+
+- **Deep link analytics and tracking**
+- **A/B testing for navigation flows**
+- **Navigation state compression**
+- **Lazy loading of navigation destinations**
 
 ### 3. **Developer Experience**
-- Deep link validation tools
-- Navigation flow visualization
-- Automated navigation testing
+
+- **Deep link validation tools**
+- **Navigation flow visualization**
+- **Automated navigation testing**
+- **Feature module templates**
 
 ## 📚 Additional Resources
 
-- [Navigation 3 Documentation](https://developer.android.com/guide/navigation/navigation3)
-- [Kotlin Serialization Guide](https://kotlinlang.org/docs/serialization.html)
+- [DataStore Documentation](https://developer.android.com/topic/libraries/architecture/datastore)
+- [Preferences DataStore Guide](https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore)
 - [Hilt Dependency Injection](https://dagger.dev/hilt/)
 - [Deep Links Best Practices](https://developer.android.com/training/app-links)
+- [Feature-Based Development Guide](FEATURE_BASED_DEVELOPMENT_GUIDE.md)
 
 ---
 
-This architecture provides a robust, scalable foundation for navigation in the GitHub Users app, enabling type-safe, modular navigation while maintaining excellent performance and developer experience.
+This architecture provides a **robust, scalable, and modern foundation** for navigation in the GitHub Users app, featuring:
+
+- ✅ **Complete feature-based modularity** with no centralized navigation logic
+- ✅ **Modern DataStore persistence** with automatic migration
+- ✅ **SOLID-compliant architecture** with clear separation of concerns
+- ✅ **Type-safe navigation** without serialization overhead
+- ✅ **Excellent performance** and developer experience
+
+The system is ready for **Phase 2 evaluation** of AndroidX Navigation 3 migration while maintaining full backward compatibility and feature isolation.
+
+## Back Navigation Mechanism (Navigation 3)
+
+- Single source of truth: `Navigation3BackStack` holds `DestinationKey`s
+- System back: `BackHandler` in `MainNavGraph` pops the back stack when size > 1
+- Feature back: `LocalNavigateBack` provided by `MainActivity`; features call it via their navigators
+- Deep links: `LocalNavigateToDeepLink` pushes keys via `ModuleNavigator`
+- Rendering: current key resolved by `Navigation3FeatureRegistry` and displayed
+
+## Edge-to-Edge and Transparent UI
+
+- App-level top bar removed from `MainActivity`; feature screens own their bars
+- `contentWindowInsets = WindowInsets(0)` used in feature `Scaffold`s to avoid extra top gaps
+- Transparent bars:
+  - `UserListScreen` `TopAppBar` uses transparent colors
+  - `UserDetailScreen` `TopAppBar` uses `Color.Transparent`

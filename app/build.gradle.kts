@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
@@ -20,7 +21,7 @@ plugins {
 
 // Configure application-specific settings via convention plugin extensions
 extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>(
-    "appConfig",
+    "appConfig"
 ) {
     applicationId =
         libs.versions.application.id
@@ -39,18 +40,95 @@ extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>
 
 // Configure NDK settings via convention plugin extensions
 extensions.configure<com.example.githubusers.plugins.NdkExtension>(
-    "ndkConfig",
+    "ndkConfig"
 ) {
     ndkVersion = libs.versions.ndk.get()
     cmakeVersion = libs.versions.ndk.get()
     cmakePath = "src/main/cpp/CMakeLists.txt"
 }
 
-// Temporary android block for namespace until convention plugin is fully working
+// Advanced build optimizations and configuration
 android {
     namespace =
         libs.versions.application.id
             .get()
+
+    // Build optimizations
+    buildTypes {
+        debug {
+            // Development optimizations
+            isDebuggable = true
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+
+            // Performance monitoring in debug builds
+            buildConfigField("boolean", "ENABLE_PERFORMANCE_MONITORING", "true")
+            buildConfigField("boolean", "ENABLE_CRASH_REPORTING", "false")
+            buildConfigField("boolean", "ENABLE_ANALYTICS", "false")
+        }
+
+        release {
+            // Production optimizations
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            // Enable R8 full mode for better optimization
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // Performance and analytics in release
+            buildConfigField("boolean", "ENABLE_PERFORMANCE_MONITORING", "false")
+            buildConfigField("boolean", "ENABLE_CRASH_REPORTING", "true")
+            buildConfigField("boolean", "ENABLE_ANALYTICS", "true")
+
+            // Signature configuration for release builds
+            signingConfig = signingConfigs.getByName("debug")
+        }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".benchmark"
+            versionNameSuffix = "-benchmark"
+            isDebuggable = false
+            isProfileable = true
+            buildConfigField("boolean", "ENABLE_PERFORMANCE_MONITORING", "true")
+        }
+    }
+
+    // Compilation optimizations
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+
+    // Bundle configuration for optimal APK splits
+    bundle {
+        language {
+            // Disable language splits for now
+            enableSplit = false
+        }
+        density {
+            // Enable density splits for smaller APKs
+            enableSplit = true
+        }
+        abi {
+            // Enable ABI splits for smaller APKs
+            enableSplit = true
+        }
+    }
+
+    // Packaging optimizations
+    fun Packaging.() {
+        resources {
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/gradle/incremental.annotation.processors"
+            )
+        }
+    }
 }
 
 dependencies {
@@ -112,6 +190,9 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    // Core library desugaring for modern Java APIs
+    coreLibraryDesugaring(libs.android.desugarJdkLibs)
 
     // Testing
     testImplementation(libs.junit)

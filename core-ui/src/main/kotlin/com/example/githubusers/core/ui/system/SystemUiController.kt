@@ -24,7 +24,7 @@ fun SystemUiController(
     navigationBarColor: Color = Color.Transparent,
     darkIcons: Boolean = false,
     darkNavigationIcons: Boolean = false,
-    isNavigationBarContrastEnforced: Boolean = true,
+    isNavigationBarContrastEnforced: Boolean = true
 ) {
     val view = LocalView.current
 
@@ -33,7 +33,7 @@ fun SystemUiController(
         navigationBarColor,
         darkIcons,
         darkNavigationIcons,
-        isNavigationBarContrastEnforced,
+        isNavigationBarContrastEnforced
     ) {
         val window = (view.context as? Activity)?.window ?: return@DisposableEffect onDispose {}
 
@@ -127,7 +127,7 @@ fun EdgeToEdgeSystemUi() {
 fun Window.setSystemUiVisibility(
     fullscreen: Boolean = false,
     hideNavigation: Boolean = false,
-    immersive: Boolean = false,
+    immersive: Boolean = false
 ) {
     decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or

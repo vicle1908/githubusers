@@ -7,7 +7,7 @@ This document provides guidance on using detekt for static code analysis in the 
 ## Configuration
 
 - **Version**: 1.23.8
-- **Configuration**: Root `detekt.yml` file
+- **Configuration**: `plugins/src/main/resources/detekt/detekt.yml` (central config)
 - **Baseline**: Module-specific baseline files in `config/detekt/`
 - **Formatting**: Ktlint ruleset integration for consistent formatting
 
@@ -31,7 +31,7 @@ This document provides guidance on using detekt for static code analysis in the 
 
 ### Configuration Structure
 
-- **Root config**: `detekt.yml` - Main configuration and rule sets
+- **Root config**: `plugins/src/main/resources/detekt/detekt.yml` - Main configuration and rule sets
 - **Module baselines**: `config/detekt/baseline.xml` - Suppressed issues per module
 - **Convention plugin**: Automatically applies detekt to all modules
 

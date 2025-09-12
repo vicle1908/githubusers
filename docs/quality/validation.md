@@ -6,7 +6,7 @@ Actions performed
 
 - Built plugins composite: success
 - Validated plugin registration with validatePlugins: success
-- Centralized detekt config to config/detekt/detekt.yml and updated convention plugin: success
+- Centralized detekt config to plugins/src/main/resources/detekt/detekt.yml and updated convention plugin: success
 - Removed module-level duplicate detekt.yml (moved to docs/quality/legacy/): success
 - Updated module plugins to include detekt and ktlint aliases: success (subset validated)
 

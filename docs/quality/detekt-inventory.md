@@ -8,8 +8,8 @@ This document provides an inventory of detekt configuration across the GitHub Us
 
 ### Root Configuration
 
-- **File**: `detekt.yml` (root directory)
-- **Purpose**: Main detekt configuration for all modules
+- **File**: `plugins/src/main/resources/detekt/detekt.yml`
+- **Purpose**: Central detekt configuration applied to all modules
 - **Features**: Rule sets, thresholds, and ktlint integration
 
 ### Module Baselines
@@ -43,7 +43,7 @@ This document provides an inventory of detekt configuration across the GitHub Us
 
 - **Convention plugin**: `DetektConventionPlugin` applied to all modules
 - **Dependencies**: Ktlint ruleset wrapper for formatting
-- **Configuration**: Shared configuration from root `detekt.yml`
+- **Configuration**: Shared configuration from `plugins/src/main/resources/detekt/detekt.yml`
 
 ### Ktlint Integration
 
@@ -71,7 +71,7 @@ This document provides an inventory of detekt configuration across the GitHub Us
 
 ### Centralized Configuration
 
-- **Single source**: Root `detekt.yml` for all modules
+- **Single source**: `plugins/src/main/resources/detekt/detekt.yml` for all modules
 - **Consistent rules**: Same rule sets across all modules
 - **Shared thresholds**: Common complexity and naming thresholds
 
