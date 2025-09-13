@@ -171,7 +171,10 @@ configure_sparse_checkout() {
             ;;
     esac
 
-    print_info "Sparse-checkout configuration completed with all modules and AI configs"
+    # Always include docs for project guidelines and AI rules
+    git sparse-checkout add docs
+
+    print_info "Sparse-checkout configuration completed with all modules, AI configs, and docs"
 }
 
 # Function to set up per-worktree configuration
