@@ -42,7 +42,7 @@ show_usage() {
     cat << EOF
 Usage: $0 <assistant-name> <issue-id> <task-description>
 
-Creates a new Git worktree for AI assistant parallel development.
+Creates a new Git worktree for AI assistant parallel development. Worktrees now always include plugins and catalog modules for Gradle support.
 
 Arguments:
   assistant-name    Name of the AI assistant (e.g., claude, gemini, copilot)
