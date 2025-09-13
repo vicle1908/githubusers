@@ -294,3 +294,8 @@ script/**
 .kiro/steering/byterover-rules.md
 .qoder/rules/byterover-rules.md
 .augment/rules/byterover-rules.md
+
+# AI Assistant Configuration Files (contain API keys)
+.claude/
+.gemini/
+app/src/main/cpp/security_manager.cpp
