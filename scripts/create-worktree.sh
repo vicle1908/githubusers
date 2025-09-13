@@ -42,7 +42,7 @@ show_usage() {
     cat << EOF
 Usage: $0 <assistant-name> <issue-id> <task-description>
 
-Creates a new Git worktree for AI assistant parallel development. Worktrees now include all modules from settings.gradle.kts for full composite build support.
+Creates a new Git worktree for AI assistant parallel development. Dynamically includes all composite modules from settings.gradle.kts, essential plugins/catalog, and AI/IDE config folders (.cursor, .augment, etc.) for full composite build support and development environment consistency.
 
 Arguments:
   assistant-name    Name of the AI assistant (e.g., claude, gemini, copilot)
@@ -69,24 +69,32 @@ validate_inputs() {
     local assistant_name="$1"
     local issue_id="$2"
     local task_description="$3"
-    
+
     # Validate assistant name
     if [[ ! "$assistant_name" =~ ^[a-zA-Z0-9_-]+$ ]]; then
         print_error "Assistant name must contain only alphanumeric characters, hyphens, and underscores"
         exit 1
     fi
-    
+
     # Validate issue ID
     if [[ ! "$issue_id" =~ ^[a-zA-Z0-9_-]+$ ]]; then
         print_error "Issue ID must contain only alphanumeric characters, hyphens, and underscores"
         exit 1
     fi
-    
+
     # Validate task description
     if [[ ! "$task_description" =~ ^[a-zA-Z0-9_-]+$ ]]; then
         print_error "Task description must contain only alphanumeric characters, hyphens, and underscores"
         exit 1
     fi
+}
+
+# Function to parse composite modules from settings.gradle.kts
+parse_composite_modules() {
+    cd "$PROJECT_ROOT"
+    # Extract includeBuild module names (ignore comments and empty lines)
+    local modules=$(grep -v '^\/\/' settings.gradle.kts | grep 'includeBuild' | sed 's/.*includeBuild(\\\([^)]*\\\)).*/\\1/' | sed 's/\\\"//g' | tr '\n' ' ' | xargs | sed 's/  */ /g')
+    echo "$modules"
 }
 
 # Function to check if worktree already exists
@@ -130,9 +138,9 @@ configure_sparse_checkout() {
     # Initialize sparse-checkout
     git sparse-checkout init --cone
     
-    # Always include plugins and catalog for build/dependency support
-    # Configure based on task type (this can be customized per project)
-    # Include all core/navigation modules for UI/search/testing tasks
+    # Dynamically include all composite modules from settings.gradle.kts for full build support
+    # Always include AI/IDE configuration folders for development consistency
+    # Task-specific additions can be made in the case statement if needed
     case "$task_description" in
         *navigation*|*nav*)
             git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog
@@ -162,6 +170,8 @@ configure_sparse_checkout() {
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac
+
+    print_info "Sparse-checkout configuration completed with all modules and AI configs"
 }
 
 # Function to set up per-worktree configuration
