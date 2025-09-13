@@ -42,7 +42,7 @@ show_usage() {
     cat << EOF
 Usage: $0 <assistant-name> <issue-id> <task-description>
 
-Creates a new Git worktree for AI assistant parallel development. Worktrees now always include plugins, catalog, and testing module for comprehensive support.
+Creates a new Git worktree for AI assistant parallel development. Worktrees now include all core/feature/navigation modules for comprehensive support.
 
 Arguments:
   assistant-name    Name of the AI assistant (e.g., claude, gemini, copilot)
@@ -132,21 +132,22 @@ configure_sparse_checkout() {
     
     # Always include plugins and catalog for build/dependency support
     # Configure based on task type (this can be customized per project)
+    # Include all core/navigation modules for UI/search/testing tasks
     case "$task_description" in
         *navigation*|*nav*)
             git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog
             print_info "Configured sparse-checkout for navigation-related tasks"
             ;;
         *ui*|*compose*|*screen*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog navigation-api navigation-impl
             print_info "Configured sparse-checkout for UI-related tasks"
             ;;
         *data*|*repository*|*api*)
-            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog
+            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog navigation-api navigation-impl
             print_info "Configured sparse-checkout for data-related tasks"
             ;;
         *test*|*testing*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl
             print_info "Configured sparse-checkout for testing-related tasks"
             ;;
         *plugin*|*build*|*gradle*)
@@ -157,7 +158,7 @@ configure_sparse_checkout() {
             # Always include plugins and catalog for build/dependency support
             # Include testing module for comprehensive testing coverage
             # Default: include most modules but exclude large directories
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac
