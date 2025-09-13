@@ -40,19 +40,23 @@ Git Worktree is a Git feature that allows you to have multiple working directori
 
 ### Directory Structure
 
+**IMPORTANT**: Worktrees are created **outside** the main repository to avoid nested repositories and maintain clean separation:
+
 ```
-githubusers/                    # Main repository
-├── .git/                      # Shared Git metadata
-├── worktrees/                 # Dedicated worktree directory
-│   ├── ai-claude-feature-1/   # AI assistant worktrees
-│   ├── ai-gemini-bugfix-2/    # Each with isolated context
-│   └── ai-copilot-refactor-3/ # Independent development
-├── scripts/                   # Automation scripts
-│   ├── create-worktree.sh     # Worktree creation
-│   ├── cleanup-worktrees.sh   # Automated cleanup
-│   └── monitor-worktrees.sh   # Health monitoring
-└── docs/                      # Documentation
-    └── GIT_WORKTREE_MULTI_AI_GUIDE.md
+times/
+├── githubusers/                    # Main repository
+│   ├── .git/                      # Shared Git metadata
+│   ├── scripts/                   # Automation scripts
+│   │   ├── create-worktree.sh     # Worktree creation
+│   │   ├── cleanup-worktrees.sh   # Automated cleanup
+│   │   └── monitor-worktrees.sh   # Health monitoring
+│   └── docs/                      # Documentation
+│       └── GIT_WORKTREE_MULTI_AI_GUIDE.md
+├── githubusers-worktrees/          # Worktrees directory (OUTSIDE main repo)
+│   ├── ai-claude-feature-1/       # AI assistant worktrees
+│   ├── ai-gemini-bugfix-2/        # Each with isolated context
+│   └── ai-copilot-refactor-3/     # Independent development
+└── githubusers-module-cleanup/     # Other existing worktrees
 ```
 
 ### Branch Naming Convention

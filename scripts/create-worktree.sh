@@ -9,7 +9,8 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-WORKTREES_DIR="$PROJECT_ROOT/worktrees"
+# Create worktrees outside the main repository to avoid nested repos
+WORKTREES_DIR="$(dirname "$PROJECT_ROOT")/githubusers-worktrees"
 MAIN_BRANCH="main"
 
 # Colors for output
@@ -55,7 +56,7 @@ Examples:
 
 The script will:
 1. Create a new branch: ai/<assistant-name>/<issue-id>/<task-description>
-2. Set up a worktree in: worktrees/ai-<assistant-name>-<issue-id>-<task-description>/
+2. Set up a worktree outside the main repo: ../githubusers-worktrees/ai-<assistant-name>-<issue-id>-<task-description>/
 3. Configure sparse-checkout for the worktree
 4. Set up per-worktree Git configuration
 5. Initialize the worktree for AI development
@@ -342,6 +343,12 @@ main() {
     
     # Check if worktree already exists
     check_existing_worktree "$worktree_path"
+    
+    # Ensure worktrees directory exists
+    if [[ ! -d "$WORKTREES_DIR" ]]; then
+        print_info "Creating worktrees directory: $WORKTREES_DIR"
+        mkdir -p "$WORKTREES_DIR"
+    fi
     
     # Ensure we're on main branch in the main repository
     cd "$PROJECT_ROOT"

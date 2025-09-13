@@ -9,7 +9,8 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-WORKTREES_DIR="$PROJECT_ROOT/worktrees"
+# Worktrees are now created outside the main repository
+WORKTREES_DIR="$(dirname "$PROJECT_ROOT")/githubusers-worktrees"
 LOG_DIR="$PROJECT_ROOT/logs"
 MONITORING_CONFIG="$PROJECT_ROOT/.worktree-monitoring.conf"
 
