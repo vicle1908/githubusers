@@ -35,9 +35,9 @@ dependencies {
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
 
-    // Firebase plugins for Firebase Performance Monitoring
-    compileOnly(libs.google.services)
-    compileOnly(libs.firebase.perf.plugin)
+    // Firebase plugins for Firebase Performance Monitoring - temporarily disabled
+    // compileOnly(libs.google.services)
+    // compileOnly(libs.firebase.perf.plugin)
 
     // Detekt Gradle plugin for typed access in convention plugins
     implementation(libs.detektGradlePlugin)
@@ -149,10 +149,11 @@ gradlePlugin {
             id = "githubusers.dependency.update"
             implementationClass = "com.example.githubusers.plugins.DependencyUpdatePlugin"
         }
-        register("firebasePerformance") {
-            id = "githubusers.firebase.performance"
-            implementationClass = "com.example.githubusers.plugins.FirebasePerformanceConventionPlugin"
-        }
+        // Firebase Performance plugin temporarily disabled
+        // register("firebasePerformance") {
+        //     id = "githubusers.firebase.performance"
+        //     implementationClass = "com.example.githubusers.plugins.FirebasePerformanceConventionPlugin"
+        // }
     }
 }
 
