@@ -170,7 +170,27 @@ ByteRover MCP provides 15 tools for knowledge management, onboarding, planning, 
    - Use `retrieve-knowledge` for patterns
    - Re-run assessment after gathering contex
 
-## Integration with Other MCP Servers
+## Git Worktree Multi-AI Integration
+
+### Worktree Management for Parallel AI Development
+
+**MANDATORY**: When working with multiple AI assistants, use Git Worktree for parallel development:
+
+1. **Create Worktree**: Use `./scripts/create-worktree.sh <assistant-name> <issue-id> <task-description>`
+2. **Navigate to Worktree**: `cd worktrees/ai-<assistant>-<issue>-<task>`
+3. **Start AI Assistant**: Each worktree maintains isolated context
+4. **Monitor Health**: Use `./scripts/monitor-worktrees.sh --health`
+5. **Cleanup When Done**: Use `./scripts/cleanup-worktrees.sh`
+
+### Worktree Best Practices
+
+- **Branch Naming**: Follow `ai/<assistant>/<issue-id>/<task-description>` convention
+- **Sparse-Checkout**: Automatically configured based on task type
+- **Isolated Context**: Each AI assistant maintains separate development context
+- **MCP Integration**: All MCP servers work seamlessly across worktrees
+- **Knowledge Management**: Use ByteRover for storing worktree-specific patterns
+
+### Integration with Other MCP Servers
 
 ### With Claude Contex
 

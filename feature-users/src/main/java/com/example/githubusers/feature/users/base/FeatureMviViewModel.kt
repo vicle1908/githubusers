@@ -2,6 +2,9 @@ package com.example.githubusers.feature.users.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewModelScope
 import com.example.githubusers.core.mvi.base.EffectDelegate
 import com.example.githubusers.core.mvi.base.StateDelegate
 import com.example.githubusers.core.mvi.contracts.ViewEffect

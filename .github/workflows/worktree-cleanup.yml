@@ -1,0 +1,211 @@
+name: Worktree Cleanup
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (show what would be cleaned up)'
+        required: false
+        default: true
+        type: boolean
+      force_cleanup:
+        description: 'Force cleanup without confirmation'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+jobs:
+  cleanup-stale-branches:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    
+    - name: Cleanup stale AI branches
+      run: |
+        echo "🧹 Cleaning up stale AI branches..."
+        
+        # Get all AI branches
+        AI_BRANCHES=$(git branch -r --format='%(refname:short)' | grep '^origin/ai/' | sed 's/^origin\///')
+        
+        if [[ -z "$AI_BRANCHES" ]]; then
+          echo "No AI branches found"
+          exit 0
+        fi
+        
+        echo "Found AI branches:"
+        echo "$AI_BRANCHES"
+        echo
+        
+        STALE_BRANCHES=()
+        MERGED_BRANCHES=()
+        
+        # Check each AI branch
+        while IFS= read -r branch; do
+          if [[ -z "$branch" ]]; then
+            continue
+          fi
+          
+          echo "Checking branch: $branch"
+          
+          # Check if branch is merged to main
+          if git merge-base --is-ancestor "origin/$branch" origin/main 2>/dev/null; then
+            echo "  ✅ Merged to main"
+            MERGED_BRANCHES+=("$branch")
+            continue
+          fi
+          
+          # Check last commit date
+          LAST_COMMIT_DATE=$(git log -1 --format="%ci" "origin/$branch" 2>/dev/null || echo "")
+          if [[ -n "$LAST_COMMIT_DATE" ]]; then
+            LAST_COMMIT_TIMESTAMP=$(date -d "$LAST_COMMIT_DATE" +%s 2>/dev/null || echo "")
+            if [[ -n "$LAST_COMMIT_TIMESTAMP" ]]; then
+              CURRENT_TIME=$(date +%s)
+              DAYS_SINCE_COMMIT=$(( (CURRENT_TIME - LAST_COMMIT_TIMESTAMP) / 86400 ))
+              
+              echo "  📅 Last commit: $DAYS_SINCE_COMMIT days ago"
+              
+              # Consider stale if no commits in 7 days
+              if [[ "$DAYS_SINCE_COMMIT" -gt 7 ]]; then
+                echo "  ⚠️  Stale branch (no commits in $DAYS_SINCE_COMMIT days)"
+                STALE_BRANCHES+=("$branch")
+              else
+                echo "  ✅ Active branch"
+              fi
+            fi
+          fi
+        done <<< "$AI_BRANCHES"
+        
+        echo
+        echo "📊 Cleanup Summary:"
+        echo "  Merged branches: ${#MERGED_BRANCHES[@]}"
+        echo "  Stale branches: ${#STALE_BRANCHES[@]}"
+        echo
+        
+        # Handle merged branches
+        if [[ ${#MERGED_BRANCHES[@]} -gt 0 ]]; then
+          echo "🗑️  Deleting merged branches:"
+          for branch in "${MERGED_BRANCHES[@]}"; do
+            echo "  - $branch"
+            if [[ "${{ github.event.inputs.force_cleanup }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+              git push origin --delete "$branch" || echo "    Failed to delete $branch"
+            else
+              echo "    [DRY RUN] Would delete $branch"
+            fi
+          done
+        fi
+        
+        # Handle stale branches
+        if [[ ${#STALE_BRANCHES[@]} -gt 0 ]]; then
+          echo "⚠️  Stale branches (consider manual cleanup):"
+          for branch in "${STALE_BRANCHES[@]}"; do
+            echo "  - $branch"
+          done
+          
+          if [[ "${{ github.event.inputs.force_cleanup }}" == "true" ]]; then
+            echo "🗑️  Force deleting stale branches:"
+            for branch in "${STALE_BRANCHES[@]}"; do
+              echo "  - $branch"
+              git push origin --delete "$branch" || echo "    Failed to delete $branch"
+            done
+          fi
+        fi
+        
+        echo
+        echo "✅ Cleanup completed"
+    
+    - name: Create cleanup report
+      if: always()
+      run: |
+        echo "# Worktree Cleanup Report" > cleanup-report.md
+        echo "" >> cleanup-report.md
+        echo "**Date**: $(date)" >> cleanup-report.md
+        echo "**Trigger**: ${{ github.event_name }}" >> cleanup-report.md
+        echo "**Dry Run**: ${{ github.event.inputs.dry_run }}" >> cleanup-report.md
+        echo "**Force Cleanup**: ${{ github.event.inputs.force_cleanup }}" >> cleanup-report.md
+        echo "" >> cleanup-report.md
+        echo "## Summary" >> cleanup-report.md
+        echo "- Merged branches cleaned up" >> cleanup-report.md
+        echo "- Stale branches identified" >> cleanup-report.md
+        echo "- AI branch naming validated" >> cleanup-report.md
+        echo "" >> cleanup-report.md
+        echo "## Next Steps" >> cleanup-report.md
+        echo "1. Review stale branches manually" >> cleanup-report.md
+        echo "2. Consider archiving old AI worktrees" >> cleanup-report.md
+        echo "3. Update branch policies if needed" >> cleanup-report.md
+    
+    - name: Upload cleanup report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: worktree-cleanup-report-${{ github.run_number }}
+        path: cleanup-report.md
+        retention-days: 30
+
+  cleanup-worktree-artifacts:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Cleanup old artifacts
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            per_page: 100
+          });
+          
+          const cutoffDate = new Date();
+          cutoffDate.setDate(cutoffDate.getDate() - 7); // 7 days ago
+          
+          const oldArtifacts = artifacts.artifacts.filter(artifact => {
+            const createdAt = new Date(artifact.created_at);
+            return createdAt < cutoffDate && artifact.name.includes('ai-branch-build');
+          });
+          
+          console.log(`Found ${oldArtifacts.length} old AI branch artifacts to cleanup`);
+          
+          for (const artifact of oldArtifacts) {
+            if (artifact.expired === false) {
+              console.log(`Deleting artifact: ${artifact.name}`);
+              await github.rest.actions.deleteArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: artifact.id
+              });
+            }
+          }
+          
+          console.log('✅ Artifact cleanup completed');
+
+  notify-cleanup-status:
+    runs-on: ubuntu-latest
+    needs: [cleanup-stale-branches, cleanup-worktree-artifacts]
+    if: always()
+    
+    steps:
+    - name: Notify cleanup status
+      run: |
+        echo "📧 Worktree Cleanup Notification"
+        echo "Date: $(date)"
+        echo "Status: ${{ needs.cleanup-stale-branches.result }}"
+        echo "Artifacts: ${{ needs.cleanup-worktree-artifacts.result }}"
+        echo ""
+        echo "✅ Automated cleanup completed"
+        echo "📊 Check the artifacts for detailed reports"

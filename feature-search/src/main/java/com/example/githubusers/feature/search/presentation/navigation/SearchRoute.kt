@@ -1,7 +1,11 @@
 package com.example.githubusers.feature.search.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -19,7 +23,7 @@ fun SearchRoute(navigator: SearchNavigator, initialQuery: String? = null) {
     val trendingUsers = viewModel.trendingUsers.collectAsLazyPagingItems()
 
     // If opened via deep link with a query, execute immediately once
-    androidx.compose.runtime.LaunchedEffect(initialQuery) {
+    LaunchedEffect(initialQuery) {
         if (!initialQuery.isNullOrBlank()) {
             viewModel.processIntent(
                 com.example.githubusers.feature.search.presentation.intent.SearchIntent
