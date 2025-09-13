@@ -42,7 +42,7 @@ show_usage() {
     cat << EOF
 Usage: $0 <assistant-name> <issue-id> <task-description>
 
-Creates a new Git worktree for AI assistant parallel development. Worktrees now always include plugins and catalog modules for Gradle support.
+Creates a new Git worktree for AI assistant parallel development. Worktrees now always include plugins, catalog, and testing module for comprehensive support.
 
 Arguments:
   assistant-name    Name of the AI assistant (e.g., claude, gemini, copilot)
@@ -146,7 +146,7 @@ configure_sparse_checkout() {
             print_info "Configured sparse-checkout for data-related tasks"
             ;;
         *test*|*testing*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing
             print_info "Configured sparse-checkout for testing-related tasks"
             ;;
         *plugin*|*build*|*gradle*)
@@ -155,8 +155,9 @@ configure_sparse_checkout() {
             ;;
         *)
             # Always include plugins and catalog for build/dependency support
+            # Include testing module for comprehensive testing coverage
             # Default: include most modules but exclude large directories
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac
