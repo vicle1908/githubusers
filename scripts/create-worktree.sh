@@ -134,29 +134,29 @@ configure_sparse_checkout() {
     # Configure based on task type (this can be customized per project)
     case "$task_description" in
         *navigation*|*nav*)
-            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins build-logic/catalog
+            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog
             print_info "Configured sparse-checkout for navigation-related tasks"
             ;;
         *ui*|*compose*|*screen*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins build-logic/catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog
             print_info "Configured sparse-checkout for UI-related tasks"
             ;;
         *data*|*repository*|*api*)
-            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins build-logic/catalog
+            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog
             print_info "Configured sparse-checkout for data-related tasks"
             ;;
         *test*|*testing*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs build-logic/catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog
             print_info "Configured sparse-checkout for testing-related tasks"
             ;;
         *plugin*|*build*|*gradle*)
-            git sparse-checkout set plugins build-logic/catalog app/build.gradle.kts
+            git sparse-checkout set plugins catalog app/build.gradle.kts
             print_info "Configured sparse-checkout for build-related tasks"
             ;;
         *)
             # Always include plugins and catalog for build/dependency support
             # Default: include most modules but exclude large directories
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts build-logic/catalog
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac
