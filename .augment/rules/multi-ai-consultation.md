@@ -22,7 +22,7 @@ Multi-AI consultation integrates with the 10-step research workflow:
 
 1. **Steps 1-8**: Complete research using MCP servers (Claude Context, Context7/DocFork, DeepWiki, Grep-Remote, Exa, Tavily, Brave, Medium Search)
 2. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
-3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory` as the shared memory layer for AI agents, ensuring persistent memory management. For Byterover workflows, see [byterover-rules.md](./byterover-rules.md).
+3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
 
 ## Trigger Conditions
 
@@ -48,9 +48,9 @@ Automatically activate multi-AI consultation when:
 
 ### Integration with MCP Servers
 
-- **Before Consultation**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns from the shared memory layer
+- **Before Consultation**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
 - **During Consultation**: Include context from `mcp_openmemory_search-memories`
-- **After Consultation**: Store insights in `mcp_byterover-mcp_byterover-store-knowledge` as persistent memory for AI workflows, ensuring consistency across assistants
+- **After Consultation**: Store insights in `mcp_byterover-mcp_byterover-store-knowledge`
 
 ## Consultation Process Rules
 
@@ -68,9 +68,9 @@ Automatically activate multi-AI consultation when:
 
 ### Phase 3: Knowledge Integration
 
-1. **Store Insights**: Use `mcp_byterover-mcp_byterover-store-knowledge` for patterns in the shared memory layer
+1. **Store Insights**: Use `mcp_byterover-mcp_byterover-store-knowledge` for patterns
 2. **Update Memory**: Use `mcp_openmemory_add-memory` for project decisions
-3. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans, following Byterover workflows for persistence
+3. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans
 
 ## Usage Enforcement Rules
 
@@ -88,9 +88,9 @@ Automatically activate multi-AI consultation when:
 
 ### Rule 3: Knowledge Management
 
-- **ALWAYS** store consultation insights in Byterover as the shared memory layer
+- **ALWAYS** store consultation insights in Byterover
 - **ALWAYS** update OpenMemory with project decisions
-- **ALWAYS** create implementation plans for complex decisions using Byterover persistence
+- **ALWAYS** create implementation plans for complex decisions
 
 ## Android-Specific Triggers
 
@@ -107,7 +107,7 @@ Multi-AI consultation automatically activates for:
 
 - **Completeness**: 100% research workflow completion before consultation
 - **Accuracy**: 90%+ consensus on major recommendations
-- **Integration**: Proper knowledge storage in Byterover and memory updates
+- **Integration**: Proper knowledge storage and memory updates
 - **Planning**: Implementation plans created for complex decisions
 
 ## Failure Prevention
@@ -123,5 +123,5 @@ Multi-AI consultation automatically activates for:
 
 - Complete research workflow (steps 1-8)
 - Multi-AI validation (steps 9-10)
-- Knowledge storage and memory updates in Byterover
+- Knowledge storage and memory updates
 - Implementation planning for complex decisions

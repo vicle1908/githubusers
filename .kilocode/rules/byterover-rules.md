@@ -8,44 +8,44 @@ tags:
   - planning
   - persistence
   - workflow
-priority: highest
+priority: highes
 ---
 
 # ByteRover MCP Server Rules
 
 ## Tool Overview
 
-ByteRover MCP is a shared long-term memory layer for AI coding agents, built on the @byterover/cipher NPM package for memory-powered AI agents with real-time WebSocket communication and composable patterns. It enables persistent memory management for coding tasks, integrating with IDEs like Cursor, Zed, VS Code, Windsurf, Claude Desktop, and others via MCP protocol. The server provides tools for knowledge management, onboarding, planning, and module management as part of its memory system.
+ByteRover MCP provides 15 tools for knowledge management, onboarding, planning, and module management.
 
 ### Knowledge Management Tools
 
-1. `mcp_byterover-mcp_byterover-retrieve-knowledge` - Retrieve stored programming patterns from the shared memory layer for AI agents
-2. `mcp_byterover-mcp_byterover-store-knowledge` - Store programming facts and patterns in the persistent memory system
+1. `mcp_byterover-mcp_byterover-retrieve-knowledge` - Retrieve stored programming patterns
+2. `mcp_byterover-mcp_byterover-store-knowledge` - Store programming facts and patterns
 
 ### Onboarding Tools
 
-1. `mcp_byterover-mcp_byterover-create-handbook` - Create comprehensive handbook as persistent memory for project context
-1. `mcp_byterover-mcp_byterover-check-handbook-existence` - Check if the handbook memory exists in the system
-1. `mcp_byterover-mcp_byterover-check-handbook-sync` - Analyze gaps between current codebase and existing handbook memory
-1. `mcp_byterover-mcp_byterover-update-handbook` - Update handbook changes to maintain persistent project memory
+1. `mcp_byterover-mcp_byterover-create-handbook` - Create comprehensive handbook
+1. `mcp_byterover-mcp_byterover-check-handbook-existence` - Check if handbook exists
+1. `mcp_byterover-mcp_byterover-check-handbook-sync` - Analyze gaps between handbook and codebase
+1. `mcp_byterover-mcp_byterover-update-handbook` - Update handbook with changes
 
 ### Plan Management Tools
 
-1. `mcp_byterover-mcp_byterover-save-implementation-plan` - Save structured implementation plans as memory for AI agent workflows
-1. `mcp_byterover-mcp_byterover-update-plan-progress` - Update task progress in the persistent plan memory
-1. `mcp_byterover-mcp_byterover-retrieve-active-plans` - List incomplete plans from the memory layer
+1. `mcp_byterover-mcp_byterover-save-implementation-plan` - Save structured plans
+1. `mcp_byterover-mcp_byterover-update-plan-progress` - Update task progress
+1. `mcp_byterover-mcp_byterover-retrieve-active-plans` - List incomplete plans
 
 ### Module Management Tools
 
-1. `mcp_byterover-mcp_byterover-store-module` - Store project module information in the shared memory for AI reference
-1. `mcp_byterover-mcp_byterover-search-module` - Search for module information in the memory system
-1. `mcp_byterover-mcp_byterover-update-module` - Update module information in persistent memory
-1. `mcp_byterover-mcp_byterover-list-modules` - List all modules stored in the memory layer
+1. `mcp_byterover-mcp_byterover-store-module` - Store new module information
+1. `mcp_byterover-mcp_byterover-search-module` - Search for module information
+1. `mcp_byterover-mcp_byterover-update-module` - Update module information
+1. `mcp_byterover-mcp_byterover-list-modules` - List all modules
 
 ### Reflection Tools
 
-1. `mcp_byterover-mcp_byterover-think-about-collected-information` - Reflect on collected information in the memory layer
-1. `mcp_byterover-mcp_byterover-assess-context-completeness` - Assess context quality and completeness in the AI agent's memory
+1. `mcp_byterover-mcp_byterover-think-about-collected-information` - Reflect on information
+1. `mcp_byterover-mcp_byterover-assess-context-completeness` - Assess context quality
 
 ## Mandatory Workflows
 
@@ -53,7 +53,7 @@ ByteRover MCP is a shared long-term memory layer for AI coding agents, built on 
 
 **MUST** follow these steps precisely:
 
-1. **Check Handbook**: Use `byterover-check-handbook-existence` first
+1. **Check Handbook**: Use `byterover-check-handbook-existence` firs
    - If doesn't exist: Call `byterover-create-handbook`
    - If exists: Continue to step 2
 
@@ -95,7 +95,7 @@ ByteRover MCP is a shared long-term memory layer for AI coding agents, built on 
 
 1. **Context Assessment**:
    - Frequently call `byterover-think-about-collected-information`
-   - Use `byterover-assess-context-completeness` to ensure sufficient context
+   - Use `byterover-assess-context-completeness` to ensure sufficient contex
 
 1. **Knowledge Storage**:
    - **MUST** call `byterover-store-knowledge` to save critical patterns
@@ -144,7 +144,7 @@ ByteRover MCP is a shared long-term memory layer for AI coding agents, built on 
 - Store specific implementation details
 - Update module insights with new learnings
 
-### Plan Management
+### Plan Managemen
 
 - Save plans immediately upon approval
 - Mark tasks complete as finished
@@ -165,16 +165,16 @@ ByteRover MCP is a shared long-term memory layer for AI coding agents, built on 
    - Store more specific patterns
 
 3. **Low context assessment scores**:
-   - Use `list-modules` for module context
+   - Use `list-modules` for module contex
    - Use `search-module` for details
    - Use `retrieve-knowledge` for patterns
-   - Re-run assessment after gathering context
+   - Re-run assessment after gathering contex
 
 ## Integration with Other MCP Servers
 
-### With Claude Context
+### With Claude Contex
 
-1. Search code with Claude Context
+1. Search code with Claude Contex
 2. Get module context with Byterover
 3. Store new patterns in Byterover
 
@@ -199,7 +199,3 @@ ByteRover MCP is a shared long-term memory layer for AI coding agents, built on 
 3. **NEVER** skip the CRITICAL PLAN PERSISTENCE RULE
 4. **ALWAYS** attribute knowledge to Byterover explicitly
 5. **IMMEDIATELY** update modules with critical insights
-
-## Integration with IDEs and Setup
-
-Byterover MCP integrates with AI IDEs like Cursor, Zed, VS Code, Windsurf, Claude Desktop, and others via MCP protocol. Setup: 1. Install the ByteRover extension from the respective marketplace. 2. Create an access token from byterover.dev. 3. Configure in IDE settings for persistent memory management. Use in workflows for capturing agent interactions, reasoning paths, and developer feedback to build a shared memory layer for coding tasks. The @byterover/cipher package provides the core memory-powered AI agent framework with real-time WebSocket communication and composable patterns.
