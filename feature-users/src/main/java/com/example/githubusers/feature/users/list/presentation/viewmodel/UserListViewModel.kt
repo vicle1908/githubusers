@@ -1,6 +1,6 @@
 package com.example.githubusers.feature.users.list.presentation.viewmodel
 
-import android.util.Log
+import timber.log.Timber
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -56,22 +56,22 @@ class UserListViewModel
             searchQueryInternal
                 .debounce(SEARCH_DEBOUNCE_MS)
                 .flatMapLatest { query ->
-                    Log.d(TAG, "Loading users with query: '$query'")
+                    Timber.tag(TAG).d("Loading users with query: '$query'")
                     // Load all users when query is empty or too short, search when query has at least MIN_SEARCH_LENGTH characters
                     val searchQuery = if (query.length >= MIN_SEARCH_LENGTH) query else ""
-                    Log.d(TAG, "Processed search query: '$searchQuery'")
+                    Timber.tag(TAG).d("Processed search query: '$searchQuery'")
                     observeUserListUseCase(searchQuery)
                 }.cachedIn(viewModelScope)
 
         init {
             // Initialize with query from SavedStateHandle if available
             val initialQuery = savedStateHandle.get<String>("query") ?: ""
-            Log.d(TAG, "ViewModel init - initialQuery: '$initialQuery'")
+            Timber.tag(TAG).d("ViewModel init - initialQuery: '$initialQuery'")
             if (initialQuery.isNotEmpty()) {
                 processIntent(UserListIntent.UpdateSearchQuery(initialQuery))
             } else {
                 // Trigger initial load of all users
-                Log.d(TAG, "No initial query, triggering load of all users")
+                Timber.tag(TAG).d("No initial query, triggering load of all users")
                 searchQueryInternal.value = ""
             }
         }
@@ -80,7 +80,7 @@ class UserListViewModel
          * Process user intents following MVI pattern
          */
         fun processIntent(intent: UserListIntent) {
-            android.util.Log.d("UserListViewModel", "processIntent: $intent")
+            Timber.tag("UserListViewModel").d("processIntent: $intent")
             when (intent) {
                 is UserListIntent.UpdateSearchQuery -> updateSearchQuery(intent.query)
                 is UserListIntent.ExecuteSearch -> executeSearch(intent.query)
@@ -98,7 +98,7 @@ class UserListViewModel
         }
 
         private fun executeSearch(query: String) {
-            Log.d(TAG, "Execute search: $query")
+            Timber.tag(TAG).d("Execute search: $query")
             performanceMonitor.withMemoryTracking("UserSearch") {
                 if (query.isNotBlank() && query.length >= MIN_SEARCH_LENGTH) {
                     searchQueryInternal.value = query
@@ -123,9 +123,9 @@ class UserListViewModel
         }
 
         private fun activateSearch() {
-            android.util.Log.d("UserListViewModel", "activateSearch called")
+            Timber.tag("UserListViewModel").d("activateSearch called")
             _state.update { it.copy(isSearchMode = true) }
-            android.util.Log.d("UserListViewModel", "activateSearch completed, isSearchMode=true")
+            Timber.tag("UserListViewModel").d("activateSearch completed, isSearchMode=true")
         }
 
         private fun dismissSearch() {

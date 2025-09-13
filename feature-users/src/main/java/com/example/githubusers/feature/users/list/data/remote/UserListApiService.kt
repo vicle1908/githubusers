@@ -1,6 +1,6 @@
 package com.example.githubusers.feature.users.list.data.remote
 
-import android.util.Log
+import timber.log.Timber
 import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.feature.users.list.data.remote.dto.SearchResponseDto
 import com.example.githubusers.feature.users.list.data.remote.dto.UserSummaryDto
@@ -40,8 +40,8 @@ class UserListApiService
             perPage: Int = 30,
         ): Result<List<UserSummaryDto>> =
             try {
-                Log.d(TAG, "Fetching users: since=$since, perPage=$perPage")
-                Log.d(TAG, "Making request to: $USERS_ENDPOINT")
+                Timber.tag(TAG).d("Fetching users: since=$since, perPage=$perPage")
+                Timber.tag(TAG).d("Making request to: $USERS_ENDPOINT")
 
                 val startTime = System.nanoTime()
                 val response =
@@ -57,8 +57,8 @@ class UserListApiService
                     }
                 val duration = System.nanoTime() - startTime
 
-                Log.d(TAG, "Response status: ${response.status}")
-                Log.d(TAG, "Response headers: ${response.headers}")
+                Timber.tag(TAG).d("Response status: ${response.status}")
+                Timber.tag(TAG).d("Response headers: ${response.headers}")
 
                 val success = response.status.isSuccess()
                 val cacheHit =
@@ -75,18 +75,18 @@ class UserListApiService
 
                 if (success) {
                     val users = response.body<List<UserSummaryDto>>()
-                    Log.d(TAG, "Fetched ${users.size} users successfully")
-                    Log.d(TAG, "First user: ${users.firstOrNull()}")
+                    Timber.tag(TAG).d("Fetched ${users.size} users successfully")
+                    Timber.tag(TAG).d("First user: ${users.firstOrNull()}")
                     Result.success(users)
                 } else {
-                    Log.e(TAG, "Error fetching users: HTTP ${response.status}")
-                    Log.e(TAG, "Response body: ${response.body<String>()}")
+                    Timber.tag(TAG).e("Error fetching users: HTTP ${response.status}")
+                    Timber.tag(TAG).e("Response body: ${response.body<String>()}")
                     Result.failure(Exception("Failed to fetch users, status code: ${response.status}"))
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Exception fetching users", e)
-                Log.e(TAG, "Exception type: ${e::class.java.simpleName}")
-                Log.e(TAG, "Exception message: ${e.message}")
+                Timber.tag(TAG).e(e, "Exception fetching users")
+                Timber.tag(TAG).e("Exception type: ${e::class.java.simpleName}")
+                Timber.tag(TAG).e("Exception message: ${e.message}")
                 Result.failure(e)
             }
 
@@ -103,7 +103,7 @@ class UserListApiService
             perPage: Int = 30,
         ): Result<SearchResponseDto> =
             try {
-                Log.d(TAG, "Searching users: query=$query, page=$page, perPage=$perPage")
+                Timber.tag(TAG).d("Searching users: query=$query, page=$page, perPage=$perPage")
 
                 val startTime = System.nanoTime()
                 val response =
@@ -136,14 +136,14 @@ class UserListApiService
 
                 if (success) {
                     val searchResponse = response.body<SearchResponseDto>()
-                    Log.d(TAG, "Search returned ${searchResponse.items.size} users out of ${searchResponse.totalCount} total")
+                    Timber.tag(TAG).d("Search returned ${searchResponse.items.size} users out of ${searchResponse.totalCount} total")
                     Result.success(searchResponse)
                 } else {
-                    Log.e(TAG, "Error searching users: HTTP ${response.status}")
+                    Timber.tag(TAG).e("Error searching users: HTTP ${response.status}")
                     Result.failure(Exception("Failed to search users, status code: ${response.status}"))
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Exception searching users", e)
+                Timber.tag(TAG).e(e, "Exception searching users")
                 Result.failure(e)
             }
     }

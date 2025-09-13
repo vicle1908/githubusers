@@ -36,7 +36,7 @@ class AndroidPublishingConventionPlugin : Plugin<Project> {
         }
 
         // Attach Android library component only after the Android library plugin is applied
-pluginManager.withPlugin("com.android.library") {
+        pluginManager.withPlugin("com.android.library") {
             // Defer until after variants/components are realized
             afterEvaluate {
                 extensions.configure<PublishingExtension> {

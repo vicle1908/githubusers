@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,9 +15,9 @@ import javax.inject.Singleton
 @Singleton
 class DeepLinkDispatcher @Inject constructor(private val handlers: Set<@JvmSuppressWildcards FeatureDeepLinkHandler>) {
     fun toKey(deepLink: String): NavKey? {
-        android.util.Log.d("DeepLinkDispatcher", "Converting deep link: $deepLink")
+        Timber.tag("DeepLinkDispatcher").d("Converting deep link: $deepLink")
         val result = runCatching { deepLink.toUri() }.getOrNull()?.let { toKey(it) }
-        android.util.Log.d("DeepLinkDispatcher", "Result: $result")
+        Timber.tag("DeepLinkDispatcher").d("Result: $result")
         return result
     }
 

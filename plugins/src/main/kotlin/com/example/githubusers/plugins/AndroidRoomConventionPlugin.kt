@@ -10,7 +10,7 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
         with(target) {
             // Note: Room plugin should already be applied by the module
             // Only configure the Room extension if it's available
-            
+
             pluginManager.withPlugin("androidx.room") {
                 extensions.configure<RoomExtension> {
                     // The schemas directory contains a schema file for each version of the Room database.
@@ -19,7 +19,7 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
                     schemaDirectory("$projectDir/schemas")
                 }
             }
-            
+
             // Note: Dependencies will be configured by the individual modules
             // or by other convention plugins that have access to the version catalog
         }

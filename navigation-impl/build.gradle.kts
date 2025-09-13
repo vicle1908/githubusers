@@ -59,6 +59,9 @@ dependencies {
     // Core
     implementation(libs.androidx.core.ktx)
 
+    // Logging
+    implementation(libs.timber)
+
     // Unit testing
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)

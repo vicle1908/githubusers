@@ -96,6 +96,16 @@
 - **Efficiency**: 85%+ automation in workflow
 - **Relevance**: 0.3+ scores for knowledge retrieval
 
+## Server Configuration Requirements and Indirect Access
+
+For Byterover MCP, configuration is required for full functionality. Since byterover-mcp is not directly configured in this project, use indirect access via mcp-router if available. Requirements:
+
+- Install the ByteRover extension in IDEs like Cursor or Zed from the marketplace.
+- Create an access token at https://byterover.dev.
+- Configure MCP in IDE settings to connect to the Byterover server.
+
+If the direct Byterover server is unavailable, route through mcp-router for indirect access. For detailed setup, refer to the Integration with IDEs and Setup section in byterover-rules.md.
+
 ---
 
 ## Operational Playbooks (merged from WARP MCP Policy)

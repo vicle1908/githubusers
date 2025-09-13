@@ -32,7 +32,7 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:plugins")).using(project(":"))
         }
     }
-    
+
     // Testing utilities
     includeBuild("testing") {
         dependencySubstitution {

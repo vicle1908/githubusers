@@ -24,6 +24,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
+import timber.log.Timber
 
 /**
  * Search bar component for the user list screen.
@@ -43,11 +44,11 @@ fun UserListSearchBar(
 ) {
     // Add SideEffect to verify composition
     androidx.compose.runtime.SideEffect {
-        android.util.Log.d("UserListSearchBar", "UserListSearchBar COMPOSED: query='$query', isSearchMode=$isSearchMode")
+        Timber.tag("UserListSearchBar").d("UserListSearchBar COMPOSED: query='$query', isSearchMode=$isSearchMode")
     }
 
-    android.util.Log.d("UserListSearchBar", "UserListSearchBar called: query='$query', isSearchMode=$isSearchMode")
-    android.util.Log.d("UserListSearchBar", "About to create SearchBar component")
+    Timber.tag("UserListSearchBar").d("UserListSearchBar called: query='$query', isSearchMode=$isSearchMode")
+    Timber.tag("UserListSearchBar").d("About to create SearchBar component")
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(

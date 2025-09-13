@@ -546,3 +546,16 @@ android {
 ---
 
 **Generated**: 2025-09-11 | **Architecture**: Clean + MVI + Modular | **Navigation**: Type-Safe Navigation 3
+
+## Byterover Integration
+
+Byterover MCP integrates with the project as a shared long-term memory layer for AI coding agents. To set up non-disruptively:
+
+1. Install the ByteRover extension in your IDE (Cursor, Zed, VS Code, etc.) from the marketplace.
+2. Create an access token at https://byterover.dev.
+3. Configure the MCP server in your IDE settings to point to the Byterover server.
+4. Use tools like `byterover-retrieve-knowledge` and `byterover-store-knowledge` for memory management in AI workflows.
+
+Reference: GitHub repo https://github.com/campfirein/cipher, NPM package @byterover/cipher.
+
+For AI agent workflows, Byterover captures interactions, reasoning, and feedback to build persistent memory for coding tasks.

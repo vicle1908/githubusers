@@ -8,10 +8,13 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room.gradle.plugin)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.perf)
     id("githubusers.android.application")
     id("githubusers.android.application.compose")
     id("githubusers.android.hilt")
     id("githubusers.android.room")
+    id("githubusers.firebase.performance")
     alias(libs.plugins.version.update)
     // Quality plugins: our conventions now apply the underlying plugins internally
     id("githubusers.quality.detekt")
@@ -193,6 +196,10 @@ dependencies {
 
     // Core library desugaring for modern Java APIs
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
+
+    // Firebase Performance Monitoring (added by githubusers.firebase.performance plugin)
+    // implementation(platform(libs.firebase.bom))
+    // implementation(libs.firebase.perf)
 
     // Testing
     testImplementation(libs.junit)

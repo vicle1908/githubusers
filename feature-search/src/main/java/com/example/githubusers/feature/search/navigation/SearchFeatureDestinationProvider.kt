@@ -15,7 +15,7 @@ import javax.inject.Singleton
 class SearchFeatureDestinationProvider @Inject constructor() : FeatureDestinationProvider {
     override fun canResolve(key: NavKey): Boolean = key is SearchNavKey.Search
 
-    override fun createEntry(key: NavKey): NavEntry<NavKey> = NavEntry(key) {
+    override fun createEntry(key: NavKey, metadata: Map<String, Any>): NavEntry<NavKey> = NavEntry(key, metadata = metadata) {
         val navigateToDeepLink = LocalNavigateToDeepLink.current
         val navigateBack = LocalNavigateBack.current
         val query = (key as SearchNavKey.Search).query

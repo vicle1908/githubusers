@@ -69,5 +69,8 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Logging
+    implementation(libs.timber)
+
     // Unit tests (common ones provided by convention plugin)
 }

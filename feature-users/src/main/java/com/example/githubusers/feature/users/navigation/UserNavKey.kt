@@ -9,5 +9,8 @@ sealed interface UserNavKey : NavKey {
 
     @Serializable
     data class UserDetail(val username: String) : UserNavKey
+
+    @Serializable
+    data class UserSettingsDialog(val username: String) : UserNavKey
 }
 

@@ -18,7 +18,10 @@ dependencies {
     // Core dependencies only - no implementation details
     api(libs.kotlinx.serialization.json)
     api(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigationevent)
+    api(libs.androidx.navigationevent.compose)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.core.ktx)
 
     // Unit testing

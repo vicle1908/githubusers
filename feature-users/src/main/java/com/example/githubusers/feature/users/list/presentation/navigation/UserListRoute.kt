@@ -5,6 +5,7 @@ package com.example.githubusers.feature.users.list.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.example.githubusers.feature.users.list.presentation.ui.UserListScreen
+import timber.log.Timber
 
 /**
  * Route composable for the User List feature.
@@ -18,16 +19,16 @@ fun UserListRoute(
     navigator: UserListNavigator,
     initialQuery: String? = null,
 ) {
-    android.util.Log.d("UserListRoute", "UserListRoute called with initialQuery: $initialQuery")
+    Timber.tag("UserListRoute").d("UserListRoute called with initialQuery: $initialQuery")
 
     // Use the first UserListScreen that manages its own ViewModel
     UserListScreen(
         onUserClick = { user ->
-            android.util.Log.d("UserListRoute", "User clicked: ${user.login}")
+            Timber.tag("UserListRoute").d("User clicked: ${user.login}")
             navigator.navigateToUserDetail(user.login)
         },
         onOpenSettings = {
-            android.util.Log.d("UserListRoute", "Settings clicked from UserList")
+            Timber.tag("UserListRoute").d("Settings clicked from UserList")
             navigator.openSettings()
         },
     )

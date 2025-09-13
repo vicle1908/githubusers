@@ -241,14 +241,37 @@ class UserApiService(
         since: Int,
         perPage: Int,
     ): List<GitHubUser> {
-        // Implementation would use Ktor client to make actual HTTP requests
-        // For this example, we'll return mock data structure
-        TODO("Implement actual API service")
+        // Mock implementation for testing
+        return listOf(
+            GitHubUser(
+                id = 1,
+                login = "testuser1",
+                avatarUrl = "https://example.com/avatar1.jpg",
+                htmlUrl = "https://github.com/testuser1",
+                type = "User",
+                siteAdmin = false
+            ),
+            GitHubUser(
+                id = 2,
+                login = "testuser2",
+                avatarUrl = "https://example.com/avatar2.jpg",
+                htmlUrl = "https://github.com/testuser2",
+                type = "User",
+                siteAdmin = false
+            )
+        )
     }
 
     suspend fun getUserDetail(username: String): GitHubUser {
-        // Implementation would use Ktor client to make actual HTTP requests
-        TODO("Implement actual API service")
+        // Mock implementation for testing
+        return GitHubUser(
+            id = 1,
+            login = username,
+            avatarUrl = "https://example.com/avatar.jpg",
+            htmlUrl = "https://github.com/$username",
+            type = "User",
+            siteAdmin = false
+        )
     }
 }
 

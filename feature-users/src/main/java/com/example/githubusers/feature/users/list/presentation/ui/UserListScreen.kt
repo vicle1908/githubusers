@@ -88,6 +88,10 @@ fun UserListScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     // Handle back press when SearchBar is expanded
+    // This follows Android's best practices for predictive back gestures:
+    // - Uses BackHandler for simple state-based actions
+    // - Enabled/disabled based on observable UI state (state.isSearchMode)
+    // - Single responsibility: dismiss search when back is pressed
     BackHandler(enabled = state.isSearchMode) {
         viewModel.processIntent(UserListIntent.DismissSearch)
     }

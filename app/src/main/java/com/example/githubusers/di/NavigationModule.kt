@@ -1,31 +1,24 @@
 package com.example.githubusers.di
 
-import com.example.githubusers.navigation.impl.DeepLinkDispatcher
-import com.example.githubusers.presentation.navigation.deeplink.ModuleNavigator
+// Removed ModuleNavigator import - using DeepLinkDispatcher directly for simplicity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
-/** Dagger module for navigation and deep link components */
+/** Dagger module for app-level coordination only - features handle their own navigation */
 @Module
 @InstallIn(SingletonComponent::class)
 object NavigationModule {
-    
-    @Provides
-    @Singleton
-    fun provideModuleNavigator(dispatcher: DeepLinkDispatcher): ModuleNavigator =
-        ModuleNavigator(dispatcher)
-    
+
     @Provides
     @Singleton
     @ApplicationScope
-    fun provideApplicationCoroutineScope(): CoroutineScope =
-        CoroutineScope(SupervisorJob())
+    fun provideApplicationCoroutineScope(): CoroutineScope = CoroutineScope(SupervisorJob())
 }
 
 @Qualifier

@@ -35,6 +35,10 @@ dependencies {
     compileOnly(libs.room.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
 
+    // Firebase plugins for Firebase Performance Monitoring
+    compileOnly(libs.google.services)
+    compileOnly(libs.firebase.perf.plugin)
+
     // Detekt Gradle plugin for typed access in convention plugins
     implementation(libs.detektGradlePlugin)
 
@@ -144,6 +148,10 @@ gradlePlugin {
         register("dependencyUpdate") {
             id = "githubusers.dependency.update"
             implementationClass = "com.example.githubusers.plugins.DependencyUpdatePlugin"
+        }
+        register("firebasePerformance") {
+            id = "githubusers.firebase.performance"
+            implementationClass = "com.example.githubusers.plugins.FirebasePerformanceConventionPlugin"
         }
     }
 }

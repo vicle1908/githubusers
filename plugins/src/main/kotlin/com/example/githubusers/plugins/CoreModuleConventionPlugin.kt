@@ -16,12 +16,12 @@ class CoreModuleConventionPlugin : Plugin<Project> {
             // Temporarily disabled due to Detekt compatibility issue
             // pluginManager.apply("githubusers.quality.ktlint")
             // pluginManager.apply("githubusers.quality.detekt")
-            
+
             // Configure core-specific settings
             configureCoreModule()
         }
     }
-    
+
     private fun Project.configureCoreModule() {
         // Configure module type extension
         extensions.configure<ModuleConfigExtension> {
@@ -29,7 +29,7 @@ class CoreModuleConventionPlugin : Plugin<Project> {
             hasCompose = false
             hasHilt = false
         }
-        
+
         // Note: Dependencies will be configured by the individual modules
         // or by other convention plugins that have access to the version catalog
     }

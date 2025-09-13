@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.githubusers.feature.users.list.domain.entity.UserSummary
+import timber.log.Timber
 
 /**
  * Content component displaying the list of users with adaptive layout.
@@ -56,7 +57,7 @@ fun UserListContent(
     }
 
     // Debug logging
-    android.util.Log.d("UserListContent", "Load state: ${pagingUsers.loadState.refresh}, Item count: ${pagingUsers.itemCount}")
+    Timber.tag("UserListContent").d("Load state: ${pagingUsers.loadState.refresh}, Item count: ${pagingUsers.itemCount}")
 
     PullToRefreshBox(
         state = pullToRefreshState,
