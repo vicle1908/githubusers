@@ -1,19 +1,20 @@
 ---
 alwaysApply: true
 ---
-# Android Debugging Guide (MCP-First)
+---
+description: "Cursor rule pointer – Android debugging guide is centralized in canonical docs."
+alwaysApply: true
+tags:
+  - android
+  - debugging
+globs:
+  - "**/*"
+---
+# Android Debugging (Pointer)
 
-## MCP Tool Integration for Debugging
+Canonical doc:
 
-### Primary Debugging Tools (USE THESE FIRST)
-
-| Tool | Purpose | When to Use |
-|------|---------|-------------|
-| `mcp_android_execute_adb_shell_command` | Logcat access and device operations | Crash detection, log analysis |
-| `mcp_mobile-mcp_mobile_launch_app` | App testing and automation | Launch app, UI interaction |
-| `mcp_mobile-mcp_mobile_take_screenshot` | Visual verification | UI state confirmation |
-| `mcp_gradle-mcp-server_execute_gradle_task` | Build verification | After fixes, ensuring compilation |
-| `mcp_claude-context_search_code` | Code pattern research | Root cause analysis |
+- docs/assistants/android-debugging.md
 
 ## Debugging Workflow (MCP-First)
 

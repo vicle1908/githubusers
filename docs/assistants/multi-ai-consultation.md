@@ -20,9 +20,9 @@ tags:
 
 Multi-AI consultation integrates with the 10-step research workflow:
 
-1. **Steps 1-8**: Complete research using MCP servers (Claude Context, Context7/DocFork, DeepWiki, Grep-Remote, Exa, Tavily, Brave, Medium Search)
-2. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
-3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
+1. Complete research using MCP servers (see `enhanced-research-strategy.md`)
+2. Validate via `mcp_zen_consensus` and deepen via `mcp_zen_thinkdeep`
+3. Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and key decisions via `mcp_openmemory_add-memory`
 
 ## Trigger Conditions
 
@@ -76,9 +76,8 @@ Automatically activate multi-AI consultation when:
 
 ### Rule 1: Research Integration
 
-- **ALWAYS** complete research workflow before multi-AI consultation
-- **NEVER** skip research steps when using multi-AI tools
-- **ENSURE** knowledge retrieval and context gathering are completed
+- Complete the research workflow before consultation (see `enhanced-research-strategy.md`)
+- Ensure knowledge retrieval and context gathering are completed
 
 ### Rule 2: Tool Selection
 

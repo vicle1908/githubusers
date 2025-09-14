@@ -9,19 +9,26 @@ tags:
   - multi-ai
   - decision-making
 ---
-# Multi-AI Consultation Rules
+---
+description: "Cursor rule pointer – Multi-AI consultation is centralized in canonical docs."
+alwaysApply: true
+tags:
+  - consultation
+  - consensus
+  - multi-ai
+globs:
+  - "**/*"
+---
+# Multi-AI Consultation (Pointer)
 
 ## Core Consultation Enforcement
 
-**MANDATORY**: Use multi-AI consultation for critical development decisions, architectural reviews, and complex problem-solving.
+Use canonical doc:
 
-## Integration with Research Workflow
+- docs/assistants/multi-ai-consultation.md
 
-Multi-AI consultation integrates with the 10-step research workflow:
-
-1. **Steps 1-8**: Complete research using MCP servers (Claude Context, Context7/DocFork, DeepWiki, Grep-Remote, Exa, Tavily, Brave, Medium Search)
-2. **Steps 9-10**: Use `mcp_zen_consensus` and `mcp_zen_thinkdeep` for multi-AI validation
-3. **Knowledge Integration**: Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and `mcp_openmemory_add-memory`
+Maintenance:
+- Keep this file minimal; update canonical doc for content.
 
 ## Trigger Conditions
 

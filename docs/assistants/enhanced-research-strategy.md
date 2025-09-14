@@ -80,10 +80,7 @@ alwaysApply: true
 
 #### Android Development Research
 
-```kotlin
-```gradle
-
-```gradle
+```text
 // 1. Find existing patterns
 mcp_claude-context_search_code("Android Navigation 3 implementation")
 
@@ -107,48 +104,7 @@ mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findi
 
 #### Library Migration Research
 
-```kotlin
-```gradle
-
-```gradle
-// 1. Find existing patterns
-mcp_claude-context_search_code("Android Navigation 3 implementation")
-
-// 2. Get documentation
-mcp_context7_resolve-library-id("androidx.navigation")
-mcp_context7_get-library-docs("/androidx/navigation", "deep links")
-
-// 3. Find best practices
-mcp_deepwiki_ask_question("android/architecture-samples", "Navigation 3 best practices")
-
-// 4. Real-world code examples
-mcp_grep-remote_searchGitHub("NavHost(", language=["Kotlin"])
-
-// 5. Current trends
-mcp_tavily_tavily-search("Android Navigation 3 2024 best practices")
-mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": ["android", "navigation"]})
-
-// 6. AI consensus
-mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
-// 1. Find existing patterns
-mcp_claude-context_search_code("Android Navigation 3 implementation")
-
-// 2. Get documentation
-mcp_context7_resolve-library-id("androidx.navigation")
-mcp_context7_get-library-docs("/androidx/navigation", "deep links")
-
-// 3. Find best practices
-mcp_deepwiki_ask_question("android/architecture-samples", "Navigation 3 best practices")
-
-// 4. Real-world code examples
-mcp_grep-remote_searchGitHub("NavHost(", language=["Kotlin"])
-
-// 5. Current trends
-mcp_tavily_tavily-search("Android Navigation 3 2024 best practices")
-mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": ["android", "navigation"]})
-
-// 6. AI consensus
-mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
+```text
 // 1. Existing patterns
 mcp_claude-context_search_code("migration from old library to new library")
 
@@ -213,10 +169,10 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 ### Medium Research (Implementation)
 
 1. `mcp_claude-context_search_code` (existing patterns)
-1. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
-1. `mcp_deepwiki_ask_question` (repository patterns)
-1. `mcp_grep-remote_searchGitHub` (real-world code examples)
-1. `mcp_medium-search_search_medium_topic` (articles)
+2. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
+3. `mcp_deepwiki_ask_question` (repository patterns)
+4. `mcp_grep-remote_searchGitHub` (real-world code examples)
+5. `mcp_medium-search_search_medium_topic` (articles)
 
 ### Complex Research (Architecture)
 

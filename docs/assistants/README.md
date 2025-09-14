@@ -7,6 +7,7 @@ This directory contains the canonical documentation for all AI assistants workin
 ## Canonical Documents
 
 1. **[mcp-guide.md](./mcp-guide.md)** - MCP-first policy, server selection and usage
+2. **[claude-context-indexing.md](./claude-context-indexing.md)** - Claude Context indexing for Android projects
 3. **[enhanced-research-strategy.md](./enhanced-research-strategy.md)** - 10-step research workflow
 4. **[multi-ai-consultation.md](./multi-ai-consultation.md)** - Multi-AI consensus rules
 5. **[android-standards.md](./android-standards.md)** - Android development standards

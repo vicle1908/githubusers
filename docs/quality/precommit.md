@@ -2,14 +2,23 @@
 
 Install the hook
 
-1) From repository root:
+Option A (recommended)
+
+1. From repository root, set hooksPath once:
 
 ```text
-```text
+./scripts/install-hooks.sh
+```
 
+This uses `.githooks/` for all hooks, including `pre-commit`.
+
+Option B (legacy)
+
+1. From repository root:
+
+```text
 ln -sf ../../tools/git-hooks/pre-commit .git/hooks/pre-commit
 chmod +x tools/git-hooks/pre-commit
-
 ```
 
 What it does

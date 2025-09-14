@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Delegate to versioned hook in tools/git-hooks
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+HOOK="$ROOT/tools/git-hooks/pre-commit"
+
+if [ -x "$HOOK" ]; then
+  exec "$HOOK"
+else
+  echo "Warning: $HOOK not executable or missing. Skipping pre-commit." >&2
+  exit 0
+fi
+

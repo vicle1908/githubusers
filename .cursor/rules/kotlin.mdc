@@ -1,123 +1,20 @@
 ---
+description: "Cursor rule pointer – Kotlin style is centralized in canonical docs."
 alwaysApply: true
+tags:
+  - kotlin
+  - style
+globs:
+  - "**/*"
 ---
-# Kotlin Style Guide
+# Kotlin Style (Pointer)
 
-This document defines Kotlin coding standards for the project. These rules are canonical and are synced to Cursor rules.
+Canonical doc:
 
-## Import Rules (CRITICAL)
+- docs/assistants/kotlin-style.md
 
-- NEVER use wildcard/star imports
-- ALWAYS use single imports only
-- Enforced via .editorconfig, KtLint, and Detekt
-
-Example — correct:
-
-```kotlin
-// Correct — single imports only
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-```
-
-Example — wrong:
-
-```kotlin
-// WRONG — never use wildcards
-import kotlinx.coroutines.flow.* // FORBIDDEN
-```
-
-## Naming Conventions
-
-- Classes and interfaces: PascalCase (e.g., UserDetailViewModel, NavigationController). Do not prefix interfaces with "I".
-- Functions and properties: camelCase; booleans use is/has/can prefixes.
-- Files: match top-level declaration or use descriptive names.
-- Packages: lowercase, no underscores.
-- Constants: UPPER_SNAKE_CASE (e.g., MAX_RETRY_COUNT, DEFAULT_TIMEOUT).
-
-## Code Style
-
-- Keep functions small and focused; prefer early returns; use expression bodies for simple functions.
-- Public APIs should declare explicit types; local type inference is fine when obvious.
-- Avoid using Any in public APIs.
-
-## Data and State
-
-```kotlin
-data class User(
-    val id: String,
-    val username: String,
-    val createdAt: Instant
-)
-
-sealed interface ViewState {
-    data object Loading : ViewState
-    data class Success(val data: List<User>) : ViewState
-    data class Error(val message: String) : ViewState
-}
-```
-
-## Null Safety
-
-```kotlin
-// Prefer safe calls and Elvis
-val length = username?.length ?: 0
-```
-
-```kotlin
-// AVOID !! (non-null assertion)
-val length = username!!.length
-```
-
-## Validation
-
-```kotlin
-fun processUser(user: User?) {
-    requireNotNull(user) { "User cannot be null" }
-    check(user.id.isNotEmpty()) { "User ID cannot be empty" }
-}
-```
-
-## Coroutines and Flow
-
-- Do not use GlobalScope; use structured concurrency (e.g., viewModelScope or an injected CoroutineScope).
-- Handle cancellation properly; prefer suspend functions over callbacks when possible.
-
-```kotlin
-private val _state = MutableStateFlow<ViewState>(ViewState.Loading)
-val state: StateFlow<ViewState> = _state.asStateFlow()
-```
-
-For cold flows, use stateIn/shareIn to scope and cache:
-
-```kotlin
-val users: StateFlow<List<User>> =
-    userRepository.getUsers()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
-        )
-```
-
-## Collections
-
-- Prefer immutable collections at API boundaries.
-- Use sequences for large transformations to avoid intermediate allocations.
-
-```kotlin
-val activeUsernames = users
-    .asSequence()
-    .filter { it.isActive }
-    .map { it.username }
-    .sorted()
-    .toList()
-```
-
-## Scope Functions
-
-- let: for null checks and transformations
-- apply: for object configuration
+Maintenance:
+- Keep this file minimal; update canonical doc for content.
 - run: for computing results with receiver
 - also: for side effects without changing the value
 - with: rarely used; prefer run

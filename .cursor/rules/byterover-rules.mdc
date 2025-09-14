@@ -2,11 +2,22 @@
 description: ByteRover MCP Custom Instructions
 alwaysApply: true
 ---
-# ByteRover MCP Server Rules
+---
+description: "Cursor rule pointer – ByteRover rules are centralized in canonical docs."
+alwaysApply: true
+globs:
+  - "**/*"
+tags:
+  - byterover
+---
+# ByteRover Rules (Pointer)
 
-## Tool Overview
+See canonical guide:
 
-ByteRover MCP provides 15 tools for knowledge management, onboarding, planning, and module management.
+- docs/assistants/byterover-rules.md
+
+Maintenance:
+- Update canonical doc first; this pointer intentionally avoids duplication.
 
 ### Knowledge Management Tools
 

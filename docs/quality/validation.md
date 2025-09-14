@@ -22,9 +22,9 @@ Root cause for Android block
 
 Next validation steps
 
-1) Remove deprecated global flags (e.g., android.enableBuildCache) from ~/.gradle/gradle.properties
-2) Re-run app/: detekt, ktlintCheck, assembleDebug
-3) Re-run Android libraries: detekt, ktlintCheck
+1. Remove deprecated global flags (e.g., android.enableBuildCache) from ~/.gradle/gradle.properties
+2. Re-run app/: detekt, ktlintCheck, assembleDebug
+3. Re-run Android libraries: detekt, ktlintCheck
 
 Expected outcome
 

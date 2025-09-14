@@ -1,13 +1,12 @@
-# MCP Server Usage Guide
+# MCP Guide (Pointer)
 
 ## Core MCP-First Enforcement
 
-**MANDATORY**: Always use MCP servers for supported tasks. Manual commands are last resort with explicit approval only.
+Canonical doc: docs/assistants/mcp-guide.md
 
 ## MCP Server Selection Rules
 
 | Task Type | MCP Server | Primary Tools | When to Use |
-|-----------|------------|---------------|-------------|
 | **Code Search** | Claude Context | `mcp_claude-context_search_code` | Finding functions, classes, patterns |
 | **Build Tasks** | Gradle MCP | `mcp_gradle-mcp-server_execute_gradle_task` | **ALL** builds and tests - NEVER use ./gradlew |
 | **Android Device** | Android MCP | `mcp_android_get_packages` | Device management, ADB operations |
