@@ -1,5 +1,195 @@
-# Research Strategy (Pointer)
+---
+description: Research strategy rules for comprehensive information gathering before implementation
+alwaysApply: true
+---
 
-Canonical doc: docs/assistants/enhanced-research-strategy.md
+# Research Strategy Rules
 
-This file is intentionally minimal to avoid duplication.
+## Core Research Enforcement
+
+**MANDATORY**: Always research before making code changes, architectural decisions, or implementation choices.
+
+### Research Workflow
+
+1. **Start with existing patterns**: Use `mcp_claude-context_search_code` to find existing codebase patterns
+1. **Get documentation**: Choose either `mcp_context7_resolve-library-id` + `mcp_context7_get-library-docs` OR `mcp_docfork_get-library-docs` for library documentation
+1. **Find repository patterns**: Use `mcp_deepwiki_ask_question` for GitHub repository best practices
+1. **Real-world code examples**: Use `mcp_grep-remote_searchGitHub` for production code patterns
+1. **Semantic search**: Use `mcp_exa_web_search_exa` for neural understanding
+1. **Current information**: Use `mcp_tavily_tavily-search` for web content and trends
+1. **Multi-modal coverage**: Use `mcp_brave-search_brave_web_search` for comprehensive search
+1. **Article insights**: Use `mcp_medium-search_search_medium_topic` for in-depth articles and tutorials
+1. **AI consensus**: Use `mcp_zen_consensus` for multi-model analysis
+1. **Deep analysis**: Use `mcp_zen_thinkdeep` for complex problem investigation
+
+### Tool Selection Rules
+
+| Research Type | Primary Tools | When to Use |
+|---------------|---------------|-------------|
+| **Technology Discovery** | Claude Context + Context7 OR DocFork | Finding libraries and APIs |
+| **Implementation Research** | Claude Context + Context7 OR DocFork + DeepWiki + Grep-Remote | Understanding patterns |
+| **Best Practices** | DeepWiki + Exa + Medium Search | Learning from experts |
+| **Real-World Code Examples** | Grep-Remote + DeepWiki | Production implementations |
+| **Current Trends** | Brave Search + Medium Search + Tavily | Staying up-to-date |
+| **Educational Content** | Medium Search + Brave Search Videos | Learning tutorials |
+| **Complex Analysis** | Zen + Zen DeepThink + Exa Deep Research | Multi-faceted problems |
+
+### Research Quality Rules
+
+- **Always use multiple sources**: Minimum 3 different MCP tools per research task
+- **Cross-reference findings**: Validate information across different tools
+- **Check relevance scores**: For knowledge retrieval, ensure scores > 0.3
+- **Use concrete examples**: Reference specific files with `@filename.ext`
+- **Document findings**: Store important patterns in `mcp_byterover-mcp_byterover-store-knowledge`
+
+### Tool Usage Rules
+
+#### Claude Context
+
+- Use `mcp_claude-context_search_code` for finding existing patterns
+- Always search before implementing new features
+- Reference found patterns with `@filename.ext`
+
+#### Documentation Tools
+
+- **Context7**: Two-step process (resolve ID → get docs) for comprehensive analysis
+- **DocFork**: Single-step process for quick access to 9,000+ libraries
+- **Choose one**: Don't use both - they have 85% functional overlap
+
+#### Web Search Tools
+
+- **Tavily**: For current trends and content extraction
+- **Brave Search**: For multi-modal search (web, news, images, videos)
+- **Medium Search**: For article-based research and trending content
+- **Use together**: These tools are complementary, not overlapping
+
+#### Real-World Code Tools
+
+- **Grep-Remote**: For finding production code examples and patterns
+- **Search for literal code**: Use actual code syntax like `NavHost(`, `sealed interface`
+- **Filter by language**: Use `['Kotlin']`, `['Java']` for specific languages
+- **Complement DeepWiki**: Use after repository docs for concrete implementations
+
+#### AI Analysis Tools
+
+- **Zen Consensus**: For multi-model validation of research findings
+- **Zen DeepThink**: For complex multi-stage problem analysis
+- **Exa Deep Research**: For comprehensive neural analysis (15s-2min)
+
+### Research Examples
+
+#### Android Development Research
+
+```text
+// 1. Find existing patterns
+mcp_claude-context_search_code("Android Navigation 3 implementation")
+
+// 2. Get documentation
+mcp_context7_resolve-library-id("androidx.navigation")
+mcp_context7_get-library-docs("/androidx/navigation", "deep links")
+
+// 3. Find best practices
+mcp_deepwiki_ask_question("android/architecture-samples", "Navigation 3 best practices")
+
+// 4. Real-world code examples
+mcp_grep-remote_searchGitHub("NavHost(", language=["Kotlin"])
+
+// 5. Current trends
+mcp_tavily_tavily-search("Android Navigation 3 2024 best practices")
+mcp_medium-search_search_medium_topic("Android Navigation 3", filters={"tags": ["android", "navigation"]})
+
+// 6. AI consensus
+mcp_zen_consensus("Android Navigation 3 implementation strategy", research_findings)
+```
+
+#### Library Migration Research
+
+```text
+// 1. Existing patterns
+mcp_claude-context_search_code("migration from old library to new library")
+
+// 2. Documentation comparison
+mcp_docfork_get-library-docs("old-library", "migration guide")
+mcp_docfork_get-library-docs("new-library", "getting started")
+
+// 3. Repository examples
+mcp_deepwiki_ask_question("migration-examples", "library migration patterns")
+
+// 4. Real-world migration code
+mcp_grep-remote_searchGitHub("migration from", language=["Kotlin"])
+
+// 5. Current information
+mcp_brave-search_brave_web_search("library migration best practices 2024")
+
+// 6. Deep analysis
+mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
+```
+
+### Research Validation Rules
+
+- **Consensus threshold**: 70% agreement on major recommendations
+- **Source diversity**: Use at least 3 different tool categories
+- **Recency check**: Verify information is current (within 1 year)
+- **Implementation feasibility**: Ensure recommendations are actionable
+- **Risk assessment**: Identify potential issues and mitigation strategies
+
+### Failure Prevention
+
+**Never proceed without research when:**
+
+- Implementing new libraries or frameworks
+- Making architectural changes
+- Updating dependencies
+- Refactoring critical code
+- Adding security features
+- Performance optimization
+
+**Research must include:**
+
+- Existing codebase patterns
+- Official documentation
+- Community best practices
+- Current trends and updates
+- Multi-AI validation
+
+### Research Storage
+
+- Store important findings in `mcp_byterover-mcp_byterover-store-knowledge`
+- Update module insights with `mcp_byterover-mcp_byterover-update-module`
+- Create implementation plans with `mcp_byterover-mcp_byterover-save-implementation-plan`
+- Track progress with `mcp_byterover-mcp_byterover-update-plan-progress`
+
+## Research Workflow Examples
+
+### Quick Research (Simple Query)
+
+1. `mcp_tavily_tavily-search` OR `mcp_brave-search_brave_web_search` OR `mcp_medium-search_search_medium_topic`
+1. Direct result
+
+### Medium Research (Implementation)
+
+1. `mcp_claude-context_search_code` (existing patterns)
+2. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
+3. `mcp_deepwiki_ask_question` (repository patterns)
+4. `mcp_grep-remote_searchGitHub` (real-world code examples)
+5. `mcp_medium-search_search_medium_topic` (articles)
+
+### Complex Research (Architecture)
+
+1. `mcp_claude-context_search_code` (existing patterns)
+1. `mcp_context7_resolve-library-id` OR `mcp_docfork_get-library-docs` (documentation)
+1. `mcp_deepwiki_ask_question` (repository patterns)
+1. `mcp_grep-remote_searchGitHub` (real-world code examples)
+1. `mcp_exa_web_search_exa` (semantic understanding)
+1. `mcp_tavily_tavily-search` (current trends)
+1. `mcp_brave-search_brave_web_search` (multi-modal)
+1. `mcp_medium-search_search_medium_topic` (articles)
+1. `mcp_zen_consensus` (multi-AI validation)
+1. `mcp_zen_thinkdeep` (deep analysis)
+
+## Research Quality Metrics
+
+- **Completeness**: 80%+ coverage across tool categories
+- **Accuracy**: 90%+ consensus on recommendations
+- **Efficiency**: 85%+ automation in research workflow
+- **Relevance**: 0.3+ relevance scores for knowledge retrieval

@@ -15,12 +15,12 @@ if [[ -n "$changed_kotlin" ]]; then
   # Best-effort fast path: attempt to format in the module of the first file
   # Fallback: run ktlintFormat on top-level affected included builds if needed
   # This path assumes ktlint plugin is applied via conventions
-  ./gradlew --quiet ktlintFormat || true
+  ./gradlew --quiet ktlintFormatAll || true
 fi
 
 # Always run detekt at module or repo-level as fallback (non-blocking formatting already done)
 # If your environment has legacy gradle.properties that break AGP config, fix those first.
-./gradlew detekt || {
+./gradlew detektAll || {
   echo "Detekt failed. You may have legacy gradle.properties (e.g., android.enableBuildCache) blocking configuration. Fix and try again." >&2
   exit 1
 }

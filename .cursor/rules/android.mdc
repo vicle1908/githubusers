@@ -6,16 +6,129 @@ globs:
 tags:
   - android
 ---
-# Android Rules (Pointer)
+# Android Development Standards
 
-This rule file is intentionally concise to avoid duplication. Use the canonical docs:
+## Core Architecture Principles
 
-- docs/assistants/android-standards.md
-- docs/assistants/android-debugging.md
-- docs/assistants/mcp-guide.md
+### Clean Architecture (MANDATORY)
 
-Maintenance:
-- Update canonical docs first; sync rule files via scripts in `scripts/` when needed.
+- **Presentation Layer**: Activities, Fragments, ViewModels, Compose UI
+- **Domain Layer**: Use cases, business logic, entities
+- **Data Layer**: Repositories, data sources, DTOs
+
+### MVI Pattern
+
+- **Unidirectional Data Flow**: Intent → ViewModel → State → UI
+- Single source of truth for UI state
+- Clear separation of user actions and system responses
+- Sealed classes for type-safe state management
+
+### Feature-Based Modularization
+
+- Each feature is a self-contained module
+- High cohesion, low coupling
+- Single responsibility principle
+- Clear module boundaries and interfaces
+
+## Navigation Policy
+
+### Navigation 3 ONLY (CRITICAL)
+
+- **MANDATORY**: All cross-module navigation MUST use deep links
+- Type-safe destinations with Kotlin Serialization
+- Direct back stack control and state preservation
+- **Validate** with latest docs via DeepWiki/Context7 before implementation
+
+### Deep Link Patterns
+
+```kotlin
+// Navigate using a deep link
+navigation.navigate("githubusers://users/detail/octocat")
+// Type-safe navigation using a sealed destination
+navigation.navigate(AppDestination.UserDetail("octocat"))
+```
+
+## Build Configuration
+
+### Version Catalog (MANDATORY)
+
+- **ALL** modules MUST use the version catalog
+- **NO** hardcoded versions allowed
+- Example:
+
+```kts
+dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+}
+```
+
+### Plugin Configuration
+
+- Use `version.ref` for plugin versions (e.g., ktlint)
+- Convention plugins in build-logic
+- All modules apply convention plugins
+
+### Composite Build Structure
+
+- Root `settings.gradle.kts` acts **ONLY** as a container
+- Minimal scaffolding in convention plugins
+- Consistent configuration across all modules
+
+## Dependency Management
+
+### OkHttp BOM Usage
+
+```kts
+dependencies {
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+}
+```
+
+### Dependency Injection
+
+- **Hilt** for dependency management
+- Module-based configuration
+- Clear scope boundaries
+
+## UI/UX Standards
+
+### Material 3 Design
+
+- Dynamic color support and adaptive theming
+- Accessibility-first design principles
+- Consistent component usage across the app
+- Follow WCAG guidelines
+
+### Compose UI
+
+- Use `remember` and `derivedStateOf` appropriately
+- Minimize recomposition with proper state management
+- Use `LaunchedEffect` for side effects
+- Implement proper loading states and error handling
+
+## Testing Strategy
+
+### Unit Testing
+
+- Test all ViewModels, Use Cases, Repositories
+- Follow AAA Pattern: Arrange, Act, Assert
+- Naming: `test_[method]_[condition]_[expectedResult]`
+
+### Integration Testing
+
+- Test complete navigation flows
+- API integration with test data
+- Room database operations
+- Hilt module configurations
+
+### UI Testing
+
+- Use `createAndroidComposeRule` for Compose
 - Test deep link handling
 - Verify accessibility features
 

@@ -1,12 +1,13 @@
-# MCP Guide (Pointer)
+# MCP Server Usage Guide
 
 ## Core MCP-First Enforcement
 
-Canonical doc: docs/assistants/mcp-guide.md
+**MANDATORY**: Always use MCP servers for supported tasks. Manual commands are last resort with explicit approval only.
 
 ## MCP Server Selection Rules
 
 | Task Type | MCP Server | Primary Tools | When to Use |
+|-----------|------------|---------------|-------------|
 | **Code Search** | Claude Context | `mcp_claude-context_search_code` | Finding functions, classes, patterns |
 | **Build Tasks** | Gradle MCP | `mcp_gradle-mcp-server_execute_gradle_task` | **ALL** builds and tests - NEVER use ./gradlew |
 | **Android Device** | Android MCP | `mcp_android_get_packages` | Device management, ADB operations |
@@ -114,6 +115,48 @@ Canonical doc: docs/assistants/mcp-guide.md
 
 - Use Claude Context for indexing/search; Repomix as needed for packing.
 
+### Claude Context: Indexing Android Projects (Recommended)
+
+- Use `claude-context` MCP to index only source and config files; aggressively exclude generated/binary assets.
+- Fresh namespace for each embedding model change to avoid schema collisions.
+- Prefer small-scope smoke tests first (e.g., `app/src/main/java`) then expand.
+
+Recommended includes
+
+- `src/**/*.kt`, `src/**/*.java`, `src/**/*.xml`
+- `*.gradle`, `*.kts`, `settings.gradle[.kts]`, `gradle.properties`
+- Proguard rules, `README.md`, other Markdown docs
+
+Recommended excludes
+
+- `**/build/**`, `.gradle/**`, `.idea/**`, `.cxx/**`, `.externalNativeBuild/**`, `.git/**`
+- Binaries: `**/*.apk`, `**/*.aab`, `**/*.so`, `**/*.jar`, `**/*.png`, `**/*.jpg`, `**/*.webp`
+
+Tool references
+
+- Router: `mcp_router index_codebase`, `mcp_router get_indexing_status`, `mcp_router search_code`, `mcp_router clear_index`
+- Example call shape: `index_codebase(path, splitter='ast'|'langchain', force?, ignorePatterns?)`
+
+Detailed playbook: see `docs/assistants/claude-context-indexing.md`.
+
+### Troubleshooting: “Error validating collection creation”
+
+Likely causes
+
+- Schema/state mismatch in vector store (dimension/metric changed)
+- Stale/corrupt local store or insufficient permissions
+- Overscoped file set (build artifacts/binaries) causing failures
+
+Fix sequence
+
+1. Enable verbose logs; identify backend, namespace/collection
+2. Reset state: delete local index folder or drop remote collection; or use a fresh namespace
+3. Lock schema: choose a single embedding model + metric; ensure dimension matches
+4. Apply Android excludes (above) and re-run on a small subdir first
+5. Increase file descriptor limits if needed (e.g., `ulimit -n 8192`)
+
+If issues persist, try a different backend (local vs remote) or switch to a BM25/file-backed index temporarily.
+
 ## Documentation and Research
 
 - DeepWiki, Context7/DocFork for official docs/examples.
@@ -153,3 +196,29 @@ Canonical doc: docs/assistants/mcp-guide.md
 
 - Use MCP servers for ALL supported tasks.
 - Only fall back to manual commands if the server is unavailable AND with explicit approval.
+
+---
+
+## Approvals & Sandbox (Codex CLI)
+
+- Filesystem: `workspace-write` — edit only inside the workspace without escalation
+- Network: `restricted` — web tools may require approval to run
+- Approvals: `on-request` — request escalation for network access or destructive ops
+
+Best practices
+
+- Group related actions and send a short preamble before tool calls
+- Prefer safe, incremental operations; avoid destructive commands without approval
+
+---
+
+## Zen MCP Workflows (Examples)
+
+- Decision making: `mcp_zen_consensus` to compare remediation paths, then proceed per outcome
+- Planning: `mcp_zen_planner` to save concise steps, update progress as work advances
+- Pre-commit validation: `mcp_zen_precommit` to inspect diffs and impacts prior to committing
+
+Example remediation via consensus
+
+- For: incremental indexing + excludes; Against: direct backend reset; Neutral: hybrid playbook
+- Apply: start with fresh namespace + excludes, verify on a small scope, reset backend if needed

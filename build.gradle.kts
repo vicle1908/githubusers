@@ -111,3 +111,31 @@ tasks.register("publishAllModules") {
     description = "Alias for publishAllToMavenLocal"
     dependsOn("publishAllToMavenLocal")
 }
+
+// Aggregate detekt task for all applicable modules (skip non-Kotlin builds)
+tasks.register("detektAll") {
+    group = "verification"
+    description = "Run detekt on all modules"
+    val kotlinModules = gradle.includedBuilds.filter { it.name !in listOf("catalog", "plugins", "testing") }
+    kotlinModules.forEach { build ->
+        try {
+            dependsOn(build.task(":detekt"))
+        } catch (e: Exception) {
+            logger.debug("Module ${build.name} doesn't have detekt task")
+        }
+    }
+}
+
+// Aggregate ktlintFormat task for all applicable modules (skip non-Kotlin builds)
+tasks.register("ktlintFormatAll") {
+    group = "formatting"
+    description = "Format all Kotlin files with ktlint across all modules"
+    val kotlinModules = gradle.includedBuilds.filter { it.name !in listOf("catalog", "plugins", "testing") }
+    kotlinModules.forEach { build ->
+        try {
+            dependsOn(build.task(":ktlintFormat"))
+        } catch (e: Exception) {
+            logger.debug("Module ${build.name} doesn't have ktlintFormat task")
+        }
+    }
+}
