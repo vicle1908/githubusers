@@ -1,0 +1,106 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-9b9413a6-4f52-4208-b5ae-da8776cdc526"
+      },
+      "alwaysAllow": ["resolve-library-id", "get-library-docs"]
+    },
+    "claude-context": {
+      "command": "npx",
+      "args": ["@zilliz/claude-context-mcp@latest"],
+      "env": {
+        "MILVUS_ADDRESS": "https://in03-c810f8b4355b37b.serverless.gcp-us-west1.cloud.zilliz.com",
+        "OPENAI_API_KEY": "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",
+        "MILVUS_TOKEN": "eeef9695f048b1c674956fdd4c1a27dfd8a64822c69bca11ae52c5bef732c1c2c8d8f2877da8f10afdcbb4f124948752608da911"
+      },
+      "alwaysAllow": [
+        "index_codebase",
+        "search_code",
+        "clear_index",
+        "get_indexing_status"
+      ]
+    },
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "alwaysAllow": ["ask_question"]
+    },
+    "docfork": {
+      "type": "http",
+      "url": "https://mcp.docfork.com/mcp",
+      "alwaysAllow": ["get-library-docs"]
+    },
+    "tavily": {
+      "type": "http",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=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",
+      "alwaysAllow": [
+        "tavily_search",
+        "tavily_extract",
+        "tavily_crawl",
+        "tavily_map"
+      ]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@brave/brave-search-mcp-server"],
+      "env": {
+        "BRAVE_API_KEY": "BSAHA58DKejt3ja5IPr6Yp7PzkiuBLr",
+        "BRAVE_MCP_TRANSPORT": "stdio"
+      },
+      "alwaysAllow": ["brave_web_search", "brave_local_search"]
+    },
+    "openmemory": {
+      "command": "npx",
+      "args": ["openmemory"],
+      "env": {
+        "OPENMEMORY_API_KEY": "om-tzvfhdr2bjok1v2r5ns5ev2pc076jyb8",
+        "CLIENT_NAME": "MetaMCP"
+      },
+      "alwaysAllow": ["add-memory", "search-memories", "list-memories"]
+    },
+    "mobile-mcp": {
+      "command": "npx",
+      "args": ["@mobilenext/mobile-mcp@latest"]
+    },
+    "exa": {
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=726bfbef-befb-4d5e-97c9-4eec61b4fc76"
+    },
+    "git-mcp-server": {
+      "command": "npx",
+      "args": ["@cyanheads/git-mcp-server"],
+      "env": {
+        "MCP_LOG_LEVEL": "info",
+        "GIT_SIGN_COMMITS": "false"
+      }
+    },
+    "medium-search": {
+      "command": "npx",
+      "args": ["-y", "medium-mcp-server", "search"]
+    },
+    "byterover-mcp": {
+      "type": "http",
+      "url": "https://mcp.byterover.dev/v2/mcp",
+      "alwaysAllow": [
+        "byterover-retrieve-knowledge",
+        "byterover-store-knowledge",
+        "byterover-create-handbook",
+        "byterover-assess-context-completeness",
+        "byterover-save-implementation-plan",
+        "byterover-update-plan-progress",
+        "byterover-retrieve-active-plans",
+        "byterover-store-module",
+        "byterover-search-module",
+        "byterover-update-module",
+        "byterover-list-modules",
+        "byterover-check-handbook-existence",
+        "byterover-think-about-collected-information",
+        "byterover-check-handbook-sync",
+        "byterover-update-handbook"
+      ]
+    }
+  }
+}
