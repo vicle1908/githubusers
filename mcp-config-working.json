@@ -1,10 +1,12 @@
 {
+  "_SECURITY_NOTICE": "This configuration uses environment variables for API keys. Set up your .env file before use. NEVER commit API keys to version control.",
+  "_SETUP_GUIDE": "See MCP-SECURE-SETUP-GUIDE.md for complete setup instructions",
   "mcpServers": {
     "context7": {
       "type": "http",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "ctx7sk-9b9413a6-4f52-4208-b5ae-da8776cdc526"
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       },
       "alwaysAllow": ["resolve-library-id", "get-library-docs"],
       "status": "✅ WORKING - HTTP API"
@@ -13,9 +15,9 @@
       "command": "npx",
       "args": ["@zilliz/claude-context-mcp@latest"],
       "env": {
-        "MILVUS_ADDRESS": "https://in03-c810f8b4355b37b.serverless.gcp-us-west1.cloud.zilliz.com",
-        "OPENAI_API_KEY": "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",
-        "MILVUS_TOKEN": "eeef9695f048b1c674956fdd4c1a27dfd8a64822c69bca11ae52c5bef732c1c2c8d8f2877da8f10afdcbb4f124948752608da911"
+        "MILVUS_ADDRESS": "${MILVUS_ADDRESS}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "MILVUS_TOKEN": "${MILVUS_TOKEN}"
       },
       "alwaysAllow": [
         "index_codebase",
@@ -33,14 +35,14 @@
         "zen-mcp-server"
       ],
       "env": {
-        "XAI_API_KEY": "xai-Q6REZXOeADGZBDAjzhQmmKQ38zD4nViQL7LLhQmpHkzC75TPXke5NhzaEbPmXwcncX7iU46JJyWrRn0P",
+        "XAI_API_KEY": "${XAI_API_KEY}",
         "GOOGLE_ALLOWED_MODELS": "gemini-2.5-pro,flash",
-        "GEMINI_API_KEY": "AIzaSyAmlELeGL3JIPDbYZyEzbgAGJdmjea2Lc0",
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
         "OPENAI_ALLOWED_MODELS": "gpt-5",
         "DISABLED_TOOLS": "tracer,testgen,secaudit,docgen",
         "DEFAULT_THINKING_MODE_THINKDEEP": "high",
         "XAI_ALLOWED_MODELS": "grok-4",
-        "OPENAI_API_KEY": "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",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
         "DEFAULT_MODEL": "auto"
       },
       "alwaysAllow": [
@@ -83,7 +85,7 @@
     },
     "tavily": {
       "type": "http",
-      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=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",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=${TAVILY_API_KEY}",
       "alwaysAllow": [
         "tavily_search",
         "tavily_extract", 
@@ -96,7 +98,7 @@
       "command": "npx",
       "args": ["-y", "@brave/brave-search-mcp-server"],
       "env": {
-        "BRAVE_API_KEY": "BSAHA58DKejt3ja5IPr6Yp7PzkiuBLr",
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}",
         "BRAVE_MCP_TRANSPORT": "stdio"
       },
       "alwaysAllow": ["brave_web_search", "brave_local_search"],
@@ -106,7 +108,7 @@
       "command": "npx", 
       "args": ["openmemory"],
       "env": {
-        "OPENMEMORY_API_KEY": "om-tzvfhdr2bjok1v2r5ns5ev2pc076jyb8",
+        "OPENMEMORY_API_KEY": "${OPENMEMORY_API_KEY}",
         "CLIENT_NAME": "MetaMCP"
       },
       "alwaysAllow": ["add-memory", "search-memories", "list-memories"],
@@ -119,7 +121,7 @@
     },
     "exa": {
       "type": "http",
-      "url": "https://mcp.exa.ai/mcp?exaApiKey=726bfbef-befb-4d5e-97c9-4eec61b4fc76",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=${EXA_API_KEY}",
       "status": "✅ WORKING - HTTP API"
     },
     "git-mcp-server": {
