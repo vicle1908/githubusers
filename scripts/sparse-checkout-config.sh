@@ -36,12 +36,12 @@ print_error() {
 
 # Sparse-checkout patterns for different task types
 declare -A SPARSE_PATTERNS=(
-    ["navigation"]="app navigation-api navigation-impl feature-users feature-search feature-settings core-ui"
-    ["ui"]="app feature-users feature-search feature-settings core-ui core-design"
-    ["data"]="core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di"
-    ["testing"]="app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs"
-    ["build"]="plugins build-logic catalog app/build.gradle.kts"
-    ["default"]="app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts"
+    ["navigation"]="app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog testing .cursor .claude .augment .ai-context"
+    ["ui"]="app feature-users feature-search feature-settings core-ui core-design plugins catalog navigation-api navigation-impl testing .cursor .claude .augment .ai-context"
+    ["data"]="core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog navigation-api navigation-impl testing .cursor .claude .augment .ai-context"
+    ["testing"]="app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context"
+    ["build"]="plugins catalog app/build.gradle.kts testing .cursor .claude .augment .ai-context"
+    ["default"]="app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context"
 )
 
 # Function to show usage

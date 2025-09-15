@@ -1,0 +1,24 @@
+# AI Assistant Context File
+# Generated: Mon Sep 15 13:49:00 +07 2025
+# Assistant: claude
+# Task: workflow-setup - github-actions
+# Worktree: ai-claude-workflow-setup-github-actions
+
+## Task Context
+- Assistant: claude
+- Issue ID: workflow-setup
+- Description: github-actions
+- Created: Mon Sep 15 13:49:00 +07 2025
+
+## Development Guidelines
+- Use MCP-first approach for all operations
+- Follow Android development standards
+- Maintain feature ownership principles
+- Use ByteRover for knowledge management
+- Follow Kotlin style guide
+
+## Quick Commands
+- Check status: git ai-status
+- View recent commits: git ai-log
+- See changed files: git ai-diff
+- Update from main: git fetch origin && git rebase origin/main
