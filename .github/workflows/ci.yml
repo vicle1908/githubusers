@@ -7,9 +7,6 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -22,6 +19,8 @@ jobs:
     name: Code Quality & Static Analysis
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout code
@@ -40,14 +39,11 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     
-    - name: Build plugins (composite build)
-      working-directory: plugins
-      run: ./gradlew build --configuration-cache
+    # No separate plugins build needed; root tasks cover this
     
     - name: Run Detekt
       run: ./gradlew detektAll --configuration-cache --build-cache
@@ -99,20 +95,19 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     
     - name: Run unit tests
-      run: ./gradlew testDebugUnitTest --configuration-cache --build-cache
+      run: ./gradlew testAll --configuration-cache --build-cache
     
     - name: Generate test report
       uses: dorny/test-reporter@v1
       if: always()
       with:
         name: Unit Test Results
-        path: '**/build/test-results/testDebugUnitTest/TEST-*.xml'
+        path: '**/build/test-results/**/TEST-*.xml'
         reporter: java-junit
         fail-on-error: true
     
@@ -122,8 +117,8 @@ jobs:
       with:
         name: unit-test-results
         path: |
-          **/build/test-results/testDebugUnitTest/
-          **/build/reports/tests/testDebugUnitTest/
+          **/build/test-results/**
+          **/build/reports/tests/**
         retention-days: 30
 
   build:

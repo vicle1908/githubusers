@@ -16,9 +16,6 @@ on:
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
-permissions:
-  contents: write
-
 jobs:
   # Job for AI branches
   ai-branch-test:
@@ -46,7 +43,6 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Validate AI branch naming
       run: |
@@ -180,7 +176,6 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Validate feature branch naming
       run: |
@@ -240,7 +235,6 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Validate bugfix branch naming
       run: |
@@ -300,7 +294,6 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Validate hotfix branch naming
       run: |
@@ -357,7 +350,6 @@ jobs:
       with:
         gradle-home-cache-cleanup: true
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Merge queue validation
       run: |
