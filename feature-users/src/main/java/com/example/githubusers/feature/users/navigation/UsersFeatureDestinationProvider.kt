@@ -43,15 +43,15 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
 
     override fun createEntry(key: NavKey, metadata: Map<String, Any>): NavEntry<NavKey> = NavEntry(key, metadata = metadata) {
         when (key) {
-            is UserNavKey.UserList -> listContent()
-            is UserNavKey.UserDetail -> detailContent(key.username)
-            is UserNavKey.UserSettingsDialog -> settingsDialogContent(key.username)
-            else -> errorContent(key)
+            is UserNavKey.UserList -> UserListContent()
+            is UserNavKey.UserDetail -> UserDetailContent(key.username)
+            is UserNavKey.UserSettingsDialog -> UserSettingsDialogContent(key.username)
+            else -> UnknownUsersKeyContent(key)
         }
     }
 
     @Composable
-    private fun listContent() {
+    private fun UserListContent() {
         // Pull host-provided deep link navigator from CompositionLocal
         val navigateToDeepLink = LocalNavigateToDeepLink.current
         UserListRoute(
@@ -73,7 +73,7 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
     }
 
     @Composable
-    private fun detailContent(username: String) {
+    private fun UserDetailContent(username: String) {
         val navigateBack = LocalNavigateBack.current
         UserDetailRoute(
             username = username,
@@ -100,7 +100,7 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
     }
 
     @Composable
-    private fun settingsDialogContent(username: String) {
+    private fun UserSettingsDialogContent(username: String) {
         // Handle back press for dialog dismissal with proper priority
         PredictiveBackManager.Patterns.dialogDismissal(
             enabled = true,
@@ -131,7 +131,7 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
     }
 
     @Composable
-    private fun errorContent(key: NavKey) {
+    private fun UnknownUsersKeyContent(key: NavKey) {
         Text(text = "Unknown users key: $key")
     }
 

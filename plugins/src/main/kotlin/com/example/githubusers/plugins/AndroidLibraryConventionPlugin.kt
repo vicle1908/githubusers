@@ -25,6 +25,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         configureKotlinAndroid(this)
                         configureLint()
 
+                        lint {
+                            abortOnError = true
+                            checkReleaseBuilds = false
+                        }
+
                         // Use shared configuration from base plugin
                         defaultConfig.targetSdk =
                             (project.findProperty("targetSdk")?.toString()?.toIntOrNull()) ?: 36

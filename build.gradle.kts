@@ -179,3 +179,18 @@ tasks.register("integrationTest") {
     description = "Placeholder aggregate for integration tests (no-op unless modules contribute tasks)"
     doLast { logger.lifecycle("No integration test tasks wired; skipping.") }
 }
+
+// Aggregate lint task for all Android modules (exclude non-Android like catalog, plugins, testing)
+tasks.register("lintAll") {
+    group = "verification"
+    description = "Run lint on all Android modules only (excludes non-Android like catalog/plugins/testing)"
+    val androidModules = listOf("app", "feature-users", "feature-search", "feature-settings", "core-ui", "core-mvi", "core-networking", "core-storage", "navigation-api", "navigation-impl")
+    androidModules.forEach { module ->
+        gradle.includedBuilds.find { it.name == module }?.let { build ->
+            dependsOn(build.task(":lintDebug"))
+        }
+    }
+    doLast {
+        logger.lifecycle("Lint completed for Android modules")
+    }
+}

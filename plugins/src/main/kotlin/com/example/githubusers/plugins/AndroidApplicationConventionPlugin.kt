@@ -46,6 +46,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                         configureKotlinAndroid(this)
                         configureLint()
 
+                        lint {
+                            abortOnError = true
+                            checkReleaseBuilds = false
+                        }
+
                         // Get app config once
                         val appConfig = extensions.findByName("appConfig") as? ApplicationConfigExtension
 
