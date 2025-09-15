@@ -205,3 +205,10 @@
 
 # Remove debugging information in release
 -renamesourcefileattribute SourceFile
+
+# Ktor Debug Detector - Android Compatibility
+-dontwarn java.lang.management.**
+-assumenosideeffects class io.ktor.util.debug.IntellijIdeaDebugDetector {
+    *;
+}
+
