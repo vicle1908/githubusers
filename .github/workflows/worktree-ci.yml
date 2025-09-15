@@ -16,6 +16,9 @@ on:
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+permissions:
+  contents: write
+
 jobs:
   # Job for AI branches
   ai-branch-test:
@@ -240,7 +243,7 @@ jobs:
       run: |
         BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
         if [[ ! "$BRANCH_NAME" =~ ^bugfix/[a-zA-Z0-9_-]+$ ]]; then
-          echo "❌ Invalid bugfix branch naming: $BRANCH_NAME"
+          echo "❌ Invalid bugfix branch naming: $BRANCHNAME"
           echo "Expected pattern: bugfix/<description>"
           exit 1
         fi
