@@ -285,11 +285,6 @@ extensions.configure<ApplicationConfigExtension>("appConfig") {
 ### Feature Module
 
 ```kotlin
-```kotlin
-
-```gradle
-```gradle
-
 githubusers/
 ├── app/                           # Main application module
 ├── core-*/                        # Core functionality modules
