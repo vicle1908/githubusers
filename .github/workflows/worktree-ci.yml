@@ -16,6 +16,9 @@ on:
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+permissions:
+  contents: write
+
 jobs:
   # Job for AI branches
   ai-branch-test:
@@ -24,7 +27,7 @@ jobs:
     strategy:
       matrix:
         java-version: [21]
-        gradle-version: [8.13]
+        gradle-version: [9.0.0]
     
     steps:
     - name: Checkout code
@@ -39,9 +42,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: ${{ matrix.gradle-version }}
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate AI branch naming
       run: |
@@ -90,19 +95,19 @@ jobs:
         echo "Assistant: ${{ steps.branch-info.outputs.assistant }}"
         echo "Issue ID: ${{ steps.branch-info.outputs.issue_id }}"
         echo "Task: ${{ steps.branch-info.outputs.task_description }}"
-        
+
         # Run Detekt for code quality
-        ./gradlew detekt
-        
+        ./gradlew detektAll
+
         # Run KtLint for code formatting
-        ./gradlew ktlintCheck
+        ./gradlew ktlintCheckAll
     
     - name: Run tests
       run: |
-        # Run unit tests
-        ./gradlew test
+        # Run unit tests (aggregate across composite builds)
+        ./gradlew testAll
         
-        # Run integration tests if available
+        # Run integration tests if available (placeholder aggregates to no-op)
         ./gradlew integrationTest || echo "No integration tests found"
     
     - name: Build project
@@ -156,7 +161,7 @@ jobs:
     strategy:
       matrix:
         java-version: [21]
-        gradle-version: [8.13]
+        gradle-version: [9.0.0]
     
     steps:
     - name: Checkout code
@@ -171,9 +176,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: ${{ matrix.gradle-version }}
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate feature branch naming
       run: |
@@ -187,11 +194,11 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |
-        ./gradlew test integrationTest || echo "No integration tests found"
+        ./gradlew testAll integrationTest || echo "No integration tests found"
     
     - name: Build project
       run: |
@@ -214,7 +221,7 @@ jobs:
     strategy:
       matrix:
         java-version: [21]
-        gradle-version: [8.13]
+        gradle-version: [9.0.0]
     
     steps:
     - name: Checkout code
@@ -229,9 +236,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: ${{ matrix.gradle-version }}
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate bugfix branch naming
       run: |
@@ -245,11 +254,11 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |
-        ./gradlew test integrationTest || echo "No integration tests found"
+        ./gradlew testAll integrationTest || echo "No integration tests found"
     
     - name: Build project
       run: |
@@ -272,7 +281,7 @@ jobs:
     strategy:
       matrix:
         java-version: [21]
-        gradle-version: [8.13]
+        gradle-version: [9.0.0]
     
     steps:
     - name: Checkout code
@@ -287,9 +296,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: ${{ matrix.gradle-version }}
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate hotfix branch naming
       run: |
@@ -303,7 +314,7 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |
@@ -342,9 +353,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: 8.13
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Merge queue validation
       run: |
@@ -370,7 +383,7 @@ jobs:
     
     - name: Final build test
       run: |
-        ./gradlew clean build
+        ./gradlew build
     
     - name: Approve for merge
       if: success()

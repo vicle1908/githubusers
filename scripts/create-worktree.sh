@@ -143,30 +143,31 @@ configure_sparse_checkout() {
     # Task-specific additions can be made in the case statement if needed
     case "$task_description" in
         *navigation*|*nav*)
-            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog
+            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout for navigation-related tasks"
             ;;
         *ui*|*compose*|*screen*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog navigation-api navigation-impl
+            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog navigation-api navigation-impl .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout for UI-related tasks"
             ;;
         *data*|*repository*|*api*)
-            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog navigation-api navigation-impl
+            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog navigation-api navigation-impl .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout for data-related tasks"
             ;;
         *test*|*testing*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout for testing-related tasks"
             ;;
         *plugin*|*build*|*gradle*)
-            git sparse-checkout set plugins catalog app/build.gradle.kts
+            git sparse-checkout set plugins catalog app/build.gradle.kts .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout for build-related tasks"
             ;;
         *)
             # Always include plugins and catalog for build/dependency support
             # Include testing module for comprehensive testing coverage
+            # Include AI instruction folders for consistent development environment
             # Default: include most modules but exclude large directories
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac

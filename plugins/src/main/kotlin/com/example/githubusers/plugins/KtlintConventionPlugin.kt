@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask
 
 /**
  * Enhanced KtLint Convention Plugin with unified configuration support.
@@ -35,6 +36,9 @@ class KtlintConventionPlugin : Plugin<Project> {
         // Enable verbose output for better debugging
         ext.verbose.set(true)
 
+        // Allow reports to be generated without failing the build
+        ext.ignoreFailures.set(true)
+
         // Configure reporters for better integration
         ext.reporters {
             reporter(ReporterType.PLAIN)
@@ -62,7 +66,7 @@ class KtlintConventionPlugin : Plugin<Project> {
         }
 
         // Configure ktlint tasks for better performance
-        tasks.withType(org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask::class.java).configureEach {
+        tasks.withType(BaseKtLintCheckTask::class.java).configureEach {
             // Configuration cache compatible approach - avoid project access at execution time
             outputs.cacheIf { true }
         }

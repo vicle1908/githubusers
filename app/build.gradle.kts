@@ -91,15 +91,6 @@ android {
             // Signature configuration for release builds
             signingConfig = signingConfigs.getByName("debug")
         }
-
-        create("benchmark") {
-            initWith(getByName("release"))
-            applicationIdSuffix = ".benchmark"
-            versionNameSuffix = "-benchmark"
-            isDebuggable = false
-            isProfileable = true
-            buildConfigField("boolean", "ENABLE_PERFORMANCE_MONITORING", "true")
-        }
     }
 
     // Compilation optimizations
