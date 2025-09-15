@@ -16,6 +16,9 @@ on:
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 
+permissions:
+  contents: write
+
 jobs:
   # Job for AI branches
   ai-branch-test:
@@ -37,13 +40,13 @@ jobs:
       with:
         java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
-        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate AI branch naming
       run: |
@@ -171,13 +174,13 @@ jobs:
       with:
         java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
-        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate feature branch naming
       run: |
@@ -231,13 +234,13 @@ jobs:
       with:
         java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
-        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate bugfix branch naming
       run: |
@@ -291,12 +294,13 @@ jobs:
       with:
         java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
-        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-version: ${{ matrix.gradle-version }}
+        gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Validate hotfix branch naming
       run: |
@@ -349,10 +353,11 @@ jobs:
         distribution: 'temurin'
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+      uses: gradle/actions/setup-gradle@v4
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
+        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
     
     - name: Merge queue validation
       run: |
