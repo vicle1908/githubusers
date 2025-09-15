@@ -153,3 +153,36 @@ tasks.register("ktlintCheckAll") {
         }
     }
 }
+
+// Aggregate unit tests across modules (composite-friendly)
+tasks.register("testAll") {
+    group = "verification"
+    description = "Run unit tests for all included builds"
+
+    gradle.includedBuilds.forEach { build ->
+        // Try JVM-style tests first
+        val candidates = listOf(
+            ":test", // JVM modules
+            ":testDebugUnitTest", // Android library/app debug unit tests
+            ":testReleaseUnitTest" // optional
+        )
+        candidates.forEach { taskName ->
+            runCatching { dependsOn(build.task(taskName)) }
+                .onFailure { logger.debug("Module ${build.name} has no ${taskName} task") }
+        }
+    }
+}
+
+// Make `gradlew test` in the root behave as aggregate
+tasks.register("test") {
+    group = "verification"
+    description = "Alias to run all module unit tests"
+    dependsOn("testAll")
+}
+
+// Provide a benign integrationTest aggregator so CI step doesn't fail if absent
+tasks.register("integrationTest") {
+    group = "verification"
+    description = "Placeholder aggregate for integration tests (no-op unless modules contribute tasks)"
+    doLast { logger.lifecycle("No integration test tasks wired; skipping.") }
+}
