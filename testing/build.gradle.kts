@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
     id("githubusers.quality.ktlint")
+    id("githubusers.test.convention")
 }
 
 dependencies {
