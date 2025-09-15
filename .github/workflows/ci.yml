@@ -37,13 +37,12 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-home-cache-cleanup: true
+        cache-cleanup: on-success
         cache-read-only: ${{ github.event_name == 'pull_request' }}
+        dependency-graph: generate-and-submit
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
-    
-    # No separate plugins build needed; root tasks cover this
     
     - name: Run Detekt
       run: ./gradlew detektAll --configuration-cache --build-cache
@@ -52,7 +51,7 @@ jobs:
       run: ./gradlew ktlintCheckAll --configuration-cache --build-cache
     
     - name: Run Android Lint
-      run: ./gradlew lintDebug --configuration-cache --build-cache
+      run: ./gradlew :app:lintDebug --configuration-cache --build-cache
     
     - name: Upload Detekt results
       uses: actions/upload-artifact@v4
@@ -88,14 +87,12 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
 
-    # Gradle cache handled by setup-gradle
-    
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-home-cache-cleanup: true
+        cache-cleanup: on-success
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
+
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     
@@ -137,14 +134,11 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
 
-    # Gradle cache handled by setup-gradle
-    
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-home-cache-cleanup: true
+        cache-cleanup: on-success
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -175,14 +169,11 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
 
-    # Gradle cache handled by setup-gradle
-    
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-home-cache-cleanup: true
+        cache-cleanup: on-success
         cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -215,7 +206,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
-        gradle-home-cache-cleanup: true
+        cache-cleanup: on-success
         cache-read-only: ${{ github.event_name == 'pull_request' }}
     
     - name: Make gradlew executable
