@@ -12,9 +12,6 @@ on:
       - '**/build.gradle.kts'
       - 'gradle/wrapper/gradle-wrapper.properties'
 
-permissions:
-  contents: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -37,13 +34,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -84,13 +80,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -134,13 +129,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -171,13 +165,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -223,12 +216,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew

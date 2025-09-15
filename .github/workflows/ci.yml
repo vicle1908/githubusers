@@ -7,9 +7,6 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -34,13 +31,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
+        gradle-home-cache-cleanup: true
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -50,13 +46,13 @@ jobs:
       run: ./gradlew build --configuration-cache
     
     - name: Run Detekt
-      run: ./gradlew detektAll --configuration-cache --build-cache
-
+      run: ./gradlew detekt --configuration-cache --build-cache
+    
     - name: Run ktlint
-      run: ./gradlew ktlintCheckAll --configuration-cache --build-cache
+      run: ./gradlew ktlintCheck --configuration-cache --build-cache
     
     - name: Run Android Lint
-      run: ./gradlew :app:lintDebug --configuration-cache --build-cache
+      run: ./gradlew lintDebug --configuration-cache --build-cache
     
     - name: Upload Detekt results
       uses: actions/upload-artifact@v4
@@ -65,7 +61,7 @@ jobs:
         name: detekt-results
         path: |
           **/build/reports/detekt/
-        retention-days: 30
+          retention-days: 30
     
     - name: Upload Lint results
       uses: actions/upload-artifact@v4
@@ -74,7 +70,7 @@ jobs:
         name: lint-results
         path: |
           **/build/reports/lint-results-*.html
-        retention-days: 30
+          retention-days: 30
 
   unit-tests:
     name: Unit Tests
@@ -91,15 +87,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-
-    # Gradle cache handled by setup-gradle
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
+        gradle-home-cache-cleanup: true
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -141,15 +134,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-
-    # Gradle cache handled by setup-gradle
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
+        gradle-home-cache-cleanup: true
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -179,15 +169,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-
-    # Gradle cache handled by setup-gradle
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-        dependency-graph: generate-and-submit
+        gradle-home-cache-cleanup: true
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -216,12 +203,12 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: gradle
     
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v3
       with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
+        gradle-home-cache-cleanup: true
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -267,3 +254,4 @@ jobs:
         echo "**Branch:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
         echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
         echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+
