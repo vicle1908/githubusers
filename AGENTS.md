@@ -220,7 +220,7 @@ dependencies {
 }
 ```
 
-- Root `settings.gradle.kts`: acts only as a container; include new modules, avoid custom logic.
+- Root as container: this repo uses a composite-build topology where each module (e.g., `app`, `core-*`, `feature-*`, `navigation-*`) is a standalone Gradle build included via `includeBuild("<module>")` in the root `settings.gradle.kts`. Avoid custom logic in the root beyond `includeBuild` and optional dependency substitution.
 - Quality tasks: run `detekt` and `ktlintCheck` via Gradle MCP before PRs.
 - References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`, `docs/quality/detekt-usage.md`.
  - Catalog alias tips: prefer short, stable aliases; group families (e.g., `okhttp`, `okhttp.logging`); use Platforms/BOMs for aligned families.
@@ -252,39 +252,28 @@ References:
 - Version catalog: wired in `dependencyResolutionManagement` to `catalog/gradle/libs.versions.toml`; all versions come from here.
 - Convention plugins: declared in `plugins/` and applied by ID in module `build.gradle.kts` to standardize Android, Compose, Hilt, quality, etc.
 
-Example `settings.gradle.kts` (key parts):
+Example `settings.gradle.kts` (key parts used in this repo):
 
 ```kts
-pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    google()
-    mavenCentral()
-  }
-}
-
-dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-  repositories {
-    google()
-    mavenCentral()
-  }
-  versionCatalogs {
-    create("libs") {
-      from(files("catalog/gradle/libs.versions.toml"))
-    }
-  }
-}
-
+// Root settings.gradle.kts (excerpt)
 rootProject.name = "githubusers"
 
-// Composite include for convention plugins
+// Version catalog and convention plugins as composite builds
+includeBuild("catalog")
 includeBuild("plugins")
 
-// Modules (examples)
-include(":app", ":core-common", ":core-mvi", ":core-ui")
-include(":navigation-api", ":navigation-impl")
-include(":feature-users", ":feature-search", ":feature-settings")
+// Modules included as composite builds (standalone Gradle builds)
+includeBuild("app")
+includeBuild("core-common")
+includeBuild("core-mvi")
+includeBuild("core-ui")
+includeBuild("core-networking")
+includeBuild("core-storage")
+includeBuild("navigation-api")
+includeBuild("navigation-impl")
+includeBuild("feature-users")
+includeBuild("feature-search")
+includeBuild("feature-settings")
 ```
 
 Example feature module `build.gradle.kts` (composite + catalog usage):
@@ -303,10 +292,10 @@ dependencies {
   implementation(project(":core-ui"))
   implementation(project(":navigation-api"))
 
-  // Version alignment
+  // Version alignment (align via BOMs as needed)
+  implementation(platform(libs.androidx.compose.bom))
+  implementation(platform(libs.ktor.bom))
   implementation(platform(libs.okhttp.bom))
-  implementation(libs.okhttp)
-  implementation(libs.okhttp.logging)
 }
 ```
 
@@ -345,6 +334,8 @@ References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 - Navigation with Compose: https://developer.android.com/develop/ui/compose/navigation
 - Paging library (API): https://developer.android.com/reference/kotlin/androidx/paging/package-summary
 - OkHttp certificate pinning (official): https://square.github.io/okhttp/5.x/okhttp/okhttp3/-certificate-pinner/
+
+Note on security: networking uses Ktor with the OkHttp engine. Implement certificate pinning via OkHttp `CertificatePinner` in the engine configuration. See `docs/KTOR_AUTH_PLUGIN_IMPLEMENTATION.md` for integration guidance.
 
 ## 12) Validation & Testing
 

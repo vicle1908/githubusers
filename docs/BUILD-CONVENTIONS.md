@@ -23,36 +23,33 @@ This document outlines the build conventions used in the GitHub Users project.
 ### Core Modules
 
 - **core-common**: Shared utilities and common code
-- **core-data**: Data layer and network components
-- **core-mvi**: State management and architecture
+- **core-networking**: HTTP client, API access (Ktor + OkHttp engine)
+- **core-storage**: Local persistence and DataStore
+- **core-mvi**: State management and architecture base
 - **core-ui**: UI components and theming
+- **core-security**: Security utilities and policies
 
 ### Feature Modules
 
-- **feature-users**: User management functionality
-- **feature-users-list**: User list display
-- **feature-users-detail**: User detail views
+- **feature-auth**: Authentication flows
+- **feature-users**: User list and details
 - **feature-search**: Search functionality
+- **feature-settings**: App settings
 
 ### Navigation Modules
 
 - **navigation-api**: Navigation interface definitions
-- **navigation-impl**: Navigation implementation
-- **navigation-annotations**: Navigation annotations
-- **navigation-ksp**: Navigation code generation
+- **navigation-impl**: Navigation implementation (Navigation 3)
 
 ## Build Variants
-
-### Product Flavors
-
-- **dev**: Development environment
-- **prod**: Production environment
 
 ### Build Types
 
 - **debug**: Debug builds with development tools
 - **release**: Release builds for distribution
-- **staging**: Staging environment builds
+- **benchmark**: Release-like, profileable build for performance testing
+
+Note: Product flavors are not configured at this time.
 
 ## Quality Tools
 

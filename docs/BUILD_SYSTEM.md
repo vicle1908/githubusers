@@ -20,27 +20,39 @@ This document describes the modern, convention-based build system architecture f
 
 ### 3. **Dependency Optimization**
 
-- Use `implementation` dependencies by defaul
+- Use `implementation` dependencies by default
 - Use `api` dependencies only when modules need to expose dependencies to consumers
-- Platform BOMs for version alignmen
+- Use Platform BOMs for version alignment
 
 ## Project Structure
 
-```tex
-```text
-
 ```text
 githubusers/
-├── app/                           # Main application module
-├── core-*/                        # Core functionality modules
-├── feature-*/                     # Feature modules
-├── navigation-*/                  # Navigation modules
-├── plugins/                       # Convention plugins
-├── catalog/                       # Version catalog
-├── internal-platform/             # Internal BOM module
-└── test-module/                  # Testing utilities
-
+├── app/                 # Main application module (composite)
+├── core-common/         # Shared utilities
+├── core-networking/     # Ktor + OkHttp engine
+├── core-storage/        # DataStore, Room helpers
+├── core-mvi/            # MVI base
+├── core-ui/             # UI components/theme
+├── core-security/       # Security utilities
+├── feature-auth/        # Auth flows
+├── feature-users/       # Users feature
+├── feature-search/      # Search feature
+├── feature-settings/    # Settings feature
+├── navigation-api/      # Navigation contracts
+├── navigation-impl/     # Navigation 3 implementation
+├── plugins/             # Convention plugins (composite)
+├── catalog/             # Version catalog (composite)
+├── internal-platform/   # Internal platform BOM (optional)
+└── testing/             # Test utilities (composite)
 ```
+
+## Composite Build Wiring
+
+This project uses composite builds: each module is a standalone Gradle build included from the root via `includeBuild("<module>")`.
+
+- Root `settings.gradle.kts` includes: `catalog`, `plugins`, `testing`, and all modules via `includeBuild`.
+- Each module’s `settings.gradle.kts` defines a `libs` version catalog by pointing to `../catalog/gradle/libs.versions.toml` and includes `../plugins` for convention plugins.
 
 ## Convention Plugins
 
@@ -157,47 +169,9 @@ The version catalog (`catalog/gradle/libs.versions.toml`) is organized into thre
 - Platform BOMs
 - Testing dependencies
 
-### Key Versions
+### Version Catalog
 
-```toml
-```kotlin
-
-```json
-```json
-
-githubusers/
-├── app/                           # Main application module
-├── core-*/                        # Core functionality modules
-├── feature-*/                     # Feature modules
-├── navigation-*/                  # Navigation modules
-├── plugins/                       # Convention plugins
-├── catalog/                       # Version catalog
-├── internal-platform/             # Internal BOM module
-└── test-module/                  # Testing utilities
-
-
-
-githubusers/
-├── app/                           # Main application module
-├── core-*/                        # Core functionality modules
-├── feature-*/                     # Feature modules
-├── navigation-*/                  # Navigation modules
-├── plugins/                       # Convention plugins
-├── catalog/                       # Version catalog
-├── internal-platform/             # Internal BOM module
-└── test-module/                  # Testing utilities
-githubusers/
-├── app/                           # Main application module
-├── core-*/                        # Core functionality modules
-├── feature-*/                     # Feature modules
-├── navigation-*/                  # Navigation modules
-├── plugins/                       # Convention plugins
-├── catalog/                       # Version catalog
-├── internal-platform/             # Internal BOM module
-└── test-module/                  # Testing utilities
-[versions]
-kotlin = "2.2.10"
-android-gradle-plugin = "8.12.2"
+The shared catalog file lives at `catalog/gradle/libs.versions.toml`. All modules reference it in their own `settings.gradle.kts`. No hardcoded versions are allowed in module build files.
 compose-compiler = "1.6.0"
 hilt = "2.57.1"
 room = "2.7.2"
