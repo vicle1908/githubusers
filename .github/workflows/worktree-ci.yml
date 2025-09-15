@@ -99,10 +99,10 @@ jobs:
     
     - name: Run tests
       run: |
-        # Run unit tests
-        ./gradlew test
+        # Run unit tests (aggregate across composite builds)
+        ./gradlew testAll
         
-        # Run integration tests if available
+        # Run integration tests if available (placeholder aggregates to no-op)
         ./gradlew integrationTest || echo "No integration tests found"
     
     - name: Build project
@@ -191,7 +191,7 @@ jobs:
     
     - name: Run tests
       run: |
-        ./gradlew test integrationTest || echo "No integration tests found"
+        ./gradlew testAll integrationTest || echo "No integration tests found"
     
     - name: Build project
       run: |
@@ -249,7 +249,7 @@ jobs:
     
     - name: Run tests
       run: |
-        ./gradlew test integrationTest || echo "No integration tests found"
+        ./gradlew testAll integrationTest || echo "No integration tests found"
     
     - name: Build project
       run: |
