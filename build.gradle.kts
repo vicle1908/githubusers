@@ -159,17 +159,10 @@ tasks.register("testAll") {
     group = "verification"
     description = "Run unit tests for all included builds"
 
+    // Prefer the generic ':test' task which exists for JVM and Android modules
     gradle.includedBuilds.forEach { build ->
-        // Try JVM-style tests first
-        val candidates = listOf(
-            ":test", // JVM modules
-            ":testDebugUnitTest", // Android library/app debug unit tests
-            ":testReleaseUnitTest" // optional
-        )
-        candidates.forEach { taskName ->
-            runCatching { dependsOn(build.task(taskName)) }
-                .onFailure { logger.debug("Module ${build.name} has no ${taskName} task") }
-        }
+        runCatching { dependsOn(build.task(":test")) }
+            .onFailure { logger.debug("Module ${build.name} has no :test task") }
     }
 }
 
