@@ -12,6 +12,8 @@ on:
       - '**/build.gradle.kts'
       - 'gradle/wrapper/gradle-wrapper.properties'
 
+permissions:
+  contents: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
