@@ -31,7 +31,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        cache: gradle
 
     - name: Cache Gradle
       uses: actions/cache@v4
@@ -47,6 +46,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -71,7 +71,7 @@ jobs:
         name: detekt-results
         path: |
           **/build/reports/detekt/
-          retention-days: 30
+        retention-days: 30
     
     - name: Upload Lint results
       uses: actions/upload-artifact@v4
@@ -80,7 +80,7 @@ jobs:
         name: lint-results
         path: |
           **/build/reports/lint-results-*.html
-          retention-days: 30
+        retention-days: 30
 
   unit-tests:
     name: Unit Tests
@@ -97,22 +97,14 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        cache: gradle
 
-    - name: Cache Gradle
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    # Gradle cache handled by setup-gradle
     
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -154,22 +146,14 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        cache: gradle
 
-    - name: Cache Gradle
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    # Gradle cache handled by setup-gradle
     
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -199,22 +183,14 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-        cache: gradle
 
-    - name: Cache Gradle
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', 'gradle/wrapper/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    # Gradle cache handled by setup-gradle
     
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-home-cache-cleanup: true
+        cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == true }}
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
@@ -304,4 +280,3 @@ jobs:
         echo "**Branch:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
         echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
         echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
-
