@@ -90,12 +90,12 @@ jobs:
         echo "Assistant: ${{ steps.branch-info.outputs.assistant }}"
         echo "Issue ID: ${{ steps.branch-info.outputs.issue_id }}"
         echo "Task: ${{ steps.branch-info.outputs.task_description }}"
-        
+
         # Run Detekt for code quality
-        ./gradlew detekt
-        
+        ./gradlew detektAll
+
         # Run KtLint for code formatting
-        ./gradlew ktlintCheck
+        ./gradlew ktlintCheckAll
     
     - name: Run tests
       run: |
@@ -187,7 +187,7 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |
@@ -245,7 +245,7 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |
@@ -303,7 +303,7 @@ jobs:
     
     - name: Run quality checks
       run: |
-        ./gradlew detekt ktlintCheck
+        ./gradlew detektAll ktlintCheckAll
     
     - name: Run tests
       run: |

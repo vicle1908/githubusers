@@ -139,3 +139,17 @@ tasks.register("ktlintFormatAll") {
         }
     }
 }
+
+// Aggregate ktlintCheck task for all applicable modules (skip non-Kotlin builds)
+tasks.register("ktlintCheckAll") {
+    group = "verification"
+    description = "Check Kotlin code formatting with ktlint across all modules"
+    val kotlinModules = gradle.includedBuilds.filter { it.name !in listOf("catalog", "plugins", "testing") }
+    kotlinModules.forEach { build ->
+        try {
+            dependsOn(build.task(":ktlintCheck"))
+        } catch (e: Exception) {
+            logger.debug("Module ${build.name} doesn't have ktlintCheck task")
+        }
+    }
+}
