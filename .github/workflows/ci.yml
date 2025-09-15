@@ -54,11 +54,7 @@ jobs:
       run: ./gradlew ktlintCheckAll --configuration-cache --build-cache
     
     - name: Run Android Lint
-<<<<<<< HEAD
-      run: ./gradlew :app:lintDebug --configuration-cache --build-cache
-=======
       run: ./gradlew lintAll --configuration-cache --build-cache
->>>>>>> c69ebb4 (fix: Resolve Lint issues from reports and re-enable strict linting)
     
     - name: Upload Detekt results
       uses: actions/upload-artifact@v4
