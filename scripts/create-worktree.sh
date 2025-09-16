@@ -40,19 +40,21 @@ print_error() {
 # Function to show usage
 show_usage() {
     cat << EOF
-Usage: $0 <assistant-name> <issue-id> <task-description>
+Usage: $0 [assistant-name] <issue-id> <task-description>
 
 Creates a new Git worktree for AI assistant parallel development. Dynamically includes all composite modules from settings.gradle.kts, essential plugins/catalog, and AI/IDE config folders (.cursor, .augment, etc.) for full composite build support and development environment consistency.
 
 Arguments:
-  assistant-name    Name of the AI assistant (e.g., claude, gemini, copilot)
+  assistant-name    (Optional) Name of the AI assistant (e.g., claude, gemini, copilot)
+                   If omitted, will auto-detect from environment variables
   issue-id         Issue or task identifier (e.g., 1234, bugfix-001)
   task-description Brief description of the task (e.g., navigation-refactor)
 
 Examples:
-  $0 claude 1234 navigation-refactor
-  $0 gemini bugfix-001 memory-leak-fix
-  $0 copilot feature-002 user-authentication
+  $0 1234 navigation-refactor                    # Auto-detect assistant
+  $0 claude 1234 navigation-refactor             # Explicit assistant
+  $0 gemini bugfix-001 memory-leak-fix           # Explicit assistant
+  $0 copilot feature-002 user-authentication     # Explicit assistant
 
 The script will:
 1. Create a new branch: ai/<assistant-name>/<issue-id>/<task-description>
@@ -126,6 +128,20 @@ create_worktree_path() {
     echo "$WORKTREES_DIR/ai-$assistant_name-$issue_id-$task_description"
 }
 
+# Function to get available AI config directories
+get_ai_config_dirs() {
+    local config_dirs=""
+    
+    # Check for common AI assistant config directories (only directories, not files)
+    for dir in .cursor .claude .augment .gemini .copilot; do
+        if [[ -d "$PROJECT_ROOT/$dir" ]]; then
+            config_dirs="$config_dirs $dir"
+        fi
+    done
+    
+    echo "$config_dirs" | xargs
+}
+
 # Function to configure sparse-checkout
 configure_sparse_checkout() {
     local worktree_path="$1"
@@ -138,28 +154,38 @@ configure_sparse_checkout() {
     # Initialize sparse-checkout
     git sparse-checkout init --cone
     
+    # Get available AI config directories dynamically
+    local ai_config_dirs
+    ai_config_dirs=$(get_ai_config_dirs)
+    
+    # Handle .ai-context file separately since it's not a directory
+    local ai_context_file=""
+    if [[ -f "$PROJECT_ROOT/.ai-context" ]]; then
+        ai_context_file=".ai-context"
+    fi
+    
     # Dynamically include all composite modules from settings.gradle.kts for full build support
     # Always include AI/IDE configuration folders for development consistency
     # Task-specific additions can be made in the case statement if needed
     case "$task_description" in
         *navigation*|*nav*)
-            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-ui plugins catalog .cursor .claude .augment .ai-context
+            git sparse-checkout set app navigation-api navigation-impl feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins catalog testing gradle $ai_config_dirs
             print_info "Configured sparse-checkout for navigation-related tasks"
             ;;
         *ui*|*compose*|*screen*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-ui core-design plugins catalog navigation-api navigation-impl .cursor .claude .augment .ai-context
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins catalog testing navigation-api navigation-impl gradle $ai_config_dirs
             print_info "Configured sparse-checkout for UI-related tasks"
             ;;
         *data*|*repository*|*api*)
-            git sparse-checkout set core-data feature-users feature-search feature-settings app/src/main/java/com/example/githubusers/di plugins catalog navigation-api navigation-impl .cursor .claude .augment .ai-context
+            git sparse-checkout set core-common core-mvi core-networking core-storage feature-users feature-search feature-settings app plugins catalog testing navigation-api navigation-impl gradle $ai_config_dirs
             print_info "Configured sparse-checkout for data-related tasks"
             ;;
         *test*|*testing*)
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs catalog testing navigation-api navigation-impl gradle $ai_config_dirs
             print_info "Configured sparse-checkout for testing-related tasks"
             ;;
         *plugin*|*build*|*gradle*)
-            git sparse-checkout set plugins catalog app/build.gradle.kts .cursor .claude .augment .ai-context
+            git sparse-checkout set plugins catalog testing app gradle $ai_config_dirs
             print_info "Configured sparse-checkout for build-related tasks"
             ;;
         *)
@@ -167,13 +193,27 @@ configure_sparse_checkout() {
             # Include testing module for comprehensive testing coverage
             # Include AI instruction folders for consistent development environment
             # Default: include most modules but exclude large directories
-            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl .cursor .claude .augment .ai-context
+            git sparse-checkout set app feature-users feature-search feature-settings core-common core-mvi core-networking core-storage core-ui plugins docs scripts catalog testing navigation-api navigation-impl gradle $ai_config_dirs
             print_info "Configured sparse-checkout with default settings"
             ;;
     esac
 
     # Always include docs for project guidelines and AI rules
     git sparse-checkout add docs
+
+    # Copy essential build files that are needed for the project to work
+    cp "$PROJECT_ROOT/gradlew" ./
+    cp "$PROJECT_ROOT/gradlew.bat" ./
+    cp "$PROJECT_ROOT/gradle.properties" ./
+    cp "$PROJECT_ROOT/settings.gradle.kts" ./
+    cp "$PROJECT_ROOT/build.gradle.kts" ./
+    print_info "Copied essential build files to worktree"
+
+    # Copy .ai-context file directly if it exists (since it's a file, not a directory)
+    if [[ -n "$ai_context_file" ]]; then
+        cp "$PROJECT_ROOT/$ai_context_file" ./
+        print_info "Copied .ai-context file to worktree"
+    fi
 
     print_info "Sparse-checkout configuration completed with all modules, AI configs, and docs"
 }
@@ -325,6 +365,32 @@ display_worktree_info() {
     print_info "Use './scripts/cleanup-worktrees.sh' to remove when done"
 }
 
+# Function to auto-detect AI assistant
+auto_detect_assistant() {
+    # Check environment variables for AI assistant indicators
+    if [[ -n "${CURSOR_AI:-}" ]]; then
+        echo "cursor"
+    elif [[ -n "${CLAUDE_AI:-}" ]]; then
+        echo "claude"
+    elif [[ -n "${GEMINI_AI:-}" ]]; then
+        echo "gemini"
+    elif [[ -n "${COPILOT_AI:-}" ]]; then
+        echo "copilot"
+    elif [[ -n "${AUGMENT_AI:-}" ]]; then
+        echo "augment"
+    else
+        # Check for common AI assistant environment variables
+        case "${AI_ASSISTANT:-}" in
+            cursor|claude|gemini|copilot|augment|ai-assistant)
+                echo "${AI_ASSISTANT}"
+                ;;
+            *)
+                echo "ai-assistant"
+                ;;
+        esac
+    fi
+}
+
 # Main function
 main() {
     # Check if we're in a Git repository
@@ -333,17 +399,36 @@ main() {
         exit 1
     fi
     
-    # Check arguments
-    if [[ $# -ne 3 ]]; then
+    # Handle help flag
+    if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+        show_usage
+        exit 0
+    fi
+    
+    # Check arguments - now supports 2 or 3 arguments
+    if [[ $# -lt 2 ]] || [[ $# -gt 3 ]]; then
         print_error "Invalid number of arguments"
         echo
         show_usage
         exit 1
     fi
     
-    local assistant_name="$1"
-    local issue_id="$2"
-    local task_description="$3"
+    local assistant_name
+    local issue_id
+    local task_description
+    
+    if [[ $# -eq 2 ]]; then
+        # Auto-detect assistant name
+        assistant_name=$(auto_detect_assistant)
+        issue_id="$1"
+        task_description="$2"
+        print_info "Auto-detected AI assistant: $assistant_name"
+    else
+        # Explicit assistant name provided
+        assistant_name="$1"
+        issue_id="$2"
+        task_description="$3"
+    fi
     
     # Validate inputs
     validate_inputs "$assistant_name" "$issue_id" "$task_description"
