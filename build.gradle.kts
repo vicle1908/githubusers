@@ -50,16 +50,36 @@ tasks.register("publishAllToMavenLocal") {
 }
 
 // Task to assemble the app
-tasks.register("assembleApp") {
+tasks.register("assembleDebugApp") {
     group = "build"
-    description = "Assemble the app module"
+    description = "Assemble the app debug APK"
+    val appBuild = gradle.includedBuilds.find { it.name == "app" }
+    if (appBuild != null) {
+        dependsOn(appBuild.task(":assembleDebug"))
+    } else {
+        doLast { logger.lifecycle("App module not included; skipping assembleDebugApp") }
+    }
+}
 
-    gradle.includedBuilds.find { it.name == "app" }?.let {
-        dependsOn(it.task(":assembleDebug"))
-    } ?: run {
-        doLast {
-            println("App module not included. Use -PincludeApp=true to include it.")
-        }
+tasks.register("assembleReleaseApp") {
+    group = "build"
+    description = "Assemble the app release APK"
+    val appBuild = gradle.includedBuilds.find { it.name == "app" }
+    if (appBuild != null) {
+        dependsOn(appBuild.task(":assembleRelease"))
+    } else {
+        doLast { logger.lifecycle("App module not included; skipping assembleReleaseApp") }
+    }
+}
+
+tasks.register("bundleReleaseApp") {
+    group = "build"
+    description = "Build the app release AAB bundle"
+    val appBuild = gradle.includedBuilds.find { it.name == "app" }
+    if (appBuild != null) {
+        dependsOn(appBuild.task(":bundleRelease"))
+    } else {
+        doLast { logger.lifecycle("App module not included; skipping bundleReleaseApp") }
     }
 }
 
@@ -157,12 +177,15 @@ tasks.register("ktlintCheckAll") {
 // Aggregate unit tests across modules (composite-friendly)
 tasks.register("testAll") {
     group = "verification"
-    description = "Run unit tests for all included builds"
+    description = "Run unit tests for all included builds (JVM and Android)"
 
-    // Prefer the generic ':test' task which exists for JVM and Android modules
     gradle.includedBuilds.forEach { build ->
-        runCatching { dependsOn(build.task(":test")) }
-            .onFailure { logger.debug("Module ${build.name} has no :test task") }
+        // Try JVM-style and Android unit test tasks in order
+        val candidates = listOf(":test")
+        candidates.forEach { taskName ->
+            runCatching { dependsOn(build.task(taskName)) }
+                .onFailure { logger.debug("Module ${build.name} has no $taskName task") }
+        }
     }
 }
 
@@ -178,4 +201,60 @@ tasks.register("integrationTest") {
     group = "verification"
     description = "Placeholder aggregate for integration tests (no-op unless modules contribute tasks)"
     doLast { logger.lifecycle("No integration test tasks wired; skipping.") }
+}
+
+// Aggregate lint task across Android-capable included builds.
+// Dynamically detects which included builds expose lint tasks and wires them.
+tasks.register("lintAll") {
+    group = "verification"
+    description = "Run Android lint across all included builds that expose lint tasks"
+
+    val excluded = setOf("catalog", "plugins", "testing", "core-common")
+    val candidates = listOf(":lint", ":lintDebug", ":lintRelease")
+
+    gradle.includedBuilds
+        .filter { it.name !in excluded }
+        .forEach { build ->
+            candidates.forEach { taskName ->
+                runCatching { dependsOn(build.task(taskName)) }
+                    .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
+            }
+        }
+
+    doLast {
+        logger.lifecycle("Lint completed for all eligible included builds")
+    }
+}
+
+// Aggregate dependency updates across included builds (if plugin is applied in modules)
+tasks.register("dependencyUpdatesAll") {
+    group = "verification"
+    description = "Run Gradle Versions Plugin dependencyUpdates across included builds"
+    val excluded = setOf("catalog", "plugins")
+    gradle.includedBuilds
+        .filter { it.name !in excluded }
+        .forEach { build ->
+            runCatching { dependsOn(build.task(":dependencyUpdates")) }
+                .onFailure { logger.debug("Included build ${build.name} has no :dependencyUpdates task") }
+        }
+}
+
+// Aggregate OWASP dependency check across included builds when available
+tasks.register("dependencyCheckAnalyzeAll") {
+    group = "verification"
+    description = "Run OWASP dependencyCheckAnalyze across included builds"
+    gradle.includedBuilds.forEach { build ->
+        runCatching { dependsOn(build.task(":dependencyCheckAnalyze")) }
+            .onFailure { logger.debug("Included build ${build.name} has no :dependencyCheckAnalyze task") }
+    }
+}
+
+// Aggregate license report generation across included builds when available
+tasks.register("generateLicenseReportAll") {
+    group = "verification"
+    description = "Generate license reports across included builds"
+    gradle.includedBuilds.forEach { build ->
+        runCatching { dependsOn(build.task(":generateLicenseReport")) }
+            .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
+    }
 }

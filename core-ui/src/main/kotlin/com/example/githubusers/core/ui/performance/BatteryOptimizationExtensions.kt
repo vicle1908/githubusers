@@ -23,13 +23,13 @@ import kotlinx.coroutines.flow.sample
  * This prevents unnecessary background processing when the app is not visible.
  */
 @Composable
-fun <T> Flow<T>.collectAsEffectWithLifecycle(key1: Any? = null, action: suspend CoroutineScope.(value: T) -> Unit) {
+fun <T> Flow<T>.CollectAsEffectWithLifecycle(key1: Any? = null, action: suspend CoroutineScope.(value: T) -> Unit) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val currentAction by rememberUpdatedState(action)
 
     LaunchedEffect(this, lifecycleOwner, key1) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            this@collectAsEffectWithLifecycle.collectLatest { value ->
+            this@CollectAsEffectWithLifecycle.collectLatest { value ->
                 currentAction(value)
             }
         }

@@ -3,6 +3,7 @@ package com.example.githubusers.core.ui.performance
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -146,7 +147,7 @@ class PerformanceMonitor @Inject constructor() {
  */
 @Composable
 fun TrackCompositionPerformance(screenName: String, monitor: PerformanceMonitor) {
-    var startTime by remember { mutableStateOf(System.nanoTime()) }
+    var startTime by remember { mutableLongStateOf(System.nanoTime()) }
 
     DisposableEffect(screenName) {
         startTime = System.nanoTime()

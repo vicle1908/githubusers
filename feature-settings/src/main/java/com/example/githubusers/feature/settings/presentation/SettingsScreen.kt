@@ -33,9 +33,9 @@ import com.example.githubusers.feature.settings.presentation.navigation.Settings
 @Composable
 fun SettingsScreen(
     navigator: SettingsNavigator,
+    modifier: Modifier = Modifier,
     section: String? = null,
     viewModel: SettingsViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
