@@ -12,6 +12,7 @@ plugins {
     id("githubusers.common.version")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
+    id("githubusers.dependency.update")
 }
 
 dependencies {

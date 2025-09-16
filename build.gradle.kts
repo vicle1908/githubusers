@@ -209,7 +209,7 @@ tasks.register("lintAll") {
     group = "verification"
     description = "Run Android lint across all included builds that expose lint tasks"
 
-    val excluded = setOf("catalog", "plugins", "testing", "core-common")
+    val excluded = setOf("catalog", "plugins")
     val candidates = listOf(":lint", ":lintDebug", ":lintRelease")
 
     gradle.includedBuilds
@@ -226,7 +226,7 @@ tasks.register("lintAll") {
     }
 }
 
-// Aggregate dependency updates across included builds (if plugin is applied in modules)
+// Aggregate dependency updates across included builds (versions plugin now applied widely)
 tasks.register("dependencyUpdatesAll") {
     group = "verification"
     description = "Run Gradle Versions Plugin dependencyUpdates across included builds"
@@ -234,15 +234,14 @@ tasks.register("dependencyUpdatesAll") {
     gradle.includedBuilds
         .filter { it.name !in excluded }
         .forEach { build ->
-            runCatching { dependsOn(build.task(":dependencyUpdates")) }
-                .onFailure { logger.debug("Included build ${build.name} has no :dependencyUpdates task") }
+            dependsOn(build.task(":dependencyUpdates"))
         }
 }
 
 // Aggregate OWASP dependency check across included builds when available
 tasks.register("dependencyCheckAnalyzeAll") {
     group = "verification"
-    description = "Run OWASP dependencyCheckAnalyze across included builds"
+    description = "Run OWASP dependencyCheckAnalyze across included builds (best-effort)"
     gradle.includedBuilds.forEach { build ->
         runCatching { dependsOn(build.task(":dependencyCheckAnalyze")) }
             .onFailure { logger.debug("Included build ${build.name} has no :dependencyCheckAnalyze task") }
@@ -252,7 +251,7 @@ tasks.register("dependencyCheckAnalyzeAll") {
 // Aggregate license report generation across included builds when available
 tasks.register("generateLicenseReportAll") {
     group = "verification"
-    description = "Generate license reports across included builds"
+    description = "Generate license reports across included builds (best-effort)"
     gradle.includedBuilds.forEach { build ->
         runCatching { dependsOn(build.task(":generateLicenseReport")) }
             .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }

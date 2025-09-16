@@ -106,5 +106,18 @@ jobs:
       if: always()
       with:
         name: Unit Test Results
-        path: '**/build/test-results/**/TEST-*.xml'
+        path: '**/build/test-results/test*/TEST-*.xml'
         reporter: java-junit
+        fail-on-error: false
+        fail-on-empty: false
+        max-annotations: '50'
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: unit-test-results-${{ github.run_number }}
+        path: |
+          **/build/test-results/
+          **/build/reports/tests/
+        retention-days: 30

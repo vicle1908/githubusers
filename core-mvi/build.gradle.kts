@@ -16,6 +16,7 @@ plugins {
     id("githubusers.quality.detekt")
     id("githubusers.test.convention")
     id("githubusers.quality.ktlint")
+    id("githubusers.dependency.update")
 }
 
 dependencies {
