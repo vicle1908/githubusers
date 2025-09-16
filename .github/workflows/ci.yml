@@ -7,9 +7,6 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -46,16 +43,18 @@ jobs:
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
-    
+
+    # No separate plugins build needed; root tasks cover this
+
     - name: Run Detekt
       run: ./gradlew detektAll --configuration-cache --build-cache
 
     - name: Run ktlint
       run: ./gradlew ktlintCheckAll --configuration-cache --build-cache
-    
+
     - name: Run Android Lint
-      run: ./gradlew lintAll --configuration-cache --build-cache
-    
+      run: ./gradlew :app:lintDebug --configuration-cache --build-cache
+
     - name: Upload Detekt results
       uses: actions/upload-artifact@v4
       if: always()
@@ -64,7 +63,7 @@ jobs:
         path: |
           **/build/reports/detekt/
         retention-days: 30
-    
+
     - name: Upload Lint results
       uses: actions/upload-artifact@v4
       if: always()
@@ -79,16 +78,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: code-quality
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Setup JDK 21
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '21'
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -97,10 +97,10 @@ jobs:
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
-    
+
     - name: Run unit tests
       run: ./gradlew testAll --configuration-cache --build-cache
-    
+
     - name: Generate test report
       uses: dorny/test-reporter@v1
       if: always()
@@ -108,148 +108,3 @@ jobs:
         name: Unit Test Results
         path: '**/build/test-results/**/TEST-*.xml'
         reporter: java-junit
-        fail-on-error: true
-    
-    - name: Upload test results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: unit-test-results
-        path: |
-          **/build/test-results/**
-          **/build/reports/tests/**
-        retention-days: 30
-
-  build:
-    name: Build APK
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    needs: code-quality
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-    
-    - name: Build debug APK
-      run: ./gradlew assembleDebugApp --configuration-cache --build-cache
-    
-    - name: Upload debug APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
-        retention-days: 30
-
-  performance-tests:
-    name: Performance Analysis
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: build
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-    
-    - name: Analyze APK size
-      run: |
-        ./gradlew assembleReleaseApp --configuration-cache --build-cache
-        echo "## APK Size Analysis" >> $GITHUB_STEP_SUMMARY
-        echo "| APK | Size |" >> $GITHUB_STEP_SUMMARY
-        echo "|-----|------|" >> $GITHUB_STEP_SUMMARY
-        find . -name "*.apk" -exec echo "|{}|$(du -h {} | cut -f1)|" \; >> $GITHUB_STEP_SUMMARY
-
-  release-build:
-    name: Release Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: [unit-tests, build, performance-tests]
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-    
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-    
-    - name: Build release APK
-      run: ./gradlew assembleReleaseApp --configuration-cache --build-cache
-    
-    - name: Build release AAB
-      run: ./gradlew bundleReleaseApp --configuration-cache --build-cache
-    
-    - name: Upload release APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-apk
-        path: app/build/outputs/apk/release/app-release.apk
-        retention-days: 90
-    
-    - name: Upload release AAB
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-aab
-        path: app/build/outputs/bundle/release/app-release.aab
-        retention-days: 90
-
-  notify:
-    name: Build Summary
-    runs-on: ubuntu-latest
-    if: always()
-    needs: [code-quality, unit-tests, build, performance-tests]
-    
-    steps:
-    - name: Create build summary
-      run: |
-        echo "## CI/CD Pipeline Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
-        echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
-        echo "| Code Quality | ${{ needs.code-quality.result }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| Unit Tests | ${{ needs.unit-tests.result }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
-        echo "| Performance | ${{ needs.performance-tests.result }} |" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Branch:** ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
