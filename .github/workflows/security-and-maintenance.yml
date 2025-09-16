@@ -13,7 +13,8 @@ on:
       - 'gradle/wrapper/gradle-wrapper.properties'
 
 permissions:
-  contents: write
+  contents: read
+  security-events: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -31,6 +32,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup JDK 21
       uses: actions/setup-java@v4
@@ -58,6 +62,8 @@ jobs:
         path: |
           **/build/dependencyUpdates/
         retention-days: 30
+        compression-level: 6
+        if-no-files-found: ignore
     
     - name: Create dependency update summary
       run: |
@@ -77,6 +83,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup JDK 21
       uses: actions/setup-java@v4
@@ -116,6 +125,8 @@ jobs:
         path: |
           **/build/reports/dependency-check-report.*
         retention-days: 30
+        compression-level: 6
+        if-no-files-found: ignore
 
   license-check:
     name: License Compliance Check
@@ -125,6 +136,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup JDK 21
       uses: actions/setup-java@v4
@@ -151,6 +165,8 @@ jobs:
         path: |
           **/build/reports/dependency-license/
         retention-days: 30
+        compression-level: 6
+        if-no-files-found: ignore
 
   performance-benchmark:
     name: Performance Benchmarking
@@ -160,6 +176,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+    
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup JDK 21
       uses: actions/setup-java@v4
@@ -210,6 +229,9 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
     
     - name: Setup JDK 21
       uses: actions/setup-java@v4

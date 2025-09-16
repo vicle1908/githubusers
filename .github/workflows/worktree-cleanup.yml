@@ -17,6 +17,9 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: write
+
 env:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
@@ -102,7 +105,9 @@ jobs:
           echo "🗑️  Deleting merged branches:"
           for branch in "${MERGED_BRANCHES[@]}"; do
             echo "  - $branch"
-            if [[ "${{ github.event.inputs.force_cleanup }}" == "true" || "${{ github.event_name }}" == "schedule" ]]; then
+            if [[ "${{ github.event_name }}" == "schedule" ]]; then
+              git push origin --delete "$branch" || echo "    Failed to delete $branch"
+            elif [[ "${{ github.event.inputs.force_cleanup }}" == "true" && "${{ github.event.inputs.dry_run }}" != "true" ]]; then
               git push origin --delete "$branch" || echo "    Failed to delete $branch"
             else
               echo "    [DRY RUN] Would delete $branch"
@@ -117,11 +122,16 @@ jobs:
             echo "  - $branch"
           done
           
-          if [[ "${{ github.event.inputs.force_cleanup }}" == "true" ]]; then
+          if [[ "${{ github.event.inputs.force_cleanup }}" == "true" && "${{ github.event.inputs.dry_run }}" != "true" ]]; then
             echo "🗑️  Force deleting stale branches:"
             for branch in "${STALE_BRANCHES[@]}"; do
               echo "  - $branch"
               git push origin --delete "$branch" || echo "    Failed to delete $branch"
+            done
+          else
+            for branch in "${STALE_BRANCHES[@]}"; do
+              echo "  - $branch"
+              echo "    [DRY RUN] Would delete $branch"
             done
           fi
         fi
@@ -156,6 +166,8 @@ jobs:
         name: worktree-cleanup-report-${{ github.run_number }}
         path: cleanup-report.md
         retention-days: 30
+        compression-level: 6
+        if-no-files-found: ignore
 
   cleanup-worktree-artifacts:
     runs-on: ubuntu-latest
