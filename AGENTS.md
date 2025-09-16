@@ -125,6 +125,8 @@ Examples:
 
 ## 7) Byterover MCP Protocols
 
+Note: Byterover memory access requires authentication via the Byterover extension. If not authenticated, proceed offline (document key decisions locally) and queue knowledge storage to sync once authenticated. Always prefer retrieving knowledge before implementation and store high-signal programming facts frequently during plans.
+
 Core tools and strong rules:
 
 - List modules first: `byterover-list-modules` before storing/updating to avoid duplicates.
@@ -324,6 +326,15 @@ References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 - Tests (if configured): `:app:testDebugUnitTest`, module-specific `:module:test`.
 - Plugins (composite): changes in `plugins/` are picked up via `includeBuild("plugins")`.
 - Never run `./gradlew` directly; use Gradle MCP to execute these tasks.
+
+## 11f) CI Guidance 2025
+
+- Use the dedicated `dependency-submission.yml` workflow for dependency graph submission; do not duplicate submission inside `ci.yml` to avoid double runs.
+- Prefer matrix strategy for code-quality checks (`detekt`, `ktlint`, `androidLint`), with cache read-only for PR contexts when appropriate.
+- Enable Gradle Build Scans (ensure terms are accepted via gradle.properties or action inputs).
+- JDK 21: run workflows on Temurin 21; keep wrapper validation enabled; use configuration cache and build cache.
+- Artifact hygiene: include run number in artifact names, set retention days, use `if-no-files-found: ignore`, and set a reasonable compression level.
+- See `.github/workflows/README-IMPROVEMENTS.md` for details and rationale.
 
 ## 16) References
 
