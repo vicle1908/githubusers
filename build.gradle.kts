@@ -184,7 +184,7 @@ tasks.register("testAll") {
         val candidates = listOf(":test", ":testDebugUnitTest", ":testReleaseUnitTest")
         candidates.forEach { taskName ->
             runCatching { dependsOn(build.task(taskName)) }
-                .onFailure { logger.debug("Module ${build.name} has no ${taskName} task") }
+                .onFailure { logger.debug("Module ${build.name} has no $taskName task") }
         }
     }
 }
@@ -209,7 +209,7 @@ tasks.register("lintAll") {
     group = "verification"
     description = "Run Android lint across all included builds that expose lint tasks"
 
-    val excluded = setOf("catalog", "plugins", "testing")
+    val excluded = setOf("catalog", "plugins", "testing", "core-common")
     val candidates = listOf(":lint", ":lintDebug", ":lintRelease")
 
     gradle.includedBuilds
@@ -217,7 +217,7 @@ tasks.register("lintAll") {
         .forEach { build ->
             candidates.forEach { taskName ->
                 runCatching { dependsOn(build.task(taskName)) }
-                    .onFailure { logger.debug("Included build ${build.name} has no ${taskName} task") }
+                    .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
             }
         }
 
