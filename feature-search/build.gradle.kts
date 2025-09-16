@@ -14,6 +14,7 @@ plugins {
     id("githubusers.android.room")
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")
+    id("githubusers.dependency.update")
 }
 
 dependencies {
