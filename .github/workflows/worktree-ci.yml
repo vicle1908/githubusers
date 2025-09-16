@@ -53,14 +53,33 @@ jobs:
       run: |
         ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
 
+    - name: Compute artifact name
+      id: artifact-name
+      run: |
+        BRANCH="${{ github.head_ref || github.ref_name }}"
+        SAFE_BRANCH=$(echo "$BRANCH" | tr '/":<>|*?\\' '-')
+        echo "name=ai-branch-build-$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: ai-branch-build-${{ github.head_ref || github.ref_name }}
+        name: ${{ steps.artifact-name.outputs.name }}
         path: |
           app/build/outputs/apk/debug/
           app/build/outputs/apk/release/
+          app/build/outputs/bundle/release/
+        retention-days: 7
+
+    - name: Upload reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ steps.artifact-name.outputs.name }}-reports
+        path: |
+          **/build/reports/detekt/
+          **/build/reports/tests/**
+          **/build/reports/lint-results-*.html
         retention-days: 7
 
   feature-branch-test:
@@ -95,14 +114,33 @@ jobs:
     - name: Build project
       run: ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
 
+    - name: Compute artifact name
+      id: artifact-name
+      run: |
+        BRANCH="${{ github.head_ref || github.ref_name }}"
+        SAFE_BRANCH=$(echo "$BRANCH" | tr '/":<>|*?\\' '-')
+        echo "name=feature-branch-build-$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: feature-branch-build-${{ github.head_ref || github.ref_name }}
+        name: ${{ steps.artifact-name.outputs.name }}
         path: |
           app/build/outputs/apk/debug/
           app/build/outputs/apk/release/
+          app/build/outputs/bundle/release/
+        retention-days: 7
+
+    - name: Upload reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ steps.artifact-name.outputs.name }}-reports
+        path: |
+          **/build/reports/detekt/
+          **/build/reports/tests/**
+          **/build/reports/lint-results-*.html
         retention-days: 7
 
   bugfix-branch-test:
@@ -146,14 +184,33 @@ jobs:
     - name: Build project
       run: ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
 
+    - name: Compute artifact name
+      id: artifact-name
+      run: |
+        BRANCH="${{ github.head_ref || github.ref_name }}"
+        SAFE_BRANCH=$(echo "$BRANCH" | tr '/":<>|*?\\' '-')
+        echo "name=bugfix-branch-build-$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: bugfix-branch-build-${{ github.head_ref || github.ref_name }}
+        name: ${{ steps.artifact-name.outputs.name }}
         path: |
           app/build/outputs/apk/debug/
           app/build/outputs/apk/release/
+          app/build/outputs/bundle/release/
+        retention-days: 7
+
+    - name: Upload reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ steps.artifact-name.outputs.name }}-reports
+        path: |
+          **/build/reports/detekt/
+          **/build/reports/tests/**
+          **/build/reports/lint-results-*.html
         retention-days: 7
 
   hotfix-branch-test:
@@ -188,14 +245,33 @@ jobs:
     - name: Build project
       run: ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
 
+    - name: Compute artifact name
+      id: artifact-name
+      run: |
+        BRANCH="${{ github.head_ref || github.ref_name }}"
+        SAFE_BRANCH=$(echo "$BRANCH" | tr '/":<>|*?\\' '-')
+        echo "name=hotfix-branch-build-$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: hotfix-branch-build-${{ github.head_ref || github.ref_name }}
+        name: ${{ steps.artifact-name.outputs.name }}
         path: |
           app/build/outputs/apk/debug/
           app/build/outputs/apk/release/
+          app/build/outputs/bundle/release/
+        retention-days: 7
+
+    - name: Upload reports
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: ${{ steps.artifact-name.outputs.name }}-reports
+        path: |
+          **/build/reports/detekt/
+          **/build/reports/tests/**
+          **/build/reports/lint-results-*.html
         retention-days: 7
 
   ai-merge-queue:
