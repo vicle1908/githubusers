@@ -11,6 +11,7 @@ plugins {
     id("githubusers.quality.ktlint")
     id("githubusers.feature.module")
     id("githubusers.common.version")
+    id("githubusers.dependency.update")
 }
 
 dependencies {
