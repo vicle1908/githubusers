@@ -230,12 +230,11 @@ tasks.register("lintAll") {
 tasks.register("dependencyUpdatesAll") {
     group = "verification"
     description = "Run Gradle Versions Plugin dependencyUpdates across included builds"
-    val excluded = setOf("catalog", "plugins")
+    // Limit to app included build to avoid missing task failures in composite builds
     gradle.includedBuilds
-        .filter { it.name !in excluded }
+        .filter { it.name == "app" }
         .forEach { build ->
-            runCatching { dependsOn(build.task(":dependencyUpdates")) }
-                .onFailure { logger.debug("Included build ${build.name} has no :dependencyUpdates task") }
+            dependsOn(build.task(":dependencyUpdates"))
         }
 }
 
@@ -243,18 +242,22 @@ tasks.register("dependencyUpdatesAll") {
 tasks.register("dependencyCheckAnalyzeAll") {
     group = "verification"
     description = "Run OWASP dependencyCheckAnalyze across included builds"
-    gradle.includedBuilds.forEach { build ->
-        runCatching { dependsOn(build.task(":dependencyCheckAnalyze")) }
-            .onFailure { logger.debug("Included build ${build.name} has no :dependencyCheckAnalyze task") }
-    }
+    gradle.includedBuilds
+        .filter { it.name == "app" }
+        .forEach { build ->
+            runCatching { dependsOn(build.task(":dependencyCheckAnalyze")) }
+                .onFailure { logger.debug("Included build ${build.name} has no :dependencyCheckAnalyze task") }
+        }
 }
 
 // Aggregate license report generation across included builds when available
 tasks.register("generateLicenseReportAll") {
     group = "verification"
     description = "Generate license reports across included builds"
-    gradle.includedBuilds.forEach { build ->
-        runCatching { dependsOn(build.task(":generateLicenseReport")) }
-            .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
-    }
+    gradle.includedBuilds
+        .filter { it.name == "app" }
+        .forEach { build ->
+            runCatching { dependsOn(build.task(":generateLicenseReport")) }
+                .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
+        }
 }
