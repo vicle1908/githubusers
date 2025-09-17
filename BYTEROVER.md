@@ -47,6 +47,16 @@ The application follows **Clean Architecture** principles with **MVI (Model-View
 
 ### Core Modules
 
+#### core-security
+**Purpose**: Security, cryptography, and sensitive data handling utilities
+```kotlin
+// Key Components
+- Token encryption/decryption helpers
+- EncryptedSharedPreferences/DataStore wrappers
+- Certificate pinning configuration helpers
+- Input validation and sanitization utilities
+```
+
 #### core-mvi
 **Purpose**: MVI pattern implementation and base classes
 ```kotlin
@@ -94,6 +104,15 @@ The application follows **Clean Architecture** principles with **MVI (Model-View
 ```
 
 ### Feature Modules
+
+#### feature-auth
+**Purpose**: Authentication flows (sign-in, sign-out) and token management
+```kotlin
+// Layers
+- Data: AuthApiService, TokenStorage
+- Domain: SignInUseCase, SignOutUseCase
+- Presentation: AuthViewModel, AuthScreen(s)
+```
 
 #### feature-users
 **Purpose**: User profiles and repository viewing
@@ -174,11 +193,7 @@ The application follows **Clean Architecture** principles with **MVI (Model-View
 #### plugins
 **Purpose**: Gradle convention plugins for consistent build configuration (Detekt, KtLint, Android, Hilt, Compose, testing)
 
-#### internal-platform
-**Purpose**: Internal BOM and platform alignment for dependency versions across modules
 
-#### shared-resources
-**Purpose**: Common Android resources (themes, strings, drawables) shared across features
 
 #### testing
 **Purpose**: Shared test utilities (Coroutine rules, MockWebServer helpers, fixtures)
