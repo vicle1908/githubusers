@@ -43,18 +43,10 @@ root_settings="settings.gradle.kts"
 
 list_modules_from_settings() {
   if [[ -f "$root_settings" ]]; then
-    # Strip line comments and extract includeBuild("...") targets
-    awk '
-      {
-        # remove // comments
-        sub(/\/\/.*$/, "");
-      }
-      /includeBuild\("/ {
-        if (match($0, /includeBuild\("([^"]+)"\)/, m)) {
-          print m[1];
-        }
-      }
-    ' "$root_settings" | sed 's#^\./##' | sed 's#^/##' | sed 's#/$##'
+    # Strip // comments then extract includeBuild("...") targets using portable sed
+    sed -E 's#//.*$##' "$root_settings" \
+      | sed -nE 's/.*includeBuild\("([^"]+)"\).*/\1/p' \
+      | sed -E 's#^\./##; s#^/##; s#/$##'
   fi
 }
 
