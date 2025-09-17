@@ -299,3 +299,10 @@ script/**
 .claude/
 .gemini/
 app/src/main/cpp/security_manager.cpp
+# MCP Environment Files - API Keys and Secrets
+.env
+.env.local
+*.env
+**/secrets/
+**/credentials/
+api-keys.txt

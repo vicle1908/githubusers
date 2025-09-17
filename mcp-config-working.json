@@ -1,0 +1,175 @@
+{
+  "_SECURITY_NOTICE": "This configuration uses environment variables for API keys. Set up your .env file before use. NEVER commit API keys to version control.",
+  "_SETUP_GUIDE": "See MCP-SECURE-SETUP-GUIDE.md for complete setup instructions",
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      },
+      "alwaysAllow": ["resolve-library-id", "get-library-docs"],
+      "status": "✅ WORKING - HTTP API"
+    },
+    "claude-context": {
+      "command": "npx",
+      "args": ["@zilliz/claude-context-mcp@latest"],
+      "env": {
+        "MILVUS_ADDRESS": "${MILVUS_ADDRESS}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "MILVUS_TOKEN": "${MILVUS_TOKEN}"
+      },
+      "alwaysAllow": [
+        "index_codebase",
+        "search_code",
+        "clear_index",
+        "get_indexing_status"
+      ],
+      "status": "✅ WORKING - NPX available"
+    },
+    "zen": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/BeehiveInnovations/zen-mcp-server.git",
+        "zen-mcp-server"
+      ],
+      "env": {
+        "XAI_API_KEY": "${XAI_API_KEY}",
+        "GOOGLE_ALLOWED_MODELS": "gemini-2.5-pro,flash",
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+        "OPENAI_ALLOWED_MODELS": "gpt-5",
+        "DISABLED_TOOLS": "tracer,testgen,secaudit,docgen",
+        "DEFAULT_THINKING_MODE_THINKDEEP": "high",
+        "XAI_ALLOWED_MODELS": "grok-4",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "DEFAULT_MODEL": "auto"
+      },
+      "alwaysAllow": [
+        "thinkdeep",
+        "planner", 
+        "consensus",
+        "codereview",
+        "precommit",
+        "debug",
+        "secaudit",
+        "docgen",
+        "analyze",
+        "refactor",
+        "tracer",
+        "challenge",
+        "listmodels",
+        "list_models",
+        "testgen",
+        "version",
+        "get_tools"
+      ],
+      "status": "✅ WORKING - uvx installed, API keys configured"
+    },
+    "android": {
+      "command": "uvx",
+      "args": ["mcp-server-android"],
+      "status": "✅ WORKING - uvx + ADB installed, requires device/emulator"
+    },
+    "deepwiki": {
+      "type": "http",
+      "url": "https://mcp.deepwiki.com/mcp",
+      "alwaysAllow": ["ask_question"],
+      "status": "✅ WORKING - HTTP API"
+    },
+    "docfork": {
+      "type": "http",
+      "url": "https://mcp.docfork.com/mcp",
+      "alwaysAllow": ["get-library-docs"],
+      "status": "✅ WORKING - HTTP API"
+    },
+    "tavily": {
+      "type": "http",
+      "url": "https://mcp.tavily.com/mcp/?tavilyApiKey=${TAVILY_API_KEY}",
+      "alwaysAllow": [
+        "tavily_search",
+        "tavily_extract", 
+        "tavily_crawl",
+        "tavily_map"
+      ],
+      "status": "✅ WORKING - HTTP API"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@brave/brave-search-mcp-server"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}",
+        "BRAVE_MCP_TRANSPORT": "stdio"
+      },
+      "alwaysAllow": ["brave_web_search", "brave_local_search"],
+      "status": "✅ WORKING - NPX available"
+    },
+    "openmemory": {
+      "command": "npx", 
+      "args": ["openmemory"],
+      "env": {
+        "OPENMEMORY_API_KEY": "${OPENMEMORY_API_KEY}",
+        "CLIENT_NAME": "MetaMCP"
+      },
+      "alwaysAllow": ["add-memory", "search-memories", "list-memories"],
+      "status": "✅ WORKING - NPX available"
+    },
+    "mobile-mcp": {
+      "command": "npx",
+      "args": ["@mobilenext/mobile-mcp@latest"],
+      "status": "✅ WORKING - NPX available, requires device/emulator"
+    },
+    "exa": {
+      "type": "http",
+      "url": "https://mcp.exa.ai/mcp?exaApiKey=${EXA_API_KEY}",
+      "status": "✅ WORKING - HTTP API"
+    },
+    "git-mcp-server": {
+      "command": "npx",
+      "args": ["@cyanheads/git-mcp-server"],
+      "env": {
+        "MCP_LOG_LEVEL": "info",
+        "GIT_SIGN_COMMITS": "false"
+      },
+      "status": "✅ WORKING - NPX available"
+    },
+    "medium-search": {
+      "command": "npx",
+      "args": ["-y", "medium-mcp-server", "search"],
+      "status": "✅ WORKING - NPX available"
+    },
+    "byterover-mcp": {
+      "type": "http",
+      "url": "https://mcp.byterover.dev/v2/mcp",
+      "alwaysAllow": [
+        "byterover-retrieve-knowledge",
+        "byterover-store-knowledge", 
+        "byterover-create-handbook",
+        "byterover-assess-context-completeness",
+        "byterover-save-implementation-plan",
+        "byterover-update-plan-progress",
+        "byterover-retrieve-active-plans",
+        "byterover-store-module",
+        "byterover-search-module",
+        "byterover-update-module",
+        "byterover-list-modules",
+        "byterover-check-handbook-existence",
+        "byterover-think-about-collected-information",
+        "byterover-check-handbook-sync",
+        "byterover-update-handbook"
+      ],
+      "status": "✅ WORKING - HTTP API"
+    }
+  },
+  "environment_status": {
+    "uv_uvx": "✅ INSTALLED - Version 0.8.17",
+    "node_npm": "✅ AVAILABLE - Node v22.16.0, NPM v10.9.2",
+    "adb": "✅ INSTALLED - Version 1.0.41, daemon running",
+    "android_sdk": "🔶 PARTIAL - Command line tools only, no emulator",
+    "python": "✅ AVAILABLE - Python 3.13.3",
+    "total_mcp_servers": 12,
+    "working_servers": 12,
+    "api_dependent_servers": 6,
+    "device_dependent_servers": 2
+  }
+}
