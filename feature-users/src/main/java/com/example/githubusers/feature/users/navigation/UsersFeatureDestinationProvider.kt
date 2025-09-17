@@ -34,7 +34,7 @@ import com.example.githubusers.feature.users.navigation.UserNavigationEventInfo
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
-import com.example.githubusers.navigation.api.openSearch
+import com.example.githubusers.feature.search.navigation.api.openSearch
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -3,7 +3,7 @@ package com.example.githubusers.feature.search.navigation
 import android.net.Uri
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
-import com.example.githubusers.navigation.api.decodeSearchFilter
+import com.example.githubusers.feature.search.navigation.api.decodeSearchFilter
 import javax.inject.Inject
 import javax.inject.Singleton
 

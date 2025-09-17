@@ -1,3 +1,4 @@
+package com.example.githubusers.feature.search.navigation.api
 
 import android.net.Uri
 import com.example.githubusers.core.search.domain.SearchFilter
