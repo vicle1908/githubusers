@@ -73,6 +73,11 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:core-ui")).using(project(":"))
         }
     }
+    includeBuild("core-security") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-security")).using(project(":"))
+        }
+    }
 
     // Navigation modules
     includeBuild("navigation-api") {
@@ -101,6 +106,11 @@ if (useCompositeBuilds) {
     includeBuild("feature-settings") {
         dependencySubstitution {
             substitute(module("com.example.githubusers:feature-settings")).using(project(":"))
+        }
+    }
+    includeBuild("feature-auth") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:feature-auth")).using(project(":"))
         }
     }
 
