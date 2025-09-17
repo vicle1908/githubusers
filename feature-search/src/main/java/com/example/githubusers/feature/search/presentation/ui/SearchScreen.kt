@@ -156,8 +156,10 @@ private fun TrendingListSection(
 ) {
     val refreshError = trendingUsers.loadState.refresh
     if (refreshError is androidx.paging.LoadState.Error) {
-        val msg = searchErrorMessageFromThrowable(refreshError.error)
-        ErrorBanner(message = msg, onRetry = { trendingUsers.retry() })
+        com.example.githubusers.core.ui.feedback.ErrorBanner(
+            throwable = refreshError.error,
+            onRetry = { trendingUsers.retry() }
+        )
     }
     StandardUserList(
         pagingItems = trendingUsers,
@@ -198,8 +200,10 @@ private fun SearchResultsListSection(
 ) {
     val refreshError = searchResults.loadState.refresh
     if (refreshError is androidx.paging.LoadState.Error) {
-        val msg = searchErrorMessageFromThrowable(refreshError.error)
-        ErrorBanner(message = msg, onRetry = { searchResults.retry() })
+        com.example.githubusers.core.ui.feedback.ErrorBanner(
+            throwable = refreshError.error,
+            onRetry = { searchResults.retry() }
+        )
     }
     StandardUserList(
         pagingItems = searchResults,
@@ -365,43 +369,6 @@ private fun SearchSuggestionsContent(
                 TextButton(onClick = onClearHistory) {
                     Text("Clear history")
                 }
-            }
-        }
-    }
-}
-
-private fun searchErrorMessageFromThrowable(t: Throwable): String {
-    val default = "Something went wrong. Please try again."
-    return if (t is com.example.githubusers.core.search.domain.SearchException) {
-        when (val e = t.error) {
-            is com.example.githubusers.core.search.domain.SearchError.Network -> "Network error. Check your connection and try again."
-            is com.example.githubusers.core.search.domain.SearchError.Timeout -> "Request timed out. Please retry."
-            is com.example.githubusers.core.search.domain.SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
-            is com.example.githubusers.core.search.domain.SearchError.Server -> "Server error (${e.code}). Please try again later."
-            is com.example.githubusers.core.search.domain.SearchError.Client -> "Request error (${e.code}). Please adjust your query and try again."
-            is com.example.githubusers.core.search.domain.SearchError.Unknown -> default
-        }
-    } else default
-}
-
-@Composable
-private fun ErrorBanner(message: String, onRetry: () -> Unit) {
-    androidx.compose.material3.Surface(
-        color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-        ) {
-            Text(text = message, style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(6.dp))
-            TextButton(onClick = onRetry) {
-                Text("Retry")
             }
         }
     }
