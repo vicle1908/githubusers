@@ -28,7 +28,7 @@ interface UserDetailRepository {
     fun getUserRepositories(
         username: String,
         sort: RepositorySort = RepositorySort.UPDATED,
-        perPage: Int = 30,
+        perPage: Int = 30
     ): Flow<PagingData<Repository>>
 
     /**
@@ -66,12 +66,10 @@ interface UserDetailRepository {
 /**
  * Repository sort options.
  */
-enum class RepositorySort(
-    val value: String,
-) {
+enum class RepositorySort(val value: String) {
     CREATED("created"),
     UPDATED("updated"),
     PUSHED("pushed"),
     FULL_NAME("full_name"),
-    STARS("stars"),
+    STARS("stars")
 }

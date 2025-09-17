@@ -12,19 +12,18 @@ import javax.inject.Singleton
  */
 @Singleton
 class RoomDatabaseProvider
-    @Inject
-    constructor() {
-        /**
-         * Creates a Room database instance for the given context.
-         * Features can use this to create their own database instances.
-         */
-        inline fun <reified T : RoomDatabase> createDatabase(
-            context: Context,
-            name: String,
-            builder: RoomDatabase.Builder<T>.() -> Unit = {},
-        ): T =
-            Room
-                .databaseBuilder(context, T::class.java, name)
-                .apply(builder)
-                .build()
-    }
+@Inject
+constructor() {
+    /**
+     * Creates a Room database instance for the given context.
+     * Features can use this to create their own database instances.
+     */
+    inline fun <reified T : RoomDatabase> createDatabase(
+        context: Context,
+        name: String,
+        builder: RoomDatabase.Builder<T>.() -> Unit = {}
+    ): T = Room
+        .databaseBuilder(context, T::class.java, name)
+        .apply(builder)
+        .build()
+}

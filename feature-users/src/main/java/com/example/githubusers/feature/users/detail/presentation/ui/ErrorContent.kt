@@ -23,24 +23,20 @@ import androidx.compose.ui.unit.dp
  * Error content with retry option.
  */
 @Composable
-fun ErrorContent(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun ErrorContent(message: String, onRetry: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier =
-            modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
         Icon(
             imageVector = Icons.Filled.Warning,
             contentDescription = "Error",
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error,
+            tint = MaterialTheme.colorScheme.error
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -48,7 +44,7 @@ fun ErrorContent(
         Text(
             text = "Something went wrong",
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -57,7 +53,7 @@ fun ErrorContent(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(24.dp))

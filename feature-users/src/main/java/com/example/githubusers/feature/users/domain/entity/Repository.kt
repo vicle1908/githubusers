@@ -15,5 +15,5 @@ data class Repository(
     val forksCount: Int,
     val isPrivate: Boolean,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 )

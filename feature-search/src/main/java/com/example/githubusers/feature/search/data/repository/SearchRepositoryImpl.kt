@@ -3,13 +3,13 @@ package com.example.githubusers.feature.search.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.core.search.domain.SearchRepository
+import com.example.githubusers.core.search.domain.SearchResult
 import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.local.SearchHistoryDataSource
 import com.example.githubusers.feature.search.data.paging.SearchPagingSource
 import com.example.githubusers.feature.search.data.paging.TrendingUsersPagingSource
-import com.example.githubusers.feature.search.domain.entity.SearchFilter
-import com.example.githubusers.feature.search.domain.entity.SearchResult
-import com.example.githubusers.feature.search.domain.repository.SearchRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow

@@ -37,10 +37,10 @@ dependencies {
 
     // Core Android
     implementation(libs.androidx.core.ktx)
-    
+
     // DataStore for secure token storage
     implementation(libs.androidx.datastore.preferences)
-    
+
     // Timber for logging
     implementation(libs.timber)
 

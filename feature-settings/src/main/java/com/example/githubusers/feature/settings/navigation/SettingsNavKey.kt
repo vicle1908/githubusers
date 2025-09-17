@@ -7,5 +7,3 @@ sealed interface SettingsNavKey : NavKey {
     @Serializable
     data class Settings(val section: String?) : SettingsNavKey
 }
-
-

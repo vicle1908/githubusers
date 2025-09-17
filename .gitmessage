@@ -1,5 +1,5 @@
-# AI Assistant: claude
-# Task: workflow-setup - github-actions
+# AI Assistant: codex
+# Task: search-enhancement - search-feature
 # 
 # Changes made by AI assistant for parallel development
 # 
@@ -14,4 +14,4 @@
 # - [ ] Integration tests pass
 # - [ ] Manual testing completed
 # 
-# Related: #workflow-setup
+# Related: #search-enhancement

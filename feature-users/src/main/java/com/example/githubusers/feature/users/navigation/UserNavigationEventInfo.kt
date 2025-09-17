@@ -5,7 +5,7 @@ import androidx.navigationevent.NavigationEventInfo
 /**
  * User-specific NavigationEventInfo for user-related destinations.
  * This provides contextual information for predictive back gestures and navigation events.
- * 
+ *
  * This class is owned by the feature-users module and should not be used by other features.
  */
 data class UserNavigationEventInfo(

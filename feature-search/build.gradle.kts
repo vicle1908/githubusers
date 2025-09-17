@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -21,8 +22,10 @@ dependencies {
     // Platform for version alignment
 
     // Core modules
+    implementation(libs.local.core.common)
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
+    implementation(libs.local.core.ui)
 
     // AndroidX
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -57,6 +60,7 @@ dependencies {
 
     // Serialization
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
 
     // Testing (common ones provided by convention plugin)
     androidTestImplementation(platform(libs.androidx.compose.bom))

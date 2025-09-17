@@ -28,6 +28,10 @@ dependencies {
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.material.icons.extended)
 
+    // Paging (Compose integration)
+    api(libs.androidx.paging.compose)
+    api(libs.androidx.paging.runtime)
+
     // Compose utilities
     api(libs.androidx.activity.compose)
     api(libs.androidx.lifecycle.viewmodel.compose)

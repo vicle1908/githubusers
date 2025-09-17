@@ -12,6 +12,8 @@ plugins {
 }
 
 dependencies {
+    // Pure JVM facade; no Android/Hilt dependencies to avoid AAR variant issues
+    // If DI is needed, wire in platform modules instead and keep core-common dependency-free for Android
     api(libs.kotlinx.coroutines.core)
     api(libs.androidx.paging.common)
     api(libs.kotlinx.serialization.json)

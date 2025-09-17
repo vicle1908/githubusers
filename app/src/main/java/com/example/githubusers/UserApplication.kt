@@ -1,8 +1,6 @@
 package com.example.githubusers
 
 import android.app.Application
-// import com.google.firebase.FirebaseApp
-// import com.google.firebase.perf.FirebasePerformance
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -11,7 +9,7 @@ class UserApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        
+
         // Firebase initialization temporarily disabled for authentication testing
         // FirebaseApp.initializeApp(this)
         // Firebase Performance Monitoring temporarily disabled

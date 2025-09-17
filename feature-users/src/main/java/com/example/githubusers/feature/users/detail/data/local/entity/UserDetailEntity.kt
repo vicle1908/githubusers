@@ -30,5 +30,5 @@ data class UserDetailEntity(
     val type: String,
     val siteAdmin: Boolean,
     val hireable: Boolean?,
-    val cachedAt: Instant = Instant.now(),
+    val cachedAt: Instant = Instant.now()
 )

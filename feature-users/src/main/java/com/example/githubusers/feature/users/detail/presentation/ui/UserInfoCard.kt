@@ -49,50 +49,50 @@ fun UserInfoCard(
     isBioExpanded: Boolean,
     onFollowClick: () -> Unit,
     onBioClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             // User avatar and basic info
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.Top
             ) {
                 AsyncImage(
                     model =
-                        ImageRequest
-                            .Builder(LocalContext.current)
-                            .data(userDetail.avatarUrl)
-                            .crossfade(true)
-                            .build(),
+                    ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(userDetail.avatarUrl)
+                        .crossfade(true)
+                        .build(),
                     contentDescription = "${userDetail.login}'s avatar",
                     placeholder = painterResource(android.R.drawable.ic_menu_gallery),
                     error = painterResource(android.R.drawable.ic_menu_report_image),
                     contentScale = ContentScale.Crop,
                     modifier =
-                        Modifier
-                            .size(80.dp)
-                            .clip(CircleShape),
+                    Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Column(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
                 ) {
                     // Name
                     Text(
                         text = userDetail.name ?: userDetail.login,
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     // Username
@@ -100,7 +100,7 @@ fun UserInfoCard(
                         Text(
                             text = "@${userDetail.login}",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
@@ -109,20 +109,20 @@ fun UserInfoCard(
                     // Follow button
                     if (isFollowActionInProgress) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(24.dp)
                         )
                     } else {
                         if (isFollowing) {
                             OutlinedButton(
                                 onClick = onFollowClick,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text("Unfollow")
                             }
                         } else {
                             Button(
                                 onClick = onFollowClick,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text("Follow")
                             }
@@ -141,10 +141,10 @@ fun UserInfoCard(
                     maxLines = if (isBioExpanded) Int.MAX_VALUE else 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .animateContentSize()
-                            .clickable { onBioClick() },
+                    Modifier
+                        .fillMaxWidth()
+                        .animateContentSize()
+                        .clickable { onBioClick() }
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }
@@ -152,19 +152,19 @@ fun UserInfoCard(
             // Stats row
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatItem(
                     count = userDetail.followers,
-                    label = "Followers",
+                    label = "Followers"
                 )
                 StatItem(
                     count = userDetail.following,
-                    label = "Following",
+                    label = "Following"
                 )
                 StatItem(
                     count = userDetail.publicRepos,
-                    label = "Repos",
+                    label = "Repos"
                 )
             }
 
@@ -173,7 +173,7 @@ fun UserInfoCard(
             // Additional info
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 userDetail.company?.let { company ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -181,13 +181,13 @@ fun UserInfoCard(
                             imageVector = Icons.Filled.Home,
                             contentDescription = "Company",
                             modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = company,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -198,13 +198,13 @@ fun UserInfoCard(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = "Location",
                             modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = location,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -214,24 +214,20 @@ fun UserInfoCard(
 }
 
 @Composable
-private fun StatItem(
-    count: Int,
-    label: String,
-    modifier: Modifier = Modifier,
-) {
+private fun StatItem(count: Int, label: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = count.toString(),
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

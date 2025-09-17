@@ -9,9 +9,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
@@ -21,15 +21,17 @@ import com.example.githubusers.navigation.impl.DeepLinkDispatcher
 import com.example.githubusers.navigation.impl.Navigation3FeatureRegistry
 import com.example.githubusers.presentation.theme.GithubUsersTheme
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
+    @Suppress("LateinitUsage")
     lateinit var registry: Navigation3FeatureRegistry
 
     @Inject
+    @Suppress("LateinitUsage")
     lateinit var dispatcher: DeepLinkDispatcher
 
     // Removed StartupPerformanceTracker injection - using Firebase Performance Monitoring instead
@@ -58,7 +60,13 @@ class MainActivity : ComponentActivity() {
                         // Use DeepLinkDispatcher directly instead of ModuleNavigator wrapper
                         val key = dispatcher.toKey(deepLink)
                         if (key != null) {
-                            backStack.add(key)
+                            // launchSingleTop semantics: avoid pushing duplicate top entry
+                            val top = backStack.lastOrNull()
+                            if (top != null && top == key) {
+                                Timber.tag("MainNavGraph").d("launchSingleTop: ignoring duplicate key: $key")
+                            } else {
+                                backStack.add(key)
+                            }
                         }
                     },
                     LocalNavigateBack provides {
@@ -77,11 +85,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainNavGraph(
-    backStack: NavBackStack<NavKey>,
-    registry: Navigation3FeatureRegistry,
-    modifier: Modifier = Modifier
-) {
+fun MainNavGraph(backStack: NavBackStack<NavKey>, registry: Navigation3FeatureRegistry, modifier: Modifier = Modifier) {
     // Firebase Performance Monitoring automatically tracks first frame and time-to-interactive
     LaunchedEffect(backStack) {
         Timber.tag("MainNavGraph").d("LaunchedEffect called with backStack: $backStack")

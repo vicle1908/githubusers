@@ -34,15 +34,12 @@ interface UserDetailDependencies {
  * @param navigator Navigator for handling navigation actions
  */
 @Composable
-fun UserDetailRoute(
-    username: String,
-    navigator: UserDetailNavigator,
-) {
+fun UserDetailRoute(username: String, navigator: UserDetailNavigator) {
     val context = LocalContext.current
     val dependencies =
         EntryPointAccessors.fromApplication(
             context.applicationContext,
-            UserDetailDependencies::class.java,
+            UserDetailDependencies::class.java
         )
 
     val viewModel =
@@ -51,7 +48,7 @@ fun UserDetailRoute(
                 username = username,
                 getUserDetailUseCase = dependencies.getUserDetailUseCase(),
                 getUserRepositoriesUseCase = dependencies.getUserRepositoriesUseCase(),
-                followUserUseCase = dependencies.followUserUseCase(),
+                followUserUseCase = dependencies.followUserUseCase()
             )
         }
 
@@ -62,6 +59,6 @@ fun UserDetailRoute(
         uiState = uiState,
         repositoriesFlow = repositoriesFlow,
         onIntent = viewModel::onIntent,
-        onBackClick = navigator::navigateBack,
+        onBackClick = navigator::navigateBack
     )
 }

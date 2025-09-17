@@ -24,7 +24,9 @@ The `app` module is the main application entry point that orchestrates all featu
 | `UserApplication` | Application class with `@HiltAndroidApp` annotation |
 | `MainActivity` | Single activity hosting all navigation |
 | `DeepLinkEntryActivity` | Handles external deep links |
-| `ModuleNavigator` | Cross-module navigation coordinator |
+| `DeepLinkDispatcher` | Converts deep link URIs to Navigation 3 keys |
+| `Navigation3FeatureRegistry` | Resolves keys to feature-owned NavEntries |
+| `LocalNavigateToDeepLink` / `LocalNavigateBack` | CompositionLocals for navigation |
 | `GithubUsersTheme` | App-wide Material 3 theme |
 
 ### Navigation Setup
@@ -32,9 +34,14 @@ The `app` module is the main application entry point that orchestrates all featu
 ```kotlin
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject lateinit var backStack: Navigation3BackStack
     @Inject lateinit var registry: Navigation3FeatureRegistry
     @Inject lateinit var dispatcher: DeepLinkDispatcher
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // ... setContent { CompositionLocalProvider(LocalNavigateToDeepLink, LocalNavigateBack) { NavDisplay(...) } }
+        // restoreState is enabled via rememberSavedStateNavEntryDecorator
+        // singleTop implemented by checking top key equality before pushing
+    }
 }
 ```
 
@@ -55,15 +62,17 @@ class MainActivity : ComponentActivity() {
 - Navigation3 (custom implementation)
 - Material 3
 
-## 🔗 Deep Links
+### 🔗 Deep Links
 
-The app handles the following deep link patterns:
+The app handles the following deep link patterns (feature-owned):
 
 | Pattern | Description |
 |---------|-------------|
 | `app://users/list` | User list screen |
 | `app://users/user/{username}` | User detail screen |
+| `app://search` | Search screen |
 | `app://search?q={query}` | Search with query |
+| `app://users/search` | Legacy redirect to Search (with optional `q`) |
 | `app://settings` | Settings screen |
 
 ## 🧪 Testing
@@ -106,6 +115,17 @@ Key manifest entries:
 ### Product Flavors
 - **dev**: Development environment
 - **prod**: Production environment
+
+## 🧭 Runtime Semantics
+
+- restoreState: enabled via `rememberSavedStateNavEntryDecorator` in `MainActivity`
+- singleTop: avoids pushing duplicate top entries via equality check before `backStack.add`
+- Navigation ownership: features own deep links and keys; `DeepLinkDispatcher` converts URIs to keys; `Navigation3FeatureRegistry` resolves keys into UI
+
+## 🧰 Troubleshooting
+
+- If `installDebug` fails with adb home permission errors (mkdir '/.android'): set `ANDROID_SDK_HOME=/Users/<you>` for the Gradle invocation
+- If device is OFFLINE: restart the AVD and retry `:app:installDebug`
 
 ## 📚 Related Documentation
 

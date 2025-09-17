@@ -35,5 +35,5 @@ data class RepositoryEntity(
     val licenseKey: String?,
     val licenseName: String?,
     val visibility: String,
-    val cachedAt: Instant = Instant.now(),
+    val cachedAt: Instant = Instant.now()
 )

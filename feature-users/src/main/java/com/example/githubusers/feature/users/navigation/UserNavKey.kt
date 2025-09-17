@@ -13,4 +13,3 @@ sealed interface UserNavKey : NavKey {
     @Serializable
     data class UserSettingsDialog(val username: String) : UserNavKey
 }
-

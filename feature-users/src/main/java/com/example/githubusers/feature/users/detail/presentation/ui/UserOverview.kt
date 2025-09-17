@@ -33,43 +33,40 @@ import java.time.format.DateTimeFormatter
  * Overview tab content for user details.
  */
 @Composable
-fun UserOverview(
-    userDetail: UserDetail,
-    modifier: Modifier = Modifier,
-) {
+fun UserOverview(userDetail: UserDetail, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Account Information
         Card(
             modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     text = "Account Information",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
 
                 InfoRow(
                     icon = Icons.Filled.DateRange,
                     label = "Joined",
                     value =
-                        DateTimeFormatter
-                            .ofPattern("MMMM yyyy")
-                            .format(userDetail.createdAt.atZone(ZoneId.systemDefault()).toLocalDate()),
+                    DateTimeFormatter
+                        .ofPattern("MMMM yyyy")
+                        .format(userDetail.createdAt.atZone(ZoneId.systemDefault()).toLocalDate())
                 )
 
                 userDetail.email?.let {
                     InfoRow(
                         icon = Icons.Filled.Email,
                         label = "Email",
-                        value = it,
+                        value = it
                     )
                 }
 
@@ -77,7 +74,7 @@ fun UserOverview(
                     InfoRow(
                         icon = Icons.Filled.Info,
                         label = "Website",
-                        value = it,
+                        value = it
                     )
                 }
 
@@ -85,7 +82,7 @@ fun UserOverview(
                     InfoRow(
                         icon = Icons.Filled.Person,
                         label = "Twitter",
-                        value = "@$it",
+                        value = "@$it"
                     )
                 }
             }
@@ -94,29 +91,29 @@ fun UserOverview(
         // Statistics
         Card(
             modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     text = "Statistics",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     StatCard(
                         value = userDetail.publicRepos.toString(),
-                        label = "Public Repos",
+                        label = "Public Repos"
                     )
                     StatCard(
                         value = userDetail.publicGists.toString(),
-                        label = "Public Gists",
+                        label = "Public Gists"
                     )
                 }
 
@@ -124,15 +121,15 @@ fun UserOverview(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     StatCard(
                         value = userDetail.followers.toString(),
-                        label = "Followers",
+                        label = "Followers"
                     )
                     StatCard(
                         value = userDetail.following.toString(),
-                        label = "Following",
+                        label = "Following"
                     )
                 }
             }
@@ -142,16 +139,16 @@ fun UserOverview(
         if (userDetail.hireable != null || userDetail.type != "User") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "Additional Info",
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
 
                     if (userDetail.type != "User") {
@@ -159,11 +156,11 @@ fun UserOverview(
                             Text(
                                 text = "Account Type: ",
                                 style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Medium
                             )
                             Text(
                                 text = userDetail.type,
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -173,11 +170,11 @@ fun UserOverview(
                             Text(
                                 text = "Available for hire: ",
                                 style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Medium
                             )
                             Text(
                                 text = if (hireable) "Yes" else "No",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }
@@ -192,60 +189,56 @@ private fun InfoRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     label: String,
     value: String,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
             modifier = Modifier.size(20.dp),
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
 }
 
 @Composable
-private fun StatCard(
-    value: String,
-    label: String,
-    modifier: Modifier = Modifier,
-) {
+private fun StatCard(value: String, label: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            ),
+        CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = value,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

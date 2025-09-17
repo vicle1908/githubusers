@@ -19,6 +19,7 @@ plugins {
 dependencies {
 
     // Core modules
+    implementation(libs.local.core.common)
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
     implementation(libs.local.core.ui)
@@ -37,6 +38,7 @@ dependencies {
     implementation(libs.local.core.mvi)
 
     // Navigation runtime for deep link dispatch + back stack
+    implementation(libs.local.navigation.api)
     implementation(libs.local.navigation.impl)
 
     // Compose and UI

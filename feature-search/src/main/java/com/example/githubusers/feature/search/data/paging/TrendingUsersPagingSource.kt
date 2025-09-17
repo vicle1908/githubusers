@@ -2,9 +2,11 @@ package com.example.githubusers.feature.search.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.githubusers.core.search.domain.SearchException
+import com.example.githubusers.core.search.domain.SearchResult
 import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.mapper.toSearchResult
-import com.example.githubusers.feature.search.domain.entity.SearchResult
+import com.example.githubusers.feature.search.data.util.toSearchError
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -42,7 +44,8 @@ class TrendingUsersPagingSource(private val apiService: SearchApiService) : Pagi
             prevKey = if (page == 1) null else page - 1,
             nextKey = if (searchResults.isEmpty()) null else page + 1
         )
-    } catch (e: Exception) {
-        LoadResult.Error(e)
+    } catch (t: Throwable) {
+        val error = t.toSearchError()
+        LoadResult.Error(SearchException(error, message = "Failed to load trending users", cause = t))
     }
 }

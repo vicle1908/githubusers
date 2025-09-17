@@ -9,10 +9,7 @@ object SettingsFeatureApi {
     const val DEEP_LINK: String = "app://settings"
 
     @Composable
-    fun SettingsHome(
-        navigator: SettingsNavigator,
-        section: String? = null,
-    ) {
+    fun SettingsHome(navigator: SettingsNavigator, section: String? = null) {
         SettingsScreen(navigator = navigator, section = section)
     }
 }

@@ -1,7 +1,7 @@
 package com.example.githubusers.feature.search.presentation.intent
 
-import com.example.githubusers.feature.search.domain.entity.SearchFilter
-import com.example.githubusers.feature.search.domain.entity.SearchResult
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.core.users.domain.UserSummary
 
 /**
  * User intents for the search screen
@@ -25,7 +25,11 @@ sealed class SearchIntent {
 
     object ToggleFilterExpanded : SearchIntent()
 
-    data class UserClicked(val user: SearchResult) : SearchIntent()
+    data class UserClicked(val user: UserSummary) : SearchIntent()
 
     object RefreshTrending : SearchIntent()
+
+    /** Analytics-related intents */
+    object BackToBrowse : SearchIntent()
+    object TrendingShown : SearchIntent()
 }

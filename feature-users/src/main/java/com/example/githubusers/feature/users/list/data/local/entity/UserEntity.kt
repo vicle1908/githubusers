@@ -14,5 +14,5 @@ data class UserEntity(
     val avatarUrl: String,
     val type: String,
     val htmlUrl: String,
-    val siteAdmin: Boolean,
+    val siteAdmin: Boolean
 )
