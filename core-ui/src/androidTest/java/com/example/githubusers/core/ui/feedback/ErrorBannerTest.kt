@@ -6,8 +6,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.githubusers.core.search.domain.SearchError
-import com.example.githubusers.core.search.domain.SearchException
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,9 +18,8 @@ class ErrorBannerTest {
 
     @Test
     fun shows_message_for_network_and_can_dismiss() {
-        val throwable = SearchException(SearchError.Network)
-        composeRule.setContent {
-            ErrorBanner(throwable = throwable, onRetry = {})
+composeRule.setContent {
+            ErrorBanner(message = "Network error. Check your connection and try again.", onRetry = {})
         }
         composeRule.onNodeWithContentDescription("Error banner").assertIsDisplayed()
         composeRule.onNodeWithText("Network error. Check your connection and try again.").assertIsDisplayed()
@@ -32,9 +29,8 @@ class ErrorBannerTest {
 
     @Test
     fun shows_retry_button() {
-        val throwable = SearchException(SearchError.Timeout)
-        composeRule.setContent {
-            ErrorBanner(throwable = throwable, onRetry = {})
+composeRule.setContent {
+            ErrorBanner(message = "Request timed out. Please retry.", onRetry = {})
         }
         composeRule.onNodeWithText("Retry").assertIsDisplayed()
     }

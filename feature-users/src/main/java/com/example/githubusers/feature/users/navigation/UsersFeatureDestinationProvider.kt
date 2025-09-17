@@ -34,7 +34,6 @@ import com.example.githubusers.feature.users.navigation.UserNavigationEventInfo
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
-import com.example.githubusers.feature.search.navigation.api.openSearch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -80,8 +79,11 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                     navigateToDeepLink("app://settings")
                 }
 
-                override fun openSearch(query: String?, origin: String) {
-                    openSearch(navigateToDeepLink, query = query, origin = origin)
+override fun openSearch(query: String?, origin: String) {
+                    val builder = Uri.parse("app://search").buildUpon()
+                    query?.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("q", it) }
+                    origin.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("origin", it) }
+                    navigateToDeepLink(builder.build().toString())
                 }
             }
         )

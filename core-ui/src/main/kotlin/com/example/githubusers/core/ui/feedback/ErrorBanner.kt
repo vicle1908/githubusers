@@ -27,8 +27,6 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.githubusers.core.search.domain.SearchError
-import com.example.githubusers.core.search.domain.SearchException
 
 /**
  * Reusable, dismissible error banner for transient list/search errors.
@@ -39,13 +37,13 @@ import com.example.githubusers.core.search.domain.SearchException
  */
 @Composable
 fun ErrorBanner(
-    throwable: Throwable,
+    message: String,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     dismissible: Boolean = true,
     onDismissed: (() -> Unit)? = null
 ) {
-    val messageKey = remember(throwable) { readableMessage(throwable) }
+    val messageKey = remember(message) { message }
     var dismissed by rememberSaveable(messageKey) { mutableStateOf(false) }
 
     LaunchedEffect(messageKey) {
@@ -97,18 +95,4 @@ fun ErrorBanner(
             }
         }
     }
-}
-
-private fun readableMessage(t: Throwable): String {
-    val default = "Something went wrong. Please try again."
-    return if (t is SearchException) {
-        when (val e: SearchError = t.error) {
-            is SearchError.Network -> "Network error. Check your connection and try again."
-            is SearchError.Timeout -> "Request timed out. Please retry."
-            is SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
-            is SearchError.Server -> "Server error (${e.code}). Please try again later."
-            is SearchError.Client -> "Request error (${e.code}). Please adjust your query and try again."
-            is SearchError.Unknown -> default
-        }
-    } else default
 }

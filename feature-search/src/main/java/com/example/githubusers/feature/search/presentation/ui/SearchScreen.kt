@@ -156,8 +156,8 @@ private fun TrendingListSection(
 ) {
     val refreshError = trendingUsers.loadState.refresh
     if (refreshError is androidx.paging.LoadState.Error) {
-        com.example.githubusers.core.ui.feedback.ErrorBanner(
-            throwable = refreshError.error,
+com.example.githubusers.core.ui.feedback.ErrorBanner(
+            message = searchErrorMessageFromThrowable(refreshError.error),
             onRetry = { trendingUsers.retry() }
         )
     }
@@ -200,8 +200,8 @@ private fun SearchResultsListSection(
 ) {
     val refreshError = searchResults.loadState.refresh
     if (refreshError is androidx.paging.LoadState.Error) {
-        com.example.githubusers.core.ui.feedback.ErrorBanner(
-            throwable = refreshError.error,
+com.example.githubusers.core.ui.feedback.ErrorBanner(
+            message = searchErrorMessageFromThrowable(refreshError.error),
             onRetry = { searchResults.retry() }
         )
     }
@@ -228,6 +228,20 @@ private fun SearchResultsListSection(
             )
         }
     )
+}
+
+private fun searchErrorMessageFromThrowable(t: Throwable): String {
+    val default = "Something went wrong. Please try again."
+    return if (t is com.example.githubusers.core.search.domain.SearchException) {
+        when (val e = t.error) {
+            is com.example.githubusers.core.search.domain.SearchError.Network -> "Network error. Check your connection and try again."
+            is com.example.githubusers.core.search.domain.SearchError.Timeout -> "Request timed out. Please retry."
+            is com.example.githubusers.core.search.domain.SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
+            is com.example.githubusers.core.search.domain.SearchError.Server -> "Server error (${e.code}). Please try again later."
+            is com.example.githubusers.core.search.domain.SearchError.Client -> "Request error (${e.code}). Please adjust your query and try again."
+            is com.example.githubusers.core.search.domain.SearchError.Unknown -> default
+        }
+    } else default
 }
 
 @Composable
