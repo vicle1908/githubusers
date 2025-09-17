@@ -194,8 +194,6 @@ The application follows **Clean Architecture** principles with **MVI (Model-View
 **Purpose**: Gradle convention plugins for consistent build configuration (Detekt, KtLint, Android, Hilt, Compose, testing)
 
 
-#### shared-resources
-**Purpose**: Common Android resources (themes, strings, drawables) shared across features
 
 #### testing
 **Purpose**: Shared test utilities (Coroutine rules, MockWebServer helpers, fixtures)
