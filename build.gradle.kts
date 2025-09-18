@@ -174,7 +174,7 @@ tasks.register("ktlintCheckAll") {
     }
 }
 
-// Aggregate dependency updates across modules that apply the versions plugin
+// Aggregate dependency updates across modules (composite-friendly)
 // Note: the ben-manes versions task is not configuration-cache safe on Gradle 9.
 // Prefer running this in isolation with configuration cache disabled.
 tasks.register("dependencyUpdatesAll") {
@@ -192,6 +192,12 @@ tasks.register("dependencyUpdatesAll") {
                 dependsOn(linkedTask)
             }
         }
+}
+
+// This aggregate depends on included builds and the ben-manes versions plugin, which is not CC-safe on Gradle 9.
+// Explicitly mark it as incompatible so Gradle won't attempt to cache the configuration for this task.
+tasks.named("dependencyUpdatesAll") {
+    notCompatibleWithConfigurationCache("Aggregate dependencyUpdates across included builds; versions plugin not CC-safe on Gradle 9")
 }
 
 // Aggregate unit tests across modules (composite-friendly)
