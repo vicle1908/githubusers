@@ -73,10 +73,14 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:core-ui")).using(project(":"))
         }
     }
-    includeBuild("core-security") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:core-security")).using(project(":"))
+    if (file("core-security").exists()) {
+        includeBuild("core-security") {
+            dependencySubstitution {
+                substitute(module("com.example.githubusers:core-security")).using(project(":"))
+            }
         }
+    } else {
+        println("Skipping composite include for 'core-security' — directory not present. Will resolve dependency from repositories if available.")
     }
 
     // Navigation modules
@@ -108,10 +112,14 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:feature-settings")).using(project(":"))
         }
     }
-    includeBuild("feature-auth") {
-        dependencySubstitution {
-            substitute(module("com.example.githubusers:feature-auth")).using(project(":"))
+    if (file("feature-auth").exists()) {
+        includeBuild("feature-auth") {
+            dependencySubstitution {
+                substitute(module("com.example.githubusers:feature-auth")).using(project(":"))
+            }
         }
+    } else {
+        println("Skipping composite include for 'feature-auth' — directory not present. Will resolve dependency from repositories if available.")
     }
 
     // Feature aggregators removed - direct feature module dependencies used instead
