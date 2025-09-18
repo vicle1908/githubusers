@@ -22,7 +22,7 @@ android {
     namespace = "com.example.githubusers.core.security"
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        minSdk = libs.versions.sdk.min.get().toInt()
         consumerProguardFiles("consumer-proguard-rules.pro")
 
         externalNativeBuild {
@@ -63,7 +63,7 @@ android {
 
 dependencies {
     // Core Android dependencies
-    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.core.ktx)
     
     // Hilt for dependency injection
     implementation(libs.hilt.android)
@@ -74,4 +74,6 @@ dependencies {
     testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }

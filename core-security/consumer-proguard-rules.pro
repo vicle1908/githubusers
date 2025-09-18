@@ -12,6 +12,12 @@
     # Don't preserve method names - RegisterNatives handles mapping
 }
 
+# Keep specific member access patterns for validation
+-keepclassmembers class com.example.githubusers.core.security.SecurityManager {
+    native <methods>;
+    public static native <methods>;
+}
+
 # Keep public API for consumers (no obfuscation)
 -keep class com.example.githubusers.core.security.SecurityService { *; }
 -keep class com.example.githubusers.core.security.NativeSecurityService { *; }
