@@ -24,6 +24,12 @@ android {
     namespace = "com.example.githubusers.core.security"
 
     defaultConfig {
+<<<<<<< HEAD
+=======
+        minSdk = libs.versions.minSdk.get().toInt()
+        consumerProguardFiles("consumer-proguard-rules.pro")
+
+>>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
         externalNativeBuild {
             cmake {
                 cppFlags("-std=c++17", "-fvisibility=hidden")
@@ -62,17 +68,29 @@ android {
 
 dependencies {
     // Core Android dependencies
+<<<<<<< HEAD
     implementation(libs.androidx.core.ktx)
 
     // Hilt for dependency injection
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+=======
+    implementation(libs.androidx.annotation)
+    
+    // Hilt for dependency injection
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    
+>>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
     // Testing dependencies
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
+<<<<<<< HEAD
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
+=======
+>>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
 }

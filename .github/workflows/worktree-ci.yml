@@ -82,7 +82,7 @@ jobs:
 <<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 =======
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 >>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
@@ -195,7 +195,7 @@ jobs:
 <<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 =======
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 >>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
@@ -316,7 +316,7 @@ jobs:
 <<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 =======
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 >>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
@@ -428,7 +428,7 @@ jobs:
 <<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 =======
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
 >>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
