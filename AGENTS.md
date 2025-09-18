@@ -232,12 +232,13 @@ dependencies {
 1. Create module folder and minimal source structure.
 1. Naming: use `core-*`, `feature-*`, `navigation-*` prefixes per conventions.
 1. Add to `settings.gradle.kts` and sync.
-1. Apply convention plugins (library, hilt, compose as needed).
+1. Apply convention plugins (library, hilt, compose as needed). Also apply `githubusers.dependency.update` so `dependencyUpdates` exists in the module.
 1. Add dependencies via Version Catalog only; align HTTP stack with OkHttp BOM when used.
 1. Navigation ownership: add destinations + deep link handler per template.
 1. Register handler with Hilt multibindings if required by navigation API.
 1. Add unit tests for deep link parsing and basic navigation flows.
 1. Generate Detekt baseline if needed and fix formatting issues.
+1. Verify module tasks pass via Gradle MCP: `:module:lint` (or covered by `lintAll`), `:module:detekt`, `:module:ktlintCheck`, `:module:test`, `:module:assemble`, and `:module:dependencyUpdates`.
 1. Build and static analysis using Gradle MCP (no direct `./gradlew`).
 1. Document module purpose in a short README if substantial.
 
@@ -330,6 +331,7 @@ References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 ## 11f) CI Guidance 2025
 
 - Use the dedicated `dependency-submission.yml` workflow for dependency graph submission; do not duplicate submission inside `ci.yml` to avoid double runs.
+- Ensure each module that participates in dependency checks applies `githubusers.dependency.update` so `dependencyUpdates` can run per-module (or wire a root aggregator task that depends on `:module:dependencyUpdates`).
 - Prefer matrix strategy for code-quality checks (`detekt`, `ktlint`, `androidLint`), with cache read-only for PR contexts when appropriate.
 - Enable Gradle Build Scans (ensure terms are accepted via gradle.properties or action inputs).
 - JDK 21: run workflows on Temurin 21; keep wrapper validation enabled; use configuration cache and build cache.
