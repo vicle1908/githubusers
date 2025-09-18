@@ -33,7 +33,7 @@ fun UserDetailScreen(
     repositoriesFlow: LazyPagingItems<Repository>,
     onIntent: (UserDetailViewModel.UserDetailIntent) -> Unit,
     onBackClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     // Pull to refresh temporarily disabled due to API changes
     // Will use SwipeRefresh or manual refresh button
@@ -47,40 +47,40 @@ fun UserDetailScreen(
                 title = {
                     Text(
                         text = uiState.userDetail?.login ?: "User Details",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Navigate back",
+                            contentDescription = "Navigate back"
                         )
                     }
                 },
                 colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = Color.Transparent,
-                    ),
-                scrollBehavior = scrollBehavior,
+                TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                ),
+                scrollBehavior = scrollBehavior
             )
         },
         // Draw behind app bar to avoid extra top inset; actual padding applied by Scaffold content slot
         contentWindowInsets =
-            androidx.compose.foundation.layout
-                .WindowInsets(0),
+        androidx.compose.foundation.layout
+            .WindowInsets(0)
     ) { paddingValues ->
         Box(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             UserDetailBody(
                 uiState = uiState,
                 repositoriesFlow = repositoriesFlow,
-                onIntent = onIntent,
+                onIntent = onIntent
             )
             // Pull to refresh UI temporarily disabled
         }
@@ -91,7 +91,7 @@ fun UserDetailScreen(
 private fun UserDetailBody(
     uiState: UserDetailViewModel.UserDetailUiState,
     repositoriesFlow: LazyPagingItems<Repository>,
-    onIntent: (UserDetailViewModel.UserDetailIntent) -> Unit,
+    onIntent: (UserDetailViewModel.UserDetailIntent) -> Unit
 ) {
     when {
         uiState.isLoading && uiState.userDetail == null -> {
@@ -104,7 +104,7 @@ private fun UserDetailBody(
                 onRetry = {
                     onIntent(UserDetailViewModel.UserDetailIntent.RetryLoadUser)
                 },
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -125,7 +125,7 @@ private fun UserDetailBody(
                         onIntent(UserDetailViewModel.UserDetailIntent.ExpandBio)
                     }
                 },
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             )
         }
     }
@@ -135,7 +135,7 @@ private fun UserDetailBody(
 private fun LoadingContent() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
     }

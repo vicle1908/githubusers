@@ -315,13 +315,13 @@ Workflow tips:
 
 - Plugin development loop: edits in `plugins/` are picked up immediately via `includeBuild("plugins")`.
 - Adding a module: create directory, include in `settings.gradle.kts`, apply convention plugins, add catalog-backed deps, run quality tasks via Gradle MCP.
-- Build & quality: run `detekt`, `ktlintCheck`, and assemble via Gradle MCP; do not call `./gradlew` directly.
+- Build & quality: run `lint` (`lintAll` when available) before builds to surface errors/warnings, then run `detekt`, `ktlintCheck`, and assemble via Gradle MCP; do not call `./gradlew` directly.
 
 References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 
 ## 11e) Build Quick Start (Gradle MCP tasks)
 
-- Quality first: run `detekt`, then `ktlintCheck` across modules; optionally run `lint` if configured.
+- Quality first: run `lintAll` (or the relevant `:module:lint` task) to catch errors and warnings, followed by `detekt` and `ktlintCheck` across modules.
 - Assemble app: `:app:assembleDebug` (do not install as part of assemble).
 - Tests (if configured): `:app:testDebugUnitTest`, module-specific `:module:test`.
 - Plugins (composite): changes in `plugins/` are picked up via `includeBuild("plugins")`.

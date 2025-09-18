@@ -2,12 +2,8 @@ package com.example.githubusers.core.ui.system
 
 import android.app.Activity
 import android.os.Build
-import android.view.View
-import android.view.Window
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -102,4 +98,3 @@ fun EdgeToEdgeSystemUi() {
         }
     }
 }
-

@@ -8,15 +8,13 @@ import javax.inject.Inject
  * Use case for fetching detailed user information.
  */
 class GetUserDetailUseCase
-    @Inject
-    constructor(
-        private val repository: UserDetailRepository,
-    ) {
-        /**
-         * Execute the use case to get user details.
-         *
-         * @param username The username to fetch details for
-         * @return Result containing UserDetail or error
-         */
-        suspend operator fun invoke(username: String): Result<UserDetail> = repository.getUserDetail(username)
-    }
+@Inject
+constructor(private val repository: UserDetailRepository) {
+    /**
+     * Execute the use case to get user details.
+     *
+     * @param username The username to fetch details for
+     * @return Result containing UserDetail or error
+     */
+    suspend operator fun invoke(username: String): Result<UserDetail> = repository.getUserDetail(username)
+}

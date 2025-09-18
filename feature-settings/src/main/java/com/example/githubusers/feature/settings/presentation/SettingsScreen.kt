@@ -35,32 +35,34 @@ fun SettingsScreen(
     navigator: SettingsNavigator,
     modifier: Modifier = Modifier,
     section: String? = null,
-    viewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings" + (section?.let { " • ${it.replaceFirstChar { c -> c.uppercase() }}" } ?: "")) },
+                title = {
+                    Text("Settings" + (section?.let { " • ${it.replaceFirstChar { c -> c.uppercase() }}" } ?: ""))
+                },
                 colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent,
-                        titleContentColor = MaterialTheme.colorScheme.onSurface,
-                    ),
+                TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                ),
                 navigationIcon = {
                     IconButton(onClick = { navigator.navigateBack() }) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                },
+                }
             )
-        },
+        }
     ) { inner ->
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(inner)
                 .padding(horizontal = 16.dp, vertical = 8.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
         ) {
             when (section?.lowercase()) {
                 null -> {
@@ -70,9 +72,9 @@ fun SettingsScreen(
                         trailingContent = {
                             Switch(
                                 checked = state.dynamicColor,
-                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleDynamicColor(it)) },
+                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleDynamicColor(it)) }
                             )
-                        },
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Theme: ${state.themeMode}") },
@@ -83,58 +85,64 @@ fun SettingsScreen(
                                 val next = viewModel.nextTheme(state.themeMode)
                                 viewModel.process(SettingsIntent.ChangeThemeMode(next))
                             })
-                        },
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Data saver") },
                         trailingContent = {
-                            Switch(checked = state.dataSaver, onCheckedChange = { viewModel.process(SettingsIntent.ToggleDataSaver(it)) })
-                        },
+                            Switch(checked = state.dataSaver, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleDataSaver(it))
+                            })
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Show images") },
                         trailingContent = {
-                            Switch(checked = state.showImages, onCheckedChange = { viewModel.process(SettingsIntent.ToggleShowImages(it)) })
-                        },
+                            Switch(checked = state.showImages, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleShowImages(it))
+                            })
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Analytics") },
                         trailingContent = {
-                            Switch(checked = state.analytics, onCheckedChange = { viewModel.process(SettingsIntent.ToggleAnalytics(it)) })
-                        },
+                            Switch(checked = state.analytics, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleAnalytics(it))
+                            })
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Crash reports") },
                         trailingContent = {
                             Switch(
                                 checked = state.crashReports,
-                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleCrashReports(it)) },
+                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleCrashReports(it)) }
                             )
-                        },
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Theme settings") },
                         supportingContent = { Text("Open theme section") },
                         modifier = Modifier.padding(vertical = 8.dp).clickable { navigator.openSection("theme") },
-                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) },
+                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) }
                     )
                     ListItem(
                         headlineContent = { Text("Data usage") },
                         supportingContent = { Text("Open data settings") },
                         modifier = Modifier.padding(vertical = 8.dp).clickable { navigator.openSection("data") },
-                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) },
+                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) }
                     )
                     ListItem(
                         headlineContent = { Text("Privacy") },
                         supportingContent = { Text("Analytics, crash reports") },
                         modifier = Modifier.padding(vertical = 8.dp).clickable { navigator.openSection("privacy") },
-                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) },
+                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) }
                     )
                     ListItem(
                         headlineContent = { Text("About / OSS") },
                         supportingContent = { Text("Licenses") },
                         modifier = Modifier.padding(vertical = 8.dp).clickable { navigator.openSection("about") },
-                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) },
+                        trailingContent = { Text("Open", color = MaterialTheme.colorScheme.primary) }
                     )
                 }
                 "theme" -> {
@@ -143,80 +151,86 @@ fun SettingsScreen(
                         supportingContent = { Text("System, Light, Dark") },
                         trailingContent = {
                             Text(state.themeMode.name)
-                        },
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Cycle theme") },
                         supportingContent = { Text("Tap to change to next mode") },
                         modifier =
-                            Modifier.padding(vertical = 4.dp).clickable {
-                                val next = viewModel.nextTheme(state.themeMode)
-                                viewModel.process(SettingsIntent.ChangeThemeMode(next))
-                            },
+                        Modifier.padding(vertical = 4.dp).clickable {
+                            val next = viewModel.nextTheme(state.themeMode)
+                            viewModel.process(SettingsIntent.ChangeThemeMode(next))
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Dynamic color") },
                         trailingContent = {
                             Switch(
                                 checked = state.dynamicColor,
-                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleDynamicColor(it)) },
+                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleDynamicColor(it)) }
                             )
-                        },
+                        }
                     )
                 }
                 "data" -> {
                     ListItem(
                         headlineContent = { Text("Data saver") },
                         trailingContent = {
-                            Switch(checked = state.dataSaver, onCheckedChange = { viewModel.process(SettingsIntent.ToggleDataSaver(it)) })
-                        },
+                            Switch(checked = state.dataSaver, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleDataSaver(it))
+                            })
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Paging size") },
                         supportingContent = { Text("Current: ${state.pagingSize}") },
                         modifier =
-                            Modifier.padding(vertical = 4.dp).clickable {
-                                val next =
-                                    when (state.pagingSize) {
-                                        15 -> 30
-                                        30 -> 50
-                                        else -> 15
-                                    }
-                                viewModel.process(SettingsIntent.SetPagingSize(next))
-                            },
+                        Modifier.padding(vertical = 4.dp).clickable {
+                            val next =
+                                when (state.pagingSize) {
+                                    15 -> 30
+                                    30 -> 50
+                                    else -> 15
+                                }
+                            viewModel.process(SettingsIntent.SetPagingSize(next))
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Show images") },
                         trailingContent = {
-                            Switch(checked = state.showImages, onCheckedChange = { viewModel.process(SettingsIntent.ToggleShowImages(it)) })
-                        },
+                            Switch(checked = state.showImages, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleShowImages(it))
+                            })
+                        }
                     )
                 }
                 "privacy" -> {
                     ListItem(
                         headlineContent = { Text("Analytics") },
                         trailingContent = {
-                            Switch(checked = state.analytics, onCheckedChange = { viewModel.process(SettingsIntent.ToggleAnalytics(it)) })
-                        },
+                            Switch(checked = state.analytics, onCheckedChange = {
+                                viewModel.process(SettingsIntent.ToggleAnalytics(it))
+                            })
+                        }
                     )
                     ListItem(
                         headlineContent = { Text("Crash reports") },
                         trailingContent = {
                             Switch(
                                 checked = state.crashReports,
-                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleCrashReports(it)) },
+                                onCheckedChange = { viewModel.process(SettingsIntent.ToggleCrashReports(it)) }
                             )
-                        },
+                        }
                     )
                 }
                 "about", "oss" -> {
                     ListItem(
                         headlineContent = { Text("Open Source Licenses") },
-                        supportingContent = { Text("Third-party libraries used in this app.") },
+                        supportingContent = { Text("Third-party libraries used in this app.") }
                     )
                     ListItem(
                         headlineContent = { Text("Version") },
-                        supportingContent = { Text("Debug build") },
+                        supportingContent = { Text("Debug build") }
                     )
                 }
                 else -> {

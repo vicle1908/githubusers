@@ -18,7 +18,6 @@ private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 object SettingsDataStoreModule {
     @Provides
     @Singleton
-    fun provideSettingsDataStore(
-        @ApplicationContext context: Context,
-    ): DataStore<Preferences> = context.settingsDataStore
+    fun provideSettingsDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
+        context.settingsDataStore
 }

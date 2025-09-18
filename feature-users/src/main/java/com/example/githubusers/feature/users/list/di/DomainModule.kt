@@ -1,9 +1,7 @@
 package com.example.githubusers.feature.users.list.di
 
 import com.example.githubusers.feature.users.list.domain.repository.UserListRepository
-import com.example.githubusers.feature.users.list.domain.usecase.GetUsersUseCase
 import com.example.githubusers.feature.users.list.domain.usecase.ObserveUserListUseCase
-import com.example.githubusers.feature.users.list.domain.usecase.SearchUsersUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +16,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 object DomainModule {
     @Provides
     @ViewModelScoped
-    fun provideGetUsersUseCase(repository: UserListRepository): GetUsersUseCase = GetUsersUseCase(repository)
-
-    @Provides
-    @ViewModelScoped
-    fun provideSearchUsersUseCase(repository: UserListRepository): SearchUsersUseCase = SearchUsersUseCase(repository)
-
-    @Provides
-    @ViewModelScoped
-    fun provideObserveUserListUseCase(repository: UserListRepository): ObserveUserListUseCase = ObserveUserListUseCase(repository)
+    fun provideObserveUserListUseCase(repository: UserListRepository): ObserveUserListUseCase =
+        ObserveUserListUseCase(repository)
 }

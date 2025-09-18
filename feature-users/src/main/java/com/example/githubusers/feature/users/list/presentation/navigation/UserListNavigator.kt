@@ -21,4 +21,9 @@ interface UserListNavigator {
      * Navigate to the settings screen.
      */
     fun openSettings()
+
+    /**
+     * Launch the dedicated search experience.
+     */
+    fun openSearch(query: String? = null, origin: String = "user_list")
 }

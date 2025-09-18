@@ -16,6 +16,15 @@ This guide documents the **complete Navigation 3 implementation** in the GitHub 
 
 **🧹 Code Quality**: All unused functions and logic have been cleaned up, with comprehensive quality checks passing successfully.
 
+## Current Implementation Snapshot (2025-09-17)
+
+- Feature-owned destinations via `FeatureDestinationProvider` (navigation-api) and central resolution via `Navigation3FeatureRegistry` (navigation-impl)
+- Deep link routing via `DeepLinkDispatcher`
+- CompositionLocals `LocalNavigateToDeepLink` and `LocalNavigateBack` provided by MainActivity
+- State restoration enabled via `rememberSavedStateNavEntryDecorator`
+- launchSingleTop semantics implemented by equality check before pushing the same key
+- Deep link ownership includes legacy `app://users/search`; deep links are built with `Uri.Builder` for proper encoding
+
 ## 🏗️ Architecture Principles
 
 ### 1. **Feature-Based Navigation Ownership**
@@ -198,6 +207,7 @@ class NavigationMigrationService @Inject constructor(
 |---------|-------------|---------|
 | `app://search` | Search screen | `app://search` |
 | `app://search?q={query}` | Search with query | `app://search?q=octocat` |
+| `app://users/search` | Legacy redirect to search | `app://users/search?q=octocat` |
 
 ### Settings Module Deep Links (Feature-Owned)
 

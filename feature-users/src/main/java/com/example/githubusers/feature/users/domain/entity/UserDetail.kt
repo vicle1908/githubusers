@@ -18,5 +18,5 @@ data class UserDetail(
     val followers: Int,
     val following: Int,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 )

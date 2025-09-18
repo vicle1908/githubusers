@@ -1,6 +1,5 @@
 package com.example.githubusers.feature.users.list.data.paging
 
-import timber.log.Timber
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -16,6 +15,7 @@ import com.example.githubusers.feature.users.list.data.remote.UserListApiService
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import java.io.IOException
+import timber.log.Timber
 
 /**
  * RemoteMediator for handling pagination with local caching.
@@ -25,7 +25,7 @@ import java.io.IOException
 class UserListRemoteMediator(
     private val apiService: UserListApiService,
     private val database: UserListDatabase,
-    private val performanceMonitor: PerformanceMonitor,
+    private val performanceMonitor: PerformanceMonitor
 ) : RemoteMediator<Int, UserSummaryEntity>() {
     companion object {
         private const val TAG = "UserListRemoteMediator"
@@ -37,10 +37,7 @@ class UserListRemoteMediator(
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
-    override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, UserSummaryEntity>,
-    ): MediatorResult {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, UserSummaryEntity>): MediatorResult {
         Timber.tag(TAG).d("Loading data: loadType=$loadType, pageSize=${state.config.pageSize}")
         return try {
             val loadKey =
@@ -65,7 +62,7 @@ class UserListRemoteMediator(
             val response =
                 apiService.getUsers(
                     since = loadKey,
-                    perPage = state.config.pageSize,
+                    perPage = state.config.pageSize
                 )
 
             response.fold(
@@ -91,7 +88,7 @@ class UserListRemoteMediator(
                             RemoteKeyEntity(
                                 id = REMOTE_KEY_ID,
                                 prevKey = loadKey,
-                                nextKey = nextKey,
+                                nextKey = nextKey
                             )
                         Timber.tag(TAG).d("Storing remote key: $remoteKey")
                         database.remoteKeyDao().insertOrReplace(remoteKey)
@@ -104,7 +101,7 @@ class UserListRemoteMediator(
                 onFailure = { exception ->
                     Timber.tag(TAG).e(exception, "API call failed")
                     MediatorResult.Error(exception)
-                },
+                }
             )
         } catch (e: IOException) {
             Timber.tag(TAG).e(e, "IOException in RemoteMediator")

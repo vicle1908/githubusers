@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.core.net.toUri
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 /**
  * Dispatches incoming URIs to the owning feature deep link handler and returns

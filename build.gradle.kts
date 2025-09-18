@@ -209,15 +209,35 @@ tasks.register("lintAll") {
     group = "verification"
     description = "Run Android lint across all included builds that expose lint tasks"
 
-    val excluded = setOf("catalog", "plugins")
+    val excluded = setOf("catalog", "plugins", "testing")
     val candidates = listOf(":lint", ":lintDebug", ":lintRelease")
 
     gradle.includedBuilds
         .filter { it.name !in excluded }
+        .filter { build ->
+            val buildFile = build.projectDir.resolve("build.gradle.kts")
+            if (!buildFile.isFile) {
+                false
+            } else {
+                val markers = listOf(
+                    "alias(libs.plugins.android.library)",
+                    "alias(libs.plugins.android.application)",
+                    "id(\"githubusers.android.library\")",
+                    "id(\"githubusers.android.application\")"
+                )
+                val contents = buildFile.readText()
+                markers.any { marker -> contents.contains(marker) }
+            }
+        }
         .forEach { build ->
             candidates.forEach { taskName ->
-                runCatching { dependsOn(build.task(taskName)) }
-                    .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
+                val linkedTask =
+                    runCatching { build.task(taskName) }
+                        .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
+                        .getOrNull()
+                if (linkedTask != null) {
+                    dependsOn(linkedTask)
+                }
             }
         }
 

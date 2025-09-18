@@ -24,6 +24,3 @@ abstract class SettingsNav3Bindings {
     @Singleton
     abstract fun bindSettingsHandler(impl: SettingsFeatureDeepLinkHandler): FeatureDeepLinkHandler
 }
-
-
-

@@ -13,5 +13,5 @@ data class UserSummaryDto(
     @SerialName("avatar_url") val avatarUrl: String,
     @SerialName("html_url") val htmlUrl: String,
     @SerialName("type") val type: String = "User",
-    @SerialName("site_admin") val siteAdmin: Boolean = false,
+    @SerialName("site_admin") val siteAdmin: Boolean = false
 )

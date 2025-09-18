@@ -1,8 +1,14 @@
-package com.example.githubusers.feature.search.domain.entity
+package com.example.githubusers.core.search.domain
+
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.Serializable
 
 /**
- * Represents a search result item
+ * Canonical domain models and contracts for search functionality.
  */
+
+@Serializable
 data class SearchResult(
     val id: Long,
     val login: String,
@@ -17,14 +23,13 @@ data class SearchResult(
     val followers: Int? = null
 )
 
+@Serializable
 enum class SearchResultType {
     USER,
     ORGANIZATION
 }
 
-/**
- * Search filter options
- */
+@Serializable
 data class SearchFilter(
     val type: SearchResultType? = null,
     val location: String? = null,
@@ -34,9 +39,22 @@ data class SearchFilter(
     val sortBy: SearchSortOption = SearchSortOption.BEST_MATCH
 )
 
+@Serializable
 enum class SearchSortOption {
     BEST_MATCH,
     FOLLOWERS,
     REPOSITORIES,
     JOINED
+}
+
+interface SearchRepository {
+    fun searchUsers(query: String, filter: SearchFilter = SearchFilter()): Flow<PagingData<SearchResult>>
+
+    suspend fun getRecentSearches(): List<String>
+
+    suspend fun saveSearchQuery(query: String)
+
+    suspend fun clearSearchHistory()
+
+    fun getTrendingUsers(): Flow<PagingData<SearchResult>>
 }

@@ -25,5 +25,5 @@ data class UserDetail(
     val updatedAt: Instant,
     val type: String,
     val siteAdmin: Boolean,
-    val hireable: Boolean?,
+    val hireable: Boolean?
 )

@@ -1,9 +1,9 @@
 package com.example.githubusers.feature.users.detail.data.local
 
 import androidx.room.TypeConverter
+import java.time.Instant
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.time.Instant
 
 /**
  * Type converters for Room database.
@@ -19,10 +19,9 @@ class Converters {
     fun fromStringList(value: List<String>): String = Json.encodeToString(value)
 
     @TypeConverter
-    fun toStringList(value: String): List<String> =
-        try {
-            Json.decodeFromString(value)
-        } catch (e: Exception) {
-            emptyList()
-        }
+    fun toStringList(value: String): List<String> = try {
+        Json.decodeFromString(value)
+    } catch (e: Exception) {
+        emptyList()
+    }
 }

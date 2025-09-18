@@ -32,27 +32,23 @@ import java.time.format.DateTimeFormatter
  * Individual repository item in the list.
  */
 @Composable
-fun RepositoryItem(
-    repository: Repository,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun RepositoryItem(repository: Repository, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
         ) {
             // Repository name
             Text(
                 text = repository.name,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.primary
             )
 
             ForkIndicator(repository = repository)
@@ -67,7 +63,7 @@ fun RepositoryItem(
                 language = repository.language,
                 stargazersCount = repository.stargazersCount,
                 forksCount = repository.forksCount,
-                updatedAt = repository.updatedAt,
+                updatedAt = repository.updatedAt
             )
         }
     }
@@ -82,13 +78,13 @@ private fun ForkIndicator(repository: Repository) {
                 imageVector = Icons.Filled.Share,
                 contentDescription = "Forked",
                 modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "Forked repository",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -103,7 +99,7 @@ private fun DescriptionSection(description: String?) {
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -113,7 +109,7 @@ private fun TopicsSection(topics: List<String>) {
     if (topics.isNotEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             topics.take(3).forEach { topic ->
                 TopicChip(topic = topic)
@@ -122,7 +118,7 @@ private fun TopicsSection(topics: List<String>) {
                 Text(
                     text = "+${topics.size - 3}",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -131,20 +127,15 @@ private fun TopicsSection(topics: List<String>) {
 }
 
 @Composable
-private fun StatsRow(
-    language: String?,
-    stargazersCount: Int,
-    forksCount: Int,
-    updatedAt: java.time.Instant,
-) {
+private fun StatsRow(language: String?, stargazersCount: Int, forksCount: Int, updatedAt: java.time.Instant) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             language?.let { lang ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -153,7 +144,7 @@ private fun StatsRow(
                     Text(
                         text = lang,
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -163,13 +154,13 @@ private fun StatsRow(
                     imageVector = Icons.Default.Star,
                     contentDescription = "Stars",
                     modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = stargazersCount.toString(),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -178,94 +169,87 @@ private fun StatsRow(
                     imageVector = Icons.Filled.Share,
                     contentDescription = "Forks",
                     modifier = Modifier.size(16.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = forksCount.toString(),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
 
         Text(
             text =
-                DateTimeFormatter
-                    .ofPattern("MMM d, yyyy")
-                    .format(updatedAt.atZone(ZoneId.systemDefault()).toLocalDate()),
+            DateTimeFormatter
+                .ofPattern("MMM d, yyyy")
+                .format(updatedAt.atZone(ZoneId.systemDefault()).toLocalDate()),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
 
 @Composable
-private fun TopicChip(
-    topic: String,
-    modifier: Modifier = Modifier,
-) {
+private fun TopicChip(topic: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+        CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
     ) {
         Text(
             text = topic,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
 }
 
 @Composable
-private fun LanguageDot(
-    language: String,
-    modifier: Modifier = Modifier,
-) {
+private fun LanguageDot(language: String, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier.size(8.dp),
         colors =
-            CardDefaults.cardColors(
-                containerColor = getLanguageColor(language),
-            ),
+        CardDefaults.cardColors(
+            containerColor = getLanguageColor(language)
+        )
     ) {}
 }
 
-private fun getLanguageColor(language: String): androidx.compose.ui.graphics.Color =
-    when (language.lowercase()) {
-        "kotlin" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFF18E33)
-        "java" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFB07219)
-        "javascript" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFF1E05A)
-        "typescript" ->
-            androidx.compose.ui.graphics
-                .Color(0xFF2B7489)
-        "python" ->
-            androidx.compose.ui.graphics
-                .Color(0xFF3572A5)
-        "swift" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFFFAC45)
-        "go" ->
-            androidx.compose.ui.graphics
-                .Color(0xFF00ADD8)
-        "rust" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFDEA584)
-        "c++" ->
-            androidx.compose.ui.graphics
-                .Color(0xFFF34B7D)
-        "c" ->
-            androidx.compose.ui.graphics
-                .Color(0xFF555555)
-        else -> androidx.compose.ui.graphics.Color.Gray
-    }
+private fun getLanguageColor(language: String): androidx.compose.ui.graphics.Color = when (language.lowercase()) {
+    "kotlin" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFF18E33)
+    "java" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFB07219)
+    "javascript" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFF1E05A)
+    "typescript" ->
+        androidx.compose.ui.graphics
+            .Color(0xFF2B7489)
+    "python" ->
+        androidx.compose.ui.graphics
+            .Color(0xFF3572A5)
+    "swift" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFFFAC45)
+    "go" ->
+        androidx.compose.ui.graphics
+            .Color(0xFF00ADD8)
+    "rust" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFDEA584)
+    "c++" ->
+        androidx.compose.ui.graphics
+            .Color(0xFFF34B7D)
+    "c" ->
+        androidx.compose.ui.graphics
+            .Color(0xFF555555)
+    else -> androidx.compose.ui.graphics.Color.Gray
+}

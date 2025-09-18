@@ -1,9 +1,9 @@
 package com.example.githubusers.feature.search.data.paging
 
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.core.search.domain.SearchResultType
+import com.example.githubusers.core.search.domain.SearchSortOption
 import com.example.githubusers.feature.search.data.api.SearchApiService
-import com.example.githubusers.feature.search.domain.entity.SearchFilter
-import com.example.githubusers.feature.search.domain.entity.SearchResultType
-import com.example.githubusers.feature.search.domain.entity.SearchSortOption
 import io.ktor.http.encodeURLQueryComponent
 import io.mockk.mockk
 import org.junit.Assert.assertFalse

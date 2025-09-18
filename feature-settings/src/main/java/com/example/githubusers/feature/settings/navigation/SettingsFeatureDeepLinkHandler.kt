@@ -13,7 +13,7 @@ class SettingsFeatureDeepLinkHandler @Inject constructor() : FeatureDeepLinkHand
 
     override fun supportedPatterns(): List<String> = listOf(
         "app://settings",
-        "app://settings?section={section}",
+        "app://settings?section={section}"
     )
 
     override fun handleDeepLink(uri: Uri): NavKey? {

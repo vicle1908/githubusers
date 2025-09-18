@@ -27,5 +27,5 @@ data class UserDto(
     @SerialName("following_url")
     val followingUrl: String? = null,
     @SerialName("repos_url")
-    val reposUrl: String? = null,
+    val reposUrl: String? = null
 )

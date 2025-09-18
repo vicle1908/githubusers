@@ -16,10 +16,7 @@ interface UserDetailNavigator {
      * @param owner Repository owner username
      * @param repo Repository name
      */
-    fun navigateToRepository(
-        owner: String,
-        repo: String,
-    )
+    fun navigateToRepository(owner: String, repo: String)
 
     /**
      * Open URL in external browser.

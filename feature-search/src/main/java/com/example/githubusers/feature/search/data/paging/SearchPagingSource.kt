@@ -2,11 +2,13 @@ package com.example.githubusers.feature.search.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.githubusers.core.search.domain.SearchException
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.core.search.domain.SearchResult
+import com.example.githubusers.core.search.domain.SearchSortOption
 import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.mapper.toSearchResult
-import com.example.githubusers.feature.search.domain.entity.SearchFilter
-import com.example.githubusers.feature.search.domain.entity.SearchResult
-import com.example.githubusers.feature.search.domain.entity.SearchSortOption
+import com.example.githubusers.feature.search.data.util.toSearchError
 import io.ktor.http.encodeURLParameter
 import io.ktor.http.encodeURLQueryComponent
 
@@ -45,9 +47,9 @@ class SearchPagingSource(
             prevKey = if (page == 1) null else page - 1,
             nextKey = if (searchResults.isEmpty()) null else page + 1
         )
-    } catch (e: Exception) {
-        // Enhanced error handling
-        LoadResult.Error(SearchException("Failed to load search results", e))
+    } catch (t: Throwable) {
+        val error = t.toSearchError()
+        LoadResult.Error(SearchException(error, message = "Failed to load search results", cause = t))
     }
 
     /**
@@ -116,7 +118,3 @@ class SearchPagingSource(
     private fun encodeParameterValue(value: String): String = value.encodeURLParameter(spaceToPlus = true)
 }
 
-/**
- * Custom exception for search-related errors
- */
-class SearchException(message: String, cause: Throwable? = null) : Exception(message, cause)

@@ -19,9 +19,6 @@ interface UserDao {
     @Query("SELECT * FROM users ORDER BY id ASC")
     fun getUsersPagingSource(): PagingSource<Int, UserEntity>
 
-    @Query("SELECT * FROM users WHERE login LIKE :query ORDER BY id ASC")
-    fun searchUsersPagingSource(query: String): PagingSource<Int, UserEntity>
-
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getUserById(id: Long): UserEntity?
 

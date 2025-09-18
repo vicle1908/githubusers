@@ -13,7 +13,7 @@ import com.example.githubusers.feature.users.detail.domain.repository.Repository
 class RepositoryPagingSource(
     private val remoteDataSource: UserDetailRemoteDataSource,
     private val username: String,
-    private val sort: RepositorySort,
+    private val sort: RepositorySort
 ) : PagingSource<Int, Repository>() {
     override fun getRefreshKey(state: PagingState<Int, Repository>): Int? =
         state.anchorPosition?.let { anchorPosition ->
@@ -30,7 +30,7 @@ class RepositoryPagingSource(
                     username = username,
                     page = page,
                     perPage = params.loadSize,
-                    sort = sort.value,
+                    sort = sort.value
                 )
 
             val repositories = response.map { it.toDomain() }
@@ -38,7 +38,7 @@ class RepositoryPagingSource(
             LoadResult.Page(
                 data = repositories,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (repositories.isEmpty()) null else page + 1,
+                nextKey = if (repositories.isEmpty()) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
