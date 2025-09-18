@@ -25,8 +25,12 @@ android {
 
     defaultConfig {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         minSdk = libs.versions.minSdk.get().toInt()
+=======
+        minSdk = libs.versions.sdk.min.get().toInt()
+>>>>>>> 1d20f8aa (feat(security): complete security module validation and finalization)
         consumerProguardFiles("consumer-proguard-rules.pro")
 
 >>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
@@ -69,6 +73,7 @@ android {
 dependencies {
     // Core Android dependencies
 <<<<<<< HEAD
+<<<<<<< HEAD
     implementation(libs.androidx.core.ktx)
 
     // Hilt for dependency injection
@@ -77,6 +82,9 @@ dependencies {
 
 =======
     implementation(libs.androidx.annotation)
+=======
+    implementation(libs.androidx.core.ktx)
+>>>>>>> 1d20f8aa (feat(security): complete security module validation and finalization)
     
     // Hilt for dependency injection
     implementation(libs.hilt.android)
@@ -89,8 +97,13 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)
 <<<<<<< HEAD
+<<<<<<< HEAD
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
 =======
 >>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
+=======
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+>>>>>>> 1d20f8aa (feat(security): complete security module validation and finalization)
 }
