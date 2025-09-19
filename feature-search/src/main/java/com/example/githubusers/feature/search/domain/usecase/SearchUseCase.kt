@@ -1,9 +1,9 @@
 package com.example.githubusers.feature.search.domain.usecase
 
 import androidx.paging.PagingData
-import com.example.githubusers.feature.search.domain.entity.SearchFilter
-import com.example.githubusers.feature.search.domain.entity.SearchResult
-import com.example.githubusers.feature.search.domain.repository.SearchRepository
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.core.search.domain.SearchRepository
+import com.example.githubusers.core.search.domain.SearchResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

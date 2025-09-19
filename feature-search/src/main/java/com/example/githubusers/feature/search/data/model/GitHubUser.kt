@@ -1,5 +1,6 @@
 package com.example.githubusers.feature.search.data.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -10,7 +11,7 @@ import kotlinx.serialization.Serializable
 data class GitHubUser(
     val id: Long,
     val login: String,
-    val avatar_url: String,
+    @SerialName("avatar_url") val avatarUrl: String,
     val type: String,
     val score: Double? = null
 )

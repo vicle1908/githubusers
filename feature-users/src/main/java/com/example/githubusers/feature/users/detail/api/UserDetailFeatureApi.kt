@@ -31,13 +31,10 @@ object UserDetailFeatureApi {
      * @param navigator Navigation handler for the feature
      */
     @Composable
-    fun UserDetailScreen(
-        username: String,
-        navigator: UserDetailNavigator,
-    ) {
+    fun UserDetailScreen(username: String, navigator: UserDetailNavigator) {
         UserDetailRoute(
             username = username,
-            navigator = navigator,
+            navigator = navigator
         )
     }
 

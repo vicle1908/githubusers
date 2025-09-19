@@ -6,29 +6,30 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.githubusers.core.search.domain.SearchFilter
+import com.example.githubusers.feature.search.presentation.intent.SearchIntent
 import com.example.githubusers.feature.search.presentation.ui.SearchScreen
 import com.example.githubusers.feature.search.presentation.viewmodel.SearchViewModel
 
 /**
- * Route composable for the Search feature
+ * Route composable for the Search feature. Delegates list rendering to the shared user list component.
  */
 @Composable
-fun SearchRoute(navigator: SearchNavigator, initialQuery: String? = null) {
+fun SearchRoute(
+    navigator: SearchNavigator,
+    initialQuery: String? = null,
+    initialFilter: SearchFilter? = null,
+    origin: String? = null
+) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
     val trendingUsers = viewModel.trendingUsers.collectAsLazyPagingItems()
 
-    // If opened via deep link with a query, execute immediately once
-    LaunchedEffect(initialQuery) {
+    LaunchedEffect(initialQuery, initialFilter, origin) {
+        viewModel.initialize(initialQuery, initialFilter, origin)
         if (!initialQuery.isNullOrBlank()) {
-            viewModel.processIntent(
-                com.example.githubusers.feature.search.presentation.intent.SearchIntent
-                    .ExecuteSearch(initialQuery)
-            )
+            viewModel.processIntent(SearchIntent.ExecuteSearch(initialQuery))
         }
     }
 
@@ -37,11 +38,7 @@ fun SearchRoute(navigator: SearchNavigator, initialQuery: String? = null) {
         searchResults = searchResults,
         trendingUsers = trendingUsers,
         onIntent = viewModel::processIntent,
-        onNavigateToUser = { username ->
-            navigator.navigateToUserDetail(username)
-        },
-        onNavigateBack = {
-            navigator.navigateBack()
-        }
+        onNavigateToUser = navigator::navigateToUserDetail,
+        onNavigateBack = navigator::navigateBack
     )
 }

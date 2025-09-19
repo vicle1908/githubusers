@@ -1,14 +1,14 @@
-# AI Worktree: claude - workflow-setup
+# AI Worktree: codex - search-enhancement
 
-**Task**: github-actions  
-**Created**: Mon Sep 15 13:49:00 +07 2025  
-**Assistant**: claude
+**Task**: search-feature  
+**Created**: Tue Sep 16 14:42:46 +07 2025  
+**Assistant**: codex
 
 ## Purpose
 This worktree is dedicated to AI assistant development for the specified task.
 
 ## Usage
-1. Navigate to this directory: `cd ai-claude-workflow-setup-github-actions`
+1. Navigate to this directory: `cd ai-codex-search-enhancement-search-feature`
 2. Start your AI assistant (Claude, Gemini, etc.)
 3. Work on the task following the project's development standards
 4. Use the configured Git aliases for quick operations
@@ -21,4 +21,4 @@ This worktree is dedicated to AI assistant development for the specified task.
 
 ## Cleanup
 When done, remove this worktree with:
-`git worktree remove ai-claude-workflow-setup-github-actions`
+`git worktree remove ai-codex-search-enhancement-search-feature`

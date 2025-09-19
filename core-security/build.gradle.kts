@@ -10,6 +10,8 @@ plugins {
     // Quality plugins (expose detekt/ktlint tasks for aggregates)
     id("githubusers.quality.detekt")
     id("githubusers.quality.ktlint")
+    // Dependency updates (ben-manes via convention plugin)
+    id("githubusers.dependency.update")
     // Optional publishing hooks (keeps parity with other modules)
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")

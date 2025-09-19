@@ -2,9 +2,6 @@ package com.example.githubusers.feature.users.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewModelScope
 import com.example.githubusers.core.mvi.base.EffectDelegate
 import com.example.githubusers.core.mvi.base.StateDelegate
 import com.example.githubusers.core.mvi.contracts.ViewEffect
@@ -21,9 +18,8 @@ import kotlinx.coroutines.launch
  *
  * Remove once upstream Hilt/KSP multi-module resolution improves.
  */
-abstract class FeatureMviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect>(
-    initialState: S,
-) : ViewModel(),
+abstract class FeatureMviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect>(initialState: S) :
+    ViewModel(),
     StateDelegate<S> by MutableStateDelegate(initialState),
     EffectDelegate<E> by ChannelEffectDelegate() {
     abstract suspend fun processIntent(intent: I)
@@ -32,10 +28,7 @@ abstract class FeatureMviViewModel<I : ViewIntent, S : ViewState, E : ViewEffect
         viewModelScope.launch { processIntent(intent) }
     }
 
-    protected suspend fun updateStateWithEffect(
-        stateReducer: S.() -> S,
-        effect: E,
-    ) {
+    protected suspend fun updateStateWithEffect(stateReducer: S.() -> S, effect: E) {
         updateState(stateReducer)
         sendEffect(effect)
     }

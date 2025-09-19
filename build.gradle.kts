@@ -174,6 +174,26 @@ tasks.register("ktlintCheckAll") {
     }
 }
 
+// Aggregate dependency updates across modules that apply the versions plugin
+// Note: the ben-manes versions task is not configuration-cache safe on Gradle 9.
+// Prefer running this in isolation with configuration cache disabled.
+tasks.register("dependencyUpdatesAll") {
+    group = "verification"
+    description = "Run dependencyUpdates on all included builds that expose the task"
+
+    val excluded = setOf("catalog", "plugins", "testing")
+    gradle.includedBuilds
+        .filter { it.name !in excluded }
+        .forEach { build ->
+            val linkedTask = runCatching { build.task(":dependencyUpdates") }
+                .onFailure { logger.debug("Included build ${build.name} has no dependencyUpdates task") }
+                .getOrNull()
+            if (linkedTask != null) {
+                dependsOn(linkedTask)
+            }
+        }
+}
+
 // Aggregate unit tests across modules (composite-friendly)
 tasks.register("testAll") {
     group = "verification"
@@ -209,15 +229,35 @@ tasks.register("lintAll") {
     group = "verification"
     description = "Run Android lint across all included builds that expose lint tasks"
 
-    val excluded = setOf("catalog", "plugins")
+    val excluded = setOf("catalog", "plugins", "testing")
     val candidates = listOf(":lint", ":lintDebug", ":lintRelease")
 
     gradle.includedBuilds
         .filter { it.name !in excluded }
+        .filter { build ->
+            val buildFile = build.projectDir.resolve("build.gradle.kts")
+            if (!buildFile.isFile) {
+                false
+            } else {
+                val markers = listOf(
+                    "alias(libs.plugins.android.library)",
+                    "alias(libs.plugins.android.application)",
+                    "id(\"githubusers.android.library\")",
+                    "id(\"githubusers.android.application\")"
+                )
+                val contents = buildFile.readText()
+                markers.any { marker -> contents.contains(marker) }
+            }
+        }
         .forEach { build ->
             candidates.forEach { taskName ->
-                runCatching { dependsOn(build.task(taskName)) }
-                    .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
+                val linkedTask =
+                    runCatching { build.task(taskName) }
+                        .onFailure { logger.debug("Included build ${build.name} has no $taskName task") }
+                        .getOrNull()
+                if (linkedTask != null) {
+                    dependsOn(linkedTask)
+                }
             }
         }
 
@@ -226,17 +266,6 @@ tasks.register("lintAll") {
     }
 }
 
-// Aggregate dependency updates across included builds (versions plugin now applied widely)
-tasks.register("dependencyUpdatesAll") {
-    group = "verification"
-    description = "Run Gradle Versions Plugin dependencyUpdates across included builds"
-    val excluded = setOf("catalog", "plugins")
-    gradle.includedBuilds
-        .filter { it.name !in excluded }
-        .forEach { build ->
-            dependsOn(build.task(":dependencyUpdates"))
-        }
-}
 
 // Aggregate OWASP dependency check across included builds when available
 tasks.register("dependencyCheckAnalyzeAll") {

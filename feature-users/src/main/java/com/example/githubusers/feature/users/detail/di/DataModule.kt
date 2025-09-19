@@ -32,15 +32,12 @@ abstract class DataModule {
     companion object {
         @Provides
         @Singleton
-        fun provideUserDetailDatabase(
-            @ApplicationContext context: Context,
-        ): UserDetailDatabase =
-            Room
-                .databaseBuilder(
-                    context,
-                    UserDetailDatabase::class.java,
-                    UserDetailDatabase.DATABASE_NAME,
-                ).build()
+        fun provideUserDetailDatabase(@ApplicationContext context: Context): UserDetailDatabase = Room
+            .databaseBuilder(
+                context,
+                UserDetailDatabase::class.java,
+                UserDetailDatabase.DATABASE_NAME
+            ).build()
 
         @Provides
         @Singleton

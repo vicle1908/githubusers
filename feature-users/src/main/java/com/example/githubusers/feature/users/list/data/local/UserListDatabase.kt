@@ -13,10 +13,10 @@ import com.example.githubusers.feature.users.list.data.local.entity.UserSummaryE
 @Database(
     entities = [
         UserSummaryEntity::class,
-        RemoteKeyEntity::class,
+        RemoteKeyEntity::class
     ],
     version = 1,
-    exportSchema = true,
+    exportSchema = true
 )
 abstract class UserListDatabase : RoomDatabase() {
     abstract fun userSummaryDao(): UserSummaryDao

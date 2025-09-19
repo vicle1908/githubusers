@@ -17,27 +17,27 @@ private val Context.userDataStore: DataStore<Preferences> by preferencesDataStor
  */
 @Singleton
 class DataStoreProvider
-    @Inject
-    constructor() {
-        /**
-         * Creates a DataStore instance for settings.
-         * Use this for app-wide settings.
-         */
-        fun getSettingsDataStore(context: Context): DataStore<Preferences> = context.settingsDataStore
+@Inject
+constructor() {
+    /**
+     * Creates a DataStore instance for settings.
+     * Use this for app-wide settings.
+     */
+    fun getSettingsDataStore(context: Context): DataStore<Preferences> = context.settingsDataStore
 
-        /**
-         * Creates a DataStore instance for user preferences.
-         * Use this for user-specific data.
-         */
-        fun getUserDataStore(context: Context): DataStore<Preferences> = context.userDataStore
+    /**
+     * Creates a DataStore instance for user preferences.
+     * Use this for user-specific data.
+     */
+    fun getUserDataStore(context: Context): DataStore<Preferences> = context.userDataStore
 
-        /**
-         * For features that need custom DataStore names,
-         * they should create their own extension properties at the top level of their files.
-         * This method provides guidance on the pattern.
-         */
-        fun createDataStoreGuidance(): String =
-            """
+    /**
+     * For features that need custom DataStore names,
+     * they should create their own extension properties at the top level of their files.
+     * This method provides guidance on the pattern.
+     */
+    fun createDataStoreGuidance(): String =
+        """
             To create a custom DataStore in your feature module:
             
             // At the top level of your feature's DataStore file:
@@ -45,5 +45,5 @@ class DataStoreProvider
             
             // Then use it:
             context.yourFeatureDataStore
-            """.trimIndent()
-    }
+        """.trimIndent()
+}

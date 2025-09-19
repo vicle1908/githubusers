@@ -452,7 +452,7 @@ jobs:
         cache-read-only: ${{ github.event_name == 'pull_request' }}
 
     - name: Final build test
-      run: ./gradlew build --configuration-cache --build-cache
+      run: ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
 
     - name: Approve for merge
       if: success()

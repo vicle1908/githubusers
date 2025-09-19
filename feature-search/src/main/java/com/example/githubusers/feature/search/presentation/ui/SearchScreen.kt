@@ -1,84 +1,79 @@
 package com.example.githubusers.feature.search.presentation.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar as MaterialSearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.githubusers.feature.search.domain.entity.SearchResult
+import com.example.githubusers.core.ui.list.StandardUserList
+import com.example.githubusers.core.ui.list.StandardUserListLayout
+import com.example.githubusers.core.ui.list.StandardUserRow
+import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.search.presentation.intent.SearchIntent
 import com.example.githubusers.feature.search.presentation.state.SearchState
-import androidx.compose.material3.SearchBar as MaterialSearchBar
 
 /**
- * Main search screen UI
+ * Search screen that reuses the shared StandardUserList scaffold so search results and browse
+ * lists render identically.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     state: SearchState,
-    searchResults: LazyPagingItems<SearchResult>,
-    trendingUsers: LazyPagingItems<SearchResult>,
+    searchResults: LazyPagingItems<UserSummary>,
+    trendingUsers: LazyPagingItems<UserSummary>,
     onIntent: (SearchIntent) -> Unit,
     onNavigateToUser: (String) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
-        // Search bar
-        CustomSearchBar(
-            state = state,
-            onIntent = onIntent,
-            onNavigateBack = onNavigateBack,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-        // Content
-        if (state.query.isEmpty() && state.showTrending) {
-            // Show trending users
-            TrendingUsersSection(
+    Column(modifier = modifier.fillMaxSize()) {
+        SearchTopBar(state = state, onIntent = onIntent, onNavigateBack = onNavigateBack)
+
+        val showTrending = state.query.isEmpty() && state.showTrending
+
+        LaunchedEffect(showTrending) {
+            if (showTrending) {
+                onIntent(SearchIntent.TrendingShown)
+            }
+        }
+
+        if (showTrending) {
+            TrendingListSection(
+                state = state,
                 trendingUsers = trendingUsers,
-                onUserClick = { user ->
-                    onNavigateToUser(user.login)
-                }
+                onIntent = onIntent,
+                onNavigateToUser = onNavigateToUser
             )
         } else {
-            // Show search results
-            SearchResultsList(
-                results = searchResults,
-                onUserClick = { user ->
-                    onNavigateToUser(user.login)
-                }
+            SearchResultsListSection(
+                state = state,
+                searchResults = searchResults,
+                onIntent = onIntent,
+                onNavigateToUser = onNavigateToUser
             )
         }
     }
@@ -86,111 +81,254 @@ fun SearchScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CustomSearchBar(
+private fun SearchTopBar(
     state: SearchState,
     onIntent: (SearchIntent) -> Unit,
-    onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    onNavigateBack: () -> Unit
 ) {
-    val onQueryChange: (String) -> Unit = { query -> onIntent(SearchIntent.UpdateQuery(query)) }
-    val onSearch: (String) -> Unit = { query -> onIntent(SearchIntent.ExecuteSearch(query)) }
-    val onActivateSearch: () -> Unit = { onIntent(SearchIntent.ActivateSearch) }
-    val onDismissSearch: () -> Unit = {
-        if (state.query.isNotEmpty()) {
-            onIntent(SearchIntent.DismissSearch)
-        } else {
-            onNavigateBack()
-        }
-    }
-    val onClearSearch: () -> Unit = { onIntent(SearchIntent.ClearSearch) }
-    val onSelectRecentSearch: (String) -> Unit = { search -> onIntent(SearchIntent.SelectRecentSearch(search)) }
-    val onClearHistory: () -> Unit = { onIntent(SearchIntent.ClearSearchHistory) }
+    val onQueryChange: (String) -> Unit = { text -> onIntent(SearchIntent.UpdateQuery(text)) }
+    val onExecuteSearch: (String) -> Unit = { text -> onIntent(SearchIntent.ExecuteSearch(text)) }
 
     MaterialSearchBar(
         inputField = {
             SearchBarDefaults.InputField(
                 query = state.query,
                 onQueryChange = onQueryChange,
-                onSearch = onSearch,
+                onSearch = onExecuteSearch,
                 expanded = state.isSearchActive,
-                onExpandedChange = { /* Controlled by state */ },
-                placeholder = { Text("Search GitHub users...") },
+                onExpandedChange = { expanded ->
+                    if (expanded) onIntent(SearchIntent.ActivateSearch) else onIntent(SearchIntent.DismissSearch)
+                },
+                placeholder = { Text("Search GitHub users…") },
                 leadingIcon = {
-                    LeadingIconContent(
-                        state.isSearchActive,
-                        onActivateSearch,
-                        onDismissSearch
-                    )
+                    IconButton(
+                        onClick = {
+                            if (state.isSearchActive) {
+                                onIntent(SearchIntent.BackToBrowse)
+                                onNavigateBack()
+                            } else {
+                                onIntent(SearchIntent.ActivateSearch)
+                            }
+                        }
+                    ) {
+                        val leadingIcon =
+                            if (state.isSearchActive) {
+                                Icons.AutoMirrored.Filled.ArrowBack
+                            } else {
+                                Icons.Filled.Search
+                            }
+                        Icon(
+                            imageVector = leadingIcon,
+                            contentDescription = if (state.isSearchActive) "Back" else "Search"
+                        )
+                    }
                 },
                 trailingIcon = {
-                    TrailingIconContent(
-                        state.query,
-                        onSearch,
-                        onClearSearch
-                    )
+                    if (state.query.isNotBlank()) {
+                        IconButton(onClick = { onIntent(SearchIntent.ClearSearch) }) {
+                            Icon(Icons.Filled.Clear, contentDescription = "Clear search")
+                        }
+                    }
                 }
             )
         },
         expanded = state.isSearchActive,
         onExpandedChange = { expanded ->
-            if (expanded) {
-                onActivateSearch()
-            } else {
-                onDismissSearch()
-            }
-        },
-        modifier = modifier
+            if (expanded) onIntent(SearchIntent.ActivateSearch) else onIntent(SearchIntent.DismissSearch)
+        }
     ) {
         SearchSuggestionsContent(
-            state.isSearchActive,
-            state.query,
-            state.recentSearches,
-            onSelectRecentSearch,
-            onClearHistory
+            isSearchActive = state.isSearchActive,
+            query = state.query,
+            recentSearches = state.recentSearches,
+            onSelectRecentSearch = { onIntent(SearchIntent.SelectRecentSearch(it)) },
+            onClearHistory = { onIntent(SearchIntent.ClearSearchHistory) }
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LeadingIconContent(isSearchActive: Boolean, onActivateSearch: () -> Unit, onDismissSearch: () -> Unit) {
-    if (!isSearchActive) {
-        IconButton(onClick = onActivateSearch) {
-            Icon(
-                Icons.Filled.Search,
-                contentDescription = "Search"
+private fun TrendingListSection(
+    state: SearchState,
+    trendingUsers: LazyPagingItems<UserSummary>,
+    onIntent: (SearchIntent) -> Unit,
+    onNavigateToUser: (String) -> Unit
+) {
+    val refreshError = trendingUsers.loadState.refresh
+    if (refreshError is androidx.paging.LoadState.Error) {
+com.example.githubusers.core.ui.feedback.ErrorBanner(
+            message = searchErrorMessageFromThrowable(refreshError.error),
+            onRetry = { trendingUsers.retry() }
+        )
+    }
+    StandardUserList(
+        pagingItems = trendingUsers,
+        layout = StandardUserListLayout.VerticalList(
+            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ),
+        onRefresh = {
+            onIntent(SearchIntent.RefreshTrending)
+            trendingUsers.refresh()
+        },
+        header = {
+            TrendingHeader(
+                recentQueries = state.recentSearches,
+                onRecentSearchClick = { onIntent(SearchIntent.SelectRecentSearch(it)) },
+                onClearHistory = { onIntent(SearchIntent.ClearSearchHistory) }
+            )
+        },
+        emptyContent = { TrendingEmptyState(onSearch = { onIntent(SearchIntent.ActivateSearch) }) },
+        itemContent = { user ->
+            StandardUserRow(
+                user = user,
+                onClick = {
+                    onIntent(SearchIntent.UserClicked(user))
+                    onNavigateToUser(user.login)
+                }
             )
         }
-    } else {
-        IconButton(onClick = onDismissSearch) {
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back"
+    )
+}
+
+@Composable
+private fun SearchResultsListSection(
+    state: SearchState,
+    searchResults: LazyPagingItems<UserSummary>,
+    onIntent: (SearchIntent) -> Unit,
+    onNavigateToUser: (String) -> Unit
+) {
+    val refreshError = searchResults.loadState.refresh
+    if (refreshError is androidx.paging.LoadState.Error) {
+com.example.githubusers.core.ui.feedback.ErrorBanner(
+            message = searchErrorMessageFromThrowable(refreshError.error),
+            onRetry = { searchResults.retry() }
+        )
+    }
+    StandardUserList(
+        pagingItems = searchResults,
+        layout = StandardUserListLayout.VerticalList(
+            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ),
+        onRefresh = {
+            if (state.query.isNotBlank()) {
+                onIntent(SearchIntent.ExecuteSearch(state.query))
+            }
+            searchResults.refresh()
+        },
+        emptyContent = { SearchEmptyState(query = state.query) },
+        itemContent = { user ->
+            StandardUserRow(
+                user = user,
+                onClick = {
+                    onIntent(SearchIntent.UserClicked(user))
+                    onNavigateToUser(user.login)
+                }
             )
+        }
+    )
+}
+
+private fun searchErrorMessageFromThrowable(t: Throwable): String {
+    val default = "Something went wrong. Please try again."
+    return if (t is com.example.githubusers.core.search.domain.SearchException) {
+        when (val e = t.error) {
+            is com.example.githubusers.core.search.domain.SearchError.Network -> "Network error. Check your connection and try again."
+            is com.example.githubusers.core.search.domain.SearchError.Timeout -> "Request timed out. Please retry."
+            is com.example.githubusers.core.search.domain.SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
+            is com.example.githubusers.core.search.domain.SearchError.Server -> "Server error (${e.code}). Please try again later."
+            is com.example.githubusers.core.search.domain.SearchError.Client -> "Request error (${e.code}). Please adjust your query and try again."
+            is com.example.githubusers.core.search.domain.SearchError.Unknown -> default
+        }
+    } else default
+}
+
+@Composable
+private fun TrendingHeader(
+    recentQueries: List<String>,
+    onRecentSearchClick: (String) -> Unit,
+    onClearHistory: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        if (recentQueries.isNotEmpty()) {
+            Text(
+                text = "Recent searches",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                recentQueries.take(5).forEach { query ->
+                    TextButton(
+                        onClick = { onRecentSearchClick(query) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = query, maxLines = 1)
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextButton(onClick = onClearHistory) {
+                Text("Clear history")
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        Text(
+            text = "Trending Users",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+@Composable
+private fun TrendingEmptyState(onSearch: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "No trending users right now",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Try searching for a username or keyword to find people.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextButton(onClick = onSearch) {
+            Text("Start a search")
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TrailingIconContent(query: String, onSearch: (String) -> Unit, onClearSearch: () -> Unit) {
-    when {
-        query.isNotEmpty() -> {
-            Row {
-                IconButton(onClick = { onSearch(query) }) {
-                    Icon(
-                        Icons.Filled.Search,
-                        contentDescription = "Submit search"
-                    )
-                }
-                IconButton(onClick = onClearSearch) {
-                    Icon(
-                        Icons.Filled.Clear,
-                        contentDescription = "Clear search"
-                    )
-                }
-            }
-        }
+private fun SearchEmptyState(query: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "No matches for \"$query\"",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Check the spelling or try a different keyword.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
@@ -202,265 +340,49 @@ private fun SearchSuggestionsContent(
     onSelectRecentSearch: (String) -> Unit,
     onClearHistory: () -> Unit
 ) {
-    if (isSearchActive) {
-        Column(
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        ) {
-            if (query.isEmpty()) {
+    if (!isSearchActive) return
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        when {
+            query.isEmpty() && recentSearches.isEmpty() -> {
                 Text(
                     text = "Start typing to search users",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
 
-                RecentSearches(
-                    recentSearches = recentSearches,
-                    onRecentSearchClick = onSelectRecentSearch,
-                    onClearHistory = onClearHistory
-                )
-            } else if (query.length < 2) {
+            query.length < 2 -> {
                 Text(
                     text = "Enter at least 2 characters to search",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun TrendingUsersSection(trendingUsers: LazyPagingItems<SearchResult>, onUserClick: (SearchResult) -> Unit) {
-    Column {
-        Text(
-            text = "Trending Users",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(16.dp)
-        )
-        LazyColumn {
-            items(trendingUsers.itemCount) { index ->
-                trendingUsers[index]?.let { user ->
-                    SearchResultItem(
-                        result = user,
-                        onClick = { onUserClick(user) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchResultsList(results: LazyPagingItems<SearchResult>, onUserClick: (SearchResult) -> Unit) {
-    when {
-        results.loadState.refresh is LoadState.Loading -> {
-            LoadingStateContent()
-        }
-        results.loadState.refresh is LoadState.Error -> {
-            ErrorStateContent(results)
-        }
-        results.itemCount == 0 && results.loadState.refresh is LoadState.NotLoading -> {
-            EmptyStateContent()
-        }
-        else -> {
-            ResultsListContent(results, onUserClick)
-        }
-    }
-}
-
-@Composable
-private fun LoadingStateContent() {
-    Column(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        CircularProgressIndicator()
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Loading results…",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-private fun ErrorStateContent(results: LazyPagingItems<SearchResult>) {
-    val error = (results.loadState.refresh as LoadState.Error).error
-    Column(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            Icons.Filled.Search,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Failed to load results",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = error.message ?: "Unknown error",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(onClick = { results.retry() }) { Text("Retry") }
-    }
-}
-
-@Composable
-private fun EmptyStateContent() {
-    Column(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            Icons.Filled.Search,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "No results found",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = "Try a different search term",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-private fun ResultsListContent(results: LazyPagingItems<SearchResult>, onUserClick: (SearchResult) -> Unit) {
-    LazyColumn {
-        items(results.itemCount) { index ->
-            results[index]?.let { result ->
-                SearchResultItem(
-                    result = result,
-                    onClick = { onUserClick(result) }
-                )
-            }
-        }
-        if (results.loadState.append is LoadState.Loading) {
-            item {
-                Row(
-                    modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchResultItem(result: SearchResult, onClick: () -> Unit) {
-    Card(
-        onClick = onClick,
-        modifier =
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
-    ) {
-        Row(
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = result.login,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-                result.name?.let { name ->
-                    Text(
-                        text = name,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun RecentSearches(
-    recentSearches: List<String>,
-    onRecentSearchClick: (String) -> Unit,
-    onClearHistory: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    if (recentSearches.isNotEmpty()) {
-        Column(modifier = modifier) {
-            Row(
-                modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Recent searches",
-                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                TextButton(
-                    onClick = onClearHistory
-                ) {
-                    Text("Clear")
-                }
             }
 
-            recentSearches.take(5).forEach { search ->
-                ListItem(
-                    headlineContent = { Text(search) },
-                    leadingContent = {
-                        Icon(
-                            Icons.Filled.MoreVert,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    },
-                    modifier =
-                    Modifier
-                        .clickable { onRecentSearchClick(search) }
-                        .padding(horizontal = 8.dp)
+            recentSearches.isNotEmpty() -> {
+                Text(
+                    text = "Recent searches",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    recentSearches.take(5).forEach { recent ->
+                        TextButton(onClick = { onSelectRecentSearch(recent) }) {
+                            Text(text = recent, maxLines = 1)
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                TextButton(onClick = onClearHistory) {
+                    Text("Clear history")
+                }
             }
         }
     }

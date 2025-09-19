@@ -13,26 +13,19 @@ import javax.inject.Singleton
  */
 @Singleton
 class UserApiService
-    @Inject
-    constructor(
-        private val httpClient: HttpClient,
-    ) {
-        /**
-         * Get user details by username
-         */
-        suspend fun getUser(username: String): String = httpClient.get("https://api.github.com/users/$username").body()
+@Inject
+constructor(private val httpClient: HttpClient) {
+    /**
+     * Get user details by username
+     */
+    suspend fun getUser(username: String): String = httpClient.get("https://api.github.com/users/$username").body()
 
-        /**
-         * Get user repositories
-         */
-        suspend fun getUserRepositories(
-            username: String,
-            page: Int = 1,
-            perPage: Int = 30,
-        ): String =
-            httpClient
-                .get("https://api.github.com/users/$username/repos") {
-                    parameter("page", page)
-                    parameter("per_page", perPage)
-                }.body()
-    }
+    /**
+     * Get user repositories
+     */
+    suspend fun getUserRepositories(username: String, page: Int = 1, perPage: Int = 30): String = httpClient
+        .get("https://api.github.com/users/$username/repos") {
+            parameter("page", page)
+            parameter("per_page", perPage)
+        }.body()
+}

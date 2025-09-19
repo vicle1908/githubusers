@@ -15,6 +15,9 @@ plugins {
     id("githubusers.quality.detekt")
     id("githubusers.quality.ktlint")
 
+    // Dependency update checks (ben-manes versions via convention plugin)
+    id("githubusers.dependency.update")
+
     // Optional publishing hooks
     id("githubusers.android.publishing")
     id("githubusers.android.library.publishing")

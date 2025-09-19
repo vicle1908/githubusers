@@ -1,6 +1,5 @@
 package com.example.githubusers.navigation.impl
 
-import timber.log.Timber
 import androidx.compose.material3.Text
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -9,6 +8,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 /**
  * Central registry that coordinates Navigation 3 key → NavEntry resolution
@@ -28,16 +28,15 @@ class Navigation3FeatureRegistry @Inject constructor(
      * to map NavKey types to their corresponding NavEntry content.
      */
     fun createEntryProvider(): (NavKey) -> NavEntry<NavKey> = { key ->
-        try {
-            val provider = findProvider(key)
-            if (provider != null) {
-                createEntryWithMetadata(key, provider)
-            } else {
-                createErrorEntry(key, "Unknown destination: $key")
-            }
-        } catch (e: Exception) {
-            Timber.tag("Navigation3FeatureRegistry").e(e, "Error creating entry for $key")
-            createErrorEntry(key, "Error loading destination: $key")
+        val provider = findProvider(key)
+        if (provider == null) {
+            createErrorEntry(key, "Unknown destination: $key")
+        } else {
+            runCatching { createEntryWithMetadata(key, provider) }
+                .getOrElse { e ->
+                    Timber.tag("Navigation3FeatureRegistry").e(e, "Error creating entry for $key")
+                    createErrorEntry(key, "Error loading destination: $key")
+                }
         }
     }
 
@@ -45,11 +44,11 @@ class Navigation3FeatureRegistry @Inject constructor(
      * Find the appropriate provider for the given NavKey.
      * Uses simple iteration since the number of providers is typically small.
      */
-    private fun findProvider(key: NavKey): FeatureDestinationProvider? =
-        providers.firstOrNull { it.canResolve(key) }
+    private fun findProvider(key: NavKey): FeatureDestinationProvider? = providers.firstOrNull { it.canResolve(key) }
 
     /**
-     * Create NavEntry with transition specifications, scene strategy metadata, and NavigationEventInfo from the provider.
+     * Create NavEntry with transition specifications, scene strategy metadata,
+     * and NavigationEventInfo from the provider.
      * This enables feature modules to define custom transition animations, scene strategies, and gesture handling.
      */
     private fun createEntryWithMetadata(key: NavKey, provider: FeatureDestinationProvider): NavEntry<NavKey> {
@@ -59,13 +58,16 @@ class Navigation3FeatureRegistry @Inject constructor(
         val navigationEventInfo = provider.getNavigationEventInfo(key)
         val supportsPredictiveBack = provider.supportsPredictiveBack(key)
 
-        return if (transitionSpec != null ||
-            popTransitionSpec != null ||
-            dialogProperties != null ||
-            navigationEventInfo != null ||
-            supportsPredictiveBack
-        ) {
-            // Create entry with custom transition specifications, scene strategy metadata, NavigationEventInfo, and predictive back support
+        val hasCustomizations =
+            transitionSpec != null ||
+                popTransitionSpec != null ||
+                dialogProperties != null ||
+                navigationEventInfo != null ||
+                supportsPredictiveBack
+
+        return if (hasCustomizations) {
+            // Create entry with custom transition specs, scene strategy metadata,
+            // NavigationEventInfo, and predictive back support
             val metadata = mutableMapOf<String, Any>()
 
             transitionSpec?.let {

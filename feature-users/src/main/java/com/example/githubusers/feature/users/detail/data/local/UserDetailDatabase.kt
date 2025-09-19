@@ -14,10 +14,10 @@ import com.example.githubusers.feature.users.detail.data.local.entity.UserDetail
 @Database(
     entities = [
         UserDetailEntity::class,
-        RepositoryEntity::class,
+        RepositoryEntity::class
     ],
     version = 1,
-    exportSchema = false,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class UserDetailDatabase : RoomDatabase() {

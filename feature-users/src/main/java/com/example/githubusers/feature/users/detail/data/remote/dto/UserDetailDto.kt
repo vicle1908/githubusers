@@ -69,5 +69,5 @@ data class UserDetailDto(
     @SerialName("events_url")
     val eventsUrl: String,
     @SerialName("received_events_url")
-    val receivedEventsUrl: String,
+    val receivedEventsUrl: String
 )

@@ -1,6 +1,4 @@
-@file:Suppress("ktlint:standard:function-naming")
-
-package com.example.githubusers.feature.users.list.presentation.ui
+package com.example.githubusers.core.ui.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -30,85 +28,79 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.githubusers.core.ui.accessibility.accessibleListItem
-import com.example.githubusers.feature.users.list.domain.entity.UserSummary
+import com.example.githubusers.core.users.domain.UserSummary
 
-/**
- * Individual user item in the list.
- */
 @Composable
 fun UserListItem(
     user: UserSummary,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     position: Int? = null,
-    totalItems: Int? = null,
+    totalItems: Int? = null
 ) {
     Card(
         modifier =
-            modifier
-                .fillMaxWidth()
-                .clickable { onClick() }
-                .padding(horizontal = 8.dp, vertical = 0.dp)
-                .let { cardModifier ->
-                    if (position != null && totalItems != null) {
-                        cardModifier.accessibleListItem(
-                            itemContent = "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}",
-                            position = position,
-                            totalItems = totalItems,
-                            hasAction = true,
-                            additionalInfo = "Double tap to view user details",
-                        )
-                    } else {
-                        cardModifier.semantics {
-                            contentDescription =
-                                "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}. Double tap to view details"
-                            role = Role.Button
-                        }
+        modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(horizontal = 8.dp, vertical = 0.dp)
+            .let { cardModifier ->
+                if (position != null && totalItems != null) {
+                    cardModifier.accessibleListItem(
+                        itemContent = "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}",
+                        position = position,
+                        totalItems = totalItems,
+                        hasAction = true,
+                        additionalInfo = "Double tap to view user details"
+                    )
+                } else {
+                    cardModifier.semantics {
+                        contentDescription =
+                            "GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}. Double tap to view details"
+                        role = Role.Button
                     }
-                },
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                }
+            },
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // User avatar
             AsyncImage(
                 model =
-                    ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(user.avatarUrl)
-                        .crossfade(true)
-                        .build(),
+                ImageRequest
+                    .Builder(LocalContext.current)
+                    .data(user.avatarUrl)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = "${user.login}'s avatar",
                 placeholder = painterResource(android.R.drawable.ic_menu_gallery),
                 error = painterResource(android.R.drawable.ic_menu_report_image),
                 contentScale = ContentScale.Crop,
                 modifier =
-                    Modifier
-                        .size(48.dp)
-                        .clip(CircleShape),
+                Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
             )
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            // User login name
             Text(
                 text = user.login,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
 
-            // User type badge (if not a regular user)
             if (user.type != "User") {
                 Text(
                     text = user.type,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(start = 4.dp),
+                    modifier = Modifier.padding(start = 4.dp)
                 )
             }
         }

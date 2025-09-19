@@ -17,12 +17,7 @@ import javax.inject.Inject
 interface UserDetailRemoteDataSource {
     suspend fun getUserDetail(username: String): UserDetailDto
 
-    suspend fun getUserRepositories(
-        username: String,
-        page: Int,
-        perPage: Int,
-        sort: String,
-    ): List<RepositoryDto>
+    suspend fun getUserRepositories(username: String, page: Int, perPage: Int, sort: String): List<RepositoryDto>
 
     suspend fun isFollowing(username: String): Boolean
 
@@ -35,39 +30,36 @@ interface UserDetailRemoteDataSource {
  * Implementation of UserDetailRemoteDataSource using Ktor.
  */
 class UserDetailRemoteDataSourceImpl
-    @Inject
-    constructor(
-        private val httpClient: HttpClient,
-    ) : UserDetailRemoteDataSource {
-        override suspend fun getUserDetail(username: String): UserDetailDto =
-            httpClient.get("https://api.github.com/users/$username").body()
+@Inject
+constructor(private val httpClient: HttpClient) :
+    UserDetailRemoteDataSource {
+    override suspend fun getUserDetail(username: String): UserDetailDto =
+        httpClient.get("https://api.github.com/users/$username").body()
 
-        override suspend fun getUserRepositories(
-            username: String,
-            page: Int,
-            perPage: Int,
-            sort: String,
-        ): List<RepositoryDto> =
-            httpClient
-                .get("https://api.github.com/users/$username/repos") {
-                    parameter("page", page)
-                    parameter("per_page", perPage)
-                    parameter("sort", sort)
-                }.body()
+    override suspend fun getUserRepositories(
+        username: String,
+        page: Int,
+        perPage: Int,
+        sort: String
+    ): List<RepositoryDto> = httpClient
+        .get("https://api.github.com/users/$username/repos") {
+            parameter("page", page)
+            parameter("per_page", perPage)
+            parameter("sort", sort)
+        }.body()
 
-        override suspend fun isFollowing(username: String): Boolean =
-            try {
-                val response = httpClient.get("https://api.github.com/user/following/$username")
-                response.status == HttpStatusCode.NoContent
-            } catch (e: Exception) {
-                false
-            }
-
-        override suspend fun followUser(username: String) {
-            httpClient.put("https://api.github.com/user/following/$username")
-        }
-
-        override suspend fun unfollowUser(username: String) {
-            httpClient.delete("https://api.github.com/user/following/$username")
-        }
+    override suspend fun isFollowing(username: String): Boolean = try {
+        val response = httpClient.get("https://api.github.com/user/following/$username")
+        response.status == HttpStatusCode.NoContent
+    } catch (e: Exception) {
+        false
     }
+
+    override suspend fun followUser(username: String) {
+        httpClient.put("https://api.github.com/user/following/$username")
+    }
+
+    override suspend fun unfollowUser(username: String) {
+        httpClient.delete("https://api.github.com/user/following/$username")
+    }
+}

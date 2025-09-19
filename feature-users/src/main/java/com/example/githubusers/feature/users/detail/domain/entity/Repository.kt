@@ -25,15 +25,10 @@ data class Repository(
     val defaultBranch: String,
     val topics: List<String>,
     val license: License?,
-    val visibility: String,
+    val visibility: String
 )
 
 /**
  * Domain entity representing a repository license.
  */
-data class License(
-    val key: String,
-    val name: String,
-    val spdxId: String?,
-    val url: String?,
-)
+data class License(val key: String, val name: String, val spdxId: String?, val url: String?)

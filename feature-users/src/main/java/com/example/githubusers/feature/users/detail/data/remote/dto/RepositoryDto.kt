@@ -53,7 +53,7 @@ data class RepositoryDto(
     @SerialName("disabled")
     val disabled: Boolean = false,
     @SerialName("owner")
-    val owner: OwnerDto? = null,
+    val owner: OwnerDto? = null
 )
 
 /**
@@ -68,7 +68,7 @@ data class LicenseDto(
     @SerialName("spdx_id")
     val spdxId: String? = null,
     @SerialName("url")
-    val url: String? = null,
+    val url: String? = null
 )
 
 /**
@@ -85,5 +85,5 @@ data class OwnerDto(
     @SerialName("html_url")
     val htmlUrl: String,
     @SerialName("type")
-    val type: String,
+    val type: String
 )
