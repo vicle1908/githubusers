@@ -58,6 +58,11 @@ jobs:
     - name: Run Android Lint
       run: ./gradlew :app:lintDebug --configuration-cache --build-cache
 
+    # Check if we can compile core-security native library
+    - name: Check core-security compilation
+      run: ./gradlew :core-security:compileDebugKotlin --configuration-cache --build-cache
+      continue-on-error: true
+
     - name: Upload Detekt results
       uses: actions/upload-artifact@v4
       if: always()
