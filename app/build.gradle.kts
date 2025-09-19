@@ -41,14 +41,7 @@ extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>
     enableNav3PersistenceWrite = true
 }
 
-// Configure NDK settings via convention plugin extensions
-extensions.configure<com.example.githubusers.plugins.NdkExtension>(
-    "ndkConfig"
-) {
-    ndkVersion = libs.versions.ndk.get()
-    cmakeVersion = libs.versions.ndk.get()
-    cmakePath = "src/main/cpp/CMakeLists.txt"
-}
+// NDK configurations removed - now handled by core-security module
 
 // Advanced build optimizations and configuration
 android {
@@ -128,6 +121,7 @@ android {
 dependencies {
     // Core modules
     implementation(libs.local.core.ui)
+    implementation(libs.local.core.security)
 
     // Feature modules
     implementation(libs.local.feature.users)

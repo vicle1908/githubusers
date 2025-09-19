@@ -48,6 +48,7 @@ coreCommonModule = "1.0.0"
 coreNetworkingModule = "1.0.0"
 coreStorageModule = "1.0.0"
 coreUiModule = "1.0.0"
+coreSecurityModule = "1.0.0"
 coil3 = "3.3.0"
 androidx-core = "1.17.0"
 android-gradle-plugin = "8.13.0"
@@ -226,6 +227,7 @@ local-core-common = { group = "com.example.githubusers", name = "core-common", v
 local-core-networking = { group = "com.example.githubusers", name = "core-networking", version.ref = "coreNetworkingModule" }
 local-core-storage = { group = "com.example.githubusers", name = "core-storage", version.ref = "coreStorageModule" }
 local-core-ui = { group = "com.example.githubusers", name = "core-ui", version.ref = "coreUiModule" }
+local-core-security = { group = "com.example.githubusers", name = "core-security", version.ref = "coreSecurityModule" }
 local-navigation-api = { group = "com.example.githubusers", name = "navigation-api", version.ref = "navigationApiModule" }
 local-navigation-impl = { group = "com.example.githubusers", name = "navigation-impl", version.ref = "navigationImplModule" }
 local-feature-users = { group = "com.example.githubusers", name = "feature-users", version.ref = "featureUsersModule" }
