@@ -277,25 +277,11 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,macos,git,kotlin
 
-
-
 build-cache
-
-script/**
 
 # .gitignore
 # Kotlin 2.0
 .kotlin/
-.clinerules/byterover-rules.md
-.kilocode/rules/byterover-rules.md
-.roo/rules/byterover-rules.md
-.windsurf/rules/byterover-rules.md
-.cursor/rules/byterover-rules.mdc
-.kiro/steering/byterover-rules.md
-.qoder/rules/byterover-rules.md
-.augment/rules/byterover-rules.md
 
 # AI Assistant Configuration Files (contain API keys)
-.claude/
-.gemini/
 app/src/main/cpp/security_manager.cpp

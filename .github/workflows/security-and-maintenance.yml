@@ -51,8 +51,8 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     
-    - name: Check for dependency updates
-      run: ./gradlew dependencyUpdatesAll
+    - name: Check for dependency updates (no CC)
+      run: ./gradlew dependencyUpdatesAll --no-configuration-cache --stacktrace
     
     - name: Upload dependency update report
       uses: actions/upload-artifact@v4
