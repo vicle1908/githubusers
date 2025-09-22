@@ -50,7 +50,7 @@ jobs:
         api-level: 36
         build-tools: 36.0.0
         ndk-version: '28.2.13676358'
-        cmake-version: '4.1.1'
+        cmake-version: '3.22.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -150,7 +150,7 @@ jobs:
         api-level: 36
         build-tools: 36.0.0
         ndk-version: '28.2.13676358'
-        cmake-version: '4.1.1'
+        cmake-version: '3.22.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -249,7 +249,7 @@ jobs:
         api-level: 36
         build-tools: 36.0.0
         ndk-version: '28.2.13676358'
-        cmake-version: '4.1.1'
+        cmake-version: '3.22.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -357,7 +357,7 @@ jobs:
         api-level: 36
         build-tools: 36.0.0
         ndk-version: '28.2.13676358'
-        cmake-version: '4.1.1'
+        cmake-version: '3.22.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -448,7 +448,7 @@ jobs:
         api-level: 36
         build-tools: 36.0.0
         ndk-version: '28.2.13676358'
-        cmake-version: '4.1.1'
+        cmake-version: '3.22.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
