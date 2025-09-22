@@ -1,0 +1,38 @@
+name: Android Toolchain Versions
+
+on:
+  workflow_call:
+    outputs:
+      android-api-level:
+        description: Android API level shared across workflows
+        value: ${{ jobs.export.outputs.android-api-level }}
+      android-build-tools:
+        description: Android build tools revision shared across workflows
+        value: ${{ jobs.export.outputs.android-build-tools }}
+      android-ndk-version:
+        description: Android NDK version shared across workflows
+        value: ${{ jobs.export.outputs.android-ndk-version }}
+      android-cmake-version:
+        description: CMake version shared across workflows
+        value: ${{ jobs.export.outputs.android-cmake-version }}
+
+jobs:
+  export:
+    name: Export Android toolchain versions
+    runs-on: ubuntu-latest
+    outputs:
+      android-api-level: ${{ steps.emit.outputs.android-api-level }}
+      android-build-tools: ${{ steps.emit.outputs.android-build-tools }}
+      android-ndk-version: ${{ steps.emit.outputs.android-ndk-version }}
+      android-cmake-version: ${{ steps.emit.outputs.android-cmake-version }}
+    steps:
+    - name: Emit Android toolchain versions
+      id: emit
+      shell: bash
+      run: |
+        cat <<'EOF' >>"$GITHUB_OUTPUT"
+        android-api-level=36
+        android-build-tools=36.1.0
+        android-ndk-version=28.2.13676358
+        android-cmake-version=3.22.1
+        EOF
