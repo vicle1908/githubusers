@@ -16,6 +16,10 @@ concurrency:
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=2g -XX:+UseG1GC"
+  ANDROID_API_LEVEL: '36'
+  ANDROID_BUILD_TOOLS: '36.0.0'
+  ANDROID_NDK_VERSION: '28.2.13676358'
+  ANDROID_CMAKE_VERSION: '3.22.1'
 
 jobs:
   code-quality:
@@ -41,10 +45,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 36
-        build-tools: 36.0.0
-        ndk-version: '28.2.13676358'
-        cmake-version: '3.22.1'
+        packages: |
+          platform-tools
+          platforms;android-${{ env.ANDROID_API_LEVEL }}
+          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
+          ndk;${{ env.ANDROID_NDK_VERSION }}
+          cmake;${{ env.ANDROID_CMAKE_VERSION }}
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -118,10 +124,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 36
-        build-tools: 36.0.0
-        ndk-version: '28.2.13676358'
-        cmake-version: '3.22.1'
+        packages: |
+          platform-tools
+          platforms;android-${{ env.ANDROID_API_LEVEL }}
+          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
+          ndk;${{ env.ANDROID_NDK_VERSION }}
+          cmake;${{ env.ANDROID_CMAKE_VERSION }}
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -136,8 +144,8 @@ jobs:
       run: ./gradlew testAll --configuration-cache --build-cache
 
     - name: Generate test report
+      if: always() && hashFiles('**/build/test-results/test*/TEST-*.xml') != ''
       uses: dorny/test-reporter@v1
-      if: always()
       with:
         name: Unit Test Results
         path: '**/build/test-results/test*/TEST-*.xml'

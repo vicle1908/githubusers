@@ -207,7 +207,11 @@ tasks.register("testAll") {
 
     gradle.includedBuilds.forEach { build ->
         // Try JVM-style and Android unit test tasks in order
-        val candidates = listOf(":test")
+        val candidates = listOf(
+            ":test",
+            ":testDebugUnitTest",
+            ":testReleaseUnitTest"
+        )
         candidates.forEach { taskName ->
             runCatching { dependsOn(build.task(taskName)) }
                 .onFailure { logger.debug("Module ${build.name} has no $taskName task") }
