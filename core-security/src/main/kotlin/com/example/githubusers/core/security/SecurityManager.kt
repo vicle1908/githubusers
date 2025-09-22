@@ -1,7 +1,11 @@
 package com.example.githubusers.core.security
 
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
+
+internal const val SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY =
+    "com.example.githubusers.core.security.skipNativeLoad"
 
 /**
  * Core security manager providing native security functionality.
@@ -11,9 +15,26 @@ import javax.inject.Singleton
 class SecurityManager @Inject constructor() {
 
     companion object {
+        private const val NATIVE_LIBRARY_NAME = "security_core"
+        private val nativeLibraryLoaded = AtomicBoolean(false)
+
         init {
-            // Load the native security library
-            System.loadLibrary("security_core")
+            loadNativeLibraryIfNeeded()
+        }
+
+        internal fun loadNativeLibraryIfNeeded() {
+            if (shouldSkipNativeLoad()) {
+                return
+            }
+
+            if (nativeLibraryLoaded.compareAndSet(false, true)) {
+                System.loadLibrary(NATIVE_LIBRARY_NAME)
+            }
+        }
+
+        private fun shouldSkipNativeLoad(): Boolean {
+            val flag = System.getProperty(SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY) ?: return false
+            return flag.equals("true", ignoreCase = true)
         }
     }
 

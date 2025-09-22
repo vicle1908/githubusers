@@ -1,17 +1,32 @@
 package com.example.githubusers.core.security
 
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
+import org.junit.AfterClass
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 
 /**
  * Unit tests for SecurityManager.
  */
 class SecurityManagerTest {
+
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun disableNativeLibraryLoading() {
+            System.setProperty(SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY, "true")
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun clearNativeLibraryFlag() {
+            System.clearProperty(SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY)
+        }
+    }
 
     private lateinit var securityManager: SecurityManager
 
