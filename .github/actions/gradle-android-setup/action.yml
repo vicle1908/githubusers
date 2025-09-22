@@ -50,7 +50,8 @@ runs:
       if: inputs.install-android == 'true'
       uses: android-actions/setup-android@v3
       with:
-        packages: |
+        packages: >-
+          tools
           platform-tools
           platforms;android-${{ inputs.android-api-level }}
           build-tools;${{ inputs.android-build-tools }}
