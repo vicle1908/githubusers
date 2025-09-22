@@ -1,0 +1,71 @@
+name: Android Toolchain Versions
+
+on:
+  workflow_call:
+    outputs:
+      android-api-level:
+        description: Android API level shared across workflows
+        value: ${{ jobs.export.outputs.android-api-level }}
+      android-build-tools:
+        description: Android build tools revision shared across workflows
+        value: ${{ jobs.export.outputs.android-build-tools }}
+      android-ndk-version:
+        description: Android NDK version shared across workflows
+        value: ${{ jobs.export.outputs.android-ndk-version }}
+      android-cmake-version:
+        description: CMake version shared across workflows
+        value: ${{ jobs.export.outputs.android-cmake-version }}
+
+jobs:
+  export:
+    name: Export Android toolchain versions
+    runs-on: ubuntu-latest
+    outputs:
+      android-api-level: ${{ steps.emit.outputs.android-api-level }}
+      android-build-tools: ${{ steps.emit.outputs.android-build-tools }}
+      android-ndk-version: ${{ steps.emit.outputs.android-ndk-version }}
+      android-cmake-version: ${{ steps.emit.outputs.android-cmake-version }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          catalog/gradle/libs.versions.toml
+        sparse-checkout-cone-mode: false
+
+    - name: Emit Android toolchain versions
+      id: emit
+      shell: bash
+      run: |
+        python <<'PY'
+        import os
+        from pathlib import Path
+
+        try:
+            import tomllib  # Python 3.11+
+        except ModuleNotFoundError:  # pragma: no cover - fallback for older runners
+            import tomli as tomllib
+
+        versions_path = Path('catalog/gradle/libs.versions.toml')
+        if not versions_path.is_file():
+            raise FileNotFoundError(f"Missing version catalog: {versions_path}")
+
+        data = tomllib.loads(versions_path.read_text(encoding='utf-8'))
+        versions = data.get('versions', {})
+
+        mapping = {
+            'android-api-level': versions.get('sdk-compile'),
+            'android-build-tools': versions.get('buildTools'),
+            'android-ndk-version': versions.get('ndk'),
+            'android-cmake-version': versions.get('cmake'),
+        }
+
+        missing = [key for key, value in mapping.items() if value is None]
+        if missing:
+            raise KeyError(f"Missing version keys in catalog: {', '.join(missing)}")
+
+        output_path = Path(os.environ['GITHUB_OUTPUT'])
+        with output_path.open('a', encoding='utf-8') as output:
+            for key, value in mapping.items():
+                output.write(f"{key}={value}\n")
+        PY

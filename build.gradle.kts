@@ -206,11 +206,40 @@ tasks.register("testAll") {
     description = "Run unit tests for all included builds (JVM and Android)"
 
     gradle.includedBuilds.forEach { build ->
-        // Try JVM-style and Android unit test tasks in order
-        val candidates = listOf(":test")
+        val buildFile = build.projectDir.resolve("build.gradle.kts")
+        val isAndroidModule =
+            if (buildFile.isFile) {
+                val androidMarkers = listOf(
+                    "alias(libs.plugins.android.library)",
+                    "alias(libs.plugins.android.application)",
+                    "id(\"githubusers.android.library\")",
+                    "id(\"githubusers.android.application\")"
+                )
+                val contents = buildFile.readText()
+                androidMarkers.any(contents::contains)
+            } else {
+                false
+            }
+
+        val candidates = buildList {
+            add(":test")
+            if (isAndroidModule) {
+                add(":testDebugUnitTest")
+                add(":testReleaseUnitTest")
+            } else {
+                logger.debug("Module ${build.name} is not Android; skipping Android unit test variants")
+            }
+        }
+
         candidates.forEach { taskName ->
-            runCatching { dependsOn(build.task(taskName)) }
-                .onFailure { logger.debug("Module ${build.name} has no $taskName task") }
+            val linkedTask =
+                runCatching { build.task(taskName) }
+                    .onFailure { logger.debug("Module ${build.name} has no $taskName task") }
+                    .getOrNull()
+
+            if (linkedTask != null) {
+                dependsOn(linkedTask)
+            }
         }
     }
 }
@@ -283,6 +312,12 @@ tasks.register("dependencyCheckAnalyzeAll") {
     }
 }
 
+tasks.named("dependencyCheckAnalyzeAll") {
+    notCompatibleWithConfigurationCache(
+        "OWASP Dependency Check plugin does not yet support Gradle's configuration cache"
+    )
+}
+
 // Aggregate license report generation across included builds when available
 tasks.register("generateLicenseReportAll") {
     group = "verification"
@@ -291,4 +326,10 @@ tasks.register("generateLicenseReportAll") {
         runCatching { dependsOn(build.task(":generateLicenseReport")) }
             .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
     }
+}
+
+tasks.named("generateLicenseReportAll") {
+    notCompatibleWithConfigurationCache(
+        "License reporting plugin aggregates are not configuration cache compatible"
+    )
 }
