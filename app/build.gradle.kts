@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.Packaging
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
@@ -41,7 +40,13 @@ extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>
     enableNav3PersistenceWrite = true
 }
 
-// NDK configurations removed - now handled by core-security module
+extensions.configure<com.example.githubusers.plugins.NdkExtension>("ndkConfig") {
+    ndkVersion = libs.versions.ndk.get()
+    cmakeVersion = libs.versions.cmake.get()
+    cmakePath = "src/main/cpp/CMakeLists.txt"
+}
+
+// Native toolchain configuration is provided via the ndkConfig extension above
 
 // Advanced build optimizations and configuration
 android {
@@ -107,15 +112,6 @@ android {
         }
     }
 
-    // Packaging optimizations
-    fun Packaging.() {
-        resources {
-            excludes += listOf(
-                "/META-INF/{AL2.0,LGPL2.1}",
-                "/META-INF/gradle/incremental.annotation.processors"
-            )
-        }
-    }
 }
 
 dependencies {
