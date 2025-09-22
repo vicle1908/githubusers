@@ -206,7 +206,31 @@ tasks.register("testAll") {
     description = "Run unit tests for all included builds (JVM and Android)"
 
     gradle.includedBuilds.forEach { build ->
-        val candidates = listOf(":test", ":testDebugUnitTest", ":testReleaseUnitTest")
+        val buildFile = build.projectDir.resolve("build.gradle.kts")
+        val isAndroidModule =
+            if (buildFile.isFile) {
+                val androidMarkers = listOf(
+                    "alias(libs.plugins.android.library)",
+                    "alias(libs.plugins.android.application)",
+                    "id(\"githubusers.android.library\")",
+                    "id(\"githubusers.android.application\")"
+                )
+                val contents = buildFile.readText()
+                androidMarkers.any(contents::contains)
+            } else {
+                false
+            }
+
+        val candidates = buildList {
+            add(":test")
+            if (isAndroidModule) {
+                add(":testDebugUnitTest")
+                add(":testReleaseUnitTest")
+            } else {
+                logger.debug("Module ${build.name} is not Android; skipping Android unit test variants")
+            }
+        }
+
         candidates.forEach { taskName ->
             val linkedTask =
                 runCatching { build.task(taskName) }
