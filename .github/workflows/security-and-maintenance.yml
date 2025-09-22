@@ -42,6 +42,13 @@ jobs:
         distribution: 'temurin'
         java-version: '21'
         # Gradle cache handled by setup-gradle@v4
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -52,7 +59,7 @@ jobs:
       run: chmod +x ./gradlew
     
     - name: Check for dependency updates (no CC)
-      run: ./gradlew dependencyUpdatesAll --no-configuration-cache --stacktrace
+      run: ./gradlew dependencyUpdatesAll --no-configuration-cache --build-cache --stacktrace
     
     - name: Upload dependency update report
       uses: actions/upload-artifact@v4
@@ -79,7 +86,9 @@ jobs:
     name: Security Vulnerability Scan
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    
+    env:
+      CODEQL_EXTRACTOR_JAVA_OPTION_BUILD_TRACING: ON
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -92,6 +101,13 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -107,7 +123,7 @@ jobs:
         languages: java-kotlin
     
     - name: Build for CodeQL
-      run: ./gradlew assembleDebugApp --configuration-cache --build-cache
+      run: ./gradlew assembleDebugApp --configuration-cache --build-cache --rerun-tasks
     
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
@@ -115,7 +131,7 @@ jobs:
         category: "/language:java-kotlin"
     
     - name: Run OWASP Dependency Check
-      run: ./gradlew dependencyCheckAnalyzeAll || true
+      run: ./gradlew dependencyCheckAnalyzeAll --no-configuration-cache --build-cache || true
     
     - name: Upload security scan results
       uses: actions/upload-artifact@v4
@@ -145,6 +161,13 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
@@ -155,7 +178,7 @@ jobs:
       run: chmod +x ./gradlew
     
     - name: Generate license report
-      run: ./gradlew generateLicenseReportAll || true
+      run: ./gradlew generateLicenseReportAll --no-configuration-cache --build-cache || true
     
     - name: Upload license report
       uses: actions/upload-artifact@v4
@@ -185,6 +208,13 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
       with:

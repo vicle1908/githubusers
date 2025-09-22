@@ -283,6 +283,12 @@ tasks.register("dependencyCheckAnalyzeAll") {
     }
 }
 
+tasks.named("dependencyCheckAnalyzeAll") {
+    notCompatibleWithConfigurationCache(
+        "OWASP Dependency Check plugin does not yet support Gradle's configuration cache"
+    )
+}
+
 // Aggregate license report generation across included builds when available
 tasks.register("generateLicenseReportAll") {
     group = "verification"
@@ -291,4 +297,10 @@ tasks.register("generateLicenseReportAll") {
         runCatching { dependsOn(build.task(":generateLicenseReport")) }
             .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
     }
+}
+
+tasks.named("generateLicenseReportAll") {
+    notCompatibleWithConfigurationCache(
+        "License reporting plugin aggregates are not configuration cache compatible"
+    )
 }

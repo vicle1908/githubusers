@@ -47,9 +47,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -66,7 +67,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -146,9 +147,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -165,7 +167,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -244,9 +246,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -272,7 +275,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -351,9 +354,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -370,7 +374,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-        ./gradlew :core-security:assembleDebug --info
+        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -441,9 +445,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
+        api-level: 36
+        build-tools: 36.0.0
+        ndk-version: '28.2.13676358'
+        cmake-version: '4.1.1'
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
