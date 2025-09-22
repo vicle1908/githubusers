@@ -37,8 +37,11 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     timeout-minutes: 15
-    
+
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
@@ -84,6 +87,9 @@ jobs:
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
@@ -129,8 +135,11 @@ jobs:
       ANDROID_BUILD_TOOLS: ${{ needs.android-toolchain.outputs.android-build-tools }}
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
-    
+
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
@@ -163,8 +172,11 @@ jobs:
       ANDROID_BUILD_TOOLS: ${{ needs.android-toolchain.outputs.android-build-tools }}
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
-    
+
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
@@ -202,14 +214,18 @@ jobs:
     name: Code Quality Metrics
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         install-android: 'false'
-    
+
     - name: Generate code metrics
       run: |
         # Count lines of code

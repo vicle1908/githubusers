@@ -39,10 +39,14 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
@@ -126,10 +130,14 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
@@ -212,10 +220,14 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
@@ -307,10 +319,14 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
@@ -391,10 +407,14 @@ jobs:
       ANDROID_NDK_VERSION: ${{ needs.android-toolchain.outputs.android-ndk-version }}
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-        checkout-fetch-depth: 0
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
