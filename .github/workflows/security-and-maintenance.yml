@@ -39,35 +39,13 @@ jobs:
     timeout-minutes: 15
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
+    - name: Prepare Gradle environment
+      uses: ./.github/actions/gradle-android-setup
       with:
-        distribution: 'temurin'
-        java-version: '21'
-        # Gradle cache handled by setup-gradle@v4
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          platform-tools
-          platforms;android-${{ env.ANDROID_API_LEVEL }}
-          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
-          ndk;${{ env.ANDROID_NDK_VERSION }}
-          cmake;${{ env.ANDROID_CMAKE_VERSION }}
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+        android-api-level: ${{ env.ANDROID_API_LEVEL }}
+        android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+        android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
+        android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Check for dependency updates (no CC)
       run: ./gradlew dependencyUpdatesAll --no-configuration-cache --build-cache --stacktrace
@@ -106,34 +84,13 @@ jobs:
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
+    - name: Prepare Gradle environment
+      uses: ./.github/actions/gradle-android-setup
       with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          platform-tools
-          platforms;android-${{ env.ANDROID_API_LEVEL }}
-          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
-          ndk;${{ env.ANDROID_NDK_VERSION }}
-          cmake;${{ env.ANDROID_CMAKE_VERSION }}
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+        android-api-level: ${{ env.ANDROID_API_LEVEL }}
+        android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+        android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
+        android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
@@ -174,34 +131,13 @@ jobs:
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
+    - name: Prepare Gradle environment
+      uses: ./.github/actions/gradle-android-setup
       with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          platform-tools
-          platforms;android-${{ env.ANDROID_API_LEVEL }}
-          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
-          ndk;${{ env.ANDROID_NDK_VERSION }}
-          cmake;${{ env.ANDROID_CMAKE_VERSION }}
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+        android-api-level: ${{ env.ANDROID_API_LEVEL }}
+        android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+        android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
+        android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Generate license report
       run: ./gradlew generateLicenseReportAll --no-configuration-cache --build-cache || true
@@ -229,34 +165,13 @@ jobs:
       ANDROID_CMAKE_VERSION: ${{ needs.android-toolchain.outputs.android-cmake-version }}
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
+    - name: Prepare Gradle environment
+      uses: ./.github/actions/gradle-android-setup
       with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          platform-tools
-          platforms;android-${{ env.ANDROID_API_LEVEL }}
-          build-tools;${{ env.ANDROID_BUILD_TOOLS }}
-          ndk;${{ env.ANDROID_NDK_VERSION }}
-          cmake;${{ env.ANDROID_CMAKE_VERSION }}
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+        android-api-level: ${{ env.ANDROID_API_LEVEL }}
+        android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
+        android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
+        android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Build release APK for analysis
       run: ./gradlew assembleReleaseApp --configuration-cache --build-cache
@@ -289,27 +204,11 @@ jobs:
     timeout-minutes: 15
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - name: Prepare Gradle environment
+      uses: ./.github/actions/gradle-android-setup
       with:
-        fetch-depth: 0
-    
-    - name: Validate Gradle Wrapper
-      uses: gradle/actions/wrapper-validation@v4
-    
-    - name: Setup JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
-    
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
+        checkout-fetch-depth: 0
+        install-android: 'false'
     
     - name: Generate code metrics
       run: |
