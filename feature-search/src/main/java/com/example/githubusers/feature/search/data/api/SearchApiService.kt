@@ -1,5 +1,6 @@
 package com.example.githubusers.feature.search.data.api
 
+import com.example.githubusers.feature.search.data.model.GitHubRepositorySearchResponse
 import com.example.githubusers.feature.search.data.model.GitHubSearchResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -28,5 +29,22 @@ constructor(private val httpClient: HttpClient) {
             parameter("q", query)
             parameter("page", page)
             parameter("per_page", perPage)
+        }.body()
+
+    suspend fun searchRepositories(
+        query: String,
+        sort: String? = null,
+        order: String? = null,
+        page: Int = 1,
+        perPage: Int = 30
+    ): GitHubRepositorySearchResponse = httpClient
+        .get("https://api.github.com/search/repositories") {
+            header("Accept", "application/vnd.github+json")
+            header("User-Agent", "githubusers-android")
+            parameter("q", query)
+            parameter("page", page)
+            parameter("per_page", perPage)
+            sort?.let { parameter("sort", it) }
+            order?.let { parameter("order", it) }
         }.body()
 }

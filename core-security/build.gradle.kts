@@ -24,9 +24,6 @@ android {
     namespace = "com.example.githubusers.core.security"
 
     defaultConfig {
-        minSdk = libs.versions.sdk.min.get().toInt()
-        consumerProguardFiles("consumer-proguard-rules.pro")
-
         externalNativeBuild {
             cmake {
                 cppFlags("-std=c++17", "-fvisibility=hidden")
@@ -66,11 +63,11 @@ android {
 dependencies {
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
-    
+
     // Hilt for dependency injection
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    
+
     // Testing dependencies
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

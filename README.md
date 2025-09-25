@@ -153,11 +153,12 @@ src/androidTest/    # Integration and UI tests
 # Run all unit tests
 ./gradlew test
 
-# Run specific module tests
+# Run feature-specific unit tests
 ./gradlew :feature-users:test
+./gradlew :feature-search:testDebugUnitTest
 
-# Run UI tests
-./gradlew connectedAndroidTest
+# Run search instrumentation (device/emulator required)
+./gradlew :feature-search:connectedDebugAndroidTest
 
 # Generate test coverage
 ./gradlew jacocoTestReport

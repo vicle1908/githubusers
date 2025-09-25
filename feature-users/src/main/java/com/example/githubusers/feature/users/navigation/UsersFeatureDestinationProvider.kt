@@ -1,6 +1,5 @@
 package com.example.githubusers.feature.users.navigation
 
-import android.net.Uri
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.spring
@@ -25,17 +24,38 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.core.ui.navigation.PredictiveBackManager
-import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailNavigator
 import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailRoute
 import com.example.githubusers.feature.users.list.presentation.navigation.UserListNavigator
 import com.example.githubusers.feature.users.list.presentation.navigation.UserListRoute
+import com.example.githubusers.feature.users.navigation.UserDetailNavigatorFactory
 import com.example.githubusers.feature.users.navigation.UserNavKey
 import com.example.githubusers.feature.users.navigation.UserNavigationEventInfo
+import com.example.githubusers.feature.users.navigation.UsersDeepLinks
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
+import com.example.githubusers.navigation.api.openSearch
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import javax.inject.Singleton
+
+// Animation constants
+private const val FadeDuration = 300
+private const val SlideSpringDamping = 0.8f
+private const val SlideSpringStiffnessDefault = 1000f
+private const val SlideSpringStiffnessPredictive = 300f
+private const val SlideSpringStiffnessDialog = 400f
+private const val SlideSpringDampingDialog = 0.9f
+private const val FadeDurationDialog = 250
+
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface UsersNavigatorEntryPoint {
+    fun userDetailNavigatorFactory(): UserDetailNavigatorFactory
+}
 
 /** Feature-owned destinations for Users. */
 @Singleton
@@ -61,29 +81,23 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
             navigator =
             object : UserListNavigator {
                 override fun navigateToUserDetail(username: String) {
-                    val deepLink = Uri.Builder()
-                        .scheme("app")
-                        .authority("users")
-                        .appendPath("user")
-                        .appendPath(username)
-                        .build()
-                        .toString()
-                    navigateToDeepLink(deepLink)
+                    navigateToDeepLink(UsersDeepLinks.detail(username))
                 }
 
                 override fun navigateBack() {
-                    navigateToDeepLink("app://users/list")
+                    navigateToDeepLink(UsersDeepLinks.list())
                 }
 
                 override fun openSettings() {
-                    navigateToDeepLink("app://settings")
+                    navigateToDeepLink(UsersDeepLinks.settings())
                 }
 
-override fun openSearch(query: String?, origin: String) {
-                    val builder = Uri.parse("app://search").buildUpon()
-                    query?.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("q", it) }
-                    origin.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("origin", it) }
-                    navigateToDeepLink(builder.build().toString())
+                override fun openSearch(query: String?, origin: String) {
+                    openSearch(
+                        navigateToDeepLink = navigateToDeepLink,
+                        query = query,
+                        origin = origin.takeIf { it.isNotBlank() }
+                    )
                 }
             }
         )
@@ -92,24 +106,25 @@ override fun openSearch(query: String?, origin: String) {
     @Composable
     private fun UserDetailContent(username: String) {
         val navigateBack = LocalNavigateBack.current
+        val navigateToDeepLink = LocalNavigateToDeepLink.current
+        val context = androidx.compose.ui.platform.LocalContext.current
+        val navigatorFactory = EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            UsersNavigatorEntryPoint::class.java
+        ).userDetailNavigatorFactory()
+
+        val navigator = navigatorFactory.create(
+            username = username,
+            navigateBack = { navigateBack() },
+            openRepository = { owner, repo ->
+                navigateToDeepLink(UsersDeepLinks.repository(owner, repo))
+            },
+            openUrl = { /* TODO: integrate external browser */ }
+        )
+
         UserDetailRoute(
             username = username,
-            navigator =
-            object : UserDetailNavigator {
-                override fun navigateBack() {
-                    navigateBack()
-                }
-
-                override fun navigateToRepository(owner: String, repo: String) {
-                    // Repository navigation not implemented yet
-                    // Will be implemented when repository feature is added
-                }
-
-                override fun openUrl(url: String) {
-                    // External URL opening not implemented yet
-                    // Will be implemented when external browser integration is needed
-                }
-            }
+            navigator = navigator
         )
     }
 
@@ -153,14 +168,14 @@ override fun openSearch(query: String?, origin: String) {
      * Provides custom transition specifications for different user destinations.
      * This demonstrates how feature modules can define their own transition animations.
      */
-    override fun getTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<*>.() -> ContentTransform)? =
+    override fun getTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<NavKey>.() -> ContentTransform)? =
         when (key) {
             is UserNavKey.UserList -> {
                 // Simple fade transition for user list
                 {
                     ContentTransform(
-                        fadeIn(animationSpec = tween(300)),
-                        fadeOut(animationSpec = tween(300))
+                        fadeIn(animationSpec = tween(FadeDuration)),
+                        fadeOut(animationSpec = tween(FadeDuration))
                     )
                 }
             }
@@ -170,12 +185,18 @@ override fun openSearch(query: String?, origin: String) {
                     ContentTransform(
                         slideInHorizontally(
                             initialOffsetX = { it },
-                            animationSpec = spring(dampingRatio = 0.8f, stiffness = 1000f)
-                        ) + fadeIn(animationSpec = tween(300)),
+                            animationSpec = spring(
+                                dampingRatio = SlideSpringDamping,
+                                stiffness = SlideSpringStiffnessDefault
+                            )
+                        ) + fadeIn(animationSpec = tween(FadeDuration)),
                         slideOutHorizontally(
                             targetOffsetX = { -it },
-                            animationSpec = spring(dampingRatio = 0.8f, stiffness = 1000f)
-                        ) + fadeOut(animationSpec = tween(300))
+                            animationSpec = spring(
+                                dampingRatio = SlideSpringDamping,
+                                stiffness = SlideSpringStiffnessDefault
+                            )
+                        ) + fadeOut(animationSpec = tween(FadeDuration))
                     )
                 }
             }
@@ -185,7 +206,7 @@ override fun openSearch(query: String?, origin: String) {
     /**
      * Provides custom pop transition specifications for navigation back.
      */
-    override fun getPopTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<*>.() -> ContentTransform)? =
+    override fun getPopTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<NavKey>.() -> ContentTransform)? =
         when (key) {
             is UserNavKey.UserDetail -> {
                 // Reverse slide transition when going back from user detail
@@ -193,12 +214,18 @@ override fun openSearch(query: String?, origin: String) {
                     ContentTransform(
                         slideInHorizontally(
                             initialOffsetX = { -it },
-                            animationSpec = spring(dampingRatio = 0.8f, stiffness = 1000f)
-                        ) + fadeIn(animationSpec = tween(300)),
+                            animationSpec = spring(
+                                dampingRatio = SlideSpringDamping,
+                                stiffness = SlideSpringStiffnessDefault
+                            )
+                        ) + fadeIn(animationSpec = tween(FadeDuration)),
                         slideOutHorizontally(
                             targetOffsetX = { it },
-                            animationSpec = spring(dampingRatio = 0.8f, stiffness = 1000f)
-                        ) + fadeOut(animationSpec = tween(300))
+                            animationSpec = spring(
+                                dampingRatio = SlideSpringDamping,
+                                stiffness = SlideSpringStiffnessDefault
+                            )
+                        ) + fadeOut(animationSpec = tween(FadeDuration))
                     )
                 }
             }
@@ -262,18 +289,24 @@ override fun openSearch(query: String?, origin: String) {
      */
     override fun getPredictivePopTransitionSpec(
         key: NavKey
-    ): (AnimatedContentTransitionScope<*>.() -> ContentTransform)? = when (key) {
+    ): (AnimatedContentTransitionScope<NavKey>.() -> ContentTransform)? = when (key) {
         is UserNavKey.UserDetail -> {
             // Custom transition for user detail with enhanced spring animation
             {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = spring(dampingRatio = 0.8f, stiffness = 300f)
-                ) + fadeIn(animationSpec = tween(300)) togetherWith
+                    animationSpec = spring(
+                        dampingRatio = SlideSpringDamping,
+                        stiffness = SlideSpringStiffnessPredictive
+                    )
+                ) + fadeIn(animationSpec = tween(FadeDuration)) togetherWith
                     slideOutHorizontally(
                         targetOffsetX = { it },
-                        animationSpec = spring(dampingRatio = 0.8f, stiffness = 300f)
-                    ) + fadeOut(animationSpec = tween(300))
+                        animationSpec = spring(
+                            dampingRatio = SlideSpringDamping,
+                            stiffness = SlideSpringStiffnessPredictive
+                        )
+                    ) + fadeOut(animationSpec = tween(FadeDuration))
             }
         }
         is UserNavKey.UserSettingsDialog -> {
@@ -281,12 +314,18 @@ override fun openSearch(query: String?, origin: String) {
             {
                 slideInHorizontally(
                     initialOffsetX = { -it },
-                    animationSpec = spring(dampingRatio = 0.9f, stiffness = 400f)
-                ) + fadeIn(animationSpec = tween(250)) togetherWith
+                    animationSpec = spring(
+                        dampingRatio = SlideSpringDampingDialog,
+                        stiffness = SlideSpringStiffnessDialog
+                    )
+                ) + fadeIn(animationSpec = tween(FadeDurationDialog)) togetherWith
                     slideOutHorizontally(
                         targetOffsetX = { it },
-                        animationSpec = spring(dampingRatio = 0.9f, stiffness = 400f)
-                    ) + fadeOut(animationSpec = tween(250))
+                        animationSpec = spring(
+                            dampingRatio = SlideSpringDampingDialog,
+                            stiffness = SlideSpringStiffnessDialog
+                        )
+                    ) + fadeOut(animationSpec = tween(FadeDurationDialog))
             }
         }
         else -> null

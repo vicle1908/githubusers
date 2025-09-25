@@ -1,5 +1,6 @@
 package com.example.githubusers.feature.search.presentation.state
 
+import com.example.githubusers.core.search.domain.SearchDomain
 import com.example.githubusers.core.search.domain.SearchFilter
 
 /**
@@ -13,5 +14,6 @@ data class SearchState(
     val isFilterExpanded: Boolean = false,
     val showTrending: Boolean = true,
     val errorMessage: String? = null,
-    val origin: String? = null
+    val origin: String? = null,
+    val activeDomain: SearchDomain = SearchDomain.USERS
 )

@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "githubusers-74dd8"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

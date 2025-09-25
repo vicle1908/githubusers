@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/post-edit-format.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/module-ktlint-format.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__ide__getDiagnostics",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "URI=$(jq -r '.tool_input.uri') && [ -n \"$URI\" ] && .claude/module-ktlint-format.sh \"$URI\" || true"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.uri' | xargs -r open -a \"Android Studio Preview.app\""
+          }
+        ]
+      }
+    ]
+  }
+}

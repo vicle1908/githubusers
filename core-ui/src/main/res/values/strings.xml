@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_retry">Retry</string>
+    <string name="core_ui_unknown_error">Something went wrong</string>
+    <string name="core_ui_cd_back">Navigate back</string>
+    <string name="core_ui_repositories">Repositories</string>
+    <string name="core_ui_no_repositories_found">No repositories found</string>
+</resources>

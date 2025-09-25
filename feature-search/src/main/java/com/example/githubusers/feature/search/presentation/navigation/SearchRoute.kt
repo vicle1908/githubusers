@@ -23,7 +23,9 @@ fun SearchRoute(
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val searchResults = viewModel.searchResults.collectAsLazyPagingItems()
+    val listUiState by viewModel.listUiState.collectAsStateWithLifecycle()
+    val userResults = viewModel.userResults.collectAsLazyPagingItems()
+    val repositoryResults = viewModel.repositoryResults.collectAsLazyPagingItems()
     val trendingUsers = viewModel.trendingUsers.collectAsLazyPagingItems()
 
     LaunchedEffect(initialQuery, initialFilter, origin) {
@@ -35,10 +37,13 @@ fun SearchRoute(
 
     SearchScreen(
         state = state,
-        searchResults = searchResults,
+        listUiState = listUiState,
+        userResults = userResults,
+        repositoryResults = repositoryResults,
         trendingUsers = trendingUsers,
         onIntent = viewModel::processIntent,
         onNavigateToUser = navigator::navigateToUserDetail,
+        onNavigateToRepository = navigator::navigateToRepository,
         onNavigateBack = navigator::navigateBack
     )
 }

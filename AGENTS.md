@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Unified Agent Operating Handbook (AGENTS.md)
 
 Version: 1.0  •  Status: Stable  •  Audience: All AI Assistants in this workspace
@@ -6,14 +10,14 @@ Purpose: A single, shared operating guide for all AI assistants to act consisten
 
 ## TL;DR
 
-- MCP-first: prefer MCP servers for builds, code search, devices, and research. Manual commands only with explicit approval.
+- MCP-first: prefer MCP servers for builds, code search, devices, and research; Desktop Commander is an approved fallback when it provides the needed tooling.
 - Android/Kotlin: Clean Architecture, feature modules, MVI, Navigation 3; enforce KtLint/Detekt and Version Catalog.
-- Builds: use Gradle MCP for quality and assemble; never run `./gradlew`.
+- Builds: prefer Gradle MCP for quality and assemble; running `./gradlew` via Desktop Commander is allowed when MCP isn’t practical.
 - Code search: index with Claude Context and use `search_code`.
 - Memory: OpenMemory for project/user context; ByteRover for programming patterns and plan persistence.
 - Research: use Tavily/Brave/Exa for current info; cite official docs.
 
-## 1) Core Principles
+## 1 Core Principles
 
 - Be concise, direct, and friendly: communicate efficiently; avoid unnecessary verbosity.
 - Prioritize actionable guidance: always state assumptions, prerequisites, and next steps.
@@ -22,7 +26,7 @@ Purpose: A single, shared operating guide for all AI assistants to act consisten
 - Ownership: keep going until the task is fully resolved or blocked.
 - Safety: protect user privacy; avoid dangerous/destructive actions without explicit approval.
 
-## 2) Conversation & Answer Style
+## 2 Conversation & Answer Style
 
 - Tone: collaborative, natural, like a coding partner.
 - Preambles before tool calls: 1–2 short sentences describing what’s next; group related actions.
@@ -42,7 +46,7 @@ Final Answer Formatting (for messages presented to the user):
 - Do not include URI schemes like `file://` or `vscode://`.
 - Avoid heavy formatting when not needed; keep it scannable and minimal.
 
-## 3) Planning Protocol
+## 3 Planning Protocol
 
 When to use a plan (with `update_plan`):
 
@@ -52,7 +56,7 @@ When to use a plan (with `update_plan`):
 
 Rules:
 
-- Keep steps concise (≤ 7 words each); make them meaningful (not “explore codebase”).
+- Keep steps concise (≤ 7 words each); make them meaningful (not "explore codebase").
 - Exactly one step should be `in_progress` until completion.
 - Mark completed steps promptly; update if the approach changes (include rationale).
 
@@ -64,7 +68,7 @@ Examples (good):
 4. Add ViewModel and UI state
 5. Add unit/UI tests
 
-## 4) Sandbox & Approvals
+## 4 Sandbox & Approvals
 
 - Default sandbox: workspace-write; network: restricted; approvals: on-request.
 - Request approval when:
@@ -73,7 +77,7 @@ Examples (good):
   - A critical command fails due to sandbox and needs escalation.
   - Prefer safer alternatives first; justify escalations succinctly.
 
-## 5) Tooling Protocols (General)
+## 5 Tooling Protocols (General)
 
 - Think before calling tools; group related actions; keep preambles concise.
 - Idempotence: design commands/patches to be safe to re-run.
@@ -82,11 +86,12 @@ Examples (good):
   - Read files in chunks ≤ 250 lines; expect 256-line/10KB output truncation.
 - `apply_patch` to edit files (never use other patch commands). Follow its grammar strictly.
 - Avoid reading the same file repeatedly without need. Avoid large/duplicate output.
+- Firebase CLI vs MCP: keep both. Use MCP tools for quick status checks and conversational guidance inside the session, and fall back to `npx firebase …` when you need the full command surface (deploys, scripting, emulator control, advanced product commands).
 
-## 5a) MCP-First Enforcement
+## 5a MCP-First Enforcement
 
-- Always prefer MCP servers for supported tasks; manual commands only with explicit approval.
-- Build and tests: use Gradle MCP; never run `./gradlew` directly. See `docs/assistants/mcp-guide.md`.
+- Always prefer MCP servers for supported tasks; Desktop Commander is the approved fallback when MCP tooling cannot cover the need.
+- Build and tests: prefer Gradle MCP; running `./gradlew` via Desktop Commander is acceptable when it's the more practical option. See `docs/assistants/mcp-guide.md` for details.
 - Code search: use Claude Context indexing and `search_code` (Section 8); ensure index exists first.
 - Android operations: use Android MCP and Mobile-MCP; manual ADB only as last resort with approval.
 - External info: use Tavily/Brave/Exa; official docs via Context7. Validate with multiple sources when critical.
@@ -106,7 +111,7 @@ apply_patch essentials:
  *** End Patch
  ```
 
-## 6) Memory Protocol (openmemory)
+## 6 Memory Protocol (openmemory)
 
 Tools: `mcp-router__search-memories`, `mcp-router__add-memory`, `mcp-router__delete-all-memories`.
 
@@ -120,10 +125,10 @@ Rules:
 
 Examples:
 
-- “Remember my preferred commit style.” → add-memory with concise description.
-- “What did I tell you about deployments?” → search-memories with query.
+- "Remember my preferred commit style." → add-memory with concise description.
+- "What did I tell you about deployments?" → search-memories with query.
 
-## 7) Byterover MCP Protocols
+## 7 Byterover MCP Protocols
 
 Note: Byterover memory access requires authentication via the Byterover extension. If not authenticated, proceed offline (document key decisions locally) and queue knowledge storage to sync once authenticated. Always prefer retrieving knowledge before implementation and store high-signal programming facts frequently during plans.
 
@@ -144,7 +149,7 @@ Useful flows:
 - During implementation: save implementation plan → retrieve knowledge frequently → store knowledge facts (with code) → update plan progress.
 - Handbook sync: check handbook existence/sync, perform update with preservation strategy if changes diverge.
 
-## 8) Codebase Context & Search
+## 8 Codebase Context & Search
 
 Claude-context tools:
 
@@ -159,7 +164,7 @@ File reference rules in user messages:
 - Use clickable paths (no URI schemes); optional `:line` or `#LlineCcolumn`.
 - Always provide stand-alone paths, even if repeating the same file in multiple bullets.
 
-## 9) Git Protocols (git-mcp-server)
+## 9 Git Protocols (git-mcp-server)
 
 - Do not commit unless explicitly requested by the user.
 - Use `git_set_working_dir` with absolute path before other git actions in a session.
@@ -168,7 +173,7 @@ File reference rules in user messages:
 - Use `git log`/`git blame` to understand history/root cause when necessary; do not overuse.
 - Avoid destructive operations (`reset --hard`, forced pushes) without explicit approval.
 
-## 10) Web & Docs Research
+## 10 Web & Docs Research
 
 Network-aware tools must respect sandbox and approvals.
 
@@ -182,26 +187,26 @@ Network-aware tools must respect sandbox and approvals.
 
 Enhanced workflow: `docs/assistants/enhanced-research-strategy.md`.
 
-## 11) Platform Automation
+## 11 Platform Automation
 
 - Android MCP: `get_packages`, `get_uilayout`, `get_screenshot`, `execute_adb_shell_command`, etc. Use for device tasks; prefer listing and inspecting before tapping/typing. Manual ADB only as last resort with explicit approval.
 - Mobile MCP: `mobile_list_elements_on_screen`, tap/long-press by coordinates, open URLs, type keys; always discover UI elements before actions; avoid blind taps when possible.
 
-MCP-first enforcement: prefer MCP servers for supported tasks; manual commands only with explicit approval. See `docs/assistants/mcp-guide.md`.
+MCP-first enforcement: prefer MCP servers for supported tasks; Desktop Commander is the sanctioned alternative when MCP coverage is insufficient. See `docs/assistants/mcp-guide.md`.
 
-## 11a) Android Kotlin Development
+## 11a Android Kotlin Development
 
 - Architecture: Clean Architecture, feature-based modules, MVI for complex screens, Navigation component only (aka "Navigation 3" in our docs).
 - Dependency policy: use Version Catalog; no hardcoded versions; OkHttp BOM via `platform(libs.okhttp.bom)`; plugin versions via `version.ref`.
 - Code quality: KtLint and Detekt enforced; no wildcard imports; KDoc for public APIs; EditorConfig governs formatting.
-- Build: Use Gradle MCP for `detekt`, `ktlintCheck`, `assembleDebug`; never run `./gradlew` directly.
+- Build: Prefer Gradle MCP for `detekt`, `ktlintCheck`, `assembleDebug`; running `./gradlew` via Desktop Commander is allowed when it streamlines the workflow.
 - Debugging: Prefer Android MCP for logcat and device info; Mobile-MCP for launching and screenshots. See `docs/assistants/android-debugging.md`.
 - Performance: minimize recomposition; use lazy lists; use `remember`/`derivedStateOf`; cache flows in ViewModels with `cachedIn` and proper coroutine scopes.
 - Preferences & storage: Use Jetpack DataStore for non-sensitive preferences; use EncryptedSharedPreferences (Jetpack Security) for secrets.
 - Security & privacy: Implement OkHttp certificate pinning with a pinset (include backup pins) and rotation strategy; validate inputs and API responses; token storage/rotation; consent and deletion support.
 - References: `docs/assistants/android-standards.md`, `docs/assistants/kotlin-style.md`, `.cursor/rules/android.mdc` (pointer), `.cursor/rules/kotlin.mdc` (pointer).
 
-## 11b) Build System & Version Catalog
+## 11b Build System & Version Catalog
 
 - Single source of truth: use `catalog/gradle/libs.versions.toml` for ALL versions; never hardcode in module `build.gradle.kts`.
 - Convention plugins: apply project plugins instead of duplicating build logic. Typical feature module:
@@ -223,32 +228,63 @@ dependencies {
 ```
 
 - Root as container: this repo uses a composite-build topology where each module (e.g., `app`, `core-*`, `feature-*`, `navigation-*`) is a standalone Gradle build included via `includeBuild("<module>")` in the root `settings.gradle.kts`. Avoid custom logic in the root beyond `includeBuild` and optional dependency substitution.
-- Quality tasks: run `detekt` and `ktlintCheck` via Gradle MCP before PRs.
+- Quality tasks: run `detekt` and `ktlintCheck` with Gradle MCP when available; Desktop Commander is acceptable when it provides better access.
 - References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`, `docs/quality/detekt-usage.md`.
  - Catalog alias tips: prefer short, stable aliases; group families (e.g., `okhttp`, `okhttp.logging`); use Platforms/BOMs for aligned families.
 
-## 11c) New Module Checklist
+## 11c New Module Checklist
 
-1. Create module folder and minimal source structure.
-1. Naming: use `core-*`, `feature-*`, `navigation-*` prefixes per conventions.
-1. Add to `settings.gradle.kts` and sync.
-1. Apply convention plugins (library, hilt, compose as needed). Also apply `githubusers.dependency.update` so `dependencyUpdates` exists in the module.
-1. Add dependencies via Version Catalog only; align HTTP stack with OkHttp BOM when used.
-1. Navigation ownership: add destinations + deep link handler per template.
-1. Register handler with Hilt multibindings if required by navigation API.
-1. Add unit tests for deep link parsing and basic navigation flows.
-1. Generate Detekt baseline if needed and fix formatting issues.
-1. Verify module tasks pass via Gradle MCP: `:module:lint` (or covered by `lintAll`), `:module:detekt`, `:module:ktlintCheck`, `:module:test`, `:module:assemble`, and `:module:dependencyUpdates`.
-1. Build and static analysis using Gradle MCP (no direct `./gradlew`).
-1. Document module purpose in a short README if substantial.
+This checklist provides a comprehensive guide for creating a new module, using the `feature-users` module as the definitive reference. Each module in this project is a self-contained Gradle project within a composite build.
+
+1.  **Create Module Directory & Gradle Files:**
+    *   Create a new directory for your module (e.g., `feature-repository`).
+    *   Copy the `gradlew`, `gradlew.bat`, `gradle.properties`, and `settings.gradle.kts` files from an existing module (like `feature-users`) into your new module's directory. This is crucial for the module to function as a standalone project within the composite build.
+    *   In the new module's `settings.gradle.kts`, change the `rootProject.name` to match your new module's name (e.g., `rootProject.name = "feature-repository"`).
+
+2.  **Add to Root Composite Build:**
+    *   In the **root** `settings.gradle.kts` file, add your new module to the composite build using `includeBuild("your-module-name")`.
+
+3.  **Create `build.gradle.kts` and Apply Plugins:**
+    *   Create a `build.gradle.kts` file in the module's root.
+    *   Apply the necessary plugins by referencing the `feature-users/build.gradle.kts` as a template. A standard feature module applies a combination of standard plugins from the version catalog (`libs`) and custom convention plugins via their `id`.
+
+    **Example `build.gradle.kts` for a new feature module:**
+    ```kotlin
+    plugins {
+        // Standard Android and Kotlin plugins from the version catalog
+        alias(libs.plugins.android.library)
+        alias(libs.plugins.kotlin.android)
+        alias(libs.plugins.compose.compiler)
+        alias(libs.plugins.hilt)
+        alias(libs.plugins.ksp)
+
+        // Custom Convention Plugins for this project
+        id("githubusers.quality.detekt")
+        id("githubusers.test.convention")
+        id("githubusers.quality.ktlint")
+        id("githubusers.feature.module") // Generic feature module plugin
+        id("githubusers.dependency.update")
+    }
+    ```
+
+4.  **Add Dependencies:**
+    *   In your module's `build.gradle.kts`, add all dependencies from the version catalog (`libs`). Refer to `feature-users` or similar modules to see which `core-*` modules and other libraries to include.
+
+5.  **Implement Logic and Tests:**
+    *   Write the module's source code, following the established Clean Architecture and MVI patterns.
+    *   Add comprehensive unit and UI tests.
+
+6.  **Verify the Module:**
+    *   Use Gradle MCP or Desktop Commander to run verification tasks for your new module; ensure the same task set (`detekt`, `ktlintCheck`, tests, assemble`) executes either way.
+    *   Key tasks to run: `detekt`, `ktlintCheck`, `test`, `connectedAndroidTest`, and `dependencyUpdates`.
 
 References:
 
-- Feature template: `docs/FEATURE_DESTINATION_TEMPLATE.md`
 - Developer workflow: `docs/DEVELOPER_GUIDE.md`
-- Navigation architecture: `docs/NAVIGATION_ARCHITECTURE.md`
+- Feature template: `docs/FEATURE_DESTINATION_TEMPLATE.md`
+- Build system: `docs/BUILD_SYSTEM.md`
 
-## 11d) Gradle Composite Build System
+## 11d Gradle Composite Build System
 
 - Structure: root project + composite build for convention plugins under `plugins/` and version catalog under `catalog/`.
 - Root role: `settings.gradle.kts` acts only as a container (no custom logic); include modules and `includeBuild("plugins")`.
@@ -316,19 +352,19 @@ Workflow tips:
 
 - Plugin development loop: edits in `plugins/` are picked up immediately via `includeBuild("plugins")`.
 - Adding a module: create directory, include in `settings.gradle.kts`, apply convention plugins, add catalog-backed deps, run quality tasks via Gradle MCP.
-- Build & quality: run `lint` (`lintAll` when available) before builds to surface errors/warnings, then run `detekt`, `ktlintCheck`, and assemble via Gradle MCP; do not call `./gradlew` directly.
+- Build & quality: run `lint` (`lintAll` when available) before builds to surface errors/warnings, then run `detekt`, `ktlintCheck`, and assemble via Gradle MCP or Desktop Commander.
 
 References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 
-## 11e) Build Quick Start (Gradle MCP tasks)
+## 11e Build Quick Start (Gradle MCP tasks)
 
 - Quality first: run `lintAll` (or the relevant `:module:lint` task) to catch errors and warnings, followed by `detekt` and `ktlintCheck` across modules.
 - Assemble app: `:app:assembleDebug` (do not install as part of assemble).
 - Tests (if configured): `:app:testDebugUnitTest`, module-specific `:module:test`.
 - Plugins (composite): changes in `plugins/` are picked up via `includeBuild("plugins")`.
-- Never run `./gradlew` directly; use Gradle MCP to execute these tasks.
+- Prefer Gradle MCP for these tasks; Desktop Commander `./gradlew` runs are acceptable when they provide better ergonomics.
 
-## 11f) CI Guidance 2025
+## 11f CI Guidance 2025
 
 - Use the dedicated `dependency-submission.yml` workflow for dependency graph submission; do not duplicate submission inside `ci.yml` to avoid double runs.
 - Ensure each module that participates in dependency checks applies `githubusers.dependency.update` so `dependencyUpdates` can run per-module (or wire a root aggregator task that depends on `:module:dependencyUpdates`).
@@ -338,7 +374,7 @@ References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 - Artifact hygiene: include run number in artifact names, set retention days, use `if-no-files-found: ignore`, and set a reasonable compression level.
 - See `.github/workflows/README-IMPROVEMENTS.md` for details and rationale.
 
-## 16) References
+## 12 References
 
 - Android architecture (official): https://developer.android.com/topic/architecture
 - Coroutines best practices: https://developer.android.com/kotlin/coroutines/coroutines-best-practices
@@ -348,9 +384,15 @@ References: `docs/BUILD_SYSTEM.md`, `docs/BUILD-CONVENTIONS.md`.
 - Paging library (API): https://developer.android.com/reference/kotlin/androidx/paging/package-summary
 - OkHttp certificate pinning (official): https://square.github.io/okhttp/5.x/okhttp/okhttp3/-certificate-pinner/
 
+Project-specific documentation:
+- [Repository Implementation Plan](../../docs/REPOSITORY_IMPLEMENTATION.md)
+- [Implementation Guidelines](../../docs/IMPLEMENTATION_GUIDELINES.md)
+- [Paging and Search Patterns](../../docs/implementation-patterns/PAGING_AND_SEARCH.md)
+- [Navigation Patterns](../../docs/implementation-patterns/NAVIGATION.md)
+
 Note on security: networking uses Ktor with the OkHttp engine. Implement certificate pinning via OkHttp `CertificatePinner` in the engine configuration. See `docs/KTOR_AUTH_PLUGIN_IMPLEMENTATION.md` for integration guidance.
 
-## 12) Validation & Testing
+## 13 Validation & Testing
 
 - If the repo has tests/build: leverage them to validate changes.
 - Strategy: test smallest scope first (code you changed) before broader tests.
@@ -359,7 +401,7 @@ Note on security: networking uses Ktor with the OkHttp engine. Implement certifi
   - Non-interactive (never/on-failure): proactively run tests to ensure completion.
 - Do not fix unrelated failures; call them out succinctly if encountered.
 
-## 12a) Zen Analysis Tools
+## 14 Zen Analysis Tools
 
 - Planner: break down complex tasks interactively; useful for multi-phase work.
 - Code Review: structured quality/security/performance review when requested or before critical merges.
@@ -371,25 +413,25 @@ Note on security: networking uses Ktor with the OkHttp engine. Implement certifi
 - Challenge: prevent reflexive agreement; apply for critical evaluation of assumptions.
 - Chat: collaborate and explain reasoning steps and trade-offs.
 
-## 12b) Static Analysis Notes
+## 15 Static Analysis Notes
 
 - Exclude generated sources (e.g., `**/build/**`, `**/build/generated/**`, KSP outputs) from Detekt/KtLint to reduce noise.
 - Maintain module Detekt baselines in `config/detekt/baseline.xml` when needed and clean them up regularly.
 
-## 13) Privacy & Safety
+## 16 Privacy & Safety
 
 - Do not persist secrets or regulated data without explicit user consent.
 - Minimize exposure: store only what benefits future turns.
 - Be explicit about approvals when performing networked or destructive actions.
 - Respect system boundaries and environment constraints.
 
-## 14) Examples & Templates
+## 17 Examples & Templates
 
 Preamble examples:
 
-- “I’ve explored the repo; now checking API routes.”
-- “Next, I’ll patch config and update tests.”
-- “I’m about to scaffold CLI commands and helpers.”
+- "I've explored the repo; now checking API routes."
+- "Next, I'll patch config and update tests."
+- "I'm about to scaffold CLI commands and helpers."
 
 Plan examples (good):
 
@@ -418,7 +460,7 @@ File reference examples for answers:
 - `b/app/build.gradle.kts#L10`
 - `navigation-api/src/main/java/com/example/githubusers/navigation/api/DeepLinkHandler.kt:87`
 
-## 15) Change Management
+## 18 Change Management
 
 - Update this document when tool rules or workflows change.
 - Keep changes minimal and focused; describe rationale in commit body if committing.

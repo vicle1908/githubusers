@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import timber.log.Timber
@@ -32,15 +33,13 @@ class PerformanceMonitor @Inject constructor() {
 
         val compositionTime = (System.nanoTime() - startTime) / 1_000_000.0
 
-        Timber.tag("Performance").d(
-            "🎨 Screen composition: $screenName took %.2f ms",
-            compositionTime
+        Timber.tag(PERFORMANCE_TAG).d(
+            "🎨 Screen composition: $screenName took ${compositionTime.formatMs()} ms"
         )
 
         if (compositionTime > 16.0) { // > 60fps threshold
-            Timber.tag("Performance").w(
-                "⚠️ Slow composition detected: $screenName (%.2f ms)",
-                compositionTime
+            Timber.tag(PERFORMANCE_TAG).w(
+                "⚠️ Slow composition detected: $screenName (${compositionTime.formatMs()} ms)"
             )
         }
     }
@@ -57,17 +56,15 @@ class PerformanceMonitor @Inject constructor() {
         block()
 
         val finalMemory = runtime.totalMemory() - runtime.freeMemory()
-        val memoryDelta = (finalMemory - initialMemory) / (1024 * 1024) // Convert to MB
+        val memoryDeltaMb = (finalMemory - initialMemory).toDouble() / (1024.0 * 1024.0)
 
-        Timber.tag("Performance").d(
-            "🧠 Memory usage: $operation used %.2f MB",
-            memoryDelta
+        Timber.tag(PERFORMANCE_TAG).d(
+            "🧠 Memory usage: $operation used ${memoryDeltaMb.formatMb()} MB"
         )
 
-        if (memoryDelta > 10.0) { // > 10MB threshold
-            Timber.tag("Performance").w(
-                "⚠️ High memory usage: $operation (%.2f MB)",
-                memoryDelta
+        if (memoryDeltaMb > 10.0) { // > 10MB threshold
+            Timber.tag(PERFORMANCE_TAG).w(
+                "⚠️ High memory usage: $operation (${memoryDeltaMb.formatMb()} MB)"
             )
         }
     }
@@ -80,15 +77,13 @@ class PerformanceMonitor @Inject constructor() {
 
         val navigationTime = duration / 1_000_000.0 // Convert to ms
 
-        Timber.tag("Performance").d(
-            "🧭 Navigation: $from → $to took %.2f ms",
-            navigationTime
+        Timber.tag(PERFORMANCE_TAG).d(
+            "🧭 Navigation: $from → $to took ${navigationTime.formatMs()} ms"
         )
 
         if (navigationTime > 300.0) { // > 300ms threshold
-            Timber.tag("Performance").w(
-                "⚠️ Slow navigation: $from → $to (%.2f ms)",
-                navigationTime
+            Timber.tag(PERFORMANCE_TAG).w(
+                "⚠️ Slow navigation: $from → $to (${navigationTime.formatMs()} ms)"
             )
         }
     }
@@ -109,15 +104,13 @@ class PerformanceMonitor @Inject constructor() {
         val cacheStatus = if (cacheHit) "💾 CACHE HIT" else "🌐 NETWORK"
         val status = if (success) "✅" else "❌"
 
-        Timber.tag("Performance").d(
-            "$status $cacheStatus: $method $endpoint took %.2f ms",
-            requestTime
+        Timber.tag(PERFORMANCE_TAG).d(
+            "$status $cacheStatus: $method $endpoint took ${requestTime.formatMs()} ms"
         )
 
         if (requestTime > 2000.0 && !cacheHit) { // > 2s threshold for network
-            Timber.tag("Performance").w(
-                "⚠️ Slow network request: $method $endpoint (%.2f ms)",
-                requestTime
+            Timber.tag(PERFORMANCE_TAG).w(
+                "⚠️ Slow network request: $method $endpoint (${requestTime.formatMs()} ms)"
             )
         }
     }
@@ -135,7 +128,7 @@ class PerformanceMonitor @Inject constructor() {
      */
     fun setEnabled(enabled: Boolean) {
         isEnabled = enabled
-        Timber.tag("Performance").i(
+        Timber.tag(PERFORMANCE_TAG).i(
             "Performance monitoring ${if (enabled) "enabled" else "disabled"}"
         )
     }
@@ -172,19 +165,26 @@ inline fun <T> PerformanceMonitor.withMemoryTracking(operation: String, crossinl
     val result = block()
 
     val finalMemory = runtime.totalMemory() - runtime.freeMemory()
-    val memoryDelta = (finalMemory - initialMemory) / (1024 * 1024) // Convert to MB
+    val memoryDeltaMb = (finalMemory - initialMemory).toDouble() / (1024.0 * 1024.0)
 
-    Timber.tag("Performance").d(
-        "🧠 Memory usage: $operation used %.2f MB",
-        memoryDelta
+    Timber.tag(PERFORMANCE_TAG).d(
+        "🧠 Memory usage: $operation used ${memoryDeltaMb.formatMb()} MB"
     )
 
-    if (memoryDelta > 10.0) { // > 10MB threshold
-        Timber.tag("Performance").w(
-            "⚠️ High memory usage: $operation (%.2f MB)",
-            memoryDelta
+    if (memoryDeltaMb > 10.0) { // > 10MB threshold
+        Timber.tag(PERFORMANCE_TAG).w(
+            "⚠️ High memory usage: $operation (${memoryDeltaMb.formatMb()} MB)"
         )
     }
 
     return result
 }
+
+@PublishedApi
+internal const val PERFORMANCE_TAG: String = "Performance"
+
+@PublishedApi
+internal fun Double.formatMs(): String = String.format(Locale.US, "%.2f", this)
+
+@PublishedApi
+internal fun Double.formatMb(): String = String.format(Locale.US, "%.2f", this)

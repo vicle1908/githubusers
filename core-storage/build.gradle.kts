@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.room.gradle.plugin)
     // Quality plugins: our conventions now apply the underlying plugins internally
     id("githubusers.quality.detekt")
     id("githubusers.test.convention")

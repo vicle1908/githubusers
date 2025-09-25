@@ -4,9 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -15,13 +24,17 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
+import com.example.githubusers.navigation.api.NavigationTab
 import com.example.githubusers.navigation.impl.DeepLinkDispatcher
 import com.example.githubusers.navigation.impl.Navigation3FeatureRegistry
 import com.example.githubusers.presentation.theme.GithubUsersTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Collections
 import javax.inject.Inject
+import kotlin.jvm.JvmSuppressWildcards
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -34,71 +47,180 @@ class MainActivity : ComponentActivity() {
     @Suppress("LateinitUsage")
     lateinit var dispatcher: DeepLinkDispatcher
 
-    // Removed StartupPerformanceTracker injection - using Firebase Performance Monitoring instead
+    @Inject
+    @Suppress("LateinitUsage")
+    lateinit var navigationTabs: Set<@JvmSuppressWildcards NavigationTab>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Firebase Performance Monitoring automatically tracks activity creation
         enableEdgeToEdge()
 
         setContent {
-            GithubUsersTheme {
-                // Initialize back stack from incoming deep link if present; otherwise push start destination
-                // Using direct deep link instead of centralized constants for proper feature ownership
-                val initialKey = intent?.data?.let { dispatcher.toKey(it) }
-                    ?: dispatcher.toKey("app://users/list") // Direct deep link - feature-owned
-                    ?: throw IllegalStateException("No valid initial destination found")
+            MainContent()
+        }
+    }
 
-                // Debug logging
-                Timber.tag("MainActivity").d("Initial key: $initialKey")
-                Timber.tag("MainActivity").d("Start destination: app://users/list")
+    @Composable
+    @Suppress("LongMethod")
+    private fun MainContent() {
+        GithubUsersTheme {
+            val tabs = rememberTabs()
+            val tabRoutesDescription = remember(tabs) { tabs.joinToString(separator = ",") { it.route } }
+            Timber.tag("MainActivity").d(
+                "Navigation tabs (recompose) count=%d routes=%s",
+                tabs.size,
+                tabRoutesDescription
+            )
+            LaunchedEffect(tabs) {
+                Timber.tag("MainActivity").d(
+                    "Navigation tabs (effect) count=%d routes=%s",
+                    tabs.size,
+                    tabRoutesDescription
+                )
+            }
+            val defaultRoute = tabs.firstOrNull()?.route
+                ?: throw IllegalStateException("No navigation tabs registered")
+            val initialKey = rememberInitialKey(defaultRoute)
 
-                val backStack = rememberNavBackStack(initialKey)
+            val backStack = rememberNavBackStack(initialKey, configuration = SavedStateConfiguration.DEFAULT)
+            val routeToKey = rememberRouteToKey(tabs)
 
-                CompositionLocalProvider(
-                    LocalNavigateToDeepLink provides { deepLink ->
-                        // Use DeepLinkDispatcher directly instead of ModuleNavigator wrapper
-                        val key = dispatcher.toKey(deepLink)
-                        if (key != null) {
-                            // launchSingleTop semantics: avoid pushing duplicate top entry
-                            val top = backStack.lastOrNull()
-                            if (top != null && top == key) {
-                                Timber.tag("MainNavGraph").d("launchSingleTop: ignoring duplicate key: $key")
-                            } else {
-                                backStack.add(key)
+            val navigateToDeepLink = rememberNavigateToDeepLink(backStack)
+
+            val selectedRoute = rememberSelectedRoute(routeToKey, backStack)
+
+            val onTabSelected: (NavigationTab) -> Unit = remember(backStack, routeToKey) {
+                { tab: NavigationTab ->
+                    val key = routeToKey[tab.route]
+                    if (key == null) {
+                        Timber.tag("MainActivity").w("No NavKey registered for route %s", tab.route)
+                    } else {
+                        val existingIndex = backStack.indexOf(key)
+                        if (existingIndex >= 0) {
+                            var index = existingIndex
+                            while (index < backStack.lastIndex) {
+                                Collections.swap(backStack, index, index + 1)
+                                index++
                             }
+                        } else {
+                            backStack.add(key)
                         }
-                    },
+                    }
+                    Unit
+                }
+            }
+
+            Scaffold(
+                bottomBar = {
+                    MainBottomBar(
+                        tabs = tabs,
+                        selectedRoute = selectedRoute,
+                        onTabSelected = onTabSelected
+                    )
+                }
+            ) { innerPadding ->
+                CompositionLocalProvider(
+                    LocalNavigateToDeepLink provides navigateToDeepLink,
                     LocalNavigateBack provides {
-                        backStack.removeLastOrNull() != null
+                        if (backStack.size > 1) {
+                            backStack.removeAt(backStack.lastIndex)
+                            true
+                        } else {
+                            false
+                        }
                     }
                 ) {
                     MainNavGraph(
                         backStack = backStack,
                         registry = registry,
-                        modifier = Modifier
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun rememberTabs(): List<NavigationTab> = remember(navigationTabs) {
+        navigationTabs.sortedWith(compareBy<NavigationTab> { it.order }.thenBy { it.route })
+    }
+
+    @Composable
+    private fun rememberInitialKey(defaultRoute: String): NavKey = remember(intent?.data, defaultRoute, dispatcher) {
+        intent?.data?.let { dispatcher.toKey(it) }
+            ?: dispatcher.toKey(defaultRoute)
+            ?: throw IllegalStateException("No valid initial destination found")
+    }
+
+    @Composable
+    private fun rememberRouteToKey(tabs: List<NavigationTab>): Map<String, NavKey> = remember(dispatcher, tabs) {
+        buildMap {
+            tabs.forEach { tab ->
+                dispatcher.toKey(tab.route)?.let { put(tab.route, it) }
+            }
+        }
+    }
+
+    @Composable
+    private fun rememberNavigateToDeepLink(backStack: NavBackStack<NavKey>): (String) -> Unit =
+        remember(backStack, dispatcher) {
+            { route ->
+                val key = dispatcher.toKey(route)
+                if (key == null) {
+                    Timber.tag("MainActivity").w("Deep link not recognized: %s", route)
+                } else {
+                    val existingIndex = backStack.indexOf(key)
+                    if (existingIndex >= 0) {
+                        while (backStack.size > existingIndex + 1) {
+                            backStack.removeAt(backStack.lastIndex)
+                        }
+                    } else {
+                        backStack.add(key)
+                    }
+                }
+            }
+        }
+
+    @Composable
+    private fun rememberSelectedRoute(routeToKey: Map<String, NavKey>, backStack: NavBackStack<NavKey>): String? {
+        val keyToRoute = remember(routeToKey) {
+            routeToKey.entries.associate { (route, key) -> key to route }
+        }
+        val selectedRoute by remember(backStack, keyToRoute) {
+            derivedStateOf {
+                backStack.asReversed().firstNotNullOfOrNull { key -> keyToRoute[key] }
+                    ?: keyToRoute.entries.firstOrNull { (key, _) -> backStack.contains(key) }?.value
+            }
+        }
+        return selectedRoute
+    }
+}
+
+@Composable
+private fun MainBottomBar(tabs: List<NavigationTab>, selectedRoute: String?, onTabSelected: (NavigationTab) -> Unit) {
+    NavigationBar {
+        tabs.forEach { tab ->
+            val iconImage = tab.selectedIcon?.takeIf { selectedRoute == tab.route } ?: tab.icon
+            NavigationBarItem(
+                icon = { Icon(imageVector = iconImage, contentDescription = tab.label) },
+                label = { Text(tab.label) },
+                selected = selectedRoute == tab.route,
+                onClick = { onTabSelected(tab) }
+            )
         }
     }
 }
 
 @Composable
 fun MainNavGraph(backStack: NavBackStack<NavKey>, registry: Navigation3FeatureRegistry, modifier: Modifier = Modifier) {
-    // Firebase Performance Monitoring automatically tracks first frame and time-to-interactive
-    LaunchedEffect(backStack) {
-        Timber.tag("MainNavGraph").d("LaunchedEffect called with backStack: $backStack")
-    }
+    val entryProvider = remember(registry) { registry.createEntryProvider() }
 
-    Timber.tag("MainNavGraph").d("About to call NavDisplay with backStack: $backStack")
-    Timber.tag("MainNavGraph").d("BackStack size: ${backStack.size}")
     NavDisplay(
         backStack = backStack,
         onBack = { keysToRemove ->
-            Timber.tag("MainNavGraph").d("onBack called with keysToRemove: $keysToRemove")
-            repeat(keysToRemove) {
-                backStack.removeLastOrNull()
+            val pops = keysToRemove.coerceAtMost(backStack.size - 1).coerceAtLeast(0)
+            repeat(pops) {
+                backStack.removeAt(backStack.lastIndex)
             }
         },
         entryDecorators = listOf(
@@ -108,9 +230,6 @@ fun MainNavGraph(backStack: NavBackStack<NavKey>, registry: Navigation3FeatureRe
         ),
         modifier = modifier
     ) { key ->
-        // Feature-owned entry provider - delegates to registry
-        Timber.tag("MainNavGraph").d("EntryProvider called with key: $key")
-        // Use the registry's entry provider function
-        registry.createEntryProvider()(key)
+        entryProvider(key)
     }
 }

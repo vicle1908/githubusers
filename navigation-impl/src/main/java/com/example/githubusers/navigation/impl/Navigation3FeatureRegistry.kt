@@ -1,5 +1,7 @@
 package com.example.githubusers.navigation.impl
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ContentTransform
 import androidx.compose.material3.Text
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -71,10 +73,20 @@ class Navigation3FeatureRegistry @Inject constructor(
             val metadata = mutableMapOf<String, Any>()
 
             transitionSpec?.let {
-                metadata.putAll(NavDisplay.transitionSpec(it))
+                @Suppress("UNCHECKED_CAST")
+                metadata.putAll(
+                    NavDisplay.transitionSpec(
+                        it as (AnimatedContentTransitionScope<*>.() -> ContentTransform)
+                    )
+                )
             }
             popTransitionSpec?.let {
-                metadata.putAll(NavDisplay.popTransitionSpec(it))
+                @Suppress("UNCHECKED_CAST")
+                metadata.putAll(
+                    NavDisplay.popTransitionSpec(
+                        it as (AnimatedContentTransitionScope<*>.() -> ContentTransform)
+                    )
+                )
             }
             dialogProperties?.let {
                 metadata.putAll(DialogSceneStrategy.dialog(it))

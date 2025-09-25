@@ -2,8 +2,8 @@ package com.example.githubusers.feature.search.di
 
 import com.example.githubusers.core.search.domain.SearchRepository
 import com.example.githubusers.feature.search.data.repository.SearchRepositoryImpl
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -13,11 +13,11 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SearchModule {
+object SearchModule {
     /**
-     * Binds SearchRepositoryImpl to SearchRepository interface
+     * Provides SearchRepository via constructor injection.
      */
-    @Binds
+    @Provides
     @Singleton
-    abstract fun bindSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
+    fun provideSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository = searchRepositoryImpl
 }

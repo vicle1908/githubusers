@@ -5,12 +5,17 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.serialization.json.Json
+import okhttp3.Dispatcher
 
 /**
  * Provides configured HTTP client for the application.
@@ -27,6 +32,8 @@ constructor() {
         private const val CALL_TIMEOUT_SECONDS = 60L
         private const val CONNECTION_POOL_MAX_IDLE = 10
         private const val CONNECTION_KEEP_ALIVE_MINUTES = 5L
+        private const val MAX_PARALLEL_REQUESTS = 4
+        private const val MAX_REQUESTS_PER_HOST = 2
         private const val REQUEST_TIMEOUT_MS = 60_000L
         private const val CONNECT_TIMEOUT_MS = 30_000L
         private const val SOCKET_TIMEOUT_MS = 30_000L
@@ -49,6 +56,13 @@ constructor() {
                 writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 callTimeout(CALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
+                dispatcher(
+                    Dispatcher().apply {
+                        maxRequests = MAX_PARALLEL_REQUESTS
+                        maxRequestsPerHost = MAX_REQUESTS_PER_HOST
+                    }
+                )
+
                 // Connection pooling for better performance
                 connectionPool(
                     okhttp3.ConnectionPool(
@@ -61,6 +75,11 @@ constructor() {
                 // Enable HTTP/2 and connection compression
                 retryOnConnectionFailure(true)
             }
+        }
+
+        defaultRequest {
+            header("User-Agent", "GitHubUsers-Android/1.0")
+            header("Accept", "application/vnd.github.v3+json")
         }
 
         install(ContentNegotiation) {
@@ -93,6 +112,7 @@ constructor() {
         }
 
         install(Logging) {
+            logger = Logger.ANDROID
             // Configure logging level based on build type
             // This will be handled by the feature modules
         }

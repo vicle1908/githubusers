@@ -1,8 +1,12 @@
 
+package com.example.githubusers.navigation.api
+
 import android.net.Uri
 import com.example.githubusers.core.search.domain.SearchFilter
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+
+private const val APP_SCHEME = "app"
 
 private val searchJson = Json {
     encodeDefaults = true
@@ -18,7 +22,9 @@ fun openSearch(
     origin: String? = null,
     filter: SearchFilter? = null
 ) {
-    val builder = Uri.parse("app://search").buildUpon()
+    val builder = Uri.Builder()
+        .scheme(APP_SCHEME)
+        .authority("search")
     query?.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("q", it) }
     origin?.takeIf { it.isNotBlank() }?.let { builder.appendQueryParameter("origin", it) }
     filter?.let { builder.appendQueryParameter("filter", searchJson.encodeToString(it)) }

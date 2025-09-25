@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Proxy wrapper to root-level Gradle wrapper for composite builds
+DIR="$(CDPATH= cd -- "$(dirname "$0")" && pwd)"
+exec "$DIR/../gradlew" "$@"
+

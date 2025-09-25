@@ -26,6 +26,9 @@ dependencies {
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
     implementation(libs.local.core.ui)
+    implementation(libs.local.core.paging)
+    implementation(libs.local.core.search)
+    implementation(libs.local.feature.repository)
 
     // AndroidX
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -63,6 +66,8 @@ dependencies {
     implementation(libs.timber)
 
     // Testing (common ones provided by convention plugin)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)

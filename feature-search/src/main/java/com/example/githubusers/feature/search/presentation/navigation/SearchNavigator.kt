@@ -6,5 +6,7 @@ package com.example.githubusers.feature.search.presentation.navigation
 interface SearchNavigator {
     fun navigateToUserDetail(username: String)
 
+    fun navigateToRepository(owner: String, name: String)
+
     fun navigateBack()
 }
