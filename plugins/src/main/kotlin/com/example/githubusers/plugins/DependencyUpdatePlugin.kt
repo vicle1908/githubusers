@@ -26,7 +26,7 @@ class DependencyUpdatePlugin : Plugin<Project> {
  * Configures automated dependency update checking for GitHub Users project
  */
 private fun Project.configureDependencyUpdates() {
-    tasks.withType(DependencyUpdatesTask::class.java).configureEach {
+    tasks.withType(DependencyUpdatesTask::class.java) {
         // The ben-manes versions plugin is not configuration-cache safe on Gradle 9 yet.
         // Mark the task as incompatible so Gradle will disable CC for invocations that include it.
         notCompatibleWithConfigurationCache("ben-manes versions plugin not CC-safe on Gradle 9")

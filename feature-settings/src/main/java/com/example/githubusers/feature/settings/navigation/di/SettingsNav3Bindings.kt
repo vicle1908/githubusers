@@ -4,8 +4,8 @@ import com.example.githubusers.feature.settings.navigation.SettingsFeatureDeepLi
 import com.example.githubusers.feature.settings.navigation.SettingsFeatureDestinationProvider
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
@@ -13,14 +13,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SettingsNav3Bindings {
-    @Binds
+object SettingsNav3Bindings {
+    @Provides
     @IntoSet
     @Singleton
-    abstract fun bindSettingsProvider(impl: SettingsFeatureDestinationProvider): FeatureDestinationProvider
+    fun provideSettingsProvider(): FeatureDestinationProvider = SettingsFeatureDestinationProvider()
 
-    @Binds
+    @Provides
     @IntoSet
     @Singleton
-    abstract fun bindSettingsHandler(impl: SettingsFeatureDeepLinkHandler): FeatureDeepLinkHandler
+    fun provideSettingsHandler(): FeatureDeepLinkHandler = SettingsFeatureDeepLinkHandler()
 }

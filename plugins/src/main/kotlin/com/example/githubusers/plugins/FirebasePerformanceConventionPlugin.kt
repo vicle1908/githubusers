@@ -38,17 +38,9 @@ class FirebasePerformanceConventionPlugin : Plugin<Project> {
 
     private fun Project.configureApplicationFirebasePerformance() {
         extensions.configure<ApplicationExtension> {
-            buildTypes {
-                debug {
-                    // Enable Firebase Performance Monitoring in debug builds for development
-                    buildConfigField("boolean", "FIREBASE_PERF_ENABLED", "true")
-                }
-                release {
-                    // Enable Firebase Performance Monitoring in release builds for production
-                    buildConfigField("boolean", "FIREBASE_PERF_ENABLED", "true")
-                }
-                // Note: Only configure build types that actually exist in the project
-                // If benchmark build type is needed, it should be defined in the Android convention plugin first
+            buildTypes.configureEach {
+                // Enable Firebase Performance Monitoring by default for every build type
+                buildConfigField("boolean", "FIREBASE_PERF_ENABLED", "true")
             }
         }
 

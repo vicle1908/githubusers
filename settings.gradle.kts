@@ -73,6 +73,19 @@ if (useCompositeBuilds) {
             substitute(module("com.example.githubusers:core-ui")).using(project(":"))
         }
     }
+
+    includeBuild("core-paging") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-paging")).using(project(":"))
+        }
+    }
+
+    includeBuild("core-search") {
+        dependencySubstitution {
+            substitute(module("com.example.githubusers:core-search")).using(project(":"))
+        }
+    }
+
     if (file("core-security").exists()) {
         includeBuild("core-security") {
             dependencySubstitution {
@@ -80,7 +93,9 @@ if (useCompositeBuilds) {
             }
         }
     } else {
-        println("Skipping composite include for 'core-security' — directory not present. Will resolve dependency from repositories if available.")
+        println(
+            "Skipping composite include for 'core-security' — directory not present. Will resolve dependency from repositories if available."
+        )
     }
 
     // Navigation modules
@@ -119,7 +134,21 @@ if (useCompositeBuilds) {
             }
         }
     } else {
-        println("Skipping composite include for 'feature-auth' — directory not present. Will resolve dependency from repositories if available.")
+        println(
+            "Skipping composite include for 'feature-auth' — directory not present. Will resolve dependency from repositories if available."
+        )
+    }
+
+    if (file("feature-repository").exists()) {
+        includeBuild("feature-repository") {
+            dependencySubstitution {
+                substitute(module("com.example.githubusers:feature-repository")).using(project(":"))
+            }
+        }
+    } else {
+        println(
+            "Skipping composite include for 'feature-repository' — directory not present. Will resolve dependency from repositories if available."
+        )
     }
 
     // Feature aggregators removed - direct feature module dependencies used instead

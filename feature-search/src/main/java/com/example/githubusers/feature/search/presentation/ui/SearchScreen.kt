@@ -1,148 +1,161 @@
 package com.example.githubusers.feature.search.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar as MaterialSearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.example.githubusers.core.search.SearchUiState
+import com.example.githubusers.core.search.domain.SearchDomain
+import com.example.githubusers.core.search.domain.SearchError
+import com.example.githubusers.core.search.domain.SearchException
+import com.example.githubusers.core.ui.SearchableListScaffold
+import com.example.githubusers.core.ui.feedback.ErrorBanner
 import com.example.githubusers.core.ui.list.StandardUserList
 import com.example.githubusers.core.ui.list.StandardUserListLayout
 import com.example.githubusers.core.ui.list.StandardUserRow
 import com.example.githubusers.core.users.domain.UserSummary
+import com.example.githubusers.feature.repository.domain.model.Repository
+import com.example.githubusers.feature.repository.presentation.ui.RepositoryListItem
 import com.example.githubusers.feature.search.presentation.intent.SearchIntent
 import com.example.githubusers.feature.search.presentation.state.SearchState
 
-/**
- * Search screen that reuses the shared StandardUserList scaffold so search results and browse
- * lists render identically.
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     state: SearchState,
-    searchResults: LazyPagingItems<UserSummary>,
+    listUiState: SearchUiState,
+    userResults: LazyPagingItems<UserSummary>,
+    repositoryResults: LazyPagingItems<Repository>,
     trendingUsers: LazyPagingItems<UserSummary>,
     onIntent: (SearchIntent) -> Unit,
     onNavigateToUser: (String) -> Unit,
+    onNavigateToRepository: (String, String) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        SearchTopBar(state = state, onIntent = onIntent, onNavigateBack = onNavigateBack)
-
-        val showTrending = state.query.isEmpty() && state.showTrending
-
-        LaunchedEffect(showTrending) {
-            if (showTrending) {
-                onIntent(SearchIntent.TrendingShown)
-            }
-        }
-
-        if (showTrending) {
-            TrendingListSection(
-                state = state,
-                trendingUsers = trendingUsers,
-                onIntent = onIntent,
-                onNavigateToUser = onNavigateToUser
-            )
+    SearchableListScaffold(
+        title = "Search",
+        state = listUiState,
+        onQueryChanged = { onIntent(SearchIntent.UpdateQuery(it)) },
+        onSearch = { onIntent(SearchIntent.ExecuteSearch(it)) },
+        onSearchFocusChanged = { focused ->
+            if (focused) onIntent(SearchIntent.ActivateSearch) else onIntent(SearchIntent.DismissSearch)
+        },
+        onRetry = { onIntent(SearchIntent.RetryActiveDomain) },
+        onBack = onNavigateBack,
+        searchLabel = if (state.activeDomain == SearchDomain.REPOSITORIES) {
+            "Search repositories"
         } else {
-            SearchResultsListSection(
-                state = state,
-                searchResults = searchResults,
-                onIntent = onIntent,
-                onNavigateToUser = onNavigateToUser
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SearchTopBar(
-    state: SearchState,
-    onIntent: (SearchIntent) -> Unit,
-    onNavigateBack: () -> Unit
-) {
-    val onQueryChange: (String) -> Unit = { text -> onIntent(SearchIntent.UpdateQuery(text)) }
-    val onExecuteSearch: (String) -> Unit = { text -> onIntent(SearchIntent.ExecuteSearch(text)) }
-
-    MaterialSearchBar(
-        inputField = {
-            SearchBarDefaults.InputField(
-                query = state.query,
-                onQueryChange = onQueryChange,
-                onSearch = onExecuteSearch,
-                expanded = state.isSearchActive,
-                onExpandedChange = { expanded ->
-                    if (expanded) onIntent(SearchIntent.ActivateSearch) else onIntent(SearchIntent.DismissSearch)
-                },
-                placeholder = { Text("Search GitHub users…") },
-                leadingIcon = {
-                    IconButton(
-                        onClick = {
-                            if (state.isSearchActive) {
-                                onIntent(SearchIntent.BackToBrowse)
-                                onNavigateBack()
-                            } else {
-                                onIntent(SearchIntent.ActivateSearch)
-                            }
-                        }
-                    ) {
-                        val leadingIcon =
-                            if (state.isSearchActive) {
-                                Icons.AutoMirrored.Filled.ArrowBack
-                            } else {
-                                Icons.Filled.Search
-                            }
-                        Icon(
-                            imageVector = leadingIcon,
-                            contentDescription = if (state.isSearchActive) "Back" else "Search"
+            "Search users"
+        },
+        headerContent = {
+            SearchHeaderSection(state = state, onIntent = onIntent)
+        },
+        content = { innerPadding ->
+            when (state.activeDomain) {
+                SearchDomain.USERS -> {
+                    if (state.showTrending) {
+                        TrendingListSection(
+                            state = state,
+                            trendingUsers = trendingUsers,
+                            onIntent = onIntent,
+                            onNavigateToUser = onNavigateToUser,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                        )
+                    } else {
+                        SearchResultsListSection(
+                            state = state,
+                            searchResults = userResults,
+                            onIntent = onIntent,
+                            onNavigateToUser = onNavigateToUser,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
                         )
                     }
-                },
-                trailingIcon = {
-                    if (state.query.isNotBlank()) {
-                        IconButton(onClick = { onIntent(SearchIntent.ClearSearch) }) {
-                            Icon(Icons.Filled.Clear, contentDescription = "Clear search")
-                        }
-                    }
                 }
-            )
+
+                SearchDomain.REPOSITORIES -> {
+                    RepositorySearchResultsSection(
+                        state = state,
+                        repositoryResults = repositoryResults,
+                        onIntent = onIntent,
+                        onNavigateToRepository = onNavigateToRepository,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    )
+                }
+            }
         },
-        expanded = state.isSearchActive,
-        onExpandedChange = { expanded ->
-            if (expanded) onIntent(SearchIntent.ActivateSearch) else onIntent(SearchIntent.DismissSearch)
-        }
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ColumnScope.SearchHeaderSection(
+    state: SearchState,
+    onIntent: (SearchIntent) -> Unit
+) {
+    DomainToggleRow(
+        activeDomain = state.activeDomain,
+        onSelect = { domain -> onIntent(SearchIntent.SwitchDomain(domain)) }
+    )
+
+    SearchSuggestionsContent(
+        isSearchActive = state.isSearchActive,
+        query = state.query,
+        recentSearches = state.recentSearches,
+        onSelectRecentSearch = { onIntent(SearchIntent.SelectRecentSearch(it)) },
+        onClearHistory = { onIntent(SearchIntent.ClearSearchHistory) }
+    )
+}
+
+@Composable
+private fun DomainToggleRow(activeDomain: SearchDomain, onSelect: (SearchDomain) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        SearchSuggestionsContent(
-            isSearchActive = state.isSearchActive,
-            query = state.query,
-            recentSearches = state.recentSearches,
-            onSelectRecentSearch = { onIntent(SearchIntent.SelectRecentSearch(it)) },
-            onClearHistory = { onIntent(SearchIntent.ClearSearchHistory) }
+        FilterChip(
+            selected = activeDomain == SearchDomain.USERS,
+            onClick = { onSelect(SearchDomain.USERS) },
+            label = { Text("Users") }
+        )
+        FilterChip(
+            selected = activeDomain == SearchDomain.REPOSITORIES,
+            onClick = { onSelect(SearchDomain.REPOSITORIES) },
+            label = { Text("Repositories") }
         )
     }
 }
@@ -152,17 +165,20 @@ private fun TrendingListSection(
     state: SearchState,
     trendingUsers: LazyPagingItems<UserSummary>,
     onIntent: (SearchIntent) -> Unit,
-    onNavigateToUser: (String) -> Unit
+    onNavigateToUser: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val refreshError = trendingUsers.loadState.refresh
-    if (refreshError is androidx.paging.LoadState.Error) {
-com.example.githubusers.core.ui.feedback.ErrorBanner(
+    if (refreshError is LoadState.Error) {
+        ErrorBanner(
             message = searchErrorMessageFromThrowable(refreshError.error),
             onRetry = { trendingUsers.retry() }
         )
     }
+
     StandardUserList(
         pagingItems = trendingUsers,
+        modifier = modifier,
         layout = StandardUserListLayout.VerticalList(
             contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
@@ -196,17 +212,20 @@ private fun SearchResultsListSection(
     state: SearchState,
     searchResults: LazyPagingItems<UserSummary>,
     onIntent: (SearchIntent) -> Unit,
-    onNavigateToUser: (String) -> Unit
+    onNavigateToUser: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val refreshError = searchResults.loadState.refresh
-    if (refreshError is androidx.paging.LoadState.Error) {
-com.example.githubusers.core.ui.feedback.ErrorBanner(
+    if (refreshError is LoadState.Error) {
+        ErrorBanner(
             message = searchErrorMessageFromThrowable(refreshError.error),
             onRetry = { searchResults.retry() }
         )
     }
+
     StandardUserList(
         pagingItems = searchResults,
+        modifier = modifier,
         layout = StandardUserListLayout.VerticalList(
             contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
@@ -230,16 +249,110 @@ com.example.githubusers.core.ui.feedback.ErrorBanner(
     )
 }
 
+@Composable
+private fun RepositorySearchResultsSection(
+    state: SearchState,
+    repositoryResults: LazyPagingItems<Repository>,
+    onIntent: (SearchIntent) -> Unit,
+    onNavigateToRepository: (String, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (val refreshState = repositoryResults.loadState.refresh) {
+        is LoadState.Loading -> {
+            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is LoadState.Error -> {
+            ErrorBanner(
+                message = refreshState.error.message ?: "Unable to load repositories",
+                onRetry = { repositoryResults.retry() }
+            )
+        }
+
+        is LoadState.NotLoading -> {
+            if (repositoryResults.itemCount == 0) {
+                Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                    RepositorySearchEmptyState(query = state.query)
+                }
+            } else {
+                LazyColumn(
+                    modifier = modifier,
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(repositoryResults.itemCount) { index ->
+                        val repository = repositoryResults[index] ?: return@items
+                        RepositoryListItem(
+                            repository = repository,
+                            onClick = {
+                                onIntent(SearchIntent.RepositoryClicked(repository))
+                                onNavigateToRepository(repository.ownerLogin, repository.name)
+                            }
+                        )
+                    }
+
+                    when (val appendState = repositoryResults.loadState.append) {
+                        is LoadState.Loading -> {
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
+
+                        is LoadState.Error -> {
+                            item {
+                                ErrorBanner(
+                                    message = appendState.error.message
+                                        ?: "Unable to load more repositories",
+                                    onRetry = { repositoryResults.retry() }
+                                )
+                            }
+                        }
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RepositorySearchEmptyState(query: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val headline = if (query.isBlank()) {
+            "No repositories found"
+        } else {
+            "No repositories for \"$query\""
+        }
+        Text(text = headline, style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = "Try adjusting the language or stars filters to discover more repositories.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+    }
+}
+
 private fun searchErrorMessageFromThrowable(t: Throwable): String {
     val default = "Something went wrong. Please try again."
-    return if (t is com.example.githubusers.core.search.domain.SearchException) {
-        when (val e = t.error) {
-            is com.example.githubusers.core.search.domain.SearchError.Network -> "Network error. Check your connection and try again."
-            is com.example.githubusers.core.search.domain.SearchError.Timeout -> "Request timed out. Please retry."
-            is com.example.githubusers.core.search.domain.SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
-            is com.example.githubusers.core.search.domain.SearchError.Server -> "Server error (${e.code}). Please try again later."
-            is com.example.githubusers.core.search.domain.SearchError.Client -> "Request error (${e.code}). Please adjust your query and try again."
-            is com.example.githubusers.core.search.domain.SearchError.Unknown -> default
+    return if (t is SearchException) {
+        when (val error = t.error) {
+            is SearchError.Network -> "Network error. Check your connection and try again."
+            is SearchError.Timeout -> "Request timed out. Please retry."
+            is SearchError.RateLimited -> "Rate limit reached. Please wait a moment before retrying."
+            is SearchError.Server -> "Server error (${error.code}). Please try again later."
+            is SearchError.Client -> "Request error (${error.code}). Please adjust your query and try again."
+            is SearchError.Unknown -> default
         }
     } else default
 }
@@ -375,6 +488,8 @@ private fun SearchSuggestionsContent(
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     recentSearches.take(5).forEach { recent ->
                         TextButton(onClick = { onSelectRecentSearch(recent) }) {
+                            Icon(Icons.Filled.Search, contentDescription = "Use search")
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text(text = recent, maxLines = 1)
                         }
                     }

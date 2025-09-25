@@ -23,6 +23,8 @@ dependencies {
     implementation(libs.local.core.networking)
     implementation(libs.local.core.storage)
     implementation(libs.local.core.ui)
+    implementation(libs.local.core.paging)
+    implementation(libs.local.core.search)
 
     // Ktor for networking (needed for HttpClient type)
     implementation(platform(libs.ktor.bom))
@@ -69,11 +71,25 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
 
     // Hilt runtime + compiler for multibindings (@IntoSet) in this feature
-    implementation(libs.hilt.android)
+    api(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
     // Logging
     implementation(libs.timber)
 
+    // Instrumentation tests
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
     // Unit tests (common ones provided by convention plugin)
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+    arg("room.generateKotlin", "true")
 }

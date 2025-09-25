@@ -1,65 +1,45 @@
 {
   "project_info": {
-    "project_number": "123456789",
-    "project_id": "githubusers-demo",
-    "storage_bucket": "githubusers-demo.appspot.com"
+    "project_number": "830685616812",
+    "project_id": "githubusers-74dd8",
+    "storage_bucket": "githubusers-74dd8.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789:android:abcdef123456",
+        "mobilesdk_app_id": "1:830685616812:android:dd45f9bd466d858651dd09",
         "android_client_info": {
           "package_name": "com.example.githubusers"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "123456789-abcdef123456.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDemoKeyForDevelopmentOnly"
+          "current_key": "AIzaSyBtgYkJIyZSjQGDtExZ9dSCDjpnX8sD1gI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "123456789-abcdef123456.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789:android:abcdef123457",
+        "mobilesdk_app_id": "1:830685616812:android:b8fec424b3a4fa4851dd09",
         "android_client_info": {
           "package_name": "com.example.githubusers.debug"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "123456789-abcdef123457.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDemoKeyForDevelopmentOnly"
+          "current_key": "AIzaSyBtgYkJIyZSjQGDtExZ9dSCDjpnX8sD1gI"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "123456789-abcdef123457.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

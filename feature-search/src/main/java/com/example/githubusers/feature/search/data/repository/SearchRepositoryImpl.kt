@@ -8,6 +8,7 @@ import com.example.githubusers.core.search.domain.SearchRepository
 import com.example.githubusers.core.search.domain.SearchResult
 import com.example.githubusers.feature.search.data.api.SearchApiService
 import com.example.githubusers.feature.search.data.local.SearchHistoryDataSource
+import com.example.githubusers.feature.search.data.paging.RepositorySearchPagingSource
 import com.example.githubusers.feature.search.data.paging.SearchPagingSource
 import com.example.githubusers.feature.search.data.paging.TrendingUsersPagingSource
 import javax.inject.Inject
@@ -38,6 +39,22 @@ constructor(
         ),
         pagingSourceFactory = {
             SearchPagingSource(
+                apiService = apiService,
+                query = query,
+                filter = filter
+            )
+        }
+    ).flow
+
+    override fun searchRepositories(query: String, filter: SearchFilter): Flow<PagingData<SearchResult>> = Pager(
+        config =
+        PagingConfig(
+            pageSize = PAGE_SIZE,
+            initialLoadSize = INITIAL_LOAD_SIZE,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            RepositorySearchPagingSource(
                 apiService = apiService,
                 query = query,
                 filter = filter

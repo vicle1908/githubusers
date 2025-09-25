@@ -13,6 +13,12 @@ tasks.register("buildAll") {
     group = "build"
     description = "Build all included composite builds"
 
+    dependsOn(
+        gradle.includedBuilds.map { build ->
+            build.task(":build")
+        }
+    )
+
     // Configuration cache compatible - avoid gradle.includedBuilds access
     doLast {
         logger.lifecycle("Built all modules successfully")
@@ -197,7 +203,9 @@ tasks.register("dependencyUpdatesAll") {
 // This aggregate depends on included builds and the ben-manes versions plugin, which is not CC-safe on Gradle 9.
 // Explicitly mark it as incompatible so Gradle won't attempt to cache the configuration for this task.
 tasks.named("dependencyUpdatesAll") {
-    notCompatibleWithConfigurationCache("Aggregate dependencyUpdates across included builds; versions plugin not CC-safe on Gradle 9")
+    notCompatibleWithConfigurationCache(
+        "Aggregate dependencyUpdates across included builds; versions plugin not CC-safe on Gradle 9"
+    )
 }
 
 // Aggregate unit tests across modules (composite-friendly)
@@ -300,7 +308,6 @@ tasks.register("lintAll") {
         logger.lifecycle("Lint completed for all eligible included builds")
     }
 }
-
 
 // Aggregate OWASP dependency check across included builds when available
 tasks.register("dependencyCheckAnalyzeAll") {

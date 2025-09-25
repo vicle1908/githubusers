@@ -19,6 +19,7 @@ plugins {
 
 dependencies {
     implementation(libs.local.core.common)
+    implementation(libs.local.core.search)
 
     // Compose
     api(platform(libs.androidx.compose.bom))

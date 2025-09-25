@@ -4,14 +4,11 @@ import android.net.Uri
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
 import com.example.githubusers.feature.search.navigation.api.decodeSearchFilter
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /** Search feature deep link handler → Navigation 3 key. */
 @Singleton
-class SearchFeatureDeepLinkHandler
-@Inject
-constructor() : FeatureDeepLinkHandler {
+class SearchFeatureDeepLinkHandler : FeatureDeepLinkHandler {
     override val moduleId: String = "feature-search"
 
     override fun supportedPatterns(): List<String> = listOf(

@@ -4,7 +4,9 @@ import io.mockk.every
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.AfterClass
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test

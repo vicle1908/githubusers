@@ -1,6 +1,7 @@
 package com.example.githubusers.feature.search.domain.usecase
 
 import androidx.paging.PagingData
+import com.example.githubusers.core.search.domain.SearchDomain
 import com.example.githubusers.core.search.domain.SearchFilter
 import com.example.githubusers.core.search.domain.SearchRepository
 import com.example.githubusers.core.search.domain.SearchResult
@@ -14,7 +15,10 @@ class SearchUseCase
 @Inject
 constructor(private val repository: SearchRepository) {
     operator fun invoke(query: String, filter: SearchFilter = SearchFilter()): Flow<PagingData<SearchResult>> =
-        repository.searchUsers(query, filter)
+        when (filter.domain) {
+            SearchDomain.REPOSITORIES -> repository.searchRepositories(query, filter)
+            SearchDomain.USERS -> repository.searchUsers(query, filter)
+        }
 }
 
 /**

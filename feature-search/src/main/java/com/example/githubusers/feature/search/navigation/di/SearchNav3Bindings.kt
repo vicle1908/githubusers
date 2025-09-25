@@ -4,8 +4,8 @@ import com.example.githubusers.feature.search.navigation.SearchFeatureDeepLinkHa
 import com.example.githubusers.feature.search.navigation.SearchFeatureDestinationProvider
 import com.example.githubusers.navigation.api.FeatureDeepLinkHandler
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
@@ -13,14 +13,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SearchNav3Bindings {
-    @Binds
+object SearchNav3Bindings {
+    @Provides
     @IntoSet
     @Singleton
-    abstract fun bindSearchProvider(impl: SearchFeatureDestinationProvider): FeatureDestinationProvider
+    fun provideSearchProvider(): FeatureDestinationProvider = SearchFeatureDestinationProvider()
 
-    @Binds
+    @Provides
     @IntoSet
     @Singleton
-    abstract fun bindSearchHandler(impl: SearchFeatureDeepLinkHandler): FeatureDeepLinkHandler
+    fun provideSearchHandler(): FeatureDeepLinkHandler = SearchFeatureDeepLinkHandler()
 }

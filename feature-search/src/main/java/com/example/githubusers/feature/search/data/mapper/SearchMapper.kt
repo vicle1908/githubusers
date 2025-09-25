@@ -3,6 +3,8 @@ package com.example.githubusers.feature.search.data.mapper
 import com.example.githubusers.core.search.domain.SearchResult
 import com.example.githubusers.core.search.domain.SearchResultType
 import com.example.githubusers.core.users.domain.UserSummary
+import com.example.githubusers.feature.repository.domain.model.Repository
+import com.example.githubusers.feature.search.data.model.GitHubRepository
 import com.example.githubusers.feature.search.data.model.GitHubUser
 import com.example.githubusers.feature.search.data.model.GitHubUserDetail
 
@@ -26,6 +28,28 @@ fun GitHubUser.toSearchResult(): SearchResult = SearchResult(
     company = null,
     publicRepos = null,
     followers = null
+)
+
+fun GitHubRepository.toSearchResult(): SearchResult = SearchResult(
+    id = this.id,
+    login = this.owner.login,
+    name = this.name,
+    avatarUrl = this.owner.avatarUrl,
+    type = SearchResultType.REPOSITORY,
+    score = this.score,
+    bio = null,
+    location = null,
+    company = null,
+    publicRepos = null,
+    followers = null,
+    repositoryFullName = this.fullName,
+    repositoryOwnerLogin = this.owner.login,
+    repositoryDescription = this.description,
+    repositoryHtmlUrl = this.htmlUrl,
+    stargazersCount = this.stargazersCount,
+    primaryLanguage = this.primaryLanguage,
+    forksCount = this.forksCount,
+    openIssuesCount = this.openIssuesCount
 )
 
 /**
@@ -56,11 +80,27 @@ fun GitHubUser.toSearchResult(score: Float): SearchResult = this.toSearchResult(
 fun SearchResult.toUserSummary(): UserSummary = UserSummary(
     id = id,
     login = login,
-    avatarUrl = avatarUrl,
+    avatarUrl = avatarUrl ?: "",
     htmlUrl = "https://github.com/$login",
     type =
     when (type) {
         SearchResultType.USER -> "User"
         SearchResultType.ORGANIZATION -> "Organization"
+        SearchResultType.REPOSITORY -> "Repository"
     }
+)
+
+fun SearchResult.toRepositoryModel(): Repository = Repository(
+    id = id,
+    name = name ?: repositoryFullName?.substringAfter('/') ?: login,
+    fullName = repositoryFullName ?: name ?: login,
+    ownerLogin = repositoryOwnerLogin ?: login,
+    description = repositoryDescription,
+    htmlUrl = repositoryHtmlUrl ?: "https://github.com/${repositoryFullName ?: login}",
+    stargazersCount = stargazersCount ?: 0,
+    watchersCount = stargazersCount ?: 0,
+    language = primaryLanguage,
+    forksCount = forksCount ?: 0,
+    openIssuesCount = openIssuesCount ?: 0,
+    licenseName = null
 )
