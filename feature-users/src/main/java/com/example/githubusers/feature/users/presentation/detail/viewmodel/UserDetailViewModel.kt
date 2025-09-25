@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,23 @@ class UserDetailViewModel @Inject constructor(
 ) : ViewModel() {
     companion object {
         private const val TAG = "UserDetailViewModel"
+        private const val QUERY_DELIMITER = "|"
+
+        private fun buildRepositoryQuery(username: String, sort: RepositorySort): String =
+            listOf(username, sort.name).joinToString(separator = QUERY_DELIMITER)
+
+        private fun parseRepositoryQuery(rawQuery: String): Pair<String, RepositorySort>? {
+            if (rawQuery.isBlank()) return null
+            val parts = rawQuery.split(QUERY_DELIMITER)
+            val username = parts.getOrNull(0).orEmpty()
+            if (username.isBlank()) return null
+
+            val sort = parts.getOrNull(1)
+                ?.let { runCatching { RepositorySort.valueOf(it) }.getOrNull() }
+                ?: RepositorySort.UPDATED
+
+            return username to sort
+        }
     }
 
     private val usernameState = MutableStateFlow<String?>(null)
@@ -42,17 +60,13 @@ class UserDetailViewModel @Inject constructor(
     // Create a paging provider for user repositories
     private val repositoriesPagingProvider = DefaultPagingSourceProvider(
         scope = viewModelScope,
-        initialQuery = "", // We'll use this to pass the username
-        pagerFactory = { username ->
-            if (username.isNotEmpty()) {
-                observeUserRepositoriesUseCase(
-                    username = username,
-                    sort = _uiState.value.repositorySort
-                )
-            } else {
-                // Return empty flow when no username is set
-                kotlinx.coroutines.flow.emptyFlow()
-            }
+        initialQuery = buildRepositoryQuery("", RepositorySort.UPDATED),
+        pagerFactory = { rawQuery ->
+            val (username, sort) = parseRepositoryQuery(rawQuery) ?: return@DefaultPagingSourceProvider emptyFlow()
+            observeUserRepositoriesUseCase(
+                username = username,
+                sort = sort
+            )
         }
     )
 
@@ -74,7 +88,7 @@ class UserDetailViewModel @Inject constructor(
         loadUserDetail(username)
         checkFollowStatus(username)
         // Load repositories for this user
-        repositoriesPagingProvider.updateQuery(username)
+        repositoriesPagingProvider.updateQuery(buildRepositoryQuery(username, _uiState.value.repositorySort))
     }
 
     fun onIntent(intent: UserDetailIntent) {
@@ -83,7 +97,7 @@ class UserDetailViewModel @Inject constructor(
                 loadUserDetail(it)
                 checkFollowStatus(it)
                 // Refresh repositories as well
-                repositoriesPagingProvider.updateQuery(it)
+                repositoriesPagingProvider.updateQuery(buildRepositoryQuery(it, _uiState.value.repositorySort))
             }
             is UserDetailIntent.ToggleFollow -> toggleFollow()
             is UserDetailIntent.ChangeRepositorySort -> changeRepositorySort(intent.sort)
@@ -91,7 +105,9 @@ class UserDetailViewModel @Inject constructor(
             is UserDetailIntent.ExpandBio -> expandBio()
             is UserDetailIntent.CollapseBio -> collapseBio()
             UserDetailIntent.RetryLoadRepositories -> {
-                usernameState.value?.let { repositoriesPagingProvider.updateQuery(it) }
+                usernameState.value?.let {
+                    repositoriesPagingProvider.updateQuery(buildRepositoryQuery(it, _uiState.value.repositorySort))
+                }
             }
         }
     }
@@ -157,8 +173,7 @@ class UserDetailViewModel @Inject constructor(
         _uiState.update { it.copy(repositorySort = sort) }
         val username = usernameState.value ?: return
         viewModelScope.launch {
-            // refresh repositories by re-emitting username
-            repositoriesPagingProvider.updateQuery(username)
+            repositoriesPagingProvider.updateQuery(buildRepositoryQuery(username, sort))
         }
     }
 
