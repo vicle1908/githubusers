@@ -10,9 +10,9 @@ Purpose: A single, shared operating guide for all AI assistants to act consisten
 
 ## TL;DR
 
-- MCP-first: prefer MCP servers for builds, code search, devices, and research; Desktop Commander is an approved fallback when it provides the needed tooling.
+- CLI-first: prefer direct use of CLI tools (gh, git, gradle) through Desktop Commander instead of MCP servers to reduce context usage; MCP servers are an approved fallback when CLI tools are not practical.
 - Android/Kotlin: Clean Architecture, feature modules, MVI, Navigation 3; enforce KtLint/Detekt and Version Catalog.
-- Builds: prefer Gradle MCP for quality and assemble; running `./gradlew` via Desktop Commander is allowed when MCP isn’t practical.
+- Builds: prefer direct use of `./gradlew` via Desktop Commander instead of Gradle MCP to reduce context usage; Gradle MCP is allowed when direct CLI usage isn’t practical.
 - Code search: index with Claude Context and use `search_code`.
 - Memory: OpenMemory for project/user context; ByteRover for programming patterns and plan persistence.
 - Research: use Tavily/Brave/Exa for current info; cite official docs.
@@ -90,8 +90,8 @@ Examples (good):
 
 ## 5a MCP-First Enforcement
 
-- Always prefer MCP servers for supported tasks; Desktop Commander is the approved fallback when MCP tooling cannot cover the need.
-- Build and tests: prefer Gradle MCP; running `./gradlew` via Desktop Commander is acceptable when it's the more practical option. See `docs/assistants/mcp-guide.md` for details.
+- Always prefer direct CLI tools through Desktop Commander for supported tasks; MCP servers are the approved fallback when CLI tools cannot cover the need.
+- Build and tests: prefer direct use of gradle/gh/git CLI via Desktop Commander instead of Gradle MCP/GitHub MCP/Git MCP to reduce context usage; running `./gradlew` via Desktop Commander is acceptable when it's the more practical option. See `docs/assistants/mcp-guide.md` for details.
 - Code search: use Claude Context indexing and `search_code` (Section 8); ensure index exists first.
 - Android operations: use Android MCP and Mobile-MCP; manual ADB only as last resort with approval.
 - External info: use Tavily/Brave/Exa; official docs via Context7. Validate with multiple sources when critical.
