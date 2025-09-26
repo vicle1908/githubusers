@@ -1,7 +1,7 @@
-package com.example.githubusers.feature.users.list.presentation.di
+package com.example.githubusers.feature.users.presentation.list.di
 
-import com.example.githubusers.feature.users.list.presentation.analytics.DefaultUserListAnalytics
-import com.example.githubusers.feature.users.list.presentation.analytics.UserListAnalytics
+import com.example.githubusers.feature.users.presentation.list.analytics.DefaultUserListAnalytics
+import com.example.githubusers.feature.users.presentation.list.analytics.UserListAnalytics
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable

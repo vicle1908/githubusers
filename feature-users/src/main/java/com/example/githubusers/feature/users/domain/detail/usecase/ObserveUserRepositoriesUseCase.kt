@@ -1,8 +1,8 @@
-package com.example.githubusers.feature.users.detail.domain.usecase
+package com.example.githubusers.feature.users.domain.detail.usecase
 
 import androidx.paging.PagingData
-import com.example.githubusers.feature.users.detail.domain.repository.RepositorySort
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
 import com.example.githubusers.feature.users.domain.model.Repository
 import dagger.Reusable
 import javax.inject.Inject

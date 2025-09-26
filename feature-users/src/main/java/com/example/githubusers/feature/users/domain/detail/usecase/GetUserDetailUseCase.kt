@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.domain.usecase
+package com.example.githubusers.feature.users.domain.detail.usecase
 
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import com.example.githubusers.feature.users.domain.repository.UserRepository

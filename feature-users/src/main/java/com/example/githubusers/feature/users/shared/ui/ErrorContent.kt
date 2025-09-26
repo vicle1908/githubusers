@@ -14,11 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ErrorContent(
-    message: String? = null,
-    onRetry: () -> Unit = {},
-    modifier: Modifier = Modifier
-) {
+fun ErrorContent(message: String? = null, onRetry: () -> Unit = {}, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

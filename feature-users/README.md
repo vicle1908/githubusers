@@ -42,4 +42,4 @@ The aim is to keep only orchestration logic in ViewModels while business rules s
 
 ## Pending Improvements
 
-The implementationplan in `docs/FEATURE_USERS_IMPLEMENTATION_PLAN.md` tracks ongoing work (presentation refactor, testing, observability). Refer there for task status and verification steps.
+The audit roadmap in `docs/FEATURE_USERS_AUDIT_PLAN.md` tracks navigation cleanup, UI consolidation, data/schema alignment, and validation workstreams. Refer there for task status and verification steps.

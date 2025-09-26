@@ -2,7 +2,7 @@ package com.example.githubusers.feature.users.navigation
 
 import com.example.githubusers.core.analytics.AnalyticsEvent
 import com.example.githubusers.core.analytics.AnalyticsFacade
-import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailNavigator
+import com.example.githubusers.feature.users.presentation.detail.navigation.UserDetailNavigator
 import javax.inject.Inject
 
 fun interface UserDetailNavigatorFactory {

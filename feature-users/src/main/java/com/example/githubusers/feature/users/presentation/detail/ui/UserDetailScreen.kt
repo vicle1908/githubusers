@@ -1,6 +1,7 @@
-package com.example.githubusers.feature.users.detail.presentation.ui
+package com.example.githubusers.feature.users.presentation.detail.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.paging.compose.LazyPagingItems
-import com.example.githubusers.feature.users.detail.presentation.viewmodel.UserDetailViewModel
 import com.example.githubusers.feature.users.domain.model.Repository
+import com.example.githubusers.feature.users.presentation.detail.viewmodel.UserDetailViewModel
 import com.example.githubusers.feature.users.shared.ui.ErrorContent
 
 /**
@@ -59,8 +60,7 @@ fun UserDetailScreen(
                         )
                     }
                 },
-                colors =
-                TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent
                 ),
@@ -68,21 +68,17 @@ fun UserDetailScreen(
             )
         },
         // Draw behind app bar to avoid extra top inset; actual padding applied by Scaffold content slot
-        contentWindowInsets =
-        androidx.compose.foundation.layout
-            .WindowInsets(0)
+        contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
         Box(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
             UserDetailBody(
                 uiState = uiState,
                 repositoriesFlow = repositoriesFlow,
-                onIntent = onIntent,
-                onBackClick = onBackClick
+                onIntent = onIntent
             )
             // Pull to refresh UI temporarily disabled
         }
@@ -93,8 +89,7 @@ fun UserDetailScreen(
 private fun UserDetailBody(
     uiState: UserDetailViewModel.UserDetailUiState,
     repositoriesFlow: LazyPagingItems<Repository>,
-    onIntent: (UserDetailViewModel.UserDetailIntent) -> Unit,
-    onBackClick: () -> Unit
+    onIntent: (UserDetailViewModel.UserDetailIntent) -> Unit
 ) {
     when {
         uiState.isLoading && uiState.userDetail == null -> {
@@ -137,7 +132,6 @@ private fun UserDetailBody(
                 onCollapseBio = {
                     onIntent(UserDetailViewModel.UserDetailIntent.CollapseBio)
                 },
-                onBackClick = onBackClick,
                 modifier = Modifier.fillMaxSize()
             )
         }

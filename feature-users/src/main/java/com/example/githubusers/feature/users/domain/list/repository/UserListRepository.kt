@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.domain.repository
+package com.example.githubusers.feature.users.domain.list.repository
 
 import androidx.paging.PagingData
 import com.example.githubusers.core.search.SearchQueryNormalizer

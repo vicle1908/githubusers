@@ -1,5 +1,0 @@
-// Minimal settings for composite build inclusion
-// When included as composite build, inherits catalog from root
-// When built standalone, would need full configuration
-
-rootProject.name = "app"

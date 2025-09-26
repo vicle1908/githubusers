@@ -3,6 +3,8 @@ package com.example.githubusers.feature.users.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.githubusers.core.ui.performance.PerformanceMonitor
+import com.example.githubusers.feature.users.data.detail.repository.UserDetailRepositoryImpl
+import com.example.githubusers.feature.users.data.list.repository.UserListRepositoryImpl
 import com.example.githubusers.feature.users.data.local.UsersDatabase
 import com.example.githubusers.feature.users.data.local.dao.RemoteKeyDao
 import com.example.githubusers.feature.users.data.local.dao.RepositoryDao
@@ -12,11 +14,9 @@ import com.example.githubusers.feature.users.data.remote.UserListApiService
 import com.example.githubusers.feature.users.data.remote.api.UserDetailRemoteDataSource
 import com.example.githubusers.feature.users.data.remote.api.UserDetailRemoteDataSourceImpl
 import com.example.githubusers.feature.users.data.repository.UsersRepositoryImpl
-import com.example.githubusers.feature.users.detail.data.repository.UserDetailRepositoryImpl
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.list.repository.UserListRepository
 import com.example.githubusers.feature.users.domain.repository.UserRepository
-import com.example.githubusers.feature.users.list.data.repository.UserListRepositoryImpl
-import com.example.githubusers.feature.users.list.domain.repository.UserListRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

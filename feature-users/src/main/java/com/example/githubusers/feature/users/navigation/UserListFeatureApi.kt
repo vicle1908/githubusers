@@ -1,10 +1,8 @@
-@file:Suppress("ktlint:standard:function-naming")
-
-package com.example.githubusers.feature.users.list.api
+package com.example.githubusers.feature.users.navigation
 
 import androidx.compose.runtime.Composable
-import com.example.githubusers.feature.users.list.presentation.navigation.UserListNavigator
-import com.example.githubusers.feature.users.list.presentation.navigation.UserListRoute
+import com.example.githubusers.feature.users.presentation.list.navigation.UserListNavigator
+import com.example.githubusers.feature.users.presentation.list.navigation.UserListRoute
 
 object UserListFeatureApi {
     const val ROUTE = "users/list"

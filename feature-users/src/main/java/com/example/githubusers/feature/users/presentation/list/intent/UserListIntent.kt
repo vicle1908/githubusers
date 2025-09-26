@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.intent
+package com.example.githubusers.feature.users.presentation.list.intent
 
 import com.example.githubusers.core.users.domain.UserSummary
 

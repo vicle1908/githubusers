@@ -2,38 +2,32 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:RepositoryItem.kt$@Composable fun RepositoryItem( repository: Repository, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:UserDetailContent.kt$@Composable fun UserDetailContent( userDetail: UserDetail, isFollowing: Boolean, isFollowActionInProgress: Boolean, isBioExpanded: Boolean, repositories: LazyPagingItems&lt;Repository&gt;, onFollowClick: () -&gt; Unit, onBioClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:UserDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun UserDetailScreen( uiState: UserDetailViewModel.UserDetailUiState, repositoriesFlow: androidx.paging.compose.LazyPagingItems&lt;com.example.githubusers.feature.users.detail.domain.entity.Repository&gt;, onIntent: (UserDetailViewModel.UserDetailIntent) -&gt; Unit, onBackClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:UserInfoCard.kt$@Composable fun UserInfoCard( userDetail: UserDetail, isFollowing: Boolean, isFollowActionInProgress: Boolean, isBioExpanded: Boolean, onFollowClick: () -&gt; Unit, onBioClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:UserListContent.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun UserListContent( pagingUsers: LazyPagingItems&lt;UserSummary&gt;, onUserClick: (UserSummary) -&gt; Unit, onRefresh: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:UserOverview.kt$@Composable fun UserOverview( userDetail: UserDetail, modifier: Modifier = Modifier, )</ID>
-    <ID>MaxLineLength:DomainModule.kt$DomainModule$fun</ID>
-    <ID>MaxLineLength:UserDetailScreen.kt$repositoriesFlow: androidx.paging.compose.LazyPagingItems&lt;com.example.githubusers.feature.users.detail.domain.entity.Repository&gt;</ID>
-    <ID>MaxLineLength:UsersScreens.kt$is UserDetailState.Loading -&gt; Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }</ID>
-    <ID>ReturnCount:UserDeepLinkHandler.kt$UserDeepLinkHandler$override fun handleDeepLink(uri: Uri): DeepLinkResult?</ID>
+    <ID>LongMethod:UserDetailContent.kt$private fun LazyListScope.repositoriesSection( repositories: LazyPagingItems&lt;Repository&gt;, onRetryLoadRepositories: () -&gt; Unit, onRefresh: () -&gt; Unit )</ID>
+    <ID>LongParameterList:UserDetailContent.kt$( userDetail: UserDetail?, repositories: LazyPagingItems&lt;Repository&gt;, isFollowing: Boolean, isFollowActionInProgress: Boolean, followError: String?, isBioExpanded: Boolean, onFollowClick: () -&gt; Unit, onRetryLoadUser: () -&gt; Unit, onRetryLoadRepositories: () -&gt; Unit, onRefresh: () -&gt; Unit, onExpandBio: () -&gt; Unit, onCollapseBio: () -&gt; Unit, modifier: Modifier = Modifier )</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFF00ADD8</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFF2B7489</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFF3572A5</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFF555555</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFB07219</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFDEA584</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFF18E33</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFF1E05A</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFF34B7D</ID>
+    <ID>MagicNumber:RepositoryItem.kt$0xFFFFAC45</ID>
+    <ID>MaxLineLength:UserItem.kt$"GitHub user ${user.login}${if (user.type != "User") ", ${user.type}" else ""}. Double tap to view details"</ID>
+    <ID>MaxLineLength:UserSummaryDao.kt$UserSummaryDao$"((:filter IS NULL) OR (LOWER(login) LIKE '%' || :filter || '%' OR LOWER(type) LIKE '%' || :filter || '%')) AND "</ID>
     <ID>SwallowedException:Converters.kt$Converters$e: Exception</ID>
-    <ID>SwallowedException:EnhancedSearchUseCase.kt$EnhancedGetTrendingUsersUseCase$e: Exception</ID>
-    <ID>SwallowedException:EnhancedSearchUseCase.kt$EnhancedManageSearchHistoryUseCase$e: Exception</ID>
     <ID>SwallowedException:RepositoryMapper.kt$RepositoryMapper$e: Exception</ID>
-    <ID>SwallowedException:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$e: Exception</ID>
     <ID>SwallowedException:UserDetailMapper.kt$UserDetailMapper$e: Exception</ID>
     <ID>SwallowedException:UserDetailRemoteDataSource.kt$UserDetailRemoteDataSourceImpl$e: Exception</ID>
     <ID>SwallowedException:UserDetailRepositoryImpl.kt$UserDetailRepositoryImpl$e: Exception</ID>
     <ID>TooGenericExceptionCaught:Converters.kt$Converters$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:EnhancedSearchPagingSource.kt$EnhancedSearchPagingSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:EnhancedSearchUseCase.kt$EnhancedGetTrendingUsersUseCase$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:EnhancedSearchUseCase.kt$EnhancedManageSearchHistoryUseCase$e: Exception</ID>
     <ID>TooGenericExceptionCaught:RepositoryMapper.kt$RepositoryMapper$e: Exception</ID>
     <ID>TooGenericExceptionCaught:RepositoryPagingSource.kt$RepositoryPagingSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:SearchPagingSource.kt$SearchPagingSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:TrendingUsersPagingSource.kt$TrendingUsersPagingSource$fallbackError: Exception</ID>
     <ID>TooGenericExceptionCaught:UserDetailMapper.kt$UserDetailMapper$e: Exception</ID>
     <ID>TooGenericExceptionCaught:UserDetailRemoteDataSource.kt$UserDetailRemoteDataSourceImpl$e: Exception</ID>
     <ID>TooGenericExceptionCaught:UserDetailRepositoryImpl.kt$UserDetailRepositoryImpl$e: Exception</ID>
     <ID>TooGenericExceptionCaught:UserListApiService.kt$UserListApiService$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:UserListPagingSource.kt$UserListPagingSource$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:UserListRemoteMediator.kt$UserListRemoteMediator$e: Exception</ID>
+    <ID>UnusedPrivateMember:RepositoryItem.kt$@Composable private fun statsRow(language: String?, stargazersCount: Int, forksCount: Int, updatedAt: java.time.Instant)</ID>
   </CurrentIssues>
 </SmellBaseline>

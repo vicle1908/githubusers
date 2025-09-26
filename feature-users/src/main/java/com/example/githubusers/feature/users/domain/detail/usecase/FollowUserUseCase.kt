@@ -1,6 +1,6 @@
-package com.example.githubusers.feature.users.detail.domain.usecase
+package com.example.githubusers.feature.users.domain.detail.usecase
 
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
 import dagger.Reusable
 import javax.inject.Inject
 

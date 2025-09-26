@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.navigation
+package com.example.githubusers.feature.users.presentation.list.navigation
 
 /**
  * Navigator interface for the User List feature.

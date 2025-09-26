@@ -1,9 +1,9 @@
 package com.example.githubusers.feature.users.domain.usecase
 
 import androidx.paging.PagingData
-import com.example.githubusers.feature.users.detail.domain.repository.RepositorySort
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
-import com.example.githubusers.feature.users.detail.domain.usecase.FollowUserUseCase
+import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.detail.usecase.FollowUserUseCase
 import com.example.githubusers.feature.users.domain.model.Repository
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import kotlinx.coroutines.flow.Flow

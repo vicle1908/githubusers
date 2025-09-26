@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.data.mapper
+package com.example.githubusers.feature.users.data.detail.mapper
 
 import com.example.githubusers.feature.users.data.local.entity.UserDetailEntity
 import com.example.githubusers.feature.users.data.remote.dto.UserDetailDto

@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.presentation.viewmodel
+package com.example.githubusers.feature.users.presentation.detail.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,10 +6,10 @@ import androidx.paging.PagingData
 import com.example.githubusers.core.paging.DefaultPagingSourceProvider
 import com.example.githubusers.core.search.PagingSearchController
 import com.example.githubusers.core.search.SearchUiState
-import com.example.githubusers.feature.users.detail.domain.repository.RepositorySort
-import com.example.githubusers.feature.users.detail.domain.usecase.FollowUserUseCase
-import com.example.githubusers.feature.users.detail.domain.usecase.GetUserDetailUseCase
-import com.example.githubusers.feature.users.detail.domain.usecase.ObserveUserRepositoriesUseCase
+import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
+import com.example.githubusers.feature.users.domain.detail.usecase.FollowUserUseCase
+import com.example.githubusers.feature.users.domain.detail.usecase.GetUserDetailUseCase
+import com.example.githubusers.feature.users.domain.detail.usecase.ObserveUserRepositoriesUseCase
 import com.example.githubusers.feature.users.domain.model.Repository
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import dagger.hilt.android.lifecycle.HiltViewModel

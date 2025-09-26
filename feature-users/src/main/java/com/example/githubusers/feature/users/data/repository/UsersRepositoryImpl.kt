@@ -3,10 +3,10 @@ package com.example.githubusers.feature.users.data.repository
 import androidx.paging.PagingData
 import com.example.githubusers.core.search.SearchQueryNormalizer
 import com.example.githubusers.core.users.domain.UserSummary
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
+import com.example.githubusers.feature.users.domain.list.repository.UserListRepository
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import com.example.githubusers.feature.users.domain.repository.UserRepository
-import com.example.githubusers.feature.users.list.domain.repository.UserListRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 

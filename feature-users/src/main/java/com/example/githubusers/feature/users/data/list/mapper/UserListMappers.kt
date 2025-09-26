@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.data.mapper
+package com.example.githubusers.feature.users.data.list.mapper
 
 import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.users.data.local.entity.UserSummaryEntity

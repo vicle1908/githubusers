@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.presentation.navigation
+package com.example.githubusers.feature.users.presentation.detail.navigation
 
 /**
  * Navigator interface for the User Detail feature.
