@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.domain.repository
+package com.example.githubusers.feature.users.domain.detail.repository
 
 import androidx.paging.PagingData
 import com.example.githubusers.feature.users.domain.model.Repository

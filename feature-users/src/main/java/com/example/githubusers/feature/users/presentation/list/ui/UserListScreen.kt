@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.ui
+package com.example.githubusers.feature.users.presentation.list.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,8 +18,8 @@ import com.example.githubusers.core.ui.SearchableListScaffold
 import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.core.ui.performance.TrackCompositionPerformance
 import com.example.githubusers.core.users.domain.UserSummary
-import com.example.githubusers.feature.users.list.presentation.intent.UserListIntent
-import com.example.githubusers.feature.users.list.presentation.viewmodel.UserListViewModel
+import com.example.githubusers.feature.users.presentation.list.intent.UserListIntent
+import com.example.githubusers.feature.users.presentation.list.viewmodel.UserListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

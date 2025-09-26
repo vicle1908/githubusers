@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.data.paging
+package com.example.githubusers.feature.users.data.list.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -13,7 +13,7 @@ import com.example.githubusers.feature.users.data.local.UsersDatabase
 import com.example.githubusers.feature.users.data.local.entity.RemoteKeyEntity
 import com.example.githubusers.feature.users.data.local.entity.UserSummaryEntity
 import com.example.githubusers.feature.users.data.remote.UserListApiService
-import com.example.githubusers.feature.users.list.data.mapper.toEntity
+import com.example.githubusers.feature.users.data.list.mapper.toEntity
 import timber.log.Timber
 
 /**

@@ -3,7 +3,6 @@ package com.example.githubusers.feature.users.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.githubusers.feature.users.data.local.Converters
 import com.example.githubusers.feature.users.data.local.dao.RemoteKeyDao
 import com.example.githubusers.feature.users.data.local.dao.RepositoryDao
 import com.example.githubusers.feature.users.data.local.dao.UserDetailDao

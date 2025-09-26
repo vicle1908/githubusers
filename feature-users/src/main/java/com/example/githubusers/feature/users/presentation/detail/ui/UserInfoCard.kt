@@ -1,5 +1,6 @@
-package com.example.githubusers.feature.users.detail.presentation.ui
+package com.example.githubusers.feature.users.presentation.detail.ui
 
+import android.R
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -118,8 +119,8 @@ private fun UserAvatarAndBasicInfo(
                 .crossfade(true)
                 .build(),
             contentDescription = "${userDetail.login}'s avatar",
-            placeholder = painterResource(android.R.drawable.ic_menu_gallery),
-            error = painterResource(android.R.drawable.ic_menu_report_image),
+            placeholder = painterResource(R.drawable.ic_menu_gallery),
+            error = painterResource(R.drawable.ic_menu_report_image),
             contentScale = ContentScale.Crop,
             modifier =
             Modifier

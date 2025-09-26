@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.data.repository
+package com.example.githubusers.feature.users.data.list.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -12,9 +12,9 @@ import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.users.data.UserQueryParser
 import com.example.githubusers.feature.users.data.local.UsersDatabase
 import com.example.githubusers.feature.users.data.remote.UserListApiService
-import com.example.githubusers.feature.users.list.data.mapper.toDomainModel
-import com.example.githubusers.feature.users.list.data.paging.UserListRemoteMediator
-import com.example.githubusers.feature.users.list.domain.repository.UserListRepository
+import com.example.githubusers.feature.users.data.list.mapper.toDomainModel
+import com.example.githubusers.feature.users.data.list.paging.UserListRemoteMediator
+import com.example.githubusers.feature.users.domain.list.repository.UserListRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

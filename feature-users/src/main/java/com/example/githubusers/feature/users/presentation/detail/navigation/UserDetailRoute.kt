@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.presentation.navigation
+package com.example.githubusers.feature.users.presentation.detail.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.githubusers.feature.users.detail.presentation.ui.UserDetailScreen
-import com.example.githubusers.feature.users.detail.presentation.viewmodel.UserDetailViewModel
+import com.example.githubusers.feature.users.presentation.detail.ui.UserDetailScreen
+import com.example.githubusers.feature.users.presentation.detail.viewmodel.UserDetailViewModel
 
 @Composable
 fun UserDetailRoute(username: String, navigator: UserDetailNavigator) {

@@ -1,8 +1,8 @@
-package com.example.githubusers.feature.users.detail.api
+package com.example.githubusers.feature.users.navigation
 
 import androidx.compose.runtime.Composable
-import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailNavigator
-import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailRoute
+import com.example.githubusers.feature.users.presentation.detail.navigation.UserDetailNavigator
+import com.example.githubusers.feature.users.presentation.detail.navigation.UserDetailRoute
 
 /**
  * Public API for the User Detail feature module.

@@ -24,13 +24,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.core.ui.navigation.PredictiveBackManager
-import com.example.githubusers.feature.users.detail.presentation.navigation.UserDetailRoute
-import com.example.githubusers.feature.users.list.presentation.navigation.UserListNavigator
-import com.example.githubusers.feature.users.list.presentation.navigation.UserListRoute
-import com.example.githubusers.feature.users.navigation.UserDetailNavigatorFactory
-import com.example.githubusers.feature.users.navigation.UserNavKey
-import com.example.githubusers.feature.users.navigation.UserNavigationEventInfo
-import com.example.githubusers.feature.users.navigation.UsersDeepLinks
+import com.example.githubusers.feature.users.presentation.detail.navigation.UserDetailRoute
+import com.example.githubusers.feature.users.presentation.list.navigation.UserListNavigator
+import com.example.githubusers.feature.users.presentation.list.navigation.UserListRoute
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink

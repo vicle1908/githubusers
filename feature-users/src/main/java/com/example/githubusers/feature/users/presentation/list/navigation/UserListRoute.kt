@@ -1,9 +1,7 @@
-@file:Suppress("ktlint:standard:function-naming")
-
-package com.example.githubusers.feature.users.list.presentation.navigation
+package com.example.githubusers.feature.users.presentation.list.navigation
 
 import androidx.compose.runtime.Composable
-import com.example.githubusers.feature.users.list.presentation.ui.UserListScreen
+import com.example.githubusers.feature.users.presentation.list.ui.UserListScreen
 import timber.log.Timber
 
 @Composable

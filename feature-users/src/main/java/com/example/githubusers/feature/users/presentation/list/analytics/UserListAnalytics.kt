@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.analytics
+package com.example.githubusers.feature.users.presentation.list.analytics
 
 import com.example.githubusers.core.analytics.AnalyticsEvent
 import com.example.githubusers.core.analytics.AnalyticsFacade

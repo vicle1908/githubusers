@@ -17,10 +17,11 @@ import com.example.githubusers.core.search.SearchQueryNormalizer
 import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import com.example.githubusers.feature.users.domain.repository.UserRepository
-import com.example.githubusers.feature.users.list.domain.usecase.ObserveUserListUseCase
-import com.example.githubusers.feature.users.list.presentation.analytics.DefaultUserListAnalytics
-import com.example.githubusers.feature.users.list.presentation.analytics.UserListAnalytics
-import com.example.githubusers.feature.users.list.presentation.viewmodel.UserListViewModel
+import com.example.githubusers.feature.users.domain.list.usecase.ObserveUserListUseCase
+import com.example.githubusers.feature.users.presentation.list.analytics.DefaultUserListAnalytics
+import com.example.githubusers.feature.users.presentation.list.analytics.UserListAnalytics
+import com.example.githubusers.feature.users.presentation.list.viewmodel.UserListViewModel
+import com.example.githubusers.feature.users.presentation.list.ui.UserListScreen
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

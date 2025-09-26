@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.state
+package com.example.githubusers.feature.users.presentation.list.state
 
 import com.example.githubusers.core.users.domain.UserSummary
 

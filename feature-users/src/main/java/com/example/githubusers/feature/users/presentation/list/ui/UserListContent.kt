@@ -1,6 +1,4 @@
-@file:Suppress("ktlint:standard:function-naming")
-
-package com.example.githubusers.feature.users.list.presentation.ui
+package com.example.githubusers.feature.users.presentation.list.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme

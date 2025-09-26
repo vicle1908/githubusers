@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.domain.usecase
+package com.example.githubusers.feature.users.domain.list.usecase
 
 import androidx.paging.PagingData
 import com.example.githubusers.core.search.SearchQueryNormalizer

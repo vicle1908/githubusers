@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.detail.data.repository
+package com.example.githubusers.feature.users.data.detail.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -7,10 +7,10 @@ import com.example.githubusers.feature.users.data.local.dao.RepositoryDao
 import com.example.githubusers.feature.users.data.local.dao.UserDetailDao
 import com.example.githubusers.feature.users.data.remote.api.UserDetailRemoteDataSource
 import com.example.githubusers.feature.users.data.remote.paging.RepositoryPagingSource
-import com.example.githubusers.feature.users.detail.data.mapper.UserDetailMapper.toDomain
-import com.example.githubusers.feature.users.detail.data.mapper.UserDetailMapper.toEntity
-import com.example.githubusers.feature.users.detail.domain.repository.RepositorySort
-import com.example.githubusers.feature.users.detail.domain.repository.UserDetailRepository
+import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toDomain
+import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toEntity
+import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
+import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
 import com.example.githubusers.feature.users.domain.model.Repository
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import javax.inject.Inject

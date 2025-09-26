@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.viewmodel
+package com.example.githubusers.feature.users.presentation.list.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,10 +8,10 @@ import com.example.githubusers.core.search.PagingSearchController
 import com.example.githubusers.core.search.SearchQueryNormalizer
 import com.example.githubusers.core.search.SearchUiState
 import com.example.githubusers.core.users.domain.UserSummary
-import com.example.githubusers.feature.users.list.domain.usecase.ObserveUserListUseCase
-import com.example.githubusers.feature.users.list.presentation.analytics.UserListAnalytics
-import com.example.githubusers.feature.users.list.presentation.intent.UserListIntent
-import com.example.githubusers.feature.users.list.presentation.state.UserListState
+import com.example.githubusers.feature.users.domain.list.usecase.ObserveUserListUseCase
+import com.example.githubusers.feature.users.presentation.list.analytics.UserListAnalytics
+import com.example.githubusers.feature.users.presentation.list.intent.UserListIntent
+import com.example.githubusers.feature.users.presentation.list.state.UserListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
