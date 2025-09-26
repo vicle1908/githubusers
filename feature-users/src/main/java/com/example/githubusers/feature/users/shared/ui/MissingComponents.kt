@@ -13,14 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+data class ColumnCenteredAction(val label: String, val onClick: () -> Unit, val isError: Boolean = false)
+
 @Composable
-fun ColumnCenteredMessage(
-    message: String,
-    buttonLabel: String,
-    onRetry: () -> Unit,
-    isError: Boolean = false,
-    modifier: Modifier = Modifier
-) {
+fun ColumnCenteredMessage(message: String, action: ColumnCenteredAction, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -29,20 +25,16 @@ fun ColumnCenteredMessage(
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = if (isError) MaterialTheme.colorScheme.error else Color.Unspecified
+            color = if (action.isError) MaterialTheme.colorScheme.error else Color.Unspecified
         )
-        Button(onClick = onRetry) {
-            Text(buttonLabel)
+        Button(onClick = action.onClick) {
+            Text(action.label)
         }
     }
 }
 
 @Composable
-fun TextButtonLink(
-    label: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun TextButtonLink(label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
         onClick = onClick,
         modifier = modifier,

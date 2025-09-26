@@ -1,4 +1,4 @@
-package com.example.githubusers.feature.users.list.presentation.ui
+package com.example.githubusers.feature.users.presentation.list.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -15,19 +15,22 @@ import com.example.githubusers.core.analytics.AnalyticsEvent
 import com.example.githubusers.core.analytics.AnalyticsFacade
 import com.example.githubusers.core.search.SearchQueryNormalizer
 import com.example.githubusers.core.users.domain.UserSummary
+import com.example.githubusers.feature.users.domain.list.usecase.ObserveUserListUseCase
 import com.example.githubusers.feature.users.domain.model.UserDetail
 import com.example.githubusers.feature.users.domain.repository.UserRepository
-import com.example.githubusers.feature.users.domain.list.usecase.ObserveUserListUseCase
 import com.example.githubusers.feature.users.presentation.list.analytics.DefaultUserListAnalytics
 import com.example.githubusers.feature.users.presentation.list.analytics.UserListAnalytics
-import com.example.githubusers.feature.users.presentation.list.viewmodel.UserListViewModel
 import com.example.githubusers.feature.users.presentation.list.ui.UserListScreen
+import com.example.githubusers.feature.users.presentation.list.viewmodel.UserListViewModel
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

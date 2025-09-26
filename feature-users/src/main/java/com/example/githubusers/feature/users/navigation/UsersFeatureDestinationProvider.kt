@@ -39,13 +39,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 // Animation constants
-private const val FadeDuration = 300
-private const val SlideSpringDamping = 0.8f
-private const val SlideSpringStiffnessDefault = 1000f
-private const val SlideSpringStiffnessPredictive = 300f
-private const val SlideSpringStiffnessDialog = 400f
-private const val SlideSpringDampingDialog = 0.9f
-private const val FadeDurationDialog = 250
+private const val FADE_DURATION = 300
+private const val SLIDE_SPRING_DAMPING = 0.8f
+private const val SLIDE_SPRING_STIFFNESS_DEFAULT = 1000f
+private const val SLIDE_SPRING_STIFFNESS_PREDICTIVE = 300f
+private const val SLIDE_SPRING_STIFFNESS_DIALOG = 400f
+private const val SLIDE_SPRING_DAMPING_DIALOG = 0.9f
+private const val FADE_DURATION_DIALOG = 250
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
@@ -170,8 +170,8 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                 // Simple fade transition for user list
                 {
                     ContentTransform(
-                        fadeIn(animationSpec = tween(FadeDuration)),
-                        fadeOut(animationSpec = tween(FadeDuration))
+                        fadeIn(animationSpec = tween(FADE_DURATION)),
+                        fadeOut(animationSpec = tween(FADE_DURATION))
                     )
                 }
             }
@@ -182,17 +182,17 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                         slideInHorizontally(
                             initialOffsetX = { it },
                             animationSpec = spring(
-                                dampingRatio = SlideSpringDamping,
-                                stiffness = SlideSpringStiffnessDefault
+                                dampingRatio = SLIDE_SPRING_DAMPING,
+                                stiffness = SLIDE_SPRING_STIFFNESS_DEFAULT
                             )
-                        ) + fadeIn(animationSpec = tween(FadeDuration)),
+                        ) + fadeIn(animationSpec = tween(FADE_DURATION)),
                         slideOutHorizontally(
                             targetOffsetX = { -it },
                             animationSpec = spring(
-                                dampingRatio = SlideSpringDamping,
-                                stiffness = SlideSpringStiffnessDefault
+                                dampingRatio = SLIDE_SPRING_DAMPING,
+                                stiffness = SLIDE_SPRING_STIFFNESS_DEFAULT
                             )
-                        ) + fadeOut(animationSpec = tween(FadeDuration))
+                        ) + fadeOut(animationSpec = tween(FADE_DURATION))
                     )
                 }
             }
@@ -211,17 +211,17 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                         slideInHorizontally(
                             initialOffsetX = { -it },
                             animationSpec = spring(
-                                dampingRatio = SlideSpringDamping,
-                                stiffness = SlideSpringStiffnessDefault
+                                dampingRatio = SLIDE_SPRING_DAMPING,
+                                stiffness = SLIDE_SPRING_STIFFNESS_DEFAULT
                             )
-                        ) + fadeIn(animationSpec = tween(FadeDuration)),
+                        ) + fadeIn(animationSpec = tween(FADE_DURATION)),
                         slideOutHorizontally(
                             targetOffsetX = { it },
                             animationSpec = spring(
-                                dampingRatio = SlideSpringDamping,
-                                stiffness = SlideSpringStiffnessDefault
+                                dampingRatio = SLIDE_SPRING_DAMPING,
+                                stiffness = SLIDE_SPRING_STIFFNESS_DEFAULT
                             )
-                        ) + fadeOut(animationSpec = tween(FadeDuration))
+                        ) + fadeOut(animationSpec = tween(FADE_DURATION))
                     )
                 }
             }
@@ -292,17 +292,17 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                 slideInHorizontally(
                     initialOffsetX = { -it },
                     animationSpec = spring(
-                        dampingRatio = SlideSpringDamping,
-                        stiffness = SlideSpringStiffnessPredictive
+                        dampingRatio = SLIDE_SPRING_DAMPING,
+                        stiffness = SLIDE_SPRING_STIFFNESS_PREDICTIVE
                     )
-                ) + fadeIn(animationSpec = tween(FadeDuration)) togetherWith
+                ) + fadeIn(animationSpec = tween(FADE_DURATION)) togetherWith
                     slideOutHorizontally(
                         targetOffsetX = { it },
                         animationSpec = spring(
-                            dampingRatio = SlideSpringDamping,
-                            stiffness = SlideSpringStiffnessPredictive
+                            dampingRatio = SLIDE_SPRING_DAMPING,
+                            stiffness = SLIDE_SPRING_STIFFNESS_PREDICTIVE
                         )
-                    ) + fadeOut(animationSpec = tween(FadeDuration))
+                    ) + fadeOut(animationSpec = tween(FADE_DURATION))
             }
         }
         is UserNavKey.UserSettingsDialog -> {
@@ -311,17 +311,17 @@ class UsersFeatureDestinationProvider @Inject constructor() : FeatureDestination
                 slideInHorizontally(
                     initialOffsetX = { -it },
                     animationSpec = spring(
-                        dampingRatio = SlideSpringDampingDialog,
-                        stiffness = SlideSpringStiffnessDialog
+                        dampingRatio = SLIDE_SPRING_DAMPING_DIALOG,
+                        stiffness = SLIDE_SPRING_STIFFNESS_DIALOG
                     )
-                ) + fadeIn(animationSpec = tween(FadeDurationDialog)) togetherWith
+                ) + fadeIn(animationSpec = tween(FADE_DURATION_DIALOG)) togetherWith
                     slideOutHorizontally(
                         targetOffsetX = { it },
                         animationSpec = spring(
-                            dampingRatio = SlideSpringDampingDialog,
-                            stiffness = SlideSpringStiffnessDialog
+                            dampingRatio = SLIDE_SPRING_DAMPING_DIALOG,
+                            stiffness = SLIDE_SPRING_STIFFNESS_DIALOG
                         )
-                    ) + fadeOut(animationSpec = tween(FadeDurationDialog))
+                    ) + fadeOut(animationSpec = tween(FADE_DURATION_DIALOG))
             }
         }
         else -> null

@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.paging.compose.LazyPagingItems
-import com.example.githubusers.feature.users.presentation.detail.viewmodel.UserDetailViewModel
 import com.example.githubusers.feature.users.domain.model.Repository
+import com.example.githubusers.feature.users.presentation.detail.viewmodel.UserDetailViewModel
 import com.example.githubusers.feature.users.shared.ui.ErrorContent
 
 /**
@@ -60,8 +60,7 @@ fun UserDetailScreen(
                         )
                     }
                 },
-                colors =
-                TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color.Transparent,
                     scrolledContainerColor = Color.Transparent
                 ),
@@ -69,12 +68,10 @@ fun UserDetailScreen(
             )
         },
         // Draw behind app bar to avoid extra top inset; actual padding applied by Scaffold content slot
-        contentWindowInsets =
-            WindowInsets(0)
+        contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
         Box(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {

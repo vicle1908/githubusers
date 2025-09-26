@@ -25,10 +25,16 @@ interface UserSummaryDao {
     fun getUsersPaged(): PagingSource<Int, UserSummaryEntity>
 
     @Query(
-        "SELECT * FROM user_summaries WHERE " +
-            "((:filter IS NULL) OR (LOWER(login) LIKE '%' || :filter || '%' OR LOWER(type) LIKE '%' || :filter || '%')) AND " +
-            "((:typeQualifier IS NULL) OR LOWER(type) = :typeQualifier) " +
-            "ORDER BY id ASC"
+        """
+        SELECT * FROM user_summaries
+        WHERE (
+            (:filter IS NULL) OR
+                (LOWER(login) LIKE '%' || :filter || '%' OR LOWER(type) LIKE '%' || :filter || '%')
+        ) AND (
+            (:typeQualifier IS NULL) OR LOWER(type) = :typeQualifier
+        )
+        ORDER BY id ASC
+        """
     )
     fun searchUsersPaged(filter: String?, typeQualifier: String?): PagingSource<Int, UserSummaryEntity>
 

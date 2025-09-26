@@ -9,11 +9,11 @@ import com.example.githubusers.core.paging.KeysetRemoteMediator
 import com.example.githubusers.core.paging.KeysetRemoteMediatorCallbacks
 import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.core.ui.performance.withMemoryTracking
+import com.example.githubusers.feature.users.data.list.mapper.toEntity
 import com.example.githubusers.feature.users.data.local.UsersDatabase
 import com.example.githubusers.feature.users.data.local.entity.RemoteKeyEntity
 import com.example.githubusers.feature.users.data.local.entity.UserSummaryEntity
 import com.example.githubusers.feature.users.data.remote.UserListApiService
-import com.example.githubusers.feature.users.data.list.mapper.toEntity
 import timber.log.Timber
 
 /**
@@ -78,5 +78,8 @@ class UserListRemoteMediator(
     override suspend fun initialize(): InitializeAction = delegate.initialize()
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, UserSummaryEntity>): MediatorResult =
-        delegate.load(loadType, state)
+        delegate.load(
+            loadType = loadType,
+            state = state
+        )
 }

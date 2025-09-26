@@ -24,8 +24,8 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.githubusers.feature.users.domain.model.Repository
 import com.example.githubusers.feature.users.domain.model.UserDetail
-import com.example.githubusers.feature.users.shared.ui.RepositoryItem
 import com.example.githubusers.feature.users.shared.ui.ErrorContent
+import com.example.githubusers.feature.users.shared.ui.RepositoryItem
 
 @Composable
 fun UserDetailContent(

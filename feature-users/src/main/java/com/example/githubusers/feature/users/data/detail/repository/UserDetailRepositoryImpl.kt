@@ -3,12 +3,12 @@ package com.example.githubusers.feature.users.data.detail.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toDomain
+import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toEntity
 import com.example.githubusers.feature.users.data.local.dao.RepositoryDao
 import com.example.githubusers.feature.users.data.local.dao.UserDetailDao
 import com.example.githubusers.feature.users.data.remote.api.UserDetailRemoteDataSource
 import com.example.githubusers.feature.users.data.remote.paging.RepositoryPagingSource
-import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toDomain
-import com.example.githubusers.feature.users.data.detail.mapper.UserDetailMapper.toEntity
 import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
 import com.example.githubusers.feature.users.domain.detail.repository.UserDetailRepository
 import com.example.githubusers.feature.users.domain.model.Repository
@@ -86,7 +86,7 @@ constructor(
 
     override suspend fun isFollowing(username: String): Boolean = try {
         remoteDataSource.isFollowing(username)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         false
     }
 

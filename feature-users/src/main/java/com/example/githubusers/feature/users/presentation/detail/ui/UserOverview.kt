@@ -201,12 +201,7 @@ private fun AdditionalInfoCard(userDetail: UserDetail, modifier: Modifier = Modi
 }
 
 @Composable
-private fun InfoRow(
-    icon: ImageVector,
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier
-) {
+private fun InfoRow(icon: ImageVector, label: String, value: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

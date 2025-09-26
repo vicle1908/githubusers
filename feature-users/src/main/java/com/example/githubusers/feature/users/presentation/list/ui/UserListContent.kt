@@ -10,6 +10,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.githubusers.core.ui.list.StandardUserList
 import com.example.githubusers.core.ui.list.StandardUserListLayout
 import com.example.githubusers.core.users.domain.UserSummary
+import com.example.githubusers.feature.users.shared.ui.ColumnCenteredAction
 import com.example.githubusers.feature.users.shared.ui.ColumnCenteredMessage
 import com.example.githubusers.feature.users.shared.ui.TextButtonLink
 import com.example.githubusers.feature.users.shared.ui.UserItem
@@ -47,9 +48,11 @@ fun UserListContent(
         errorContent = { error, retry ->
             ColumnCenteredMessage(
                 message = "Error: ${error.localizedMessage ?: "Unknown"}",
-                buttonLabel = "Retry",
-                onRetry = retry,
-                isError = true
+                action = ColumnCenteredAction(
+                    label = "Retry",
+                    onClick = retry,
+                    isError = true
+                )
             )
         },
         appendErrorContent = { _, retry ->

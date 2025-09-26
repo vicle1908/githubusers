@@ -10,10 +10,10 @@ import com.example.githubusers.core.search.SearchQueryNormalizer
 import com.example.githubusers.core.ui.performance.PerformanceMonitor
 import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.users.data.UserQueryParser
-import com.example.githubusers.feature.users.data.local.UsersDatabase
-import com.example.githubusers.feature.users.data.remote.UserListApiService
 import com.example.githubusers.feature.users.data.list.mapper.toDomainModel
 import com.example.githubusers.feature.users.data.list.paging.UserListRemoteMediator
+import com.example.githubusers.feature.users.data.local.UsersDatabase
+import com.example.githubusers.feature.users.data.remote.UserListApiService
 import com.example.githubusers.feature.users.domain.list.repository.UserListRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
