@@ -9,11 +9,11 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.example.githubusers.core.ui.list.StandardUserList
 import com.example.githubusers.core.ui.list.StandardUserListLayout
+import com.example.githubusers.core.ui.list.UserListItem
 import com.example.githubusers.core.users.domain.UserSummary
 import com.example.githubusers.feature.users.shared.ui.ColumnCenteredAction
 import com.example.githubusers.feature.users.shared.ui.ColumnCenteredMessage
 import com.example.githubusers.feature.users.shared.ui.TextButtonLink
-import com.example.githubusers.feature.users.shared.ui.UserItem
 import timber.log.Timber
 
 /**
@@ -59,7 +59,7 @@ fun UserListContent(
             TextButtonLink(label = "Tap to retry", onClick = retry)
         },
         itemContent = { user ->
-            UserItem(
+            UserListItem(
                 user = user,
                 onClick = { onUserClick(user) }
             )

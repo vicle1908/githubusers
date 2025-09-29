@@ -1,6 +1,6 @@
 package com.example.githubusers.feature.users.data.remote.api
 
-import com.example.githubusers.feature.users.data.remote.dto.RepositoryDto
+import com.example.githubusers.core.model.RepositoryDto
 import com.example.githubusers.feature.users.data.remote.dto.UserDetailDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

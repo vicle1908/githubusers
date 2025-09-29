@@ -32,11 +32,14 @@ githubusers/
 │   ├── core-mvi/           # MVI pattern implementation
 │   ├── core-networking/    # Network layer
 │   ├── core-storage/       # Local storage and caching
-│   └── core-ui/            # Shared UI components
+│   ├── core-ui/            # Shared UI components
+│   ├── core-paging/        # Paging implementation
+│   └── core-search/        # Search components
 ├── feature-*/              # Feature-specific modules
 │   ├── feature-users/      # User management and profiles
 │   ├── feature-search/     # Search functionality
-│   └── feature-settings/   # App settings and preferences
+│   ├── feature-settings/   # App settings and preferences
+│   └── feature-repository/ # Repository management
 ├── navigation-*/           # Navigation system
 │   ├── navigation-api/     # Navigation contracts
 │   └── navigation-impl/    # Navigation implementation

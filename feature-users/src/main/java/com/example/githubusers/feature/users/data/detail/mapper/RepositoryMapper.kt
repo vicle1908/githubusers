@@ -1,7 +1,7 @@
 package com.example.githubusers.feature.users.data.detail.mapper
 
+import com.example.githubusers.core.model.RepositoryDto
 import com.example.githubusers.feature.users.data.local.entity.RepositoryEntity
-import com.example.githubusers.feature.users.data.remote.dto.RepositoryDto
 import com.example.githubusers.feature.users.domain.model.Repository
 import com.example.githubusers.feature.users.domain.model.RepositoryLicense
 import java.time.Instant
@@ -20,20 +20,20 @@ object RepositoryMapper {
         description = description,
         htmlUrl = htmlUrl,
         language = language,
-        stargazersCount = stargazersCount,
-        watchersCount = watchersCount,
-        forksCount = forksCount,
-        openIssuesCount = openIssuesCount,
+        stargazersCount = stargazersCount ?: 0,
+        watchersCount = watchersCount ?: 0,
+        forksCount = forksCount ?: 0,
+        openIssuesCount = openIssuesCount ?: 0,
         isPrivate = private,
         isFork = fork,
-        createdAt = parseInstant(createdAt),
-        updatedAt = parseInstant(updatedAt),
+        createdAt = createdAt?.let { parseInstant(it) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { parseInstant(it) } ?: Instant.now(),
         pushedAt = pushedAt?.let { parseInstant(it) },
-        size = size,
-        defaultBranch = defaultBranch,
+        size = size ?: 0,
+        defaultBranch = defaultBranch ?: "",
         topics = topics,
         license = license?.let { RepositoryLicense(it.key, it.name, it.spdxId, it.url) },
-        visibility = visibility
+        visibility = visibility ?: ""
     )
 
     /**
@@ -47,21 +47,21 @@ object RepositoryMapper {
         description = description,
         htmlUrl = htmlUrl,
         language = language,
-        stargazersCount = stargazersCount,
-        watchersCount = watchersCount,
-        forksCount = forksCount,
-        openIssuesCount = openIssuesCount,
+        stargazersCount = stargazersCount ?: 0,
+        watchersCount = watchersCount ?: 0,
+        forksCount = forksCount ?: 0,
+        openIssuesCount = openIssuesCount ?: 0,
         isPrivate = private,
         isFork = fork,
-        createdAt = parseInstant(createdAt),
-        updatedAt = parseInstant(updatedAt),
+        createdAt = createdAt?.let { parseInstant(it) } ?: Instant.now(),
+        updatedAt = updatedAt?.let { parseInstant(it) } ?: Instant.now(),
         pushedAt = pushedAt?.let { parseInstant(it) },
-        size = size,
-        defaultBranch = defaultBranch,
+        size = size ?: 0,
+        defaultBranch = defaultBranch ?: "",
         topics = topics,
         licenseKey = license?.key,
         licenseName = license?.name,
-        visibility = visibility
+        visibility = visibility ?: ""
     )
 
     /**
