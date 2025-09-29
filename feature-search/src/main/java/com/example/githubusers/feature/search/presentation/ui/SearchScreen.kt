@@ -121,10 +121,7 @@ fun SearchScreen(
 }
 
 @Composable
-private fun ColumnScope.SearchHeaderSection(
-    state: SearchState,
-    onIntent: (SearchIntent) -> Unit
-) {
+private fun ColumnScope.SearchHeaderSection(state: SearchState, onIntent: (SearchIntent) -> Unit) {
     DomainToggleRow(
         activeDomain = state.activeDomain,
         onSelect = { domain -> onIntent(SearchIntent.SwitchDomain(domain)) }
@@ -354,7 +351,9 @@ private fun searchErrorMessageFromThrowable(t: Throwable): String {
             is SearchError.Client -> "Request error (${error.code}). Please adjust your query and try again."
             is SearchError.Unknown -> default
         }
-    } else default
+    } else {
+        default
+    }
 }
 
 @Composable

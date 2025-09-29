@@ -2,9 +2,9 @@ package com.example.githubusers.feature.users.data.remote.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.githubusers.core.model.RepositoryDto
 import com.example.githubusers.feature.users.data.detail.mapper.RepositoryMapper.toDomain
 import com.example.githubusers.feature.users.data.remote.api.UserDetailRemoteDataSource
-import com.example.githubusers.feature.users.data.remote.dto.RepositoryDto
 import com.example.githubusers.feature.users.domain.detail.repository.RepositorySort
 import com.example.githubusers.feature.users.domain.model.Repository
 

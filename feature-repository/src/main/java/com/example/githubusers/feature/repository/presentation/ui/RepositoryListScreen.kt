@@ -198,10 +198,7 @@ private fun ErrorState(modifier: Modifier, throwable: Throwable, onRetry: () -> 
 }
 
 @Composable
-private fun RepositoryEmptyState(
-    query: String,
-    modifier: Modifier
-) {
+private fun RepositoryEmptyState(query: String, modifier: Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             val headline = if (query.isBlank()) {

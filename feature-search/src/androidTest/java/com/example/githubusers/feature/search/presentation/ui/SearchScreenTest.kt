@@ -16,7 +16,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.githubusers.core.analytics.AnalyticsEvent
 import com.example.githubusers.core.analytics.AnalyticsFacade
-import com.example.githubusers.core.search.domain.SearchDomain
 import com.example.githubusers.core.search.domain.SearchFilter
 import com.example.githubusers.core.search.domain.SearchRepository
 import com.example.githubusers.core.search.domain.SearchResult
@@ -26,13 +25,11 @@ import com.example.githubusers.feature.search.domain.usecase.ManageSearchHistory
 import com.example.githubusers.feature.search.domain.usecase.SearchUseCase
 import com.example.githubusers.feature.search.presentation.viewmodel.SearchViewModel
 import kotlin.time.Duration.Companion.seconds
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.update
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -98,9 +95,11 @@ class SearchScreenTest {
         composeRule.waitUntilCondition { repository.savedQueries.contains("octocat") }
 
         assertTrue(repository.savedQueries.contains("octocat"))
-        assertTrue(analytics.events.any { (name, payload) ->
-            name == "query_submitted" && payload["query"] == "octocat"
-        })
+        assertTrue(
+            analytics.events.any { (name, payload) ->
+                name == "query_submitted" && payload["query"] == "octocat"
+            }
+        )
         assertEquals(false, viewModel.state.value.showTrending)
     }
 
@@ -146,18 +145,19 @@ class SearchScreenTest {
             .performClick()
 
         composeRule.waitUntilCondition { viewModel.state.value.query == "rocket" }
-        assertTrue(analytics.events.any { (name, payload) ->
-            name == "query_submitted" && payload["query"] == "rocket"
-        })
+        assertTrue(
+            analytics.events.any { (name, payload) ->
+                name == "query_submitted" && payload["query"] == "rocket"
+            }
+        )
     }
 
-    private fun createViewModel(): SearchViewModel =
-        SearchViewModel(
-            searchUseCase = SearchUseCase(repository),
-            searchHistoryUseCase = ManageSearchHistoryUseCase(repository),
-            trendingUsersUseCase = GetTrendingUsersUseCase(repository),
-            analytics = analytics
-        )
+    private fun createViewModel(): SearchViewModel = SearchViewModel(
+        searchUseCase = SearchUseCase(repository),
+        searchHistoryUseCase = ManageSearchHistoryUseCase(repository),
+        trendingUsersUseCase = GetTrendingUsersUseCase(repository),
+        analytics = analytics
+    )
 
     private fun ComposeContentTestRule.setSearchContent(
         onNavigateToUser: (String) -> Unit = {},

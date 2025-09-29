@@ -117,4 +117,3 @@ class SearchPagingSource(
      */
     private fun encodeParameterValue(value: String): String = value.encodeURLParameter(spaceToPlus = true)
 }
-

@@ -2,9 +2,9 @@ package com.example.githubusers.feature.search.data.util
 
 import com.example.githubusers.core.search.domain.SearchError
 import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.http.HttpStatusCode
 import java.io.IOException
 import java.net.SocketTimeoutException

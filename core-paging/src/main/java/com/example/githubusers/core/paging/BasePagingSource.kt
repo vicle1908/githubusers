@@ -1,8 +1,8 @@
 package com.example.githubusers.core.paging
 
-import timber.log.Timber
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import timber.log.Timber
 
 abstract class BasePagingSource<Value : Any>(private val startingPage: Int = 1) : PagingSource<Int, Value>() {
 

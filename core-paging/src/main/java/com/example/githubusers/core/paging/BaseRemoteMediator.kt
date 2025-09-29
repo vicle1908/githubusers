@@ -1,6 +1,5 @@
 package com.example.githubusers.core.paging
 
-import timber.log.Timber
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -8,6 +7,7 @@ import androidx.paging.RemoteMediator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Lightweight base [RemoteMediator] that centralises paging mechanics
