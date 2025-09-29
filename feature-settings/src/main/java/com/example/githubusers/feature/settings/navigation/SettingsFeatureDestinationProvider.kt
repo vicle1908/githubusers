@@ -2,9 +2,9 @@ package com.example.githubusers.feature.settings.navigation
 
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import com.example.githubusers.feature.settings.navigation.SettingsDeepLinks
 import com.example.githubusers.feature.settings.presentation.SettingsScreen
 import com.example.githubusers.feature.settings.presentation.navigation.SettingsNavigator
-import com.example.githubusers.feature.settings.navigation.SettingsDeepLinks
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink

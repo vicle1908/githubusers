@@ -26,8 +26,5 @@ sealed interface SearchError {
 /**
  * Exception carrying a domain-level SearchError plus original cause.
  */
-class SearchException(
-    val error: SearchError,
-    message: String? = null,
-    cause: Throwable? = null
-) : Exception(message, cause)
+class SearchException(val error: SearchError, message: String? = null, cause: Throwable? = null) :
+    Exception(message, cause)

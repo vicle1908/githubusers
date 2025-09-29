@@ -18,7 +18,7 @@ class ErrorBannerTest {
 
     @Test
     fun shows_message_for_network_and_can_dismiss() {
-composeRule.setContent {
+        composeRule.setContent {
             ErrorBanner(message = "Network error. Check your connection and try again.", onRetry = {})
         }
         composeRule.onNodeWithContentDescription("Error banner").assertIsDisplayed()
@@ -29,7 +29,7 @@ composeRule.setContent {
 
     @Test
     fun shows_retry_button() {
-composeRule.setContent {
+        composeRule.setContent {
             ErrorBanner(message = "Request timed out. Please retry.", onRetry = {})
         }
         composeRule.onNodeWithText("Retry").assertIsDisplayed()

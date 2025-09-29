@@ -64,7 +64,7 @@ class SecurityManager @Inject constructor() {
         val isCompromised = isDeviceCompromised()
         val isDebugging = isDebuggingDetected()
         val keySeed = getObfuscatedKeySeed()
-        
+
         return SecurityResult(
             isDeviceCompromised = isCompromised,
             isDebuggingDetected = isDebugging,

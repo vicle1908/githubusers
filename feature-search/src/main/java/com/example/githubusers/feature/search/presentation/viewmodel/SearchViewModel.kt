@@ -27,16 +27,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.SharingStarted
 import timber.log.Timber
 
 /**
@@ -375,11 +374,9 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun controllerFor(domain: SearchDomain): PagingSearchController<*> {
-        return when (domain) {
-            SearchDomain.USERS -> userSearchController
-            SearchDomain.REPOSITORIES -> repositorySearchController
-        }
+    private fun controllerFor(domain: SearchDomain): PagingSearchController<*> = when (domain) {
+        SearchDomain.USERS -> userSearchController
+        SearchDomain.REPOSITORIES -> repositorySearchController
     }
 
     private fun userSearchFlow(rawQuery: String): Flow<PagingData<UserSummary>> {

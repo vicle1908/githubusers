@@ -71,13 +71,12 @@ class RepositorySearchPagingSource(
         return queryParts.joinToString(" ")
     }
 
-    private fun resolveSortParameters(filter: SearchFilter): Pair<String?, String?> =
-        when (filter.sortBy) {
-            SearchSortOption.STARS -> "stars" to "desc"
-            SearchSortOption.FORKS -> "forks" to "desc"
-            SearchSortOption.UPDATED -> "updated" to "desc"
-            else -> null to null
-        }
+    private fun resolveSortParameters(filter: SearchFilter): Pair<String?, String?> = when (filter.sortBy) {
+        SearchSortOption.STARS -> "stars" to "desc"
+        SearchSortOption.FORKS -> "forks" to "desc"
+        SearchSortOption.UPDATED -> "updated" to "desc"
+        else -> null to null
+    }
 
     private fun encodeQueryComponent(value: String): String = value.encodeURLQueryComponent(spaceToPlus = true)
 

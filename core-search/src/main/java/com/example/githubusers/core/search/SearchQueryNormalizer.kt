@@ -36,15 +36,13 @@ object SearchQueryNormalizer {
         )
     }
 
-    data class NormalizedSearchQuery(
-        val original: String,
-        val qualifiers: List<Qualifier>,
-        val terms: List<String>
-    ) {
+    data class NormalizedSearchQuery(val original: String, val qualifiers: List<Qualifier>, val terms: List<String>) {
         data class Qualifier(val key: String, val value: String)
 
         fun firstQualifier(key: String): String? = qualifiers.firstOrNull { it.key == key.lowercase() }?.value
 
-        fun joinedTerms(delimiter: String = " "): String? = terms.takeIf { it.isNotEmpty() }?.joinToString(separator = delimiter)
+        fun joinedTerms(delimiter: String = " "): String? = terms.takeIf {
+            it.isNotEmpty()
+        }?.joinToString(separator = delimiter)
     }
 }

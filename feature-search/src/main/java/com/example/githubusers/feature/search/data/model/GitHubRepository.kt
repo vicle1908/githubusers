@@ -19,7 +19,4 @@ data class GitHubRepository(
 )
 
 @Serializable
-data class GitHubRepositoryOwner(
-    val login: String,
-    @SerialName("avatar_url") val avatarUrl: String? = null
-)
+data class GitHubRepositoryOwner(val login: String, @SerialName("avatar_url") val avatarUrl: String? = null)

@@ -107,5 +107,6 @@ interface FeatureDestinationProvider {
      * @param key The navigation key
      * @return Custom predictive pop transition specification or null for default
      */
-    fun getPredictivePopTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<NavKey>.() -> ContentTransform)? = null
+    fun getPredictivePopTransitionSpec(key: NavKey): (AnimatedContentTransitionScope<NavKey>.() -> ContentTransform)? =
+        null
 }

@@ -5,21 +5,21 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import javax.inject.Inject
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import javax.inject.Inject
 
 /**
  * Integration tests for SecurityManager with Hilt dependency injection.
- * 
+ *
  * These tests verify that:
  * 1. SecurityManager can be properly injected via Hilt
  * 2. Native library loading works correctly
  * 3. Integration with Android context works as expected
- * 
+ *
  * Note: These tests expect the native library to be present and properly built.
  * In a real environment, the native methods would return actual security data.
  * For testing, the native implementation should return predictable values.
@@ -66,7 +66,7 @@ class SecurityManagerIntegrationTest {
         // Assert - Verify the result structure is correct
         assertNotNull("Security result should not be null", result)
         assertNotNull("Security level should not be null", result.securityLevel)
-        
+
         // Verify security level is one of the expected values
         assertTrue(
             "Security level should be a valid enum value",
@@ -142,8 +142,16 @@ class SecurityManagerIntegrationTest {
 
         // Assert
         assertEquals("Secure scenario should have SECURE level", SecurityLevel.SECURE, secureScenario.securityLevel)
-        assertEquals("Medium risk scenario should have MEDIUM_RISK level", SecurityLevel.MEDIUM_RISK, mediumRiskScenario.securityLevel)
-        assertEquals("High risk scenario should have HIGH_RISK level", SecurityLevel.HIGH_RISK, highRiskScenario.securityLevel)
+        assertEquals(
+            "Medium risk scenario should have MEDIUM_RISK level",
+            SecurityLevel.MEDIUM_RISK,
+            mediumRiskScenario.securityLevel
+        )
+        assertEquals(
+            "High risk scenario should have HIGH_RISK level",
+            SecurityLevel.HIGH_RISK,
+            highRiskScenario.securityLevel
+        )
     }
 
     /**
@@ -155,7 +163,7 @@ class SecurityManagerIntegrationTest {
         // Simulate checking security before sensitive operations
         try {
             val securityResult = securityManager.performSecurityCheck()
-            
+
             // In a real app, you would make decisions based on the security level
             when (securityResult.securityLevel) {
                 SecurityLevel.SECURE -> {
