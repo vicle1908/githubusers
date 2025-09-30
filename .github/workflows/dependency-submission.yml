@@ -1,0 +1,38 @@
+name: Dependency Graph Submission
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  submit:
+    name: Generate and Submit Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Configure Gradle
+        uses: gradle/actions/setup-gradle@45b52564f44a4a311f3e621e74c7c97dd0c5696a
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Submit dependency graph
+        uses: gradle/actions/dependency-submission@45b52564f44a4a311f3e621e74c7c97dd0c5696a
+        with:
+          dependency-graph: generate-and-submit

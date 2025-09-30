@@ -29,7 +29,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
       with:
         fetch-depth: 0
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -160,7 +160,7 @@ jobs:
         echo "3. Update branch policies if needed" >> cleanup-report.md
     
     - name: Upload cleanup report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: worktree-cleanup-report-${{ github.run_number }}
@@ -174,7 +174,7 @@ jobs:
     
     steps:
     - name: Cleanup old artifacts
-      uses: actions/github-script@v7
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
       with:
         script: |
           const { data: artifacts } = await github.rest.actions.listArtifactsForRepo({
