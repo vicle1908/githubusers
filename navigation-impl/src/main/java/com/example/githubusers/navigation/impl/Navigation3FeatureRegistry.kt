@@ -5,7 +5,7 @@ import androidx.compose.animation.ContentTransform
 import androidx.compose.material3.Text
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.ui.DialogSceneStrategy
+import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import com.example.githubusers.navigation.api.FeatureDestinationProvider
 import javax.inject.Inject

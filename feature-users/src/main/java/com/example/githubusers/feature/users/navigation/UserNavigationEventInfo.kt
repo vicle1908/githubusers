@@ -12,7 +12,7 @@ data class UserNavigationEventInfo(
     val destinationType: UserDestinationType,
     val username: String? = null,
     val isDialog: Boolean = false
-) : NavigationEventInfo {
+) : NavigationEventInfo() {
 
     enum class UserDestinationType {
         USER_LIST,

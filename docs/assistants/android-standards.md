@@ -28,6 +28,7 @@
 
 - **MANDATORY**: All cross-module navigation MUST use deep links
 - Type-safe destinations with Kotlin Serialization
+- Shared saved-state config: register every `NavKey` subtype in `navSavedStateConfiguration()` and ensure the host module applies the Kotlin serialization Gradle plugin to avoid runtime persistence crashes.
 - Direct back stack control and state preservation
 - **Validate** with latest docs via DeepWiki/Context7 before implementation
 

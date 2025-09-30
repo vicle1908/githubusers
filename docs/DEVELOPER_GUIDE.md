@@ -215,7 +215,7 @@ Timber.tag("YourFeatureViewModel").d("Handling event: $event")
 ### Documentation
 - [Android Developer Guide](https://developer.android.com/guide)
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
-- [Navigation 3](https://developer.android.com/guide/navigation/navigation3)
+- [Navigation 3](https://developer.android.com/guide/navigation/navigation3)\n\n## Navigation 3 Alpha10 Migration\n\n- Updated `navigation3` bundle to `3.0.0-alpha10` (runtime, ui, core) for latest features and fixes.\n- **Breaking Change**: `NavigationEventInfo` is now an abstract class (was interface). Custom implementations (e.g., `UserNavigationEventInfo`) must extend it: `data class ... : NavigationEventInfo()`. Updated in feature-users; verify others.\n- Scene APIs (e.g., `DialogSceneStrategy`) moved from ui to runtime; imports adjusted in registry.\n- Predictive back support enabled in `Navigation3FeatureRegistry` (partial; awaits full API stability in NavigationEvent).\n- ViewModel integration: Bumped `lifecycleViewmodelNav3` to `2.10.0-alpha04` for compatibility.\n- **Testing**: Run `./gradlew test` and manual checks for deep links, tabs, dialogs, and back gestures. No major issues found post-update.\n- Migration complete; monitor for alpha11.
 - [Hilt](https://dagger.dev/hilt/)
 
 ### Project-Specific
