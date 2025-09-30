@@ -89,7 +89,6 @@ canonical_docs=(
     "android-standards.md"
     "kotlin-style.md"
     "android-debugging.md"
-    "byterover-rules.md"
     "dev-environment.md"
     "claude-guide.md"
 )
@@ -115,7 +114,6 @@ cursor_mappings=(
     "android-standards.md:android.mdc"
     "kotlin-style.md:kotlin.mdc"
     "android-debugging.md:android-debugging.mdc"
-    "byterover-rules.md:byterover-rules.mdc"
 )
 
 for mapping in "${cursor_mappings[@]}"; do
@@ -134,7 +132,6 @@ augment_files=(
     "android-standards.md"
     "kotlin-style.md"
     "android-debugging.md"
-    "byterover-rules.md"
 )
 
 for file in "${augment_files[@]}"; do
@@ -152,7 +149,6 @@ kilocode_files=(
     "android-standards.md"
     "kotlin-style.md"
     "android-debugging.md"
-    "byterover-rules.md"
 )
 
 for file in "${kilocode_files[@]}"; do
@@ -164,10 +160,9 @@ echo
 echo -e "${BLUE}Verifying Trae rules (.trae/rules/project_rules.md)...${NC}"
 if [[ -f ".trae/rules/project_rules.md" ]]; then
     # Check if all key sections are present
-    if grep -q "CRITICAL PLAN PERSISTENCE RULE" .trae/rules/project_rules.md && \
-       grep -q "ByteRover MCP" .trae/rules/project_rules.md && \
-       grep -q "MCP-First" .trae/rules/project_rules.md; then
-        echo -e "${GREEN}✓ Trae project_rules.md contains all critical sections${NC}"
+    if grep -q "OpenMemory" .trae/rules/project_rules.md && \
+       grep -q "planning tool" .trae/rules/project_rules.md; then
+        echo -e "${GREEN}✓ Trae project_rules.md contains memory and planning guidance${NC}"
     else
         echo -e "${RED}✗ Trae project_rules.md missing critical sections${NC}"
     fi

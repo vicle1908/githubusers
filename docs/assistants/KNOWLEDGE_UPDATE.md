@@ -31,8 +31,7 @@ mcp_context7_get-library-docs() // OR mcp_docfork_get-library-docs()
 mcp_deepwiki_ask_question("repo", "question")
 
 // Memory Management
-mcp_openmemory_add-memory() // User preferences
-mcp_byterover-mcp_byterover-store-knowledge() // Programming patterns
+mcp_openmemory_add-memory() // Store user preferences & project knowledge
 ```
 
 ### 2. Android Development Standards
@@ -89,23 +88,7 @@ githubusers/
 9. `mcp_zen_consensus()` - Multi-model validation
 10. `mcp_zen_thinkdeep()` - Deep analysis
 
-### 4. Byterover Protocol Updates
-
-#### Module Management
-- **ALWAYS** call `byterover-list-modules` first
-- **Naming**: `githubusers_<module_name>` only
-- **Save plans immediately**: After user approval
-- **Retrieve knowledge frequently**: During task execution
-- **Update progress**: Use `by_task_position` preferred
-
-#### Workflow Sequence
-1. Check handbook existence/sync
-2. List modules → retrieve knowledge
-3. Save implementation plan IMMEDIATELY after approval
-4. Update progress during implementation
-5. Store knowledge after completion
-
-### 5. Quality Standards
+### 4. Quality Standards
 
 #### Code Quality (Enforced)
 - **Detekt**: Static analysis via convention plugin

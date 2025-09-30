@@ -281,7 +281,6 @@ echo
 files_with_issues=(
     "./.cursor/rules/android-debugging.mdc"
     "./.cursor/rules/android.mdc"
-    "./.cursor/rules/byterover-rules.mdc"
     "./.cursor/rules/enhanced-research-strategy.mdc"
     "./.cursor/rules/kotlin.mdc"
     "./.cursor/rules/mcp-guide.mdc"
@@ -315,7 +314,6 @@ files_with_issues=(
     "./docs/assistants/dev-environment.md"
     "./docs/assistants/enhanced-research-strategy.md"
     "./docs/assistants/kotlin-style.md"
-    "./docs/navigation3/BYTEROVER_MCP_EXPLORATION_REPORT.md"
     "./docs/navigation3/DISTRIBUTED_DESTINATIONS_GUIDE.md"
     "./docs/navigation3/DISTRIBUTED_DESTINATIONS_MIGRATION.md"
     "./docs/navigation3/MIGRATION_GUIDE.md"

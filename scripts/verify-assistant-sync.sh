@@ -35,7 +35,6 @@ canonical_files=(
     "android-standards.md"
     "kotlin-style.md"
     "android-debugging.md"
-    "byterover-rules.md"
     "dev-environment.md"
     "claude-guide.md"
     "README.md"
@@ -67,7 +66,6 @@ cursor_files=(
     "mcp-guide.mdc:mcp-guide.md"
     "enhanced-research-strategy.mdc:enhanced-research-strategy.md"
     "multi-ai-consultation.mdc:multi-ai-consultation.md"
-    "byterover-rules.mdc:byterover-rules.md"
     "android-debugging.mdc:android-debugging.md"
 )
 
@@ -100,7 +98,6 @@ augment_files=(
     "mcp-guide.md"
     "enhanced-research-strategy.md"
     "multi-ai-consultation.md"
-    "byterover-rules.md"
 )
 
 augment_mismatches=0
@@ -130,7 +127,6 @@ kilocode_files=(
     "kotlin-style.md"
     "mcp-guide.md"
     "enhanced-research-strategy.md"
-    "byterover-rules.md"
 )
 
 kilocode_mismatches=0
@@ -157,12 +153,7 @@ echo ""
 echo "📋 Trae (.trae/rules/):"
 trae_path="$PROJECT_ROOT/.trae/rules/project_rules.md"
 if [ -f "$trae_path" ]; then
-    if grep -q "byterover-retrieve-knowledge" "$trae_path" && \
-       grep -q "CRITICAL PLAN PERSISTENCE RULE" "$trae_path"; then
-        echo "  ✅ ByteRover rules present with persistence rule"
-    else
-        echo "  ⚠️  Missing ByteRover persistence rule"
-    fi
+    echo "  ✅ project_rules.md present"
 else
     echo "  ❌ Missing project_rules.md"
 fi
@@ -189,7 +180,6 @@ if [ -f "$gemini_path" ]; then
         "android"
         "mobile-mcp"
         "claude-context"
-        "byterover-mcp"
         "openmemory"
         "zen"
     )

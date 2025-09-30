@@ -23,7 +23,6 @@ alwaysApply: true
 | **Article Research** | Medium Search | `mcp_medium-search_search_medium_topic` | In-depth articles, tutorials |
 | **Semantic Search** | Exa | `mcp_exa_web_search_exa` | Neural understanding |
 | **Memory Storage** | OpenMemory | `mcp_openmemory_add-memory` | Persistent information storage |
-| **Knowledge Management** | Byterover | `mcp_byterover-mcp_byterover-store-knowledge` | Programming patterns storage |
 | **AI Analysis** | Zen MCP | `mcp_zen_consensus` | Multi-model validation |
 
 ## Usage Enforcement Rules
@@ -55,7 +54,6 @@ alwaysApply: true
 ### Rule 5: Memory Management
 
 - **ALWAYS** use OpenMemory for persistent storage
-- **ALWAYS** use Byterover for programming patterns
 - **NEVER** rely on conversation memory for important information
 
 ### Rule 6: Research Validation
@@ -83,15 +81,14 @@ alwaysApply: true
 
 ### Before Using Any MCP Server
 
-1. **Retrieve** relevant patterns: `mcp_byterover-mcp_byterover-retrieve-knowledge`
-2. **Search** project context: `mcp_openmemory_search-memories`
-3. **Combine** both knowledge sources for optimal usage
+1. **Search** project context: `mcp_openmemory_search-memories`
+2. **Confirm** recent decisions with the user when context is missing
 
 ### After Successful Operations
 
-1. **Store** important findings: `mcp_byterover-mcp_byterover-store-knowledge`
-2. **Update** module insights: `mcp_byterover-mcp_byterover-update-module`
-3. **Save** implementation plans: `mcp_byterover-mcp_byterover-save-implementation-plan`
+1. **Store** important findings: `mcp_openmemory_add-memory`
+2. **Update** local docs or trackers as needed (confirm with the user)
+3. **Save** implementation plans in the planning tool or OpenMemory when they need to persist
 
 ## Quality Standards
 

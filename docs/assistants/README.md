@@ -12,7 +12,6 @@ This directory contains the canonical documentation for all AI assistants workin
 5. **[android-standards.md](./android-standards.md)** - Android development standards
 6. **[kotlin-style.md](./kotlin-style.md)** - Kotlin code style guide
 7. **[android-debugging.md](./android-debugging.md)** - MCP-based debugging
-8. **[byterover-rules.md](./byterover-rules.md)** - ByteRover workflows and persistence
 9. **[dev-environment.md](./dev-environment.md)** - Environment setup
 10. **[claude-guide.md](./claude-guide.md)** - Claude-specific notes
 

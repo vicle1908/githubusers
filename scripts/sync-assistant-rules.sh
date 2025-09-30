@@ -104,7 +104,6 @@ All core policies are defined in canonical documentation:
 - **Research Strategy**: See [enhanced-research-strategy.md](./enhanced-research-strategy.md)
 - **Android Standards**: See [android-standards.md](./android-standards.md)
 - **Kotlin Style**: See [kotlin-style.md](./kotlin-style.md)
-- **ByteRover Rules**: See [byterover-rules.md](./byterover-rules.md)
 
 ## Claude-Specific Configuration
 
@@ -124,7 +123,7 @@ Claude has access to all 14 MCP servers listed in [mcp-guide.md](./mcp-guide.md)
 1. **Gradle MCP** for ALL builds - NEVER use ./gradlew
 2. **Android MCP** for device operations
 3. **Mobile-MCP** for UI automation
-4. **ByteRover** for knowledge management
+4. **OpenMemory** for knowledge management
 5. Manual commands ONLY with explicit approval
 
 ## Quick Reference
@@ -142,8 +141,8 @@ mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 
 ### Knowledge Management
 ```bash
-mcp_byterover-mcp_byterover-retrieve-knowledge("query")
-mcp_byterover-mcp_byterover-save-implementation-plan(plan)
+mcp_openmemory_search-memories("query")
+mcp_openmemory_add-memory("key insight")
 ```
 
 ## Remember
@@ -169,7 +168,6 @@ This directory contains the canonical documentation for all AI assistants workin
 5. **[android-standards.md](./android-standards.md)** - Android development standards
 6. **[kotlin-style.md](./kotlin-style.md)** - Kotlin code style guide
 7. **[android-debugging.md](./android-debugging.md)** - MCP-based debugging
-8. **[byterover-rules.md](./byterover-rules.md)** - ByteRover workflows and persistence
 9. **[dev-environment.md](./dev-environment.md)** - Environment setup
 10. **[claude-guide.md](./claude-guide.md)** - Claude-specific notes
 
@@ -248,7 +246,7 @@ echo "🔄 Syncing to assistant directories..."
 # Sync to Cursor (.mdc files)
 echo "  📋 Syncing to Cursor..."
 # Preserve existing MDC frontmatter if present, then append canonical body
-for file in android-standards kotlin-style mcp-guide enhanced-research-strategy multi-ai-consultation byterover-rules android-debugging; do
+for file in android-standards kotlin-style mcp-guide enhanced-research-strategy multi-ai-consultation android-debugging; do
   case $file in
     android-standards)
       src="$CANONICAL_DIR/android-standards.md"
@@ -287,7 +285,7 @@ done
 
 # Sync to Augment (preserve frontmatter)
 echo "  📋 Syncing to Augment..."
-for file in android-standards kotlin-style mcp-guide enhanced-research-strategy multi-ai-consultation byterover-rules; do
+for file in android-standards kotlin-style mcp-guide enhanced-research-strategy multi-ai-consultation; do
     # Map file names correctly
     case $file in
         android-standards) src="$CANONICAL_DIR/android-standards.md" ;;
@@ -315,7 +313,7 @@ done
 
 # Sync to KiloCode (preserve globs)
 echo "  📋 Syncing to KiloCode..."
-for file in android-standards kotlin-style mcp-guide enhanced-research-strategy byterover-rules; do
+for file in android-standards kotlin-style mcp-guide enhanced-research-strategy; do
     # Map file names correctly
     case $file in
         android-standards) src="$CANONICAL_DIR/android-standards.md" ;;
@@ -344,15 +342,14 @@ done
 # Update Trae project rules
 echo "  📋 Updating Trae rules..."
 cat > "$PROJECT_ROOT/.trae/rules/project_rules.md" << 'EOF'
-[byterover-mcp]
+# Project Assistant Rules
 
-# IMPORTANT
+# Memory
+OpenMemory is the approved persistent store. Use `mcp_router__search-memories` before major work and `mcp_router__add-memory` only when persistence is required by the user.
 
-Always use byterover-retrieve-knowledge tool to get the related context before any tasks
-Always use byterover-store-knowledge to store all the critical informations after successful tasks
-
+# Planning
+Use the built-in planning tool (`update_plan`) for multi-step tasks.
 EOF
-cat "$CANONICAL_DIR/byterover-rules.md" >> "$PROJECT_ROOT/.trae/rules/project_rules.md"
 
 # Create root pointer files
 echo "📍 Creating root pointer files..."

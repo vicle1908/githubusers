@@ -13,7 +13,6 @@ All core policies are defined in canonical documentation:
 - **Research Strategy**: See [enhanced-research-strategy.md](./enhanced-research-strategy.md)
 - **Android Standards**: See [android-standards.md](./android-standards.md)
 - **Kotlin Style**: See [kotlin-style.md](./kotlin-style.md)
-- **ByteRover Rules**: See [byterover-rules.md](./byterover-rules.md)
 
 ## Claude-Specific Configuration
 
@@ -33,7 +32,7 @@ Claude has access to all 14 MCP servers listed in [mcp-guide.md](./mcp-guide.md)
 1. **Gradle MCP** for ALL builds - NEVER use ./gradlew
 2. **Android MCP** for device operations
 3. **Mobile-MCP** for UI automation
-4. **ByteRover** for knowledge management
+4. **OpenMemory** for knowledge management
 5. Manual commands ONLY with explicit approval
 
 ## Quick Reference
@@ -51,8 +50,8 @@ mcp_mobile-mcp_mobile_launch_app("com.example.githubusers.debug")
 
 ### Knowledge Management
 ```bash
-mcp_byterover-mcp_byterover-retrieve-knowledge("query")
-mcp_byterover-mcp_byterover-save-implementation-plan(plan)
+mcp_openmemory_search-memories("query")
+mcp_openmemory_add-memory("key insight")
 ```
 
 ## Remember
