@@ -180,6 +180,7 @@ MCP-first enforcement: prefer MCP servers for supported tasks; Desktop Commander
 ## 11a Android Kotlin Development
 
 - Architecture: Clean Architecture, feature-based modules, MVI for complex screens, Navigation component only (aka "Navigation 3" in our docs).
+- Navigation 3 persistence: every `NavKey` hierarchy must be `@Serializable`, registered in the shared `navSavedStateConfiguration()`, and the hosting module (typically `app`) must apply the Kotlin serialization Gradle plugin so remember/saveable state works without reflection failures.
 - Dependency policy: use Version Catalog; no hardcoded versions; OkHttp BOM via `platform(libs.okhttp.bom)`; plugin versions via `version.ref`.
 - Code quality: KtLint and Detekt enforced; no wildcard imports; KDoc for public APIs; EditorConfig governs formatting.
 - Build: Prefer Gradle MCP for `detekt`, `ktlintCheck`, `assembleDebug`; running `./gradlew` via Desktop Commander is allowed when it streamlines the workflow.

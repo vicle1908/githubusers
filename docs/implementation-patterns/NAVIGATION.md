@@ -124,6 +124,12 @@ The app module orchestrates navigation by:
 4. Setting up the navigation host with all destinations
 5. Dispatching deep links through the `DeepLinkDispatcher`
 
+### Saved State Persistence
+
+- The app module applies the Kotlin serialization Gradle plugin so Navigation 3 can persist the back stack without reflection.
+- Every `NavKey` hierarchy must be `@Serializable` and registered inside the shared `navSavedStateConfiguration()` helper before calling `rememberNavBackStack`.
+- When new features add `NavKey` implementations, update the shared serializers module immediately to avoid runtime `SerializationException` crashes.
+
 ## Best Practices
 
 1. **Own Your Navigation**: Each feature should define and own its navigation contracts

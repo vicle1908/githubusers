@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.NavKey
 import com.example.githubusers.core.search.domain.SearchFilter
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface SearchNavKey : NavKey {
     @Serializable
     data class Search(val query: String? = null, val origin: String? = null, val filter: SearchFilter? = null) :
