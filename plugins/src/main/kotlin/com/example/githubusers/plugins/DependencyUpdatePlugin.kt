@@ -70,7 +70,9 @@ private fun Project.createDependencyUpdateTask() {
         description = "Updates project dependencies to latest stable versions"
 
         // Delegates to dependencyUpdates task whose plugin is not CC-safe on Gradle 9.
-        notCompatibleWithConfigurationCache("Delegates to dependencyUpdates task which is not configuration-cache compatible")
+        notCompatibleWithConfigurationCache(
+            "Delegates to dependencyUpdates task which is not configuration-cache compatible"
+        )
 
         doLast {
             logger.lifecycle("Checking for dependency updates...")
@@ -80,7 +82,9 @@ private fun Project.createDependencyUpdateTask() {
                 action.execute(project.tasks.named("dependencyUpdates").get())
             }
 
-            logger.lifecycle("Dependency update check completed. Check build/dependencyUpdates/report.html for results.")
+            logger.lifecycle(
+                "Dependency update check completed. Check build/dependencyUpdates/report.html for results."
+            )
         }
     }
 }
