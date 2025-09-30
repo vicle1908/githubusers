@@ -47,28 +47,10 @@ jobs:
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-<<<<<<< HEAD
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
-=======
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
 
     - name: Run quality checks
       run: ./gradlew detektAll ktlintCheckAll lintAll --configuration-cache --build-cache
@@ -79,11 +61,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-<<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
-=======
-        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -160,28 +138,10 @@ jobs:
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-<<<<<<< HEAD
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
-=======
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
 
     - name: Run quality checks
       run: ./gradlew detektAll ktlintCheckAll lintAll --configuration-cache --build-cache
@@ -192,11 +152,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-<<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
-=======
-        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -272,28 +228,10 @@ jobs:
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-<<<<<<< HEAD
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
-=======
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
 
     - name: Validate bugfix branch naming
       run: |
@@ -313,11 +251,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-<<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
-=======
-        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -393,28 +327,10 @@ jobs:
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-<<<<<<< HEAD
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
-=======
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
 
     - name: Run quality checks
       run: ./gradlew detektAll ktlintCheckAll lintAll --configuration-cache --build-cache
@@ -425,11 +341,7 @@ jobs:
     - name: Verify Native Library Build
       run: |
         echo "Building native libraries for core-security module..."
-<<<<<<< HEAD
         ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
-=======
-        ./gradlew :core-security:assembleDebug --configuration-cache --build-cache --info
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
         
         # Check if native libraries were built
         if [ -d "core-security/build/intermediates/cxx" ]; then
@@ -503,28 +415,10 @@ jobs:
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
       with:
-<<<<<<< HEAD
         android-api-level: ${{ env.ANDROID_API_LEVEL }}
         android-build-tools: ${{ env.ANDROID_BUILD_TOOLS }}
         android-ndk-version: ${{ env.ANDROID_NDK_VERSION }}
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
-=======
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        api-level: 34
-        build-tools: 34.0.0
-        ndk-version: '26.1.10909125'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      with:
-        cache-cleanup: on-success
-        cache-read-only: ${{ github.event_name == 'pull_request' }}
->>>>>>> a6e1c285 (feat(workflows): enhance CI/CD with native build verification)
 
     - name: Final build test
       run: ./gradlew assembleDebugApp assembleReleaseApp --configuration-cache --build-cache
