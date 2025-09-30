@@ -24,12 +24,12 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
-import androidx.savedstate.serialization.SavedStateConfiguration
 import com.example.githubusers.navigation.api.LocalNavigateBack
 import com.example.githubusers.navigation.api.LocalNavigateToDeepLink
 import com.example.githubusers.navigation.api.NavigationTab
 import com.example.githubusers.navigation.impl.DeepLinkDispatcher
 import com.example.githubusers.navigation.impl.Navigation3FeatureRegistry
+import com.example.githubusers.presentation.navigation.navSavedStateConfiguration
 import com.example.githubusers.presentation.theme.GithubUsersTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Collections
@@ -82,8 +82,9 @@ class MainActivity : ComponentActivity() {
                 ?: throw IllegalStateException("No navigation tabs registered")
             val initialKey = rememberInitialKey(defaultRoute)
 
+            val savedStateConfiguration = remember { navSavedStateConfiguration() }
             val backStack = rememberNavBackStack<NavKey>(
-                SavedStateConfiguration.DEFAULT,
+                savedStateConfiguration,
                 initialKey
             )
             val routeToKey = rememberRouteToKey(tabs)
