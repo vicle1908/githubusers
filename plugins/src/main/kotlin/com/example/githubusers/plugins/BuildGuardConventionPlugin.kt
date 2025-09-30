@@ -9,9 +9,9 @@ class BuildGuardConventionPlugin : Plugin<Project> {
             group = "verification"
             description = "Fails if module build.gradle.kts contains forbidden build logic DSL blocks"
             doLast {
-                val enforce = (target.findProperty("enforceNoLocalBuildLogic") as String?)?.toBoolean() ?: false
+                val enforce = (project.findProperty("enforceNoLocalBuildLogic") as String?)?.toBoolean() ?: false
                 if (!enforce) return@doLast
-                val file = target.buildFile
+                val file = project.buildFile
                 if (!file.exists()) return@doLast
                 val text = file.readText()
                 val forbidden = listOf(

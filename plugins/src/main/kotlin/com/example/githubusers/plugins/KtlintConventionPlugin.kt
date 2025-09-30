@@ -2,6 +2,7 @@ package com.example.githubusers.plugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask
@@ -29,6 +30,10 @@ class KtlintConventionPlugin : Plugin<Project> {
     private fun Project.configureKtlintPlugin() {
         // Configure ktlint defaults using the typed extension API
         val ext = extensions.getByType(KtlintExtension::class.java)
+        val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+
+        // Force the embedded CLI to match the version catalog to avoid outdated transitive pulls
+        ext.version.set(libs.findVersion("ktlintCli").get().requiredVersion)
 
         // Use .editorconfig as the single source of truth for code style
         // (android_studio style is declared in .editorconfig)

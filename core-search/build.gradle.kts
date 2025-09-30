@@ -23,7 +23,7 @@ kotlin {
     sourceSets {
         val test by getting {
             dependencies {
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.test)
             }
         }
     }

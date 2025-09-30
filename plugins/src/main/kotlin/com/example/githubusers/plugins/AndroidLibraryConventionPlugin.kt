@@ -4,12 +4,16 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             // Apply base module configuration first
             plugins.apply(BaseModulePlugin::class.java)
+
+            configureToolingVersionAlignment()
 
             // Ensure required plugins are applied
             pluginManager.apply("com.android.library")

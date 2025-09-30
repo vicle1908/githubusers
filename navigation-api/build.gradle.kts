@@ -21,7 +21,6 @@ dependencies {
     api(libs.androidx.navigation3.runtime)
     api(libs.local.core.common)
     implementation(libs.androidx.navigationevent)
-    api(libs.androidx.navigationevent.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.core.ktx)
