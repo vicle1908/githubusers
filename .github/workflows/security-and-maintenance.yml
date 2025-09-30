@@ -112,7 +112,7 @@ jobs:
         category: "/language:java-kotlin"
     
     - name: Run OWASP Dependency Check
-      run: ./gradlew dependencyCheckAnalyzeAll --no-configuration-cache --build-cache || true
+      run: ./gradlew dependencyCheckAnalyzeAll --no-configuration-cache --build-cache
     
     - name: Upload security scan results
       uses: actions/upload-artifact@v4
@@ -149,7 +149,7 @@ jobs:
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Generate license report
-      run: ./gradlew generateLicenseReportAll --no-configuration-cache --build-cache || true
+      run: ./gradlew generateLicenseReportAll --no-configuration-cache --build-cache
     
     - name: Upload license report
       uses: actions/upload-artifact@v4

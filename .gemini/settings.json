@@ -1,3 +1,11 @@
 {
-  "contextFileName": "AGENTS.md"
+  "contextFileName": "AGENTS.md",
+  "servers": [
+    "gradle-mcp-server",
+    "android",
+    "mobile-mcp",
+    "claude-context",
+    "openmemory",
+    "zen"
+  ]
 }

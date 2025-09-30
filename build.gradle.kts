@@ -313,9 +313,23 @@ tasks.register("lintAll") {
 tasks.register("dependencyCheckAnalyzeAll") {
     group = "verification"
     description = "Run OWASP dependencyCheckAnalyze across included builds (best-effort)"
-    gradle.includedBuilds.forEach { build ->
+    val interestedBuilds = gradle.includedBuilds.filter { build ->
+        val candidates = listOf(
+            build.projectDir.resolve("build.gradle.kts"),
+            build.projectDir.resolve("build.gradle")
+        )
+        candidates.any { file ->
+            file.exists() && file.readText().contains("dependencyCheck", ignoreCase = true)
+        }
+    }
+
+    interestedBuilds.forEach { build ->
         runCatching { dependsOn(build.task(":dependencyCheckAnalyze")) }
             .onFailure { logger.debug("Included build ${build.name} has no :dependencyCheckAnalyze task") }
+    }
+
+    if (interestedBuilds.isEmpty()) {
+        logger.lifecycle("No included builds define dependencyCheckAnalyze tasks; skipping OWASP aggregation")
     }
 }
 
@@ -329,9 +343,23 @@ tasks.named("dependencyCheckAnalyzeAll") {
 tasks.register("generateLicenseReportAll") {
     group = "verification"
     description = "Generate license reports across included builds (best-effort)"
-    gradle.includedBuilds.forEach { build ->
+    val interestedBuilds = gradle.includedBuilds.filter { build ->
+        val candidates = listOf(
+            build.projectDir.resolve("build.gradle.kts"),
+            build.projectDir.resolve("build.gradle")
+        )
+        candidates.any { file ->
+            file.exists() && file.readText().contains("generateLicenseReport", ignoreCase = true)
+        }
+    }
+
+    interestedBuilds.forEach { build ->
         runCatching { dependsOn(build.task(":generateLicenseReport")) }
             .onFailure { logger.debug("Included build ${build.name} has no :generateLicenseReport task") }
+    }
+
+    if (interestedBuilds.isEmpty()) {
+        logger.lifecycle("No included builds define license report tasks; skipping license aggregation")
     }
 }
 

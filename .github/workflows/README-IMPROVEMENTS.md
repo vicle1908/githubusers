@@ -1,252 +1,70 @@
-# GitHub Actions Workflow Improvements - 2025 Best Practices
+# GitHub Actions Workflows – September 2025 Snapshot
 
-## 📋 Summary of Updates
+## Summary
 
-This document outlines the comprehensive improvements made to the GitHub Actions workflows, incorporating the latest best practices from GitHub and Gradle documentation for 2025.
+- Balanced coverage across build, test, and security workflows without overloading runners.
+- Android toolchain provisioning is centralized via `android-toolchain-versions.yml` and reused by every job.
+- OWASP dependency and license aggregation now fails loudly when the underlying tasks exist, instead of being silently ignored.
+- Worktree automation uses a single matrix-driven job that adapts to branch conventions (`ai/`, `feature/`, `bugfix/`, `hotfix/`).
+- Dependency submission is **not** configured yet; keep referencing the “Outstanding Work” section below before promising it to collaborators.
 
-## 🚀 Key Improvements Implemented
+## Implemented Highlights
 
-### 1. **Dependency Submission Integration** ✅
-- Added `gradle/actions/dependency-submission@v4` for automatic vulnerability scanning
-- Created dedicated `dependency-submission.yml` workflow
-- Integrated dependency graph submission in main CI pipeline
-- Automatic security alerts via GitHub's Dependabot
+- **Enhanced CI (`ci.yml`):** Static analysis (`detektAll`, `ktlintCheckAll`, `:app:lintDebug`) and the native `:core-security:assembleDebug` check run in one Gradle invocation to maximize cache reuse. Unit tests remain isolated, with artifacts, summaries, and toolchain reuse handled consistently.
+- **Security & Maintenance (`security-and-maintenance.yml`):** Removes `|| true` fallbacks. Aggregated OWASP and license tasks now short-circuit with a clear log when no included build declares the task, preventing false positives while retaining strict failure semantics when scans are available.
+- **Worktree CI (`worktree-ci.yml`):** Consolidated four nearly identical jobs into a single `branch-validation` matrix. Each branch type toggles the expensive tasks it actually needs (e.g., native verification is restricted to `ai/` and `hotfix/` branches, bugfix branches enforce naming rules, release builds run only when useful).
+- **Artifact hygiene:** Every job standardises artifact names, compression level (`6`), and `if-no-files-found: ignore` to prevent noisy failures.
 
-### 2. **Gradle Actions v4 Upgrade** ✅
-- Upgraded all workflows to use `gradle/actions/setup-gradle@v4`
-- Enabled Build Scan publishing for performance insights
-- Improved cache management with `cache-cleanup` strategies
-- Added wrapper validation for security
+## Outstanding Work
 
-### 3. **Enhanced Caching Strategy** ✅
-- Smart cache read-only mode for pull requests
-- Cache cleanup on successful builds
-- Optimized cache key strategies
-- Compression level optimization for artifacts
+1. Wire up a dedicated **dependency submission** workflow using `gradle/actions/dependency-submission`, then document it here.
+2. Expand **OWASP/License coverage** by applying the relevant convention plugin to modules that should participate (`core-networking`, `core-security`, etc.). Once the tasks exist, the aggregation job will begin failing on real issues automatically.
+3. Evaluate whether code-quality tasks should move to a true matrix (Detekt/Ktlint/Lint split) once runner capacity becomes a bottleneck again.
 
-### 4. **Parallel Job Execution** ✅
-- Matrix strategy for code quality checks (Detekt, ktlint, Android Lint)
-- Parallel execution reduces CI time by ~40%
-- Independent job scheduling for better resource utilization
+## Workflow Notes
 
-### 5. **Improved Artifact Management** ✅
-- Unique artifact naming with `${{ github.run_number }}`
-- Compression level optimization (`compression-level: 6`)
-- `if-no-files-found: ignore` for graceful handling
-- Appropriate retention periods (30-90 days)
+### `ci.yml`
 
-### 6. **Job Summaries & PR Comments** ✅
-- Rich GitHub Job Summaries with markdown formatting
-- Automatic PR comments with build results
-- Build scan links in summaries
-- Security dashboard links
+- Triggered on `push`/`pull_request` for `main` and `develop`, plus manual dispatch.
+- `code-quality` job reuses the Android toolchain outputs and runs all static tasks together to warm the configuration cache once.
+- `unit-tests` job publishes JUnit reports through `dorny/test-reporter` and stores raw results as artifacts.
+- Uploads Detekt, lint, and unit-test reports with run-numbered artifact names for easy triage.
 
-### 7. **Security Enhancements** ✅
-- CodeQL analysis with security queries
-- OWASP dependency checking
-- Android Lint security checks
-- License compliance verification
+### `worktree-ci.yml`
 
-### 8. **Performance Monitoring** ✅
-- Build time metrics collection
-- APK size analysis
-- Cache effectiveness reporting
-- Gradle Build Scan integration
+- `branch-validation` matrix evaluates only for matching branch prefixes; other matrix entries short-circuit automatically.
+- Bugfix branches must follow `bugfix/<slug>`; violations fail fast before provisioning gradle.
+- Release (`assembleReleaseApp`) builds and native verification are limited to `ai/` and `hotfix/` branches to keep feature branches snappy.
+- `ai-merge-queue` only runs for PRs on `ai/` branches and depends on the matrix job finishing cleanly.
 
-## 📁 Workflow Files Overview
+### `security-and-maintenance.yml`
 
-### Updated Workflows
+- Schedules every Sunday at 02:00 UTC, with manual and main-branch triggers.
+- Dependency updates respect plugin cache requirements (`--no-configuration-cache`).
+- OWASP & license jobs leverage the new “best-effort but strict” aggregators defined in `build.gradle.kts`.
+- Performance and code-metrics jobs write concise summaries to `$GITHUB_STEP_SUMMARY` for quick inspection.
 
-#### 1. **ci.yml** - Enhanced CI/CD Pipeline 2025
-```yaml
-Key Features:
-- Dependency submission in setup job
-- Parallel code quality checks via matrix
-- Build scan publishing
-- PR comment integration
-- Comprehensive job summaries
-```
+## Permissions & Runtime Defaults
 
-#### 2. **security-and-maintenance.yml** - Security & Maintenance Enhanced 2025
-```yaml
-Key Features:
-- Dependency graph submission
-- Advanced CodeQL scanning
-- OWASP dependency checking
-- Performance benchmarking
-- Code metrics analysis
-```
+- Jobs request the minimum GitHub permissions required (`contents: read`, `security-events: write` where needed).
+- Android SDK versions originate from the shared toolchain workflow; bump them in one place.
+- Artifacts default to 7 or 30 days depending on workflow criticality.
 
-#### 3. **dependency-submission.yml** - NEW: Dedicated Dependency Submission
-```yaml
-Key Features:
-- Daily scheduled runs
-- PR-triggered submissions
-- Automatic vulnerability scanning
-- GitHub security integration
-```
+## Validation Tips
 
-## 🔧 Configuration Changes
+Run these locally before pushing major workflow edits:
 
-### Gradle Properties Updates
-```properties
-# Already configured in gradle.properties:
-org.gradle.configuration-cache=true
-org.gradle.caching=true
-org.gradle.scan.acceptLicense=true
-```
-
-### Required GitHub Settings
-1. Enable Dependency Graph: Settings → Security → Dependency graph
-2. Enable Dependabot: Settings → Security → Dependabot alerts
-3. Enable Code scanning: Settings → Security → Code scanning
-
-### Required Permissions
-```yaml
-permissions:
-  contents: write      # For dependency submission
-  security-events: write # For security scanning
-  checks: write        # For test reports
-  pull-requests: write # For PR comments
-```
-
-## 📊 Performance Improvements
-
-### Before vs After Metrics
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| CI Pipeline Time | ~20 min | ~12 min | 40% faster |
-| Cache Hit Rate | ~60% | ~85% | 25% increase |
-| Artifact Size | 150MB | 95MB | 37% smaller |
-| Security Scanning | Manual | Automated | 100% coverage |
-
-## 🛡️ Security Benefits
-
-1. **Automatic Vulnerability Detection**
-   - Real-time dependency vulnerability scanning
-   - GitHub security advisories integration
-   - Dependabot alerts for outdated dependencies
-
-2. **Supply Chain Security**
-   - Gradle wrapper validation
-   - Dependency graph visibility
-   - License compliance checking
-
-3. **Code Security**
-   - CodeQL static analysis
-   - Android Lint security rules
-   - OWASP dependency checking
-
-## 📈 Monitoring & Reporting
-
-### Build Scans
-- Automatic generation for all builds
-- Performance metrics and insights
-- Cache effectiveness analysis
-- Test results visualization
-
-### Job Summaries
-- Rich markdown formatting
-- Direct links to artifacts
-- Security dashboard links
-- Performance metrics
-
-### PR Comments
-- Automatic status updates
-- Build results summary
-- Links to full reports
-- Security check status
-
-## 🔄 Migration Checklist
-
-- [x] Update to `gradle/actions/setup-gradle@v4`
-- [x] Add `gradle/actions/dependency-submission@v4`
-- [x] Enable build scan publishing
-- [x] Configure cache cleanup strategies
-- [x] Add job summary generation
-- [x] Implement PR comment integration
-- [x] Enable dependency graph submission
-- [x] Configure CodeQL security scanning
-- [x] Add performance monitoring
-- [x] Update artifact naming conventions
-
-## 🚦 Testing the Improvements
-
-### 1. Test Dependency Submission
 ```bash
-# Trigger the dependency submission workflow
-gh workflow run dependency-submission.yml
+# Verify Gradle aggregation logic
+./gradlew dependencyCheckAnalyzeAll --dry-run
+./gradlew generateLicenseReportAll --dry-run
 
-# Check the dependency graph
-# Navigate to: https://github.com/<org>/<repo>/network/dependencies
+# Smoke-test the CI tasks
+./gradlew detektAll ktlintCheckAll :app:lintDebug :core-security:assembleDebug
+./gradlew testAll
+
+# Exercise worktree matrix locally (optional)
+gh workflow run worktree-ci.yml -f branch_pattern="ai/**"
 ```
 
-### 2. Test CI Pipeline
-```bash
-# Create a test PR
-git checkout -b test/ci-improvements
-git commit --allow-empty -m "Test CI improvements"
-git push origin test/ci-improvements
-
-# Open PR and observe:
-# - Parallel job execution
-# - PR comments
-# - Job summaries
-```
-
-### 3. Verify Security Scanning
-```bash
-# Check security tab after workflows complete
-# Navigate to: https://github.com/<org>/<repo>/security
-```
-
-## 📚 Resources
-
-- [Gradle Actions Documentation](https://github.com/gradle/actions)
-- [Dependency Submission API](https://docs.github.com/en/code-security/supply-chain-security)
-- [GitHub Actions Best Practices](https://docs.github.com/en/actions/using-workflows/best-practices)
-- [CodeQL Documentation](https://codeql.github.com/docs/)
-- [Gradle Build Scans](https://scans.gradle.com/)
-
-## 🎯 Next Steps
-
-1. **Enable GitHub Security Features**
-   - Navigate to repository Settings → Security
-   - Enable all recommended features
-
-2. **Configure Renovate/Dependabot**
-   - Automate dependency updates
-   - Create `.github/dependabot.yml`
-
-3. **Monitor Initial Runs**
-   - Check build scan reports
-   - Review cache effectiveness
-   - Analyze security findings
-
-4. **Fine-tune Performance**
-   - Adjust cache strategies based on metrics
-   - Optimize parallel job distribution
-   - Review artifact retention policies
-
-## 📝 Notes
-
-- All workflows use JDK 21 (upgrade from JDK 17)
-- Gradle wrapper validation is enabled by default
-- Build scans require accepting Gradle ToS
-- Dependency submission requires `contents: write` permission
-- CodeQL analysis may increase build time by 2-3 minutes
-
-## ✅ Validation
-
-The improvements have been validated against:
-- Latest GitHub Actions documentation (2025)
-- Gradle Actions v4 documentation
-- Android Gradle Plugin 8.12.2 requirements
-- Composite build best practices
-- Security scanning requirements
-
----
-
-*Last Updated: 2025-09-16*
-*Version: 1.0.0*
+Keep this document in sync whenever workflows gain or lose capabilities so that reviewers and automation can trust it.
