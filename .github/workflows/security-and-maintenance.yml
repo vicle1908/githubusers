@@ -40,7 +40,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
 
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
@@ -54,7 +54,7 @@ jobs:
       run: ./gradlew dependencyUpdatesAll --no-configuration-cache --build-cache --stacktrace
     
     - name: Upload dependency update report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: dependency-update-report
@@ -88,7 +88,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
 
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
@@ -99,7 +99,7 @@ jobs:
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@961a4b1d9fb3daa7752609b0dde99ee1020dccac
       with:
         languages: java-kotlin
     
@@ -107,7 +107,7 @@ jobs:
       run: ./gradlew assembleDebugApp --configuration-cache --build-cache --rerun-tasks
     
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@961a4b1d9fb3daa7752609b0dde99ee1020dccac
       with:
         category: "/language:java-kotlin"
     
@@ -115,7 +115,7 @@ jobs:
       run: ./gradlew dependencyCheckAnalyzeAll --no-configuration-cache --build-cache
     
     - name: Upload security scan results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: security-scan-results
@@ -138,7 +138,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
 
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
@@ -152,7 +152,7 @@ jobs:
       run: ./gradlew generateLicenseReportAll --no-configuration-cache --build-cache
     
     - name: Upload license report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
       if: always()
       with:
         name: license-report
@@ -175,7 +175,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
 
     - name: Prepare Gradle environment
       uses: ./.github/actions/gradle-android-setup
@@ -217,7 +217,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
       with:
         fetch-depth: 0
 

@@ -1,0 +1,20 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    name: Scan Dependency Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dependency review
+        uses: actions/dependency-review-action@332df47ca19beffb617423c70f13f32df183c67f
+        with:
+          fail-on-severity: high
+          comment-summary: true
