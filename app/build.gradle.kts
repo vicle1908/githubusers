@@ -36,15 +36,11 @@ extensions.configure<com.example.githubusers.plugins.ApplicationConfigExtension>
     enableNav3PersistenceWrite = true
 }
 
-<<<<<<< HEAD
 extensions.configure<com.example.githubusers.plugins.NdkExtension>("ndkConfig") {
     ndkVersion = libs.versions.ndk.get()
     cmakeVersion = libs.versions.cmake.get()
     cmakePath = "src/main/cpp/CMakeLists.txt"
 }
-=======
-// NDK configurations removed - now handled by core-security module
->>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
 
 // Native toolchain configuration is provided via the ndkConfig extension above
 
@@ -114,11 +110,8 @@ dependencies {
     // Core modules
     implementation(libs.local.core.ui)
     implementation(libs.local.core.security)
-<<<<<<< HEAD
     implementation(libs.local.core.paging)
     implementation(libs.local.core.search)
-=======
->>>>>>> 6a7e9e9c (feat(security): migrate native security code to core-security module)
 
     // Feature modules
     implementation(libs.local.feature.users)
