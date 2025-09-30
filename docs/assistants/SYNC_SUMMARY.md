@@ -17,7 +17,6 @@ Created centralized documentation in `docs/assistants/`:
 - `android-standards.md` - Android development standards
 - `kotlin-style.md` - Kotlin coding style guide
 - `android-debugging.md` - Android debugging with MCP tools
-- `byterover-rules.md` - ByteRover MCP integration rules
 - `dev-environment.md` - Environment variables and configuration
 - `claude-guide.md` - Claude-specific configuration
 

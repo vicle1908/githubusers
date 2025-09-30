@@ -70,12 +70,7 @@ mcp_exa_deep_researcher_check("taskId")
 mcp_openmemory_search-memories("query", limit=10)
 mcp_openmemory_add-memory("content", "metadata")
 
-# Byterover for programming patterns
-mcp_byterover-mcp_byterover-retrieve-knowledge("query", limit=10)
-mcp_byterover-mcp_byterover-store-knowledge("pattern", "context")
-mcp_byterover-mcp_byterover-list-modules()
-mcp_byterover-mcp_byterover-save-implementation-plan("plan")
-mcp_byterover-mcp_byterover-update-plan-progress("plan", "task", true)
+# ByteRover tooling is disabled; capture patterns in OpenMemory or local docs
 ```
 
 ### AI Analysis
@@ -296,61 +291,14 @@ suspend fun researchAndImplement(feature: String) {
     )
     
     // Store knowledge
-    mcp_byterover-mcp_byterover-store-knowledge(
-        pattern = analysis.pattern,
-        context = analysis.context
+    mcp_openmemory_add-memory(
+        content = analysis.pattern,
+        metadata = analysis.context
     )
 }
 ```
 
-## Byterover Workflow Pattern
-```kotlin
-// Complete Byterover workflow
-suspend fun byteroverWorkflow(task: String) {
-    // 1. Check handbook
-    val handbookExists = mcp_byterover-mcp_byterover-check-handbook-existence()
-    if (!handbookExists) {
-        mcp_byterover-mcp_byterover-create-handbook()
-    } else {
-        val syncStatus = mcp_byterover-mcp_byterover-check-handbook-sync()
-        if (syncStatus.hasChanges) {
-            mcp_byterover-mcp_byterover-update-handbook()
-        }
-    }
-    
-    // 2. List and retrieve
-    val modules = mcp_byterover-mcp_byterover-list-modules()
-    val knowledge = mcp_byterover-mcp_byterover-retrieve-knowledge(task)
-    
-    // 3. Create plan
-    val plan = createImplementationPlan(task, knowledge)
-    
-    // 4. SAVE IMMEDIATELY after approval
-    mcp_byterover-mcp_byterover-save-implementation-plan(plan)
-    
-    // 5. Execute with progress updates
-    plan.tasks.forEach { task ->
-        executeTask(task)
-        mcp_byterover-mcp_byterover-update-plan-progress(
-            plan_name = plan.name,
-            task_name = task.name,
-            is_completed = true
-        )
-    }
-    
-    // 6. Complete plan
-    mcp_byterover-mcp_byterover-update-plan-progress(
-        plan_name = plan.name,
-        is_completed = true
-    )
-    
-    // 7. Store knowledge
-    mcp_byterover-mcp_byterover-store-knowledge(
-        pattern = extractPattern(plan),
-        context = extractContext(plan)
-    )
-}
-```
+> **Note:** ByteRover workflows are deprecated. Use OpenMemory tooling and the built-in planning APIs instead.
 
 ## Quality Enforcement Pattern
 ```bash

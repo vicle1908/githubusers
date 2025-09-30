@@ -128,26 +128,9 @@ Examples:
 - "Remember my preferred commit style." → add-memory with concise description.
 - "What did I tell you about deployments?" → search-memories with query.
 
-## 7 Byterover MCP Protocols
+## 7 Memory Extensions
 
-Note: Byterover memory access requires authentication via the Byterover extension. If not authenticated, proceed offline (document key decisions locally) and queue knowledge storage to sync once authenticated. Always prefer retrieving knowledge before implementation and store high-signal programming facts frequently during plans.
-
-Core tools and strong rules:
-
-- List modules first: `byterover-list-modules` before storing/updating to avoid duplicates.
-- Naming for modules: `<repo_name>_<module_name>` only.
-- Save implementation plan before coding: `byterover-save-implementation-plan` is REQUIRED prior to multi-step implementation.
-- Retrieve knowledge frequently: use `byterover-retrieve-knowledge` during tasks to avoid mistakes; REQUIRED frequently for plan tasks.
-- Conflict handling: if memory conflicts occur, ALWAYS display the conflict resolution URL to the user.
-- Update progress: use `byterover-update-plan-progress` with `by_task_position` preferred.
-- Context recovery: use `byterover-retrieve-active-plans` to continue incomplete work reliably.
-- Store programming facts: `byterover-store-knowledge` with complete code snippets in triple backticks exactly as written; include concise, high-signal context only; skip trivial/common knowledge.
-
-Useful flows:
-
-- Start of task: list modules → retrieve knowledge → assess context completeness (`byterover-assess-context-completeness`).
-- During implementation: save implementation plan → retrieve knowledge frequently → store knowledge facts (with code) → update plan progress.
-- Handbook sync: check handbook existence/sync, perform update with preservation strategy if changes diverge.
+ByteRover MCP tooling is currently disabled. Use OpenMemory exclusively for storing and retrieving long-lived project or user knowledge (see Section 6). Document notable implementation details locally when OpenMemory is insufficient and confirm with the user before adopting any alternative memory providers.
 
 ## 8 Codebase Context & Search
 

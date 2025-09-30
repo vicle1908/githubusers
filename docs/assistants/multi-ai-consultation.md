@@ -22,7 +22,7 @@ Multi-AI consultation integrates with the 10-step research workflow:
 
 1. Complete research using MCP servers (see `enhanced-research-strategy.md`)
 2. Validate via `mcp_zen_consensus` and deepen via `mcp_zen_thinkdeep`
-3. Store findings in `mcp_byterover-mcp_byterover-store-knowledge` and key decisions via `mcp_openmemory_add-memory`
+3. Store findings via `mcp_router__add-memory` when future recall is required and record key decisions with the user’s consent
 
 ## Trigger Conditions
 
@@ -48,15 +48,15 @@ Automatically activate multi-AI consultation when:
 
 ### Integration with MCP Servers
 
-- **Before Consultation**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
+- **Before Consultation**: Review existing knowledge with `mcp_router__search-memories`
 - **During Consultation**: Include context from `mcp_openmemory_search-memories`
-- **After Consultation**: Store insights in `mcp_byterover-mcp_byterover-store-knowledge`
+- **After Consultation**: Store insights using `mcp_router__add-memory` when long-term recall is needed
 
 ## Consultation Process Rules
 
 ### Phase 1: Pre-Consultation Setup
 
-1. **Knowledge Retrieval**: Use `mcp_byterover-mcp_byterover-retrieve-knowledge` for relevant patterns
+1. **Knowledge Retrieval**: Use `mcp_router__search-memories` for relevant context
 2. **Context Gathering**: Use `mcp_openmemory_search-memories` for project context
 3. **Research Completion**: Ensure 10-step research workflow is completed
 
@@ -68,9 +68,9 @@ Automatically activate multi-AI consultation when:
 
 ### Phase 3: Knowledge Integration
 
-1. **Store Insights**: Use `mcp_byterover-mcp_byterover-store-knowledge` for patterns
+1. **Store Insights**: Use `mcp_router__add-memory` for persistent notes
 2. **Update Memory**: Use `mcp_openmemory_add-memory` for project decisions
-3. **Create Plans**: Use `mcp_byterover-mcp_byterover-save-implementation-plan` for action plans
+3. **Create Plans**: Use the planning tool (`update_plan`) and document summaries in OpenMemory only when requested
 
 ## Usage Enforcement Rules
 
@@ -87,7 +87,7 @@ Automatically activate multi-AI consultation when:
 
 ### Rule 3: Knowledge Management
 
-- **ALWAYS** store consultation insights in Byterover
+- **ALWAYS** store consultation insights in OpenMemory when they will be needed later
 - **ALWAYS** update OpenMemory with project decisions
 - **ALWAYS** create implementation plans for complex decisions
 

@@ -40,7 +40,7 @@ alwaysApply: true
 - **Cross-reference findings**: Validate information across different tools
 - **Check relevance scores**: For knowledge retrieval, ensure scores > 0.3
 - **Use concrete examples**: Reference specific files with `@filename.ext`
-- **Document findings**: Store important patterns in `mcp_byterover-mcp_byterover-store-knowledge`
+- **Document findings**: Store important patterns with OpenMemory (`mcp-router__add-memory`)
 
 ### Tool Usage Rules
 
@@ -154,10 +154,10 @@ mcp_zen_thinkdeep("Complex migration strategy", migration_requirements)
 
 ### Research Storage
 
-- Store important findings in `mcp_byterover-mcp_byterover-store-knowledge`
-- Update module insights with `mcp_byterover-mcp_byterover-update-module`
-- Create implementation plans with `mcp_byterover-mcp_byterover-save-implementation-plan`
-- Track progress with `mcp_byterover-mcp_byterover-update-plan-progress`
+- Store important findings with OpenMemory (`mcp-router__add-memory`)
+- Keep module insights in local docs or OpenMemory as agreed with the user
+- Capture implementation plans directly in your plan tool output (or OpenMemory if persistence is required)
+- Track progress through the planning tool (`update_plan`) and summarize in OpenMemory only when the user requests persistence
 
 ## Research Workflow Examples
 
