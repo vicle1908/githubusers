@@ -183,28 +183,53 @@ tasks.register("ktlintCheckAll") {
 // Aggregate dependency updates across modules (composite-friendly)
 // Note: the ben-manes versions task is not configuration-cache safe on Gradle 9.
 // Prefer running this in isolation with configuration cache disabled.
+val excludedDependencyUpdateBuilds = setOf("catalog", "plugins", "testing")
+val isWindowsHost = System.getProperty("os.name").contains("Windows", ignoreCase = true)
+val wrapperExecutable = if (isWindowsHost) listOf("cmd", "/c", "gradlew.bat") else listOf("./gradlew")
+
+val dependencyUpdateInvocations = gradle.includedBuilds
+    .filter { it.name !in excludedDependencyUpdateBuilds }
+    .map { build ->
+        val sanitizedName = build.name.replace(Regex("[^A-Za-z0-9]"), "_")
+        val taskName = "dependencyUpdatesInvoke${sanitizedName.replaceFirstChar { it.uppercaseChar() }}"
+
+        tasks.register<org.gradle.api.tasks.Exec>(taskName) {
+            group = "verification"
+            description = "Execute dependencyUpdates inside included build ${build.name}"
+            workingDir = project.rootDir
+            val command = wrapperExecutable + listOf(
+                "--no-daemon",
+                "-p",
+                build.projectDir.absolutePath,
+                "dependencyUpdates",
+                "--no-parallel"
+            )
+            commandLine(command)
+            isIgnoreExitValue = false
+
+            onlyIf {
+                val buildFile = build.projectDir.resolve("build.gradle.kts")
+                buildFile.isFile && buildFile.readText().contains("githubusers.dependency.update")
+            }
+
+            notCompatibleWithConfigurationCache(
+                "Delegates to external Gradle invocation for ${build.name}:dependencyUpdates"
+            )
+        }
+    }
+
+dependencyUpdateInvocations
+    .zipWithNext()
+    .forEach { (previous, next) ->
+        next.configure { mustRunAfter(previous) }
+    }
+
 tasks.register("dependencyUpdatesAll") {
     group = "verification"
     description = "Run dependencyUpdates on all included builds that expose the task"
-
-    val excluded = setOf("catalog", "plugins", "testing")
-    gradle.includedBuilds
-        .filter { it.name !in excluded }
-        .forEach { build ->
-            val linkedTask = runCatching { build.task(":dependencyUpdates") }
-                .onFailure { logger.debug("Included build ${build.name} has no dependencyUpdates task") }
-                .getOrNull()
-            if (linkedTask != null) {
-                dependsOn(linkedTask)
-            }
-        }
-}
-
-// This aggregate depends on included builds and the ben-manes versions plugin, which is not CC-safe on Gradle 9.
-// Explicitly mark it as incompatible so Gradle won't attempt to cache the configuration for this task.
-tasks.named("dependencyUpdatesAll") {
+    dependsOn(dependencyUpdateInvocations)
     notCompatibleWithConfigurationCache(
-        "Aggregate dependencyUpdates across included builds; versions plugin not CC-safe on Gradle 9"
+        "Aggregate dependencyUpdates across included builds via isolated invocations; versions plugin not CC-safe on Gradle 9"
     )
 }
 

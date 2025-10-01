@@ -51,7 +51,7 @@ jobs:
         android-cmake-version: ${{ env.ANDROID_CMAKE_VERSION }}
     
     - name: Check for dependency updates (no CC)
-      run: ./gradlew dependencyUpdatesAll --no-configuration-cache --build-cache --stacktrace
+      run: ./gradlew dependencyUpdatesAll --no-parallel --no-configuration-cache --build-cache --stacktrace
     
     - name: Upload dependency update report
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

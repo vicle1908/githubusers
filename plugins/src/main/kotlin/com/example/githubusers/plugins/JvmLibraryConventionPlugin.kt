@@ -15,6 +15,7 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
                 apply("githubusers.build.guard")
             }
             configureKotlinJvm()
+            configureToolingVersionAlignment()
         }
     }
 }

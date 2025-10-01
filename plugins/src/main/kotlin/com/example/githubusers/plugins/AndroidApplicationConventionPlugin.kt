@@ -4,6 +4,8 @@ import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 
 /**
  * Extension for NDK configuration in application modules
@@ -32,6 +34,8 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             // Create extensions for configuration
             extensions.create("ndkConfig", NdkExtension::class.java)
             extensions.create("appConfig", ApplicationConfigExtension::class.java)
+
+            configureToolingVersionAlignment()
 
             // Ensure required plugins are applied
             pluginManager.apply("com.android.application")
