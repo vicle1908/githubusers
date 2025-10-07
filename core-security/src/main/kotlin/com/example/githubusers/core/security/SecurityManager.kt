@@ -4,66 +4,28 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import javax.inject.Singleton
 
-internal const val SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY =
-    "com.example.githubusers.core.security.skipNativeLoad"
+internal const val SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY = "com.example.githubusers.core.security.skipNativeLoad"
+private const val INTEGRITY_FAILURE_CODE = -1001
+private const val DEBUGGER_DETECTED_CODE = -1002
+private const val DEFAULT_KEY_ID = 0
 
 /**
- * Core security manager providing native security functionality.
- * Uses JNI bridge pattern with RegisterNatives for optimal performance.
+ * Core security manager providing native-backed integrity checks and obfuscated key access.
  */
 @Singleton
 class SecurityManager @Inject constructor() {
 
-    companion object {
-        private const val NATIVE_LIBRARY_NAME = "security_core"
-        private val nativeLibraryLoaded = AtomicBoolean(false)
+    fun isDeviceCompromised(): Boolean = nativeIsDeviceCompromised()
 
-        init {
-            loadNativeLibraryIfNeeded()
-        }
+    fun isDebuggingDetected(): Boolean = nativeIsDebuggingDetected()
 
-        internal fun loadNativeLibraryIfNeeded() {
-            if (shouldSkipNativeLoad()) {
-                return
-            }
+    fun getObfuscatedKeySeed(): String = nativeGetObfuscatedKey(DEFAULT_KEY_ID) ?: ""
 
-            if (nativeLibraryLoaded.compareAndSet(false, true)) {
-                System.loadLibrary(NATIVE_LIBRARY_NAME)
-            }
-        }
-
-        private fun shouldSkipNativeLoad(): Boolean {
-            val flag = System.getProperty(SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY) ?: return false
-            return flag.equals("true", ignoreCase = true)
-        }
-    }
-
-    /**
-     * Checks if the device is compromised (rooted, debuggable, etc.)
-     * @return true if device shows signs of compromise
-     */
-    external fun isDeviceCompromised(): Boolean
-
-    /**
-     * Detects if debugging tools are attached
-     * @return true if debugging is detected
-     */
-    external fun isDebuggingDetected(): Boolean
-
-    /**
-     * Gets obfuscated key seed for cryptographic operations
-     * @return obfuscated key material as string
-     */
-    external fun getObfuscatedKeySeed(): String
-
-    /**
-     * Comprehensive security check combining all native checks
-     * @return SecurityResult with detailed findings
-     */
     fun performSecurityCheck(): SecurityResult {
-        val isCompromised = isDeviceCompromised()
-        val isDebugging = isDebuggingDetected()
-        val keySeed = getObfuscatedKeySeed()
+        val integrityResult = nativeVerifyIntegrity()
+        val isCompromised = integrityResult == INTEGRITY_FAILURE_CODE
+        val isDebugging = nativeIsDebuggingDetected()
+        val keySeed = nativeGetObfuscatedKey(DEFAULT_KEY_ID).orEmpty()
 
         return SecurityResult(
             isDeviceCompromised = isCompromised,
@@ -75,6 +37,36 @@ class SecurityManager @Inject constructor() {
                 else -> SecurityLevel.SECURE
             }
         )
+    }
+
+    private external fun nativeIsDeviceCompromised(): Boolean
+
+    private external fun nativeIsDebuggingDetected(): Boolean
+
+    private external fun nativeVerifyIntegrity(): Int
+
+    private external fun nativeGetObfuscatedKey(keyId: Int): String?
+
+    companion object {
+        private const val NATIVE_LIBRARY_NAME = "security_core"
+        private val nativeLibraryLoaded = AtomicBoolean(false)
+
+        init {
+            loadNativeLibraryIfNeeded()
+        }
+
+        private fun loadNativeLibraryIfNeeded() {
+            if (shouldSkipNativeLoad()) return
+
+            if (nativeLibraryLoaded.compareAndSet(false, true)) {
+                System.loadLibrary(NATIVE_LIBRARY_NAME)
+            }
+        }
+
+        private fun shouldSkipNativeLoad(): Boolean {
+            val flag = System.getProperty(SECURITY_MANAGER_SKIP_NATIVE_LOAD_PROPERTY) ?: return false
+            return flag.equals("true", ignoreCase = true)
+        }
     }
 }
 

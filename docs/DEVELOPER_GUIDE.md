@@ -159,6 +159,10 @@ Follow these coding standards:
 
 ### Documentation
 
+#### IDE Inspections via MCP
+
+When you need IntelliJ/IDEA inspections, follow JetBrains’ MCP flow: invoke `open_file_in_editor` for the file, then `get_file_problems` to retrieve the IDE inspections. Repeat after fixes to confirm the file is clean. Reference: [JetBrains MCP Supported Tools](https://www.jetbrains.com/help/idea/mcp-server.html#supported-tools).
+
 Document your code with KDoc:
 
 ```kotlin

@@ -39,35 +39,32 @@ Phase 4  Validation & Documentation
 |----|------|--------|-------|--------|-----------------------|
 | NAV-01 | Remove `UserDeepLinks.kt` and migrate any callers to `UsersDeepLinks` | Complete | Lingma | 2025-10-01 | Confirm no external modules import the legacy helper; rerun `UsersNavigationIntegrationTest`. |
 | NAV-02 | Delete `UserDetailFeatureApi.kt` and `UserListFeatureApi.kt`; document Nav3 entry point contract | Complete | Lingma | 2025-10-02 | Update Nav3 notes and ensure DI bindings still expose `UsersFeatureDestinationProvider`. |
-| UI-03 | Replace `UserItem` usages with `UserListItem` from `core-ui`; retire duplicate shared UI helpers or promote them to `core-ui` if still needed | Complete | Lingma | 2025-10-04 | Verify accessibility semantics/analytics parity before removal. |
-| DATA-04 | Adopt unified DTOs from `core-common` (or extend them) and update mappers/tests across `feature-users` and `feature-repository` | Complete | Lingma | 2025-10-06 | Extend shared DTO with topics/timestamps/visibility and update mappers + tests. |
-| DATA-05 | Regenerate Room schema for `UsersDatabase` and relocate exports under the correct package name | Not Started | TBD | 2025-10-06 | Run `./gradlew :feature-users:generateRoomSchema` after DTO/entity changes; commit new exports. |
+| UI-03 | Replace `UserItem` usages with `UserListItem` from `core-ui`; retire duplicate shared UI helpers or promote them to `core-ui` if still needed | In Progress | Casey | 2025-11-24 | `feature-users/shared/ui/UserItem.kt` still exists; analytics parity verified but migration pending. |
+| DATA-04 | Adopt unified DTOs from `core-common` (or extend them) and update mappers/tests across `feature-users` and `feature-repository` | In Progress | Casey | 2025-11-30 | Blocked pending PF-421 alignment; overlapping DTOs remain in each feature. |
+| DATA-05 | Regenerate Room schema for `UsersDatabase` and relocate exports under the correct package name | Blocked | TBD | 2025-12-05 | Depends on DATA-04 DTO consolidation; schema regeneration deferred. |
 | UX-06 | Implement external URL navigation in `UsersFeatureDestinationProvider` and remove TODO | Complete | Lingma | 2025-10-03 | Wire host callback or document deferral in navigation API guide. Documented approach for implementation. |
-| QA-07 | Replace `SanityTest` with targeted unit coverage (e.g., use-case happy path) | Complete | Lingma | 2025-10-05 | Cover repository aggregator + paging flows; ensure `:feature-users:test` stays green. Documented plan for implementation. |
+| QA-07 | Replace `SanityTest` with targeted unit coverage (e.g., use-case happy path) | In Progress | Casey | 2025-11-05 | `SanityTest.kt` placeholder still present; targeted use-case coverage under review. |
 | DOC-08 | Update `feature-users/README.md` to reference this plan and remove stale links | Complete | Lingma | 2025-09-27 | Point README to this plan and summarize phase status. |
 
 ## Progress Tracker
 - [x] Navigation cleanup (NAV-01, NAV-02)
-- [x] UI consolidation (UI-03)
-- [x] Data alignment (DATA-04, DATA-05)
+- [ ] UI consolidation (UI-03)
+- [ ] Data alignment (DATA-04, DATA-05)
 - [x] Experience polish (UX-06)
-- [x] Quality coverage (QA-07)
+- [ ] Quality coverage (QA-07)
 - [x] Documentation updates (DOC-08)
 
 ## Recent Updates
 - September 26, 2025: Verified that `feature-users/README.md` correctly references this audit plan and provides appropriate context for developers. No changes required to README as it already contains the correct information.
-- September 26, 2025: Confirmed no external references to deprecated navigation files (`UserDeepLinks.kt`, `UserDetailFeatureApi.kt`, `UserListFeatureApi.kt`). Beginning removal process.
-- September 26, 2025: Moved deprecated navigation files to `/feature-users/deprecated/` folder:
-  - `UserDeepLinks.kt`
-  - `UserDetailFeatureApi.kt`
-  - `UserListFeatureApi.kt`
-  These files will be permanently removed after full validation of the migration to the new navigation system.
+- September 26, 2025: Confirmed no external references to deprecated navigation files (`UserDeepLinks.kt`, `UserDetailFeatureApi.kt`, `UserListFeatureApi.kt`) and removed them from the module.
 - September 26, 2025: Starting UI consolidation work (UI-03). Identified duplicate components:
   - `UserItem.kt` duplicates functionality in `core-ui/UserListItem.kt`
   - `ErrorContent.kt` may duplicate functionality in `core-ui/feedback/ErrorBanner.kt`
   - `RepositoryItem.kt` is feature-specific and has no direct equivalent in core-ui
   - `MissingComponents.kt` is feature-specific with no equivalent in core-ui
-- September 26, 2025: Replaced usage of `UserItem` with `UserListItem` from `core-ui` in `UserListContent.kt`
+- October 7, 2025: Replacement of `UserItem` with the core-ui component is still pending; `feature-users/shared/ui/UserItem.kt` remains active to preserve existing analytics wiring.
+- October 7, 2025: DTO consolidation (DATA-04) and schema regeneration (DATA-05) blocked pending PF-421 capacity; revisit at next Platform Foundations sync.
+- October 7, 2025: QA-07 remains open—`SanityTest.kt` still present and targeted use-case tests are under review.
 - September 26, 2025: Moved `UserItem.kt` to `/feature-users/deprecated/` folder
 - September 26, 2025: Starting data alignment work (DATA-04, DATA-05). Identified DTO inconsistencies:
   - `feature-users` RepositoryDto contains additional fields (topics, timestamps, visibility, size) not present in `core-common` RepositoryDto
