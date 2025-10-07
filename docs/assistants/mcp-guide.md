@@ -20,6 +20,17 @@
 | **Semantic Search** | Exa | `mcp_exa_web_search_exa` | Neural understanding |
 | **Memory Storage** | OpenMemory | `mcp_openmemory_add-memory` | Persistent information storage |
 | **AI Analysis** | Zen MCP | `mcp_zen_consensus` | Multi-model validation |
+| **IDE Diagnostics** | JetBrains MCP | `open_file_in_editor`, `get_file_problems` | Surface inspections & quick fixes |
+
+### JetBrains IDE Diagnostics Workflow
+
+When reviewing Kotlin/Java warnings or errors inside IntelliJ-based IDEs, follow JetBrains’ recommended sequence:
+
+1. Call `open_file_in_editor` with the fully qualified path to load the editor state.
+2. Immediately call `get_file_problems` for the same path to retrieve up-to-date inspections.
+3. Apply fixes, then repeat steps 1–2 to confirm the file is clean.
+
+Reference: [JetBrains MCP Supported Tools](https://www.jetbrains.com/help/idea/mcp-server.html#supported-tools).
 
 ## Usage Enforcement Rules
 

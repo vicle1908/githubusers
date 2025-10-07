@@ -130,3 +130,6 @@ docs/
 - Updated `docs/BUILD_SYSTEM.md` with composite build wiring and fixed typos/structure.
 - Updated `docs/BUILD-CONVENTIONS.md` module lists and build types (debug/release/benchmark).
 - Security: Certificate pinning for Ktor OkHttp engine not yet implemented in code; tracked in `docs/KTOR_AUTH_PLUGIN_IMPLEMENTATION.md`.
+- JetBrains MCP diagnostics workflow now documented in `AGENTS.md`, `docs/assistants/mcp-guide.md`, and the Developer Guide, reflecting the open-file-then-get-problems best practice.
+- Security module summary refreshed to call out the native integrity return codes surfaced through `SecurityManager`.
+- Removed `docs/NAVIGATION_PERFORMANCE_BENCHMARKS.md` (stale metrics and unused dashboard).

@@ -88,6 +88,7 @@ core-security/
 - **Device Integrity Checks**: Root detection, debugging detection
 - **Anti-Tampering**: Emulator detection, suspicious app detection
 - **Key Obfuscation**: Multi-layer key protection with entropy mixing
+- **Kotlin Bridge Contracts**: `SecurityManager` exposes `isDeviceCompromised()`, `isDebuggingDetected()`, and `getObfuscatedKeySeed()` which delegate to dedicated JNI functions; `nativeVerifyIntegrity()` still returns the canonical status codes (`0`, `-1001`, `-1002`) while the debugging flag is resolved independently to avoid short-circuiting when the device is compromised.
 
 ## ⚡ Performance Optimizations
 

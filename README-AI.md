@@ -18,6 +18,7 @@ This worktree is dedicated to AI assistant development for the specified task.
 - Changes are isolated to this branch until merged
 - Use `git fetch origin && git rebase origin/main` to stay updated
 - Follow the commit template for consistent commit messages
+- For IntelliJ MCP diagnostics, open the target file with `open_file_in_editor` before calling `get_file_problems` (per [JetBrains guidance](https://www.jetbrains.com/help/idea/mcp-server.html#supported-tools)).
 
 ## Cleanup
 When done, remove this worktree with:

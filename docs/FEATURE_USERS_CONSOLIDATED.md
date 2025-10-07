@@ -4,9 +4,9 @@
 
 This document provides complete documentation for the `feature-users` module, consolidating all information previously found in separate files. It covers the module's architecture, implementation details, testing procedures, and verification playbooks.
 
-This documentation has been updated to reflect the comprehensive implementation of aligning the architectural patterns between `feature-users/list` and `feature-users/detail` modules, including the decision to merge these modules into a single cohesive unit.
+This documentation tracks the ongoing effort to align architectural patterns between `feature-users/list` and `feature-users/detail`. The modules now live side-by-side in the consolidated `feature-users` Gradle project, but several follow-ups remain—in particular migrating shared UI components into `core-ui` and unifying DTO contracts.
 
-**Latest Update**: The feature-users module has been successfully restructured with all list and detail functionality merged into a single module. Shared components have been moved to the shared directory, including RepositoryItem, ErrorContent, and additional utility components. All compilation issues have been resolved and the module is fully functional.
+**Latest Update (2025-10-07)**: Navigation refactors are complete and deprecated helpers removed. Shared UI components (e.g., `UserItem.kt`) are still duplicates of the core counterparts and will be migrated as part of UI-03 (see audit plan). Compilation issues remain resolved; module is functional while cleanup continues.
 
 ## Module Structure
 

@@ -86,6 +86,7 @@ Examples (good):
   - Read files in chunks ≤ 250 lines; expect 256-line/10KB output truncation.
 - `apply_patch` to edit files (never use other patch commands). Follow its grammar strictly.
 - Avoid reading the same file repeatedly without need. Avoid large/duplicate output.
+- IDE diagnostics: when using IntelliJ MCP, mirror JetBrains’ recommended flow—call `open_file_in_editor` for the target file, then `get_file_problems` to surface inspections (ref: [JetBrains MCP supported tools](https://www.jetbrains.com/help/idea/mcp-server.html#supported-tools)).
 - Firebase CLI vs MCP: keep both. Use MCP tools for quick status checks and conversational guidance inside the session, and fall back to `npx firebase …` when you need the full command surface (deploys, scripting, emulator control, advanced product commands).
 
 ## 5a MCP-First Enforcement

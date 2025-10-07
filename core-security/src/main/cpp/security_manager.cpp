@@ -12,6 +12,14 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
 // JNI method implementations
+static jboolean nativeIsDeviceCompromised(JNIEnv*, jobject /*thiz*/) {
+    return isDeviceCompromised() ? JNI_TRUE : JNI_FALSE;
+}
+
+static jboolean nativeIsDebuggingDetected(JNIEnv*, jobject /*thiz*/) {
+    return isDebuggingDetected() ? JNI_TRUE : JNI_FALSE;
+}
+
 static jint nativeVerifyIntegrity(JNIEnv* env, jobject /*thiz*/) {
     LOGI("Starting integrity verification");
     
@@ -60,6 +68,8 @@ static jstring nativeGetObfuscatedKey(JNIEnv* env, jobject /*thiz*/, jint keyId)
 
 // JNI method registration table
 static JNINativeMethod methods[] = {
+    {"nativeIsDeviceCompromised", "()Z", (void*)nativeIsDeviceCompromised},
+    {"nativeIsDebuggingDetected", "()Z", (void*)nativeIsDebuggingDetected},
     {"nativeVerifyIntegrity", "()I", (void*)nativeVerifyIntegrity},
     {"nativeGetObfuscatedKey", "(I)Ljava/lang/String;", (void*)nativeGetObfuscatedKey}
 };
